@@ -1,0 +1,29 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Oxanium-Bold.ttf",
+      "sha1": "2d37d075b498e6baf5cf290ca77d2b326ce44a95"
+    },
+    {
+      "path": "assets/fonts/Oxanium-Medium.ttf",
+      "sha1": "5a42a0e7e39cbc6f2a7f43ccad1caa33f0e37b72"
+    },
+    {
+      "path": "assets/fonts/Oxanium-SemiBold.ttf",
+      "sha1": "72e9680b005fbe0b869a0269a19433e84c93f658"
+    },
+    {
+      "path": "assets/fonts/Varta-Medium.ttf",
+      "sha1": "186ef27d6329e43401c7eb0f18a8681c78acbc47"
+    },
+    {
+      "path": "assets/fonts/Varta-Regular.ttf",
+      "sha1": "f6a40d8fd89aada12384489d63e632d1af1c7e89"
+    },
+    {
+      "path": "assets/fonts/Varta-SemiBold.ttf",
+      "sha1": "d80a83b6a96025d69365999715c29cec085b09e9"
+    }
+  ]
+}
