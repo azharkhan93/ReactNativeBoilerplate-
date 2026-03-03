@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, ScrollView, TextInput, TouchableOpacity } from 'react-native';
-import { Typography, Button } from '../../theme';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { Typography, Button, FormInput } from '../../theme';
 import { BottomSheetModal } from '@/components/shared/BottomSheetModal';
 import { Clock, DollarSign, MapPin, Camera } from 'lucide-react-native';
 
@@ -52,74 +52,50 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
                         </View>
                     </View>
 
-                    {/* Form Fields */}
-                    <View>
-                        <Typography className="text-gray-400 font-body-semibold mb-2 ml-1">Service Name</Typography>
-                        <TextInput
-                            className="bg-gray-900 border border-gray-800 rounded-2xl px-4 py-4 text-white font-body"
-                            placeholder="e.g. Premium SUV Wash"
-                            placeholderTextColor="#4b5563"
-                            value={formData.name}
-                            onChangeText={(text) => setFormData({ ...formData, name: text })}
-                        />
-                    </View>
+                    <FormInput
+                        label="Service Name"
+                        placeholder="e.g. Premium SUV Wash"
+                        value={formData.name}
+                        onChangeText={(text: string) => setFormData({ ...formData, name: text })}
+                    />
 
                     <View className="flex-row gap-4">
-                        <View className="flex-1">
-                            <Typography className="text-gray-400 font-body-semibold mb-2 ml-1">Price ($)</Typography>
-                            <View className="flex-row items-center bg-gray-900 border border-gray-800 rounded-2xl px-4 py-4">
-                                <DollarSign size={16} color="#4b5563" />
-                                <TextInput
-                                    className="flex-1 text-white font-body ml-2"
-                                    placeholder="0.00"
-                                    placeholderTextColor="#4b5563"
-                                    keyboardType="numeric"
-                                    value={formData.price}
-                                    onChangeText={(text) => setFormData({ ...formData, price: text })}
-                                />
-                            </View>
-                        </View>
-                        <View className="flex-1">
-                            <Typography className="text-gray-400 font-body-semibold mb-2 ml-1">Duration</Typography>
-                            <View className="flex-row items-center bg-gray-900 border border-gray-800 rounded-2xl px-4 py-4">
-                                <Clock size={16} color="#4b5563" />
-                                <TextInput
-                                    className="flex-1 text-white font-body ml-2"
-                                    placeholder="30 mins"
-                                    placeholderTextColor="#4b5563"
-                                    value={formData.duration}
-                                    onChangeText={(text) => setFormData({ ...formData, duration: text })}
-                                />
-                            </View>
-                        </View>
-                    </View>
-
-                    <View>
-                        <Typography className="text-gray-400 font-body-semibold mb-2 ml-1">Service Area / Location</Typography>
-                        <View className="flex-row items-center bg-gray-900 border border-gray-800 rounded-2xl px-4 py-4">
-                            <MapPin size={16} color="#4b5563" />
-                            <TextInput
-                                className="flex-1 text-white font-body ml-2"
-                                placeholder="City, Neighborhood"
-                                placeholderTextColor="#4b5563"
-                                value={formData.location}
-                                onChangeText={(text) => setFormData({ ...formData, location: text })}
-                            />
-                        </View>
-                    </View>
-
-                    <View>
-                        <Typography className="text-gray-400 font-body-semibold mb-2 ml-1">Description</Typography>
-                        <TextInput
-                            className="bg-gray-900 border border-gray-800 rounded-2xl px-4 py-4 text-white font-body min-h-[120px]"
-                            placeholder="Describe what's included in this car wash..."
-                            placeholderTextColor="#4b5563"
-                            multiline
-                            textAlignVertical="top"
-                            value={formData.description}
-                            onChangeText={(text) => setFormData({ ...formData, description: text })}
+                        <FormInput
+                            label="Price ($)"
+                            placeholder="0.00"
+                            keyboardType="numeric"
+                            icon={<DollarSign size={16} color="#4b5563" />}
+                            containerClassName="flex-1"
+                            value={formData.price}
+                            onChangeText={(text: string) => setFormData({ ...formData, price: text })}
+                        />
+                        <FormInput
+                            label="Duration"
+                            placeholder="30 mins"
+                            icon={<Clock size={16} color="#4b5563" />}
+                            containerClassName="flex-1"
+                            value={formData.duration}
+                            onChangeText={(text: string) => setFormData({ ...formData, duration: text })}
                         />
                     </View>
+
+                    <FormInput
+                        label="Service Area / Location"
+                        placeholder="City, Neighborhood"
+                        icon={<MapPin size={16} color="#4b5563" />}
+                        value={formData.location}
+                        onChangeText={(text: string) => setFormData({ ...formData, location: text })}
+                    />
+
+                    <FormInput
+                        label="Description"
+                        placeholder="Describe what's included in this car wash..."
+                        multiline
+                        textAlignVertical="top"
+                        inputClassName="min-h-[120px]"
+                        value={formData.description}
+                        onChangeText={(text: string) => setFormData({ ...formData, description: text })}
+                    />
 
                     <Button
                         onPress={handleSave}

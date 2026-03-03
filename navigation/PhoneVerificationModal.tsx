@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, TextInput } from 'react-native';
+import { View } from 'react-native';
 import { Phone } from 'lucide-react-native';
-import { Typography, Button } from '@/components/theme';
+import { Typography, Button, FormInput } from '@/components/theme';
 import { BottomSheetModal } from '@/components/shared/BottomSheetModal';
+import React from 'react';
 
 interface PhoneVerificationModalProps {
     visible: boolean;
@@ -23,24 +23,15 @@ export const PhoneVerificationModal: React.FC<PhoneVerificationModalProps> = ({
                 <Phone size={32} color="#3b82f6" />
             </View>
 
-            <Typography className="text-white font-heading-semibold mb-2 text-center">
-                Enter Phone Number
-            </Typography>
-            <Typography variant="body-sm" className="text-gray-500 mb-6 text-center">
-                We need this to coordinate your car wash service and provide updates.
-            </Typography>
-
-            <View className="flex-row items-center bg-gray-900 border border-gray-800 rounded-2xl px-4 py-4 mb-8">
-                <Typography className="text-gray-400 mr-2 font-body-semibold">+1</Typography>
-                <TextInput
-                    value={value}
-                    onChangeText={onChange}
-                    placeholder="555-0123"
-                    keyboardType="phone-pad"
-                    className="flex-1 text-white font-body"
-                    placeholderTextColor="#4b5563"
-                />
-            </View>
+            <FormInput
+                label="Enter Phone Number"
+                placeholder="555-0123"
+                keyboardType="phone-pad"
+                value={value}
+                onChangeText={onChange}
+                icon={<Typography className="text-gray-400 font-body-semibold">+1</Typography>}
+                containerClassName="mb-8"
+            />
 
             <Button
                 onPress={onConfirm}

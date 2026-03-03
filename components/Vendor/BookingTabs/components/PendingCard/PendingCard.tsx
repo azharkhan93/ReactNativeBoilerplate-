@@ -2,8 +2,8 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Calendar, MapPin } from 'lucide-react-native';
 import { Typography } from '@/components/theme';
-import { Avatar } from './Avatar';
-import { StatusBadge } from './StatusBadge';
+import { Avatar } from '../Avatar';
+import { StatusBadge } from '../StatusBadge';
 import { MOCK_BOOKINGS } from '@/utils/constants';
 
 export const PendingCard: React.FC<{ booking: (typeof MOCK_BOOKINGS)[0] }> = ({ booking }) => (

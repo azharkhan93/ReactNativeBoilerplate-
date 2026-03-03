@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, ScrollView, Platform } from 'react-native';
-import { Typography, Button } from '../../theme';
+import { Typography, Button, FormInput } from '../../theme';
 import { ShieldCheck, Lock } from 'lucide-react-native';
 import { BANK_ACCOUNT_CONSTANTS } from './constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -33,66 +33,37 @@ export const BankAccountDetails: React.FC = () => {
 
             {/* Form Fields */}
             <View className="gap-6">
-                {/* Account Holder Name */}
-                <View>
-                    <Typography className="text-gray-400 font-body-semibold mb-2 ml-1">
-                        {BANK_ACCOUNT_CONSTANTS.LABELS.ACCOUNT_HOLDER}
-                    </Typography>
-                    <TextInput
-                        className="bg-gray-900 border border-gray-800 rounded-2xl px-4 py-4 text-white font-body"
-                        placeholder={BANK_ACCOUNT_CONSTANTS.PLACEHOLDERS.ACCOUNT_HOLDER}
-                        placeholderTextColor="#4b5563"
-                        value={formData.accountHolder}
-                        onChangeText={(text) => setFormData({ ...formData, accountHolder: text })}
-                    />
-                </View>
+                <FormInput
+                    label={BANK_ACCOUNT_CONSTANTS.LABELS.ACCOUNT_HOLDER}
+                    placeholder={BANK_ACCOUNT_CONSTANTS.PLACEHOLDERS.ACCOUNT_HOLDER}
+                    value={formData.accountHolder}
+                    onChangeText={(text) => setFormData({ ...formData, accountHolder: text })}
+                />
 
-                {/* Bank Name */}
-                <View>
-                    <Typography className="text-gray-400 font-body-semibold mb-2 ml-1">
-                        {BANK_ACCOUNT_CONSTANTS.LABELS.BANK_NAME}
-                    </Typography>
-                    <TextInput
-                        className="bg-gray-900 border border-gray-800 rounded-2xl px-4 py-4 text-white font-body"
-                        placeholder={BANK_ACCOUNT_CONSTANTS.PLACEHOLDERS.BANK_NAME}
-                        placeholderTextColor="#4b5563"
-                        value={formData.bankName}
-                        onChangeText={(text) => setFormData({ ...formData, bankName: text })}
-                    />
-                </View>
+                <FormInput
+                    label={BANK_ACCOUNT_CONSTANTS.LABELS.BANK_NAME}
+                    placeholder={BANK_ACCOUNT_CONSTANTS.PLACEHOLDERS.BANK_NAME}
+                    value={formData.bankName}
+                    onChangeText={(text) => setFormData({ ...formData, bankName: text })}
+                />
 
-                {/* Routing & Account Number Row on Large Screens or Stacked */}
-                <View className="flex-row gap-4">
-                    <View className="flex-1">
-                        <Typography className="text-gray-400 font-body-semibold mb-2 ml-1">
-                            {BANK_ACCOUNT_CONSTANTS.LABELS.ROUTING_NUMBER}
-                        </Typography>
-                        <TextInput
-                            className="bg-gray-900 border border-gray-800 rounded-2xl px-4 py-4 text-white font-body"
-                            placeholder={BANK_ACCOUNT_CONSTANTS.PLACEHOLDERS.ROUTING_NUMBER}
-                            placeholderTextColor="#4b5563"
-                            keyboardType="numeric"
-                            maxLength={9}
-                            value={formData.routingNumber}
-                            onChangeText={(text) => setFormData({ ...formData, routingNumber: text })}
-                        />
-                    </View>
-                </View>
+                <FormInput
+                    label={BANK_ACCOUNT_CONSTANTS.LABELS.ROUTING_NUMBER}
+                    placeholder={BANK_ACCOUNT_CONSTANTS.PLACEHOLDERS.ROUTING_NUMBER}
+                    keyboardType="numeric"
+                    maxLength={9}
+                    value={formData.routingNumber}
+                    onChangeText={(text) => setFormData({ ...formData, routingNumber: text })}
+                />
 
-                <View>
-                    <Typography className="text-gray-400 font-body-semibold mb-2 ml-1">
-                        {BANK_ACCOUNT_CONSTANTS.LABELS.ACCOUNT_NUMBER}
-                    </Typography>
-                    <TextInput
-                        className="bg-gray-900 border border-gray-800 rounded-2xl px-4 py-4 text-white font-body"
-                        placeholder={BANK_ACCOUNT_CONSTANTS.PLACEHOLDERS.ACCOUNT_NUMBER}
-                        placeholderTextColor="#4b5563"
-                        keyboardType="numeric"
-                        secureTextEntry
-                        value={formData.accountNumber}
-                        onChangeText={(text) => setFormData({ ...formData, accountNumber: text })}
-                    />
-                </View>
+                <FormInput
+                    label={BANK_ACCOUNT_CONSTANTS.LABELS.ACCOUNT_NUMBER}
+                    placeholder={BANK_ACCOUNT_CONSTANTS.PLACEHOLDERS.ACCOUNT_NUMBER}
+                    keyboardType="numeric"
+                    secureTextEntry
+                    value={formData.accountNumber}
+                    onChangeText={(text) => setFormData({ ...formData, accountNumber: text })}
+                />
             </View>
 
             {/* Verification Process Note */}
@@ -108,7 +79,7 @@ export const BankAccountDetails: React.FC = () => {
                 </Typography>
             </View>
 
-            {/* Save Button */}
+           
             <Button
                 onPress={() => console.log('Save bank details:', formData)}
                 variant={isFormValid ? 'primary' : 'disabled'}
@@ -117,7 +88,7 @@ export const BankAccountDetails: React.FC = () => {
                 {BANK_ACCOUNT_CONSTANTS.LABELS.SAVE_BUTTON}
             </Button>
 
-            {/* Compliance Footer */}
+           
             <View className="flex-row items-center justify-center mt-6 opacity-60">
                 <ShieldCheck size={14} color="#22c55e" />
                 <Typography variant="body-sm" className="text-gray-500 ml-2 uppercase tracking-widest font-body-bold text-[10px]">

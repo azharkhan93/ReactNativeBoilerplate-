@@ -2,8 +2,8 @@ import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { Star } from 'lucide-react-native';
 import { Typography } from '@/components/theme';
-import { Avatar } from './Avatar';
-import { StatusBadge } from './StatusBadge';
+import { Avatar } from '../Avatar';
+import { StatusBadge } from '../StatusBadge';
 import { MOCK_RECENT_ACTIVITY } from '@/utils/constants';
 
 export const RecentActivitySection: React.FC = () => (

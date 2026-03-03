@@ -3,10 +3,9 @@ import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { Typography } from '@/components/theme';
 import { MOCK_BOOKINGS, BOOKING_STATUS } from '@/utils/constants';
 import { TABS } from './constants';
-import { PendingCard } from './components/PendingCard';
-import { BookingCard } from './components/BookingCard';
-import { RecentActivitySection } from './components/RecentActivitySection';
+
 import { filterBookingsByStatus } from './helpers/bookingHelpers';
+import { BookingCard, PendingCard, RecentActivitySection } from './components';
 
 export const BookingTabs: React.FC = () => {
     const [activeTab, setActiveTab] = useState(BOOKING_STATUS.PENDING);
@@ -32,7 +31,6 @@ export const BookingTabs: React.FC = () => {
                 })}
             </View>
 
-            {/* Cards */}
             {filtered.length > 0
                 ? filtered.map(b =>
                     activeTab === BOOKING_STATUS.PENDING
