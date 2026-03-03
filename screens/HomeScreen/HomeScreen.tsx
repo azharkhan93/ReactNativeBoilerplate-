@@ -36,8 +36,8 @@ export const HomeScreen: React.FC = () => {
     { name: 'Baby & Kids', icon: Baby },
   ];
 
-  // Sample data - replace with your actual data
-  const flashSaleEndTime = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours from now
+  
+  const flashSaleEndTime = new Date(Date.now() + 24 * 60 * 60 * 1000); 
 
   const flashSaleProducts = [
     {
@@ -176,7 +176,7 @@ export const HomeScreen: React.FC = () => {
         onViewAllPress={() => console.log('View all best sellers')}
       />
 
-      {/* New Arrivals */}
+  
       <NewArrivals
         products={newArrivals}
         onProductPress={handleProductPress}

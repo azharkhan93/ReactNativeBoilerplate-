@@ -60,9 +60,9 @@ function AppContent() {
 
   return (
     <View className="flex-1 bg-gray-50">
-      {activeTab !== 'profile' && (
+      {activeTab !== 'profile' ? (
         <TopBar placeholder="Search products, brands..." />
-      )}
+      ): null}
       <View className="flex-1">{renderContent()}</View>
       <BottomTabNavigator
         tabs={tabs}
