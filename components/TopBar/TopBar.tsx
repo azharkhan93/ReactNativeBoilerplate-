@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SearchBar } from './SearchBar';
-import { Typography, IconButton, Container } from '../theme';
+import { Typography, IconButton } from '../theme';
 import { MapPin, Filter, User } from 'lucide-react-native';
 import { MOCK_USER } from '@/utils/constants';
 
@@ -16,11 +16,6 @@ export interface TopBarProps {
   location?: string;
 }
 
-/**
- * Car Wash SaaS Top Bar Component
- * Top Row: Location and Profile
- * Bottom Row: Search and Filter
- */
 export const TopBar: React.FC<TopBarProps> = ({
   onSearch,
   onSearchFocus,
@@ -34,7 +29,7 @@ export const TopBar: React.FC<TopBarProps> = ({
 
   return (
     <View
-      className="bg-white border-b border-gray-100"
+      className="bg-white rounded-bl-[32px] rounded-br-[32px] shadow-xl shadow-black/10 z-50"
       style={{ paddingTop: insets.top }}
     >
       <View className="px-5 py-2">
@@ -73,13 +68,12 @@ export const TopBar: React.FC<TopBarProps> = ({
           </View>
           <IconButton
             onPress={onFilterPress}
-            className="bg-primary-500 w-12 h-12 rounded-2xl"
+            className="bg-primary-500 w-12 h-12 rounded-2xl border border-primary-400/30"
           >
-            <Filter size={22} color="white" />
+            <Filter size={20} color="white" />
           </IconButton>
         </View>
       </View>
     </View>
   );
 };
-

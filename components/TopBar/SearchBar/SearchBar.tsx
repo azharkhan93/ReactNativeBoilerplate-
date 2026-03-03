@@ -10,7 +10,7 @@ export interface SearchBarProps {
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
-  placeholder = 'Search products...',
+  placeholder = 'Search Services...',
   value: controlledValue,
   onSearch,
   onFocus,
@@ -52,11 +52,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <View
-      className={`flex-row items-center rounded-full px-4 py-2.5 ${
-        isFocused
+      className={`flex-row items-center rounded-full px-4 py-2.5 ${isFocused
           ? 'bg-white border-2 border-primary-500'
           : 'bg-gray-100'
-      }`}
+        }`}
     >
       <Typography className="text-gray-400 mr-2">🔍</Typography>
       <TextInput
@@ -80,7 +79,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         >
           <Typography className="text-gray-400 text-lg">✕</Typography>
         </IconButton>
-      ): null}
+      ) : null}
     </View>
   );
 };

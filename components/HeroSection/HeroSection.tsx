@@ -1,90 +1,70 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View, ScrollView, Dimensions } from 'react-native';
+import React from 'react';
+import { View, Image, TouchableOpacity } from 'react-native';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import { Slide, SlideData } from './Slide';
-import { PaginationDots } from './PaginationDots';
+import { Typography } from '../theme';
 import { HERO_SLIDES } from './constants';
+import { ShieldCheck, Zap } from 'lucide-react-native';
 
 const cn = (...inputs: (string | undefined | null | boolean)[]) => {
   return twMerge(clsx(inputs));
 };
 
 export interface HeroSectionProps {
-  slides?: SlideData[];
-  autoSlideInterval?: number;
   className?: string;
 }
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-
 export const HeroSection: React.FC<HeroSectionProps> = ({
-  slides = HERO_SLIDES,
-  autoSlideInterval = 3000,
   className,
 }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const scrollViewRef = useRef<ScrollView>(null);
-  const intervalRef = useRef<number | null>(null);
-
-  const handleScroll = (event: any) => {
-    const offsetX = event.nativeEvent.contentOffset.x;
-    const index = Math.round(offsetX / SCREEN_WIDTH);
-    setActiveIndex(index);
-  };
-
-  const scrollToIndex = useCallback((index: number) => {
-    scrollViewRef.current?.scrollTo({
-      x: index * SCREEN_WIDTH,
-      animated: true,
-    });
-  }, []);
-
-  const stopAutoSlide = useCallback(() => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-  }, []);
-
-  const startAutoSlide = useCallback(() => {
-    stopAutoSlide();
-    intervalRef.current = setInterval(() => {
-      setActiveIndex(prev => {
-        const nextIndex = (prev + 1) % slides.length;
-        scrollToIndex(nextIndex);
-        return nextIndex;
-      });
-    }, autoSlideInterval);
-  }, [slides.length, autoSlideInterval, scrollToIndex, stopAutoSlide]);
-
-  useEffect(() => {
-    startAutoSlide();
-    return () => stopAutoSlide();
-  }, [startAutoSlide, stopAutoSlide]);
+  const [main, second, third] = HERO_SLIDES;
 
   return (
-    <View className={cn('px-3 py-2 ', className)}>
-      <ScrollView
-        ref={scrollViewRef}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-        onTouchStart={stopAutoSlide}
-        onTouchEnd={startAutoSlide}
-        onScrollBeginDrag={stopAutoSlide}
-        onScrollEndDrag={startAutoSlide}
-        nestedScrollEnabled={true}
-        className="relative rounded-md "
-      >
-        {slides.map((slide) => (
-          <Slide key={slide.id} data={slide} />
-        ))}
-      </ScrollView>
-      <View className="absolute bottom-6 left-4 right-4">
-        <PaginationDots total={slides.length} activeIndex={activeIndex} />
+    <View className={cn('px-5 py-4', className)}>
+      <View className="flex-row gap-3 h-[280px]">
+        {/* Main Spotlight - Featured exterior care */}
+        <View className="flex-1 rounded-[32px] overflow-hidden relative shadow-lg shadow-black/10">
+          <Image source={main.image} className="w-full h-full" resizeMode="cover" />
+          <View className="absolute inset-0 bg-black/40" />
+          <View className="absolute inset-0 p-5 justify-between">
+            <View className="bg-white/20 self-start p-2 rounded-xl backdrop-blur-md border border-white/20">
+              <Zap size={16} color="#fbbf24" fill="#fbbf24" />
+            </View>
+            <View>
+              <Typography className="text-white text-xl font-heading-bold leading-tight mb-1">
+                {main.heading}
+              </Typography>
+              <Typography className="text-white/70 font-body text-[10px]" numberOfLines={2}>
+                {main.description}
+              </Typography>
+            </View>
+          </View>
+        </View>
+
+        {/* Secondary Stack */}
+        <View className="w-[42%] gap-3">
+          {/* Top Tile */}
+          <View className="flex-1 rounded-[28px] overflow-hidden relative shadow-md shadow-black/5">
+            <Image source={second.image} className="w-full h-full" resizeMode="cover" />
+            <View className="absolute inset-0 bg-black/30" />
+            <View className="absolute inset-0 p-4 justify-end">
+              <Typography className="text-white text-sm font-heading-bold leading-tight" numberOfLines={2}>
+                {second.heading}
+              </Typography>
+            </View>
+          </View>
+
+         
+          <View className="flex-1 rounded-[28px] overflow-hidden relative shadow-md shadow-black/5 bg-primary-600">
+            <Image source={third.image} className="w-full h-full opacity-60" resizeMode="cover" />
+            <View className="absolute inset-0 p-4 justify-between">
+              <ShieldCheck size={14} color="white" />
+              <Typography className="text-white text-xs font-body-bold leading-tight">
+                {third.heading}
+              </Typography>
+            </View>
+          </View>
+        </View>
       </View>
     </View>
   );

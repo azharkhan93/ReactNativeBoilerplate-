@@ -35,7 +35,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 
       
       <Container variant="between" className="mb-6">
-        <Typography variant="h2" className="text-white font-heading-bold">
+        <Typography variant="h2">
           Profile
         </Typography>
         {onMenuPress ? (
@@ -53,10 +53,10 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       <Container variant="column-centered" gap={3}>
         <ProfileAvatar size={100} onEditPress={onEditProfilePress} />
         <Container variant="column-centered" gap={1}>
-          <Typography variant="h3" className="text-white font-heading-bold">
+          <Typography variant="h3">
             {userName}
           </Typography>
-          <Typography variant="body" className="text-white opacity-90">
+          <Typography variant="body">
             {userPhone}
           </Typography>
         </Container>

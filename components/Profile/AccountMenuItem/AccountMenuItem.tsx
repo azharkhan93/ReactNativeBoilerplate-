@@ -36,7 +36,7 @@ export const AccountMenuItem: React.FC<AccountMenuItemProps> = ({
           >
             <Icon size={20} color={iconColor} />
           </Container>
-          <Typography variant="body" className="text-gray-900 font-body-medium">
+          <Typography variant="body">
             {label}
           </Typography>
         </Container>
