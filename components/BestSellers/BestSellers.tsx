@@ -21,6 +21,7 @@ export interface BestSellerProduct {
 }
 
 export interface BestSellersProps {
+  title?: string;
   products?: BestSellerProduct[];
   onViewAllPress?: () => void;
   onProductPress?: (productId: string) => void;
@@ -29,6 +30,7 @@ export interface BestSellersProps {
 }
 
 export const BestSellers: React.FC<BestSellersProps> = ({
+  title = 'Best Sellers',
   products = [],
   onViewAllPress,
   onProductPress,
@@ -38,7 +40,7 @@ export const BestSellers: React.FC<BestSellersProps> = ({
   return (
     <View className={cn('px-4 py-4', className)}>
       <SectionHeader
-        title="Best Sellers"
+        title={title}
         subtitle="Top rated products"
         showViewAll={!!onViewAllPress}
         onViewAllPress={onViewAllPress}

@@ -2,75 +2,83 @@ import React from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SearchBar } from './SearchBar';
-import { MenuIcon } from './MenuIcon';
 import { Typography, IconButton, Container } from '../theme';
+import { MapPin, Filter, User } from 'lucide-react-native';
+import { MOCK_USER } from '@/utils/constants';
 
 export interface TopBarProps {
   onSearch?: (query: string) => void;
   onSearchFocus?: () => void;
   onProfilePress?: () => void;
-  onMenuPress?: () => void;
+  onFilterPress?: () => void;
   placeholder?: string;
   searchValue?: string;
-  showMenu?: boolean;
-  title?: string;
+  location?: string;
 }
 
-// Cart related props - commented out for future use
-// onCartPress?: () => void;
-// showCart?: boolean;
-// cartCount?: number;
-
 /**
- * Modern E-commerce Top Bar Component
- * Features: Search bar, Profile icon, Optional menu, Safe area support
+ * Car Wash SaaS Top Bar Component
+ * Top Row: Location and Profile
+ * Bottom Row: Search and Filter
  */
 export const TopBar: React.FC<TopBarProps> = ({
   onSearch,
   onSearchFocus,
   onProfilePress,
-  onMenuPress,
-  placeholder = 'Search products...',
+  onFilterPress,
+  placeholder = 'Search services...',
   searchValue,
-  showMenu = false,
-  title,
+  location = MOCK_USER.location,
 }) => {
   const insets = useSafeAreaInsets();
 
-  // #region agent log
-  fetch('http://127.0.0.1:7243/ingest/813c963d-cb9f-4e88-b367-04be8f5be650',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'TopBar.tsx:38',message:'TopBar safe area padding',data:{paddingTop:insets.top,insets},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-  // #endregion
-
   return (
     <View
-      className="bg-white border-b border-gray-200"
+      className="bg-white border-b border-gray-100"
       style={{ paddingTop: insets.top }}
     >
-      <Container variant="between" className="px-4 py-3">
-        {showMenu && <MenuIcon onPress={onMenuPress} />}
-        
-        <View className="flex-1 mx-2">
-          {title ? (
-            <Typography variant="h3">{title}</Typography>
-          ) : (
+      <View className="px-5 py-2">
+        {/* Top Row: Location and Profile */}
+        <View className="flex-row justify-between items-center mb-4">
+          <View className="flex-row items-center flex-1 mr-4">
+            <View className="bg-primary-50 p-2 rounded-full mr-3">
+              <MapPin size={20} color="#3b82f6" />
+            </View>
+            <View>
+              <Typography variant="body-sm" className="text-gray-400">Current Location</Typography>
+              <Typography variant="body" className="font-body-semibold text-gray-900" numberOfLines={1}>
+                {location}
+              </Typography>
+            </View>
+          </View>
+
+          <IconButton
+            variant="circular"
+            onPress={onProfilePress}
+            className="bg-gray-50 border border-gray-100"
+          >
+            <User size={22} color="#4B5563" />
+          </IconButton>
+        </View>
+
+        {/* Bottom Row: Search and Filter */}
+        <View className="flex-row items-center gap-3 pb-2">
+          <View className="flex-1">
             <SearchBar
               placeholder={placeholder}
               value={searchValue}
               onSearch={onSearch}
               onFocus={onSearchFocus}
             />
-          )}
-        </View>
-
-        <Container variant="row">
-          {/* Cart Icon - commented out for future use */}
-          {/* {showCart && <CartIcon onPress={onCartPress} count={cartCount} />} */}
-          
-          <IconButton variant="circular" onPress={onProfilePress}>
-            <Typography className="text-xl">👤</Typography>
+          </View>
+          <IconButton
+            onPress={onFilterPress}
+            className="bg-primary-500 w-12 h-12 rounded-2xl"
+          >
+            <Filter size={22} color="white" />
           </IconButton>
-        </Container>
-      </Container>
+        </View>
+      </View>
     </View>
   );
 };

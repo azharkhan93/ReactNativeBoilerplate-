@@ -21,6 +21,7 @@ export interface NewArrivalProduct {
 }
 
 export interface NewArrivalsProps {
+  title?: string;
   products?: NewArrivalProduct[];
   onViewAllPress?: () => void;
   onProductPress?: (productId: string) => void;
@@ -29,6 +30,7 @@ export interface NewArrivalsProps {
 }
 
 export const NewArrivals: React.FC<NewArrivalsProps> = ({
+  title = 'New Arrivals',
   products = [],
   onViewAllPress,
   onProductPress,
@@ -38,7 +40,7 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({
   return (
     <View className={cn('px-4 py-4', className)}>
       <SectionHeader
-        title="New Arrivals"
+        title={title}
         subtitle="Latest products just for you"
         showViewAll={!!onViewAllPress}
         onViewAllPress={onViewAllPress}

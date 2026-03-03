@@ -5,7 +5,16 @@ export * from "./BottomTabNavigator"
 export * from './FlashSale';
 export * from './BestSellers';
 export * from './NewArrivals';
-export * from './ProductGrid';
 export * from './Profile';
-export * from './Profile';
+export * from './Onboarding';
+export * from './Vendor';
 
+// Re-exporting Vendor sub-components directly for easier access
+export * from './Vendor/VendorDashboard';
+export * from './Vendor/VendorProfileScreen';
+export * from './Vendor/VendorAnalyticsScreen';
+export * from './Vendor/BookingTabs';
+export * from './Vendor/ServiceManagement';
+export * from './Vendor/BankAccountDetails';
+export * from './Vendor/VendorAccountDetails';
+export * from './Vendor/Availability';

@@ -24,10 +24,10 @@ export const PaginationDots: React.FC<PaginationDotsProps> = ({
         <View
           key={index}
           className={cn(
-            'h-2 rounded-md transition-all',
+            'h-1.5 rounded-full transition-all duration-300',
             index === activeIndex
-              ? 'w-8 bg-primary-500'
-              : 'w-2 bg-white/50'
+              ? 'w-6 bg-primary-500'
+              : 'w-1.5 bg-white/30'
           )}
         />
       ))}

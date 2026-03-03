@@ -1,188 +1,125 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
-
-import { 
-  Category, 
-  HeroSection, 
-  FlashSale, 
-  BestSellers, 
-  NewArrivals 
+import {
+  Category,
+  HeroSection,
+  FlashSale,
+  BestSellers,
+  NewArrivals,
+  TopBar,
+  Typography
 } from '@/components';
-import { 
-  Smartphone, 
-  Shirt, 
-  Dumbbell, 
-  Book, 
-  Home, 
-  Sparkles, 
-  Car, 
-  Gamepad2,
-  Utensils,
-  Baby
-} from 'lucide-react-native';
+import {
+  MOCK_SERVICES,
+  SERVICE_CATEGORIES,
+  MOCK_BOOKINGS
+} from '@/utils/constants';
 
+export interface HomeScreenProps {
+  userRole?: 'customer' | 'provider' | null;
+}
 
-export const HomeScreen: React.FC = () => {
-  const categories = [
-    { name: 'Electronics', icon: Smartphone },
-    { name: 'Fashion', icon: Shirt },
-    { name: 'Sports', icon: Dumbbell },
-    { name: 'Books', icon: Book },
-    { name: 'Home & Garden', icon: Home },
-    { name: 'Beauty', icon: Sparkles },
-    { name: 'Automotive', icon: Car },
-    { name: 'Toys', icon: Gamepad2 },
-    { name: 'Food & Drink', icon: Utensils },
-    { name: 'Baby & Kids', icon: Baby },
-  ];
-
-  
-  const flashSaleEndTime = new Date(Date.now() + 24 * 60 * 60 * 1000); 
-
-  const flashSaleProducts = [
-    {
-      id: '1',
-      name: 'Wireless Headphones',
-      price: 79.99,
-      originalPrice: 129.99,
-      discount: 38,
-      rating: 4.5,
-    },
-    {
-      id: '2',
-      name: 'Smart Watch',
-      price: 199.99,
-      originalPrice: 299.99,
-      discount: 33,
-      rating: 4.8,
-    },
-    {
-      id: '3',
-      name: 'Laptop Stand',
-      price: 29.99,
-      originalPrice: 49.99,
-      discount: 40,
-      rating: 4.3,
-    },
-  ];
-
-  const bestSellers = [
-    {
-      id: '4',
-      name: 'Premium T-Shirt',
-      price: 24.99,
-      originalPrice: 39.99,
-      discount: 37,
-      rating: 4.7,
-      isFavorite: false,
-    },
-    {
-      id: '5',
-      name: 'Running Shoes',
-      price: 89.99,
-      originalPrice: 129.99,
-      discount: 31,
-      rating: 4.9,
-      isFavorite: true,
-    },
-    {
-      id: '6',
-      name: 'Backpack',
-      price: 49.99,
-      originalPrice: 79.99,
-      discount: 37,
-      rating: 4.6,
-      isFavorite: false,
-    },
-  ];
-
-  const newArrivals = [
-    {
-      id: '7',
-      name: 'Designer Sunglasses',
-      price: 149.99,
-      rating: 4.4,
-      isFavorite: false,
-    },
-    {
-      id: '8',
-      name: 'Wireless Mouse',
-      price: 34.99,
-      originalPrice: 49.99,
-      discount: 30,
-      rating: 4.5,
-      isFavorite: true,
-    },
-    {
-      id: '9',
-      name: 'Phone Case',
-      price: 19.99,
-      rating: 4.2,
-      isFavorite: false,
-    },
-  ];
-
-  const handleProductPress = (productId: string) => {
-    // Navigate to product detail screen
-    console.log('Product pressed:', productId);
+export const HomeScreen: React.FC<HomeScreenProps> = ({ userRole }) => {
+  const handleSearch = (query: string) => {
+    console.log('Searching for:', query);
   };
 
-  const handleFavoritePress = (productId: string) => {
-    // Toggle favorite
-    console.log('Favorite toggled:', productId);
+  const handleProfilePress = () => {
+    console.log('Profile pressed');
+  };
+
+  const handleFilterPress = () => {
+    console.log('Filter pressed');
+  };
+
+  const handleServicePress = (serviceId: string) => {
+    console.log('Service pressed:', serviceId);
   };
 
   return (
-    <ScrollView 
-      className="flex-1 bg-white"
-      showsVerticalScrollIndicator={false}
-      nestedScrollEnabled={true}
-      contentContainerStyle={{ paddingBottom: 20 }}
-    >
-      <HeroSection />
-      
-      {/* Categories */}
-      <View className="px-4 pt-4">
-        <ScrollView 
-          horizontal 
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{ gap: 12 }}
-          nestedScrollEnabled={true}
-        >
-          {categories.map((category, index) => (
-            <Category 
-              key={index}
-              name={category.name} 
-              icon={category.icon}
-              className="mr-0"
-            />
-          ))}
-        </ScrollView>
-      </View>
+    <View className="flex-1 bg-white">
+      {/* <TopBar
+        onSearch={handleSearch}
+        onProfilePress={handleProfilePress}
+        onFilterPress={handleFilterPress}
+      /> */}
 
-      {/* Flash Sale */}
-      <FlashSale
-        products={flashSaleProducts}
-        endTime={flashSaleEndTime}
-        onProductPress={handleProductPress}
-        onViewAllPress={() => console.log('View all flash sales')}
-      />
+      <ScrollView
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 40 }}
+      >
+        <HeroSection />
 
-      {/* Best Sellers */}
-      <BestSellers
-        products={bestSellers}
-        onProductPress={handleProductPress}
-        onFavoritePress={handleFavoritePress}
-        onViewAllPress={() => console.log('View all best sellers')}
-      />
+        {/* Car Wash Categories */}
+        <View className="px-5 pt-6">
+          <Typography variant="h3" className="mb-4 text-gray-900 font-heading-semibold">
+            Service Categories
+          </Typography>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ gap: 16, paddingRight: 20 }}
+          >
+            {SERVICE_CATEGORIES.map((category) => (
+              <Category
+                key={category.id}
+                name={category.name}
+                icon={category.icon}
+              />
+            ))}
+          </ScrollView>
+        </View>
 
-  
-      <NewArrivals
-        products={newArrivals}
-        onProductPress={handleProductPress}
-        onFavoritePress={handleFavoritePress}
-        onViewAllPress={() => console.log('View all new arrivals')}
-      />
-    </ScrollView>
+        {/* Featured Services (reusing FlashSale component for now as a horizontal list) */}
+        <View className="mt-8">
+          <FlashSale
+            title="Special Offers"
+            products={MOCK_SERVICES.map(s => ({
+              id: s.id,
+              name: s.name,
+              price: s.price,
+              originalPrice: s.price * 1.2,
+              discount: 20,
+              rating: 4.8
+            }))}
+            onProductPress={handleServicePress}
+            onViewAllPress={() => console.log('View all offers')}
+          />
+        </View>
+
+        {/* Nearby Providers (reusing BestSellers/NewArrivals structure) */}
+        <View className="mt-4">
+          <BestSellers
+            title="Nearby Car Washers"
+            products={MOCK_SERVICES.map(s => ({
+              id: s.id,
+              name: s.name,
+              price: s.price,
+              rating: 4.9,
+              isFavorite: false
+            }))}
+            onProductPress={handleServicePress}
+            onViewAllPress={() => console.log('View all providers')}
+          />
+        </View>
+
+        {/* Recent Activity / Recommendations */}
+        <View className="mt-4">
+          <NewArrivals
+            title="Recommended for You"
+            products={MOCK_SERVICES.slice(0, 2).map(s => ({
+              id: s.id,
+              name: s.name,
+              price: s.price,
+              rating: 4.7,
+              isFavorite: true
+            }))}
+            onProductPress={handleServicePress}
+            onViewAllPress={() => console.log('View all recommendations')}
+          />
+        </View>
+      </ScrollView>
+    </View>
   );
 };

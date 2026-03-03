@@ -64,7 +64,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   }, [startAutoSlide, stopAutoSlide]);
 
   return (
-    <View className={cn('px-3 py-4', className)}>
+    <View className={cn('px-3 py-2 ', className)}>
       <ScrollView
         ref={scrollViewRef}
         horizontal
@@ -77,7 +77,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         onScrollBeginDrag={stopAutoSlide}
         onScrollEndDrag={startAutoSlide}
         nestedScrollEnabled={true}
-        className="relative rounded-md"
+        className="relative rounded-md "
       >
         {slides.map((slide) => (
           <Slide key={slide.id} data={slide} />
