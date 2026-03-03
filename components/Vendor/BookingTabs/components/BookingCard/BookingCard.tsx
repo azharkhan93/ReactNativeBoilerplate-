@@ -11,10 +11,10 @@ export const BookingCard: React.FC<{ booking: (typeof MOCK_BOOKINGS)[0] }> = ({ 
             <View className="flex-row items-center flex-1 mr-3">
                 <Avatar name={booking.customerName} />
                 <View className="ml-3 flex-1">
-                    <Typography variant='body'>
+                    <Typography className="text-white font-body-bold text-base">
                         {booking.customerName}
                     </Typography>
-                    <Typography variant='body' className=" tracking-widest mt-0.5">
+                    <Typography className="text-gray-500 font-body-bold text-xs tracking-widest mt-0.5">
                         {booking.serviceName}
                     </Typography>
                 </View>
@@ -22,8 +22,8 @@ export const BookingCard: React.FC<{ booking: (typeof MOCK_BOOKINGS)[0] }> = ({ 
             <StatusBadge status={booking.status} />
         </View>
         <View className="flex-row justify-between items-center mt-3 pt-3 border-t border-gray-800">
-            <Typography variant='body'>{booking.date}</Typography>
-            <Typography variant='body'>${booking.price}.00</Typography>
+            <Typography className="text-gray-400 text-[13px]">{booking.date} • {booking.time}</Typography>
+            <Typography className="text-primary-400 font-heading-bold text-lg">${booking.price}.00</Typography>
         </View>
     </View>
 );

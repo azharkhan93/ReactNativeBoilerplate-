@@ -18,19 +18,19 @@ export const VendorAccountDetails: React.FC = () => {
     return (
         <View className="flex-1 py-4">
             <View className="gap-6 pb-6">
-                {/* Business Info Section */}
+               
                 <View>
-                    <Typography variant="body-sm" className="text-gray-400 mb-2 px-1 uppercase tracking-wider font-body-bold">Business Info</Typography>
+                    <Typography variant="body" className=" mb-2 px-1 uppercase tracking-wider">Business Info</Typography>
                     <View className="bg-white border border-gray-100 rounded-3xl p-5 shadow-sm space-y-4">
                         <View>
-                            <Typography variant="body" className="text-primary-500 mb-1 font-body-bold">Business Name</Typography>
+                            <Typography variant="body" className=" mb-1 ">Business Name</Typography>
                             <View className="flex-row items-center border-b border-gray-50 pb-2">
                                 <Building size={16} color="#94a3b8" />
                                 <TextInput className="flex-1 text-gray-900 font-body ml-3" value={formData.businessName} />
                             </View>
                         </View>
                         <View className="mt-4">
-                            <Typography variant="body" className="text-primary-500 mb-1 font-body-bold">Owner Name</Typography>
+                            <Typography variant="body" className=" mb-1 ">Owner Name</Typography>
                             <View className="flex-row items-center border-b border-gray-50 pb-2">
                                 <User size={16} color="#94a3b8" />
                                 <TextInput className="flex-1 text-gray-900 font-body ml-3" value={formData.ownerName} />
@@ -41,11 +41,11 @@ export const VendorAccountDetails: React.FC = () => {
 
                 {/* Contact Section */}
                 <View>
-                    <Typography variant="body-sm" className="text-gray-400 mb-2 px-1 uppercase tracking-wider font-body-bold">Contact & Location</Typography>
+                    <Typography variant="body-sm" className=" mb-2 px-1 uppercase tracking-wider">Contact & Location</Typography>
                     <View className="bg-white border border-gray-100 rounded-3xl p-5 shadow-sm space-y-4">
                         <View className="flex-row gap-4 mb-4">
                             <View className="flex-1 border-b border-gray-50 pb-2">
-                                <Typography variant="body" className="text-primary-500 mb-1 font-body-bold">Email</Typography>
+                                <Typography variant="body" className="text-primary-500 mb-1">Email</Typography>
                                 <View className="flex-row items-center">
                                     <Mail size={16} color="#94a3b8" />
                                     <TextInput className="flex-1 text-gray-900 font-body ml-3 text-xs" value={formData.email} />

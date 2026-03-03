@@ -7,8 +7,8 @@ import { StatusBadge } from '../StatusBadge';
 import { MOCK_RECENT_ACTIVITY } from '@/utils/constants';
 
 export const RecentActivitySection: React.FC = () => (
-    <View className="mt-2 mb-6">
-        <Typography className="text-gray-500 font-body-bold text-xs tracking-widest uppercase mb-4">
+    <View className="mt-4 mb-6">
+        <Typography variant="body" className="text-gray-500 font-body-bold text-[11px] tracking-[2px] uppercase mb-4">
             Recent Activity
         </Typography>
         {MOCK_RECENT_ACTIVITY.map((item) => (

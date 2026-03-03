@@ -1,48 +1,31 @@
 import React, { useState } from 'react';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
-import { Typography } from '@/components/theme';
-import { MOCK_BOOKINGS, BOOKING_STATUS } from '@/utils/constants';
+import { View } from 'react-native';
+import { BOOKING_STATUS, MOCK_BOOKINGS } from '@/utils/constants';
 import { TABS } from './constants';
-
 import { filterBookingsByStatus } from './helpers/bookingHelpers';
-import { BookingCard, PendingCard, RecentActivitySection } from './components';
+import { BookingList, RecentActivitySection, TabItem } from './components';
 
 export const BookingTabs: React.FC = () => {
     const [activeTab, setActiveTab] = useState(BOOKING_STATUS.PENDING);
-    const filtered = filterBookingsByStatus(MOCK_BOOKINGS, activeTab);
+    const bookings = filterBookingsByStatus(MOCK_BOOKINGS, activeTab);
 
     return (
-        <View className="flex-1">
-            <View className="flex-row border-b border-gray-800 mb-6">
-                {TABS.map(tab => {
-                    const isActive = activeTab === tab.id;
-                    return (
-                        <TouchableOpacity
-                            key={tab.id}
-                            onPress={() => setActiveTab(tab.id as any)}
-                            className="mr-5 pb-3"
-                            style={isActive ? { borderBottomWidth: 2, borderBottomColor: '#3b82f6' } : {}}>
-                            <Typography
-                                className={`font-body-semibold text-[14px] ${isActive ? 'text-white' : 'text-gray-500'}`}>
-                                {tab.label}
-                            </Typography>
-                        </TouchableOpacity>
-                    );
-                })}
+        <View className="flex-1 px-5">
+            <View className="flex-row border-b border-gray-800 mb-6 justify-center">
+                {TABS.map(tab => (
+                    <TabItem
+                        key={tab.id}
+                        {...tab}
+                        isActive={activeTab === tab.id}
+                        onPress={() => setActiveTab(tab.id as any)}
+                    />
+                ))}
             </View>
 
-            {filtered.length > 0
-                ? filtered.map(b =>
-                    activeTab === BOOKING_STATUS.PENDING
-                        ? <PendingCard key={b.id} booking={b} />
-                        : <BookingCard key={b.id} booking={b} />
-                )
-                : (
-                    <View className="items-center justify-center py-16">
-                        <Typography className="text-gray-600 font-body italic">No bookings found</Typography>
-                    </View>
-                )
-            }
+            <BookingList
+                bookings={bookings}
+                isPending={activeTab === BOOKING_STATUS.PENDING}
+            />
 
             <RecentActivitySection />
         </View>
