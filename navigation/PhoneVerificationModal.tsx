@@ -29,7 +29,6 @@ export const PhoneVerificationModal: React.FC<PhoneVerificationModalProps> = ({
                 keyboardType="phone-pad"
                 value={value}
                 onChangeText={onChange}
-                icon={<Typography className="text-gray-400 font-body-semibold">+1</Typography>}
                 containerClassName="mb-8"
             />
 

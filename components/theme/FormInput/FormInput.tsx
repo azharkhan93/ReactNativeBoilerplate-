@@ -4,32 +4,28 @@ import { Typography } from '../Typography';
 
 interface FormInputProps extends TextInputProps {
     label: string;
-    icon?: React.ReactNode;
     containerClassName?: string;
     inputClassName?: string;
 }
 
 export const FormInput: React.FC<FormInputProps> = ({
     label,
-    icon,
     containerClassName = '',
     inputClassName = '',
     ...props
 }) => {
+    const isMultiline = props.multiline;
+
     return (
-        <View className={containerClassName}>
-            <Typography className="text-gray-400 font-body-semibold mb-2 ml-1">
+        <View className={`mb-6 ${containerClassName}`}>
+            <Typography variant="body" className="mb-2 ml-1">
                 {label}
             </Typography>
-            <View className="relative flex-row items-center">
-                {icon && (
-                    <View className="absolute left-4 z-10">
-                        {icon}
-                    </View>
-                )}
+            <View className={`relative flex-row ${isMultiline ? 'items-start' : 'items-center'}`}>
                 <TextInput
-                    className={`flex-1 bg-gray-900 border border-gray-800 rounded-2xl py-4 text-white font-body ${icon ? 'pl-12 pr-4' : 'px-4'} ${inputClassName}`}
+                    className={`flex-1 bg-gray-900 border border-gray-800 rounded-2xl py-4 px-4 text-white font-body ${inputClassName}`}
                     placeholderTextColor="#4b5563"
+                    textAlignVertical={isMultiline ? 'top' : 'center'}
                     {...props}
                 />
             </View>

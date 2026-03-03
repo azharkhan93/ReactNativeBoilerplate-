@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { Typography, Button, FormInput } from '../../theme';
 import { BottomSheetModal } from '@/components/shared/BottomSheetModal';
-import { Clock, DollarSign, MapPin, Camera } from 'lucide-react-native';
+import { Camera } from 'lucide-react-native';
 
 export interface ServiceManagementProps {
     visible: boolean;
@@ -34,11 +34,11 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
             title="Add Car Wash Service"
             onClose={onClose}
         >
-            <ScrollView className="bg-gray-950" showsVerticalScrollIndicator={false}>
-                <View className="px-6 py-4 gap-6 pb-12">
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <View className="px-5 py-4 pb-12">
 
-                    <View>
-                        <Typography className="text-gray-400 font-body-semibold mb-3 ml-1">Service Photos</Typography>
+                    <View className="mb-6">
+                        <Typography variant="body" className="text-gray-400 font-body-semibold mb-3 ml-1">Service Photos</Typography>
                         <View className="flex-row gap-4">
                             <TouchableOpacity
                                 onPress={() => console.log('Upload pressed')}
@@ -47,7 +47,7 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
                                 <Camera size={24} color="#4b5563" />
                             </TouchableOpacity>
                             <View className="w-24 h-24 bg-gray-900/50 rounded-2xl items-center justify-center border border-gray-800">
-                                <Typography variant="body-sm" className="text-gray-600">Mock Photo</Typography>
+                                <Typography variant="body" >Mock Photo</Typography>
                             </View>
                         </View>
                     </View>
@@ -64,16 +64,14 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
                             label="Price ($)"
                             placeholder="0.00"
                             keyboardType="numeric"
-                            icon={<DollarSign size={16} color="#4b5563" />}
-                            containerClassName="flex-1"
+                           
                             value={formData.price}
                             onChangeText={(text: string) => setFormData({ ...formData, price: text })}
                         />
                         <FormInput
                             label="Duration"
                             placeholder="30 mins"
-                            icon={<Clock size={16} color="#4b5563" />}
-                            containerClassName="flex-1"
+                           
                             value={formData.duration}
                             onChangeText={(text: string) => setFormData({ ...formData, duration: text })}
                         />
@@ -82,7 +80,6 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
                     <FormInput
                         label="Service Area / Location"
                         placeholder="City, Neighborhood"
-                        icon={<MapPin size={16} color="#4b5563" />}
                         value={formData.location}
                         onChangeText={(text: string) => setFormData({ ...formData, location: text })}
                     />
@@ -100,7 +97,6 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
                     <Button
                         onPress={handleSave}
                         variant={formData.name && formData.price ? 'primary' : 'disabled'}
-                        className="py-4 rounded-2xl"
                     >
                         Add Service
                     </Button>

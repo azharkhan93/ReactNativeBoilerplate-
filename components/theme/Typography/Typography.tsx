@@ -26,7 +26,7 @@ export const Typography: React.FC<TypographyProps> = ({
     h1: 'text-h1 font-heading',
     h2: 'text-h2 font-heading',
     h3: 'text-h3 font-heading-semibold',
-    subheading: 'text-subheading font-subheading',
+    subheading: 'text-subheading font-subheading text-white',
     body: 'text-body font-body text-white',
     'body-sm': 'text-body-sm font-body',
     'body-lg': 'text-body-lg font-body',
