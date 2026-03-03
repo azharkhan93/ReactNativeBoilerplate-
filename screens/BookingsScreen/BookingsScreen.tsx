@@ -13,7 +13,7 @@ export const BookingsScreen: React.FC = () => {
             <View
                 className="px-5 pb-5"
                 style={{ paddingTop: Math.max(insets.top, 20) + 10 }}>
-                <Typography className="text-white text-2xl font-heading-bold">Bookings</Typography>
+                <Typography variant="subheading" className="text-black">Bookings</Typography>
             </View>
 
             <ScrollView

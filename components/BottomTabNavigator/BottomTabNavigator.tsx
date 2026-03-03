@@ -1,8 +1,8 @@
 import React from 'react';
-import { TouchableOpacity, Platform } from 'react-native';
+import { TouchableOpacity, Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LucideIcon } from 'lucide-react-native';
-import { Typography, Container } from '../theme';
+import { Typography } from '../theme';
 
 export interface TabItem {
   label: string;
@@ -16,6 +16,10 @@ export interface BottomTabNavigatorProps {
   onTabPress: (route: string) => void;
 }
 
+/**
+ * Global Bottom Tab Navigator
+ * Styled with the project's Midnight Blue (bg-gray-950) theme.
+ */
 export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
   tabs,
   activeTab,
@@ -24,49 +28,49 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
   const insets = useSafeAreaInsets();
 
   return (
-    <Container
-      variant="row"
-      className="bg-white border-t border-gray-200 pt-2"
+    <View
+      className="bg-gray-950 border-t border-white/5 pt-2"
       style={{
-        paddingBottom: Math.max(insets.bottom, 8),
+        paddingBottom: Math.max(insets.bottom, 12),
         ...(Platform.OS === 'ios' && {
           shadowColor: '#000',
-          shadowOffset: { width: 0, height: -2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 4,
+          shadowOffset: { width: 0, height: -4 },
+          shadowOpacity: 0.2,
+          shadowRadius: 8,
         }),
         ...(Platform.OS === 'android' && {
-          elevation: 8,
+          elevation: 12,
         }),
       }}
     >
-      {tabs.map((tab) => {
-        const Icon = tab.icon;
-        const isActive = activeTab === tab.route;
+      <View className="flex-row items-center px-2">
+        {tabs.map((tab) => {
+          const Icon = tab.icon;
+          const isActive = activeTab === tab.route;
 
-        return (
-          <TouchableOpacity
-            key={tab.route}
-            className="flex-1"
-            onPress={() => onTabPress(tab.route)}
-            activeOpacity={0.7}
-          >
-            <Container variant="column-centered" gap={1} className="py-1">
+          return (
+            <TouchableOpacity
+              key={tab.route}
+              className="flex-1 items-center justify-center py-2"
+              onPress={() => onTabPress(tab.route)}
+              activeOpacity={0.7}
+            >
               <Icon
-                size={24}
-                color={isActive ? '#3b82f6' : '#6b7280'}
+                size={22}
+                color={isActive ? '#3b82f6' : '#9ca3af'}
+                strokeWidth={isActive ? 2.5 : 2}
               />
               <Typography
                 variant="body-sm"
-                className={isActive ? 'text-primary-500 font-body-semibold' : 'text-gray-500'}
+                className={isActive ? 'text-primary-500 font-body-bold mt-1' : 'text-gray-500 mt-1'}
               >
                 {tab.label}
               </Typography>
-            </Container>
-          </TouchableOpacity>
-        );
-      })}
-    </Container>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    </View>
   );
 };
 

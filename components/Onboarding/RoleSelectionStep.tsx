@@ -16,16 +16,16 @@ export const RoleSelectionStep: React.FC<RoleSelectionStepProps> = ({ onSelect, 
         <View style={{ width, flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24 }}>
 
             <Animated.View entering={FadeInUp.delay(200)} className="items-center mb-12">
-                <Typography variant="h3" className="text-center mb-4 text-[#2D2D6E] font-heading text-2xl tracking-tight">
+                <Typography variant="h3" className="text-center mb-4  tracking-tight">
                     Choose Your Role
                 </Typography>
-                <Typography variant="body" className="text-center text-[#7C7C7C] px-6">
+                <Typography variant="body" className="text-center  px-6">
                     Select how you want to use the platform to get started.
                 </Typography>
             </Animated.View>
 
 
-            <View className="w-full gap-4">
+            <View className="w-full gap-6">
                 <RoleOption
                     title="Customer"
                     description="I want to book car wash services"

@@ -29,19 +29,19 @@ export const TopBar: React.FC<TopBarProps> = ({
 
   return (
     <View
-      className="bg-white rounded-bl-[32px] rounded-br-[32px] shadow-xl shadow-black/10 z-50"
+      className="bg-gray-950 rounded-bl-[32px] rounded-br-[32px] shadow-xl shadow-black/10 z-50"
       style={{ paddingTop: insets.top }}
     >
       <View className="px-5 py-2">
         {/* Top Row: Location and Profile */}
         <View className="flex-row justify-between items-center mb-4">
           <View className="flex-row items-center flex-1 mr-4">
-            <View className="bg-primary-50 p-2 rounded-full mr-3">
-              <MapPin size={20} color="#3b82f6" />
+            <View className="bg-white/10 p-2 rounded-full mr-3 border border-white/10">
+              <MapPin size={18} color="#3b82f6" />
             </View>
             <View>
               <Typography variant="body-sm" className="text-gray-400">Current Location</Typography>
-              <Typography variant="body" className="font-body-semibold text-gray-900" numberOfLines={1}>
+              <Typography variant="body" className="font-body-bold text-white" numberOfLines={1}>
                 {location}
               </Typography>
             </View>

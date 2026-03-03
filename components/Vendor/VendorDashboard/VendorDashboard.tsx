@@ -132,7 +132,7 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({ onNavigate }) 
                     </View>
                 </View>
 
-                {/* New Booking Requests */}
+               
                 <View className="px-5 mb-6">
                     <View className="flex-row justify-between items-center mb-4">
                         <Typography className="text-white text-lg font-heading-semibold">

@@ -6,44 +6,31 @@ import {
   FlashSale,
   BestSellers,
   NewArrivals,
-  TopBar,
   Typography
 } from '@/components';
+import { SERVICE_CATEGORIES } from '@/utils/constants';
 import {
-  MOCK_SERVICES,
-  SERVICE_CATEGORIES,
-  MOCK_BOOKINGS
-} from '@/utils/constants';
+  getFeaturedServices,
+  getNearbyServices,
+  getRecommendedServices
+} from './helpers/homeHelpers';
 
-export interface HomeScreenProps {
-  userRole?: 'customer' | 'provider' | null;
-}
+/**
+ * HomeScreen Component
+ * Primary landing view for customers featuring hero spotlight, 
+ * categories, and curated service sections.
+ */
+export const HomeScreen: React.FC = () => {
+  // Navigation & Action Handlers
+  const handleServicePress = (serviceId: string) => console.log('Service:', serviceId);
 
-export const HomeScreen: React.FC<HomeScreenProps> = ({ userRole }) => {
-  const handleSearch = (query: string) => {
-    console.log('Searching for:', query);
-  };
-
-  const handleProfilePress = () => {
-    console.log('Profile pressed');
-  };
-
-  const handleFilterPress = () => {
-    console.log('Filter pressed');
-  };
-
-  const handleServicePress = (serviceId: string) => {
-    console.log('Service pressed:', serviceId);
-  };
+  // Get Mapped Data from Helpers
+  const featuredServices = getFeaturedServices();
+  const nearbyServices = getNearbyServices();
+  const recommendedServices = getRecommendedServices();
 
   return (
-    <View className="flex-1 bg-white">
-      {/* <TopBar
-        onSearch={handleSearch}
-        onProfilePress={handleProfilePress}
-        onFilterPress={handleFilterPress}
-      /> */}
-
+    <View className="flex-1 bg-gray-950">
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
@@ -51,9 +38,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ userRole }) => {
       >
         <HeroSection />
 
-        {/* Car Wash Categories */}
+        {/* Section: Service Categories */}
         <View className="px-5 pt-6">
-          <Typography variant="h3" className="mb-4 text-gray-900 font-heading-semibold">
+          <Typography variant="h3" className="mb-4 text-white">
             Service Categories
           </Typography>
           <ScrollView
@@ -71,50 +58,31 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ userRole }) => {
           </ScrollView>
         </View>
 
-        {/* Featured Services (reusing FlashSale component for now as a horizontal list) */}
+        {/* Section: Special Offers */}
         <View className="mt-8">
           <FlashSale
             title="Special Offers"
-            products={MOCK_SERVICES.map(s => ({
-              id: s.id,
-              name: s.name,
-              price: s.price,
-              originalPrice: s.price * 1.2,
-              discount: 20,
-              rating: 4.8
-            }))}
+            products={featuredServices}
             onProductPress={handleServicePress}
             onViewAllPress={() => console.log('View all offers')}
           />
         </View>
 
-        {/* Nearby Providers (reusing BestSellers/NewArrivals structure) */}
+        {/* Section: Nearby Car Washers */}
         <View className="mt-4">
           <BestSellers
             title="Nearby Car Washers"
-            products={MOCK_SERVICES.map(s => ({
-              id: s.id,
-              name: s.name,
-              price: s.price,
-              rating: 4.9,
-              isFavorite: false
-            }))}
+            products={nearbyServices}
             onProductPress={handleServicePress}
             onViewAllPress={() => console.log('View all providers')}
           />
         </View>
 
-        {/* Recent Activity / Recommendations */}
+        {/* Section: Recommended for You */}
         <View className="mt-4">
           <NewArrivals
             title="Recommended for You"
-            products={MOCK_SERVICES.slice(0, 2).map(s => ({
-              id: s.id,
-              name: s.name,
-              price: s.price,
-              rating: 4.7,
-              isFavorite: true
-            }))}
+            products={recommendedServices}
             onProductPress={handleServicePress}
             onViewAllPress={() => console.log('View all recommendations')}
           />

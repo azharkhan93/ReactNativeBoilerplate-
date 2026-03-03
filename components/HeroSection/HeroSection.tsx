@@ -22,7 +22,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <View className={cn('px-5 py-4', className)}>
       <View className="flex-row gap-3 h-[280px]">
-        {/* Main Spotlight - Featured exterior care */}
+       
         <View className="flex-1 rounded-[32px] overflow-hidden relative shadow-lg shadow-black/10">
           <Image source={main.image} className="w-full h-full" resizeMode="cover" />
           <View className="absolute inset-0 bg-black/40" />
