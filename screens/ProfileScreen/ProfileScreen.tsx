@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, View } from 'react-native';
 import { ProfileHeader, AccountOverviewSection } from '@/components/Profile';
 import { VendorProfileScreen } from '@/components/Vendor/VendorProfileScreen';
-import { Typography, Container } from '@/components/theme';
+import {  Container } from '@/components/theme';
 import { PROFILE_USER_DATA, ACCOUNT_MENU_ITEMS } from './constants';
 
 export interface ProfileScreenProps {
