@@ -6,4 +6,5 @@ export * from './Category';
 export * from './ProductCard';
 export * from './SectionHeader';
 export * from './FormInput';
+export * from './Modal';
 

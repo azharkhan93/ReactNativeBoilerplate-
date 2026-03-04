@@ -9,11 +9,11 @@ export const BookingsScreen: React.FC = () => {
 
     return (
         <View className="flex-1 bg-gray-950">
-           
+
             <View
                 className="px-5 pb-5"
                 style={{ paddingTop: Math.max(insets.top, 20) + 10 }}>
-                <Typography variant="subheading" className="text-black">Bookings</Typography>
+                <Typography variant="subheading" className="text-white">Bookings</Typography>
             </View>
 
             <ScrollView

@@ -1,9 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./App.{js,jsx,ts,tsx}",
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "./components/**/*.{js,jsx,ts,tsx}",
+    './App.{js,jsx,ts,tsx}',
+    './src/**/*.{js,jsx,ts,tsx}',
+    './components/**/*.{js,jsx,ts,tsx}',
+    './screens/**/*.{js,jsx,ts,tsx}',
+    './navigation/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
     extend: {
@@ -49,16 +51,15 @@ module.exports = {
         'body-semibold': 'Varta-SemiBold',
       },
       fontSize: {
-        'h1': '48px',
-        'h2': '36px',
-        'h3': '24px',
-        'subheading': '18px',
-        'body': '16px',
+        h1: '48px',
+        h2: '36px',
+        h3: '24px',
+        subheading: '18px',
+        body: '16px',
         'body-sm': '14px',
         'body-lg': '18px',
       },
     },
   },
   plugins: [],
-}
-
+};

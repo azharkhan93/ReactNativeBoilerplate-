@@ -15,12 +15,16 @@ import {
   getRecommendedServices
 } from './helpers/homeHelpers';
 
+export interface HomeScreenProps {
+  userRole?: 'customer' | 'provider' | null;
+}
+
 /**
  * HomeScreen Component
  * Primary landing view for customers featuring hero spotlight, 
  * categories, and curated service sections.
  */
-export const HomeScreen: React.FC = () => {
+export const HomeScreen: React.FC<HomeScreenProps> = ({ userRole }) => {
   // Navigation & Action Handlers
   const handleServicePress = (serviceId: string) => console.log('Service:', serviceId);
 

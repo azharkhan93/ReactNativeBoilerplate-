@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, View } from 'react-native';
 import { ProfileHeader, AccountOverviewSection } from '@/components/Profile';
 import { VendorProfileScreen } from '@/components/Vendor/VendorProfileScreen';
-import {  Container } from '@/components/theme';
+import { Container } from '@/components/theme';
 import { PROFILE_USER_DATA, ACCOUNT_MENU_ITEMS } from './constants';
 
 export interface ProfileScreenProps {
@@ -32,7 +32,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ userRole, onNaviga
 
   // Default Customer View
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1 bg-gray-950">
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <ProfileHeader
           userName={PROFILE_USER_DATA.name}

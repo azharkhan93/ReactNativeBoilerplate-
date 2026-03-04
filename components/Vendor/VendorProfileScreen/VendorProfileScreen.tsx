@@ -49,6 +49,8 @@ export const VendorProfileScreen: React.FC<VendorProfileScreenProps> = ({ onNavi
                 visible={showAvailability}
                 onClose={() => setShowAvailability(false)}
                 title="Availability"
+                height="100%"
+               
             >
                 <AvailabilityContent onClose={() => setShowAvailability(false)} />
             </BottomSheetModal>
@@ -57,6 +59,8 @@ export const VendorProfileScreen: React.FC<VendorProfileScreenProps> = ({ onNavi
                 visible={showBankAccount}
                 onClose={() => setShowBankAccount(false)}
                 title="Bank Account Details"
+                height="100%"
+               
             >
                 <BankAccountDetails />
             </BottomSheetModal>
@@ -65,6 +69,7 @@ export const VendorProfileScreen: React.FC<VendorProfileScreenProps> = ({ onNavi
                 visible={showBusinessProfile}
                 onClose={() => setShowBusinessProfile(false)}
                 title="Business Profile"
+                height="85%"
             >
                 <BusinessProfile />
             </BottomSheetModal>

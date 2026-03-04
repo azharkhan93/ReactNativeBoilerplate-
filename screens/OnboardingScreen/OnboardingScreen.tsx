@@ -3,7 +3,6 @@ import { View, TouchableOpacity, FlatList, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronRight } from 'lucide-react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
-
 import { Typography, Button } from '../../components/theme';
 import { OnboardingSlide } from '../../components/Onboarding/OnboardingSlide';
 import { Pagination } from '../../components/Onboarding/Pagination';
