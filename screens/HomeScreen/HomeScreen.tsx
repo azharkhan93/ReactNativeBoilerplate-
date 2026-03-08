@@ -19,11 +19,7 @@ export interface HomeScreenProps {
   userRole?: 'customer' | 'provider' | null;
 }
 
-/**
- * HomeScreen Component
- * Primary landing view for customers featuring hero spotlight, 
- * categories, and curated service sections.
- */
+
 export const HomeScreen: React.FC<HomeScreenProps> = ({ userRole }) => {
   // Navigation & Action Handlers
   const handleServicePress = (serviceId: string) => console.log('Service:', serviceId);
@@ -42,7 +38,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ userRole }) => {
       >
         <HeroSection />
 
-        {/* Section: Service Categories */}
+       
         <View className="px-5 pt-6">
           <Typography variant="h3" className="mb-4 text-white">
             Service Categories

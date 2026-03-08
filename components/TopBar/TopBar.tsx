@@ -33,7 +33,7 @@ export const TopBar: React.FC<TopBarProps> = ({
       style={{ paddingTop: insets.top }}
     >
       <View className="px-5 py-2">
-        {/* Top Row: Location and Profile */}
+        
         <View className="flex-row justify-between items-center mb-4">
           <View className="flex-row items-center flex-1 mr-4">
             <View className="bg-white/10 p-2 rounded-full mr-3 border border-white/10">
@@ -55,8 +55,7 @@ export const TopBar: React.FC<TopBarProps> = ({
             <User size={22} color="#4B5563" />
           </IconButton>
         </View>
-
-        {/* Bottom Row: Search and Filter */}
+        
         <View className="flex-row items-center gap-3 pb-2">
           <View className="flex-1">
             <SearchBar
