@@ -30,7 +30,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ userRole }) => {
   const recommendedServices = getRecommendedServices();
 
   return (
-    <View className="flex-1 bg-gray-950">
+    <View className="flex-1">
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
