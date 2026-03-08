@@ -73,10 +73,10 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) 
         <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, backgroundColor: 'white' }}>
             <View style={{ flex: 1 }}>
 
-                {/* Skip Button Overlay */}
+                
                 <View style={{
                     position: 'absolute',
-                    top: 60, // Clear the notch
+                    top: 60, 
                     right: 20,
                     zIndex: 10,
                 }}>

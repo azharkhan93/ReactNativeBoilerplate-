@@ -60,12 +60,12 @@ export const LocationStep: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         <View className="w-8" />
                     </Container>
 
-                    <Typography variant="body-sm" className="uppercase">Final Step</Typography>
+                    <Typography variant="body" className="text-black uppercase">Final Step</Typography>
                     <View className="h-1.5 w-full bg-slate-100 rounded-full mb-10 overflow-hidden">
                         <View className="h-full bg-blue-500" style={{ width: '100%' }} />
                     </View>
 
-                    <Typography variant="h2" className="text-black mb-3">Set Your Location</Typography>
+                    <Typography variant="h2" className="text-black text-black mb-3">Set Your Location</Typography>
                     <Typography variant="body" className="text-black mb-8 leading-6">
                         We'll use this to find the best car wash service providers near you and ensure precise delivery.
                     </Typography>
@@ -103,7 +103,7 @@ export const LocationStep: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
                         <View className="absolute bottom-4 left-4 right-4 bg-white/90 p-3 rounded-2xl border border-slate-100 flex-row items-center">
                             <MapPin size={18} color="#3b82f6" />
-                            <Typography variant="body" className="ml-2 flex-1" numberOfLines={1}>
+                            <Typography variant="body" className="!text-black ml-2 flex-1" numberOfLines={1}>
                                 {address || (loading ? 'Locating...' : 'Search or use current location')}
                             </Typography>
                         </View>

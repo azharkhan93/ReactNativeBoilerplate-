@@ -19,7 +19,7 @@ export const RoleSelectionStep: React.FC<RoleSelectionStepProps> = ({ onSelect, 
                 <Typography variant="h3" className="text-center mb-4  tracking-tight">
                     Choose Your Role
                 </Typography>
-                <Typography variant="body" className="text-center  px-6">
+                <Typography variant="body" className="text-center px-6">
                     Select how you want to use the platform to get started.
                 </Typography>
             </Animated.View>

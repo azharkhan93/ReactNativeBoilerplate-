@@ -39,14 +39,23 @@ export const Modal: React.FC<ModalProps> = ({
         <View className={`flex-1 bg-black/50 justify-end pt-[${insets.top}px] ${className || ''}`}>
           <TouchableWithoutFeedback>
             <View className={`bg-gray-950 rounded-t-3xl w-full ${contentClassName || ''}`} style={contentStyle}>
+              {/* Drag Indicator */}
+              <View className="w-full items-center pt-3 pb-1">
+                <View className="w-10 h-1.5 bg-gray-800 rounded-full" />
+              </View>
+
               {(title || onRequestClose) && (
-                <View className="px-6 py-4 border-b border-gray-800 flex-row items-center justify-between">
+                <View className="px-6 pt-2 pb-4 border-b border-gray-800/50 flex-row items-center justify-between">
                   <Typography variant="h3" className="text-white">{title || ' '}</Typography>
                   {onRequestClose ? (
-                    <TouchableOpacity onPress={onRequestClose} className="p-1 -mr-1" hitSlop={10}>
-                      <X size={20} color="#FFF" strokeWidth={2.5} />
+                    <TouchableOpacity
+                      onPress={onRequestClose}
+                      className="w-8 h-8 bg-gray-800 rounded-full items-center justify-center"
+                      hitSlop={10}
+                    >
+                      <X size={16} color="#9CA3AF" strokeWidth={2.5} />
                     </TouchableOpacity>
-                  ): null}
+                  ) : null}
                 </View>
               )}
               <ContentWrapper className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={scrollable ? { flexGrow: 1 } : undefined}>

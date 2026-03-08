@@ -15,7 +15,7 @@ export interface BottomSheetModalProps {
 
 
 export const BottomSheetModal: React.FC<BottomSheetModalProps> = ({
-    visible, title, onClose, children, height, scrollable,
+    visible, title, onClose, children, height, scrollable = false,
 }) => {
     return (
         <Modal
