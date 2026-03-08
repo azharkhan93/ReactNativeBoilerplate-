@@ -38,9 +38,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ userRole }) => {
       >
         <HeroSection />
 
-       
+
         <View className="px-5 pt-6">
-          <Typography variant="h3" className="mb-4 text-white">
+          <Typography variant="body-lg" className="mb-4 font-bold text-black">
             Service Categories
           </Typography>
           <ScrollView

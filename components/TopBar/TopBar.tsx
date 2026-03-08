@@ -29,7 +29,7 @@ export const TopBar: React.FC<TopBarProps> = ({
 
   return (
     <View
-      className="bg-gray-950 rounded-bl-[32px] rounded-br-[32px] shadow-xl shadow-black/10 z-50"
+      className="bg-gray-950 rounded-bl-[32px] rounded-br-[32px] shadow-xl shadow-black/10 z-50 border-b border-white/10"
       style={{ paddingTop: insets.top }}
     >
       <View className="px-5 py-2">

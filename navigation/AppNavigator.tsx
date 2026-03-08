@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { TopBar } from '@/components/TopBar';
 import { BottomTabNavigator } from '@/components/BottomTabNavigator';
-import { HomeScreen,  ProfileScreen,  BookingsScreen } from '@/screens';
+import { HomeScreen, ProfileScreen, BookingsScreen } from '@/screens';
 import { VendorDashboard } from '@/components/Vendor/VendorDashboard';
 import { VendorAnalyticsScreen } from '@/components/Vendor/VendorAnalyticsScreen';
 import { OnboardingScreen } from '@/screens/OnboardingScreen/OnboardingScreen';
@@ -40,7 +40,7 @@ export const AppNavigator: React.FC = () => {
             case 'dashboard': return <VendorDashboard onNavigate={setActiveTab} />;
             case 'bookings': return <BookingsScreen />;
             case 'analytics': return <VendorAnalyticsScreen />;
-            
+
             case 'profile': return <ProfileScreen userRole={userRole} onNavigate={setActiveTab} />;
             default: return <HomeScreen userRole={userRole} />;
         }
@@ -50,7 +50,7 @@ export const AppNavigator: React.FC = () => {
     const showTopBar = !HIDDEN_TOPBAR_ROUTES.includes(activeTab);
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 }} >
             {showTopBar && <TopBar placeholder="Search products, brands..." />}
 
             <View style={{ flex: 1 }}>
