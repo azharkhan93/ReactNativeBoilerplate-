@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-
 import { TopBar } from '@/components/TopBar';
 import { BottomTabNavigator } from '@/components/BottomTabNavigator';
-import { HomeScreen, ProfileScreen, BookingsScreen } from '@/screens';
+import { HomeScreen, ProfileScreen, BookingsScreen, NearbyProvidersScreen } from '@/screens';
 import { VendorDashboard } from '@/components/Vendor/VendorDashboard';
 import { VendorAnalyticsScreen } from '@/components/Vendor/VendorAnalyticsScreen';
 import { OnboardingScreen } from '@/screens/OnboardingScreen/OnboardingScreen';
-
 import { VENDOR_TABS, CUSTOMER_TABS, HIDDEN_TOPBAR_ROUTES } from './tabs';
 import { PhoneVerificationModal } from './PhoneVerificationModal';
 
@@ -42,7 +40,8 @@ export const AppNavigator: React.FC = () => {
             case 'analytics': return <VendorAnalyticsScreen />;
 
             case 'profile': return <ProfileScreen userRole={userRole} onNavigate={setActiveTab} />;
-            default: return <HomeScreen userRole={userRole} />;
+            case 'nearbyProviders': return <NearbyProvidersScreen onNavigate={setActiveTab} />;
+            default: return <HomeScreen userRole={userRole} onNavigate={setActiveTab} />;
         }
     };
 

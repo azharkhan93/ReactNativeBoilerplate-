@@ -17,12 +17,14 @@ import {
 
 export interface HomeScreenProps {
   userRole?: 'customer' | 'provider' | null;
+  onNavigate?: (route: string) => void;
 }
 
 
-export const HomeScreen: React.FC<HomeScreenProps> = ({ userRole }) => {
+export const HomeScreen: React.FC<HomeScreenProps> = ({ userRole, onNavigate }) => {
   // Navigation & Action Handlers
   const handleServicePress = (serviceId: string) => console.log('Service:', serviceId);
+  const handleViewAllProviders = () => onNavigate?.('nearbyProviders');
 
   // Get Mapped Data from Helpers
   const featuredServices = getFeaturedServices();
@@ -74,7 +76,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ userRole }) => {
             title="Nearby Car Washers"
             products={nearbyServices}
             onProductPress={handleServicePress}
-            onViewAllPress={() => console.log('View all providers')}
+            onViewAllPress={handleViewAllProviders}
           />
         </View>
 

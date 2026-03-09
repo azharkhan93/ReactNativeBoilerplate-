@@ -7,4 +7,8 @@ export * from './ProductCard';
 export * from './SectionHeader';
 export * from './FormInput';
 export * from './Modal';
+export * from './SearchBar';
+export * from './ProviderCard';
+export * from './ProviderList';
+export * from './ProviderMap';
 

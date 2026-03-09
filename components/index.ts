@@ -1,6 +1,7 @@
 export * from './theme';
 export * from './HeroSection';
-export * from "./TopBar"
+// export * from "./TopBar"
+
 export * from "./BottomTabNavigator"
 export * from './FlashSale';
 export * from './BestSellers';
@@ -9,7 +10,7 @@ export * from './Profile';
 export * from './Onboarding';
 export * from './Vendor';
 
-// Re-exporting Vendor sub-components directly for easier access
+
 export * from './Vendor/VendorDashboard';
 export * from './Vendor/VendorProfileScreen';
 export * from './Vendor/VendorAnalyticsScreen';
