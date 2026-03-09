@@ -15,7 +15,7 @@ export const CUSTOMER_TABS: TabItem[] = [
     { label: 'Profile', icon: User, route: 'profile' },
 ];
 
-/** Routes where the top TopBar should be hidden */
+
 export const HIDDEN_TOPBAR_ROUTES = ['profile', 'dashboard', 'bookings', 'analytics', 'nearbyProviders'];
 
 
