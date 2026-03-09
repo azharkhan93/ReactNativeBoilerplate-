@@ -11,4 +11,6 @@ export * from './SearchBar';
 export * from './ProviderCard';
 export * from './ProviderList';
 export * from './ProviderMap';
+export * from './TrackingMap';
+export * from './DriverCard';
 
