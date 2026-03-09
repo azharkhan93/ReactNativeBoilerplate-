@@ -8,13 +8,17 @@ export interface ProviderListProps {
     providers: Provider[];
     onProviderPress?: (id: string) => void;
     contentContainerStyle?: any;
+    horizontal?: boolean;
 }
 
 export const ProviderList: React.FC<ProviderListProps> = ({
     providers,
     onProviderPress,
     contentContainerStyle,
+    horizontal = false,
 }) => {
+
+
     if (providers.length === 0) {
         return (
             <View className="flex-1 items-center justify-center p-10">
@@ -30,11 +34,19 @@ export const ProviderList: React.FC<ProviderListProps> = ({
             data={providers}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-                <ProviderCard provider={item} onPress={onProviderPress} />
+                <ProviderCard
+                    provider={item}
+                    onPress={onProviderPress}
+                />
             )}
+
+
+            horizontal={horizontal}
+            showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={contentContainerStyle}
-            className="flex-1"
+            className={horizontal ? '' : 'flex-1'}
         />
     );
 };
+

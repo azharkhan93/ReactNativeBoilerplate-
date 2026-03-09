@@ -8,7 +8,9 @@ import { Star } from 'lucide-react-native';
 export interface ProviderMapProps {
     providers: Provider[];
     onProviderPress?: (id: string) => void;
+    fullScreen?: boolean;
     initialRegion?: {
+
         latitude: number;
         longitude: number;
         latitudeDelta: number;
@@ -25,9 +27,11 @@ export const ProviderMap: React.FC<ProviderMapProps> = ({
         latitudeDelta: 0.05,
         longitudeDelta: 0.05,
     },
+    fullScreen = false,
 }) => {
     return (
-        <View className="flex-1 overflow-hidden rounded-[32px] border border-gray-100">
+        <View className={`flex-1 overflow-hidden ${fullScreen ? '' : 'rounded-[32px] border border-gray-100'}`}>
+
             <MapView
                 provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
                 style={StyleSheet.absoluteFillObject}

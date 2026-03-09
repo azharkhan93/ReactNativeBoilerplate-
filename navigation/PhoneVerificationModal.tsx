@@ -4,7 +4,7 @@ import { Typography, Button, FormInput } from '@/components/theme';
 import { BottomSheetModal } from '@/components/shared/BottomSheetModal';
 import React from 'react';
 
-interface PhoneVerificationModalProps {
+type PhoneVerificationModalProps = {
     visible: boolean;
     value: string;
     onChange: (v: string) => void;

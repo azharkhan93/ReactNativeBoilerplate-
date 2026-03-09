@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
-import { Star, MapPin, ChevronRight } from 'lucide-react-native';
+import { Star, MapPin, Clock, ChevronRight } from 'lucide-react-native';
 import { Typography } from '../Typography';
 import { Provider } from '@/data/mockProviders';
 
@@ -9,56 +9,53 @@ export interface ProviderCardProps {
     onPress?: (id: string) => void;
 }
 
-export const ProviderCard: React.FC<ProviderCardProps> = ({ provider, onPress }) => {
-    return (
-        <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={() => onPress?.(provider.id)}
-            className="bg-white rounded-[24px] p-4 mb-4 flex-row items-center shadow-sm border border-gray-50"
-        >
-            <Image
-                source={{ uri: provider.imageUrl }}
-                className="w-20 h-20 rounded-2xl bg-gray-100"
-                resizeMode="cover"
-            />
+export const ProviderCard: React.FC<ProviderCardProps> = ({ provider, onPress }) => (
+    <TouchableOpacity
+        activeOpacity={0.8}
+        onPress={() => onPress?.(provider.id)}
+        className="bg-white rounded-[20px] p-2.5 mb-3 flex-row items-center shadow-sm border border-gray-100"
+    >
+        <Image
+            source={{ uri: provider.imageUrl }}
+            className="w-16 h-16 rounded-xl bg-gray-100"
+            resizeMode="cover"
+        />
 
-            <View className="flex-1 ml-4 justify-between py-1">
-                <View>
-                    <Typography variant="body"  numberOfLines={1}>
-                        {provider.name}
+        <View className="flex-1 ml-3 h-16 justify-center">
+            <Typography variant="body" className="font-semibold leading-tight" numberOfLines={1}>
+                {provider.name}
+            </Typography>
+
+            <View className="flex-row items-center mt-1">
+                <Star size={12} color="#FBBF24" fill="#FBBF24" />
+                <Typography variant="body-sm" className="ml-1 font-medium text-[11px]">
+                    {provider.rating}
+                </Typography>
+                <View className="w-0.5 h-0.5 rounded-full bg-gray-300 mx-1.5" />
+                <View className="flex-row items-center">
+                    <MapPin size={10} color="#9CA3AF" />
+                    <Typography variant="body-sm" className="ml-0.5 text-gray-500 text-[11px]">
+                        {provider.distanceKm} km
                     </Typography>
+                </View>
+            </View>
 
-                    <View className="flex-row items-center mt-1">
-                        <Star size={14} color="#FBBF24" fill="#FBBF24" />
-                        <Typography variant="body-sm" className="ml-1">
-                            {provider.rating}
+            {provider.services?.[0] && (
+                <View className="flex-row items-center mt-1">
+                    <View className="bg-primary-50 px-2 py-0.5 rounded-md">
+                        <Typography variant="body-sm" className="text-primary-700 text-[10px] font-medium">
+                            {provider.services[0]}
                         </Typography>
-                        <View className="w-1 h-1 rounded-full bg-gray-300 mx-2" />
-                        {provider.distanceKm !== undefined && (
-                            <View className="flex-row items-center">
-                                <MapPin size={12} color="#9CA3AF" />
-                                <Typography variant="body-sm" className="ml-0.5">
-                                    {provider.distanceKm} km
-                                </Typography>
-                            </View>
-                        )}
                     </View>
                 </View>
+            )}
+        </View>
 
-                <View className="flex-row items-center mt-2">
-                    {provider.services?.slice(0, 2).map((service, index) => (
-                        <View key={index} className="bg-primary-50 px-2.5 py-1 rounded-lg mr-2">
-                            <Typography variant="body-sm">
-                                {service}
-                            </Typography>
-                        </View>
-                    ))}
-                </View>
-            </View>
+        <View className="bg-gray-50 p-2 rounded-full mr-1">
+            <ChevronRight size={16} color="#9CA3AF" />
+        </View>
+    </TouchableOpacity>
+);
 
-            <View className="bg-gray-50 p-2 rounded-full">
-                <ChevronRight size={20} color="#9CA3AF" />
-            </View>
-        </TouchableOpacity>
-    );
-};
+
+
