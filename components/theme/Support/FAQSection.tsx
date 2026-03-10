@@ -1,11 +1,15 @@
 import React, { useState, useMemo } from 'react';
-import { View, TouchableOpacity, LayoutAnimation, ScrollView, TextInput } from 'react-native';
-import { ChevronDown, ChevronRight, HelpCircle, Search, X } from 'lucide-react-native';
+import { View, LayoutAnimation, ScrollView, TouchableOpacity } from 'react-native';
+import { ChevronDown, ChevronRight, HelpCircle, CircleHelp } from 'lucide-react-native';
 import { Typography } from '../Typography';
 import { FAQ, MOCK_FAQS, FAQ_CATEGORIES } from '@/data/mockSupport';
 
-export const FAQSection: React.FC = () => {
-    const [search, setSearch] = useState('');
+
+export interface FAQSectionProps {
+    search?: string;
+}
+
+export const FAQSection: React.FC<FAQSectionProps> = ({ search = '' }) => {
     const [activeCategory, setActiveCategory] = useState<typeof FAQ_CATEGORIES[number] | 'All'>('All');
     const [expandedIds, setExpandedIds] = useState<string[]>([]);
 
@@ -24,38 +28,18 @@ export const FAQSection: React.FC = () => {
     };
 
     return (
-        <View className="px-5 mt-6">
-            <View className="flex-row items-center mb-4">
-                <HelpCircle size={20} color="#111827" />
-                <Typography variant="body" className="ml-2 font-black">Help Center</Typography>
-            </View>
-
-            {/* Search Bar */}
-            <View className="bg-gray-100 rounded-2xl px-4 py-2 flex-row items-center mb-5">
-                <Search size={18} color="#9CA3AF" />
-                <TextInput
-                    className="flex-1 ml-2 text-gray-800 py-1"
-                    placeholder="Search for help..."
-                    value={search}
-                    onChangeText={setSearch}
-                />
-                {search.length > 0 && (
-                    <TouchableOpacity onPress={() => setSearch('')}>
-                        <X size={16} color="#9CA3AF" />
-                    </TouchableOpacity>
-                )}
-            </View>
-
+        <View className="px-5 mt-2">
             {/* Category Tabs */}
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-6 -mx-5 px-5">
+
                 <View className="flex-row space-x-2 pr-10">
                     {['All', ...FAQ_CATEGORIES].map(cat => (
                         <TouchableOpacity
                             key={cat}
                             onPress={() => setActiveCategory(cat as any)}
-                            className={`px-6 py-2 rounded-full border ${activeCategory === cat ? 'bg-primary-500 border-primary-500' : 'bg-white border-gray-200'}`}
+                            className={`px-6 py-2.5 rounded-full border ${activeCategory === cat ? 'bg-primary-500 border-primary-500 shadow-sm shadow-primary-500/20' : 'bg-gray-50 border-gray-100'}`}
                         >
-                            <Typography className={`text-[12px] font-bold ${activeCategory === cat ? 'text-white' : 'text-gray-500'}`}>
+                            <Typography className={`text-[13px] font-bold ${activeCategory === cat ? 'text-white' : 'text-gray-500'}`}>
                                 {cat}
                             </Typography>
                         </TouchableOpacity>
@@ -76,12 +60,13 @@ export const FAQSection: React.FC = () => {
                 );
             }) : (
                 <View className="items-center py-10">
-                    <Typography className="text-gray-400 italic">No results found for "{search}"</Typography>
+                    <Typography className="text-gray-400 italic">No results found</Typography>
                 </View>
             )}
         </View>
     );
 };
+
 
 
 
