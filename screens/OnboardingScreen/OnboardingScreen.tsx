@@ -6,9 +6,9 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { Typography, Button } from '../../components/theme';
 import { OnboardingSlide } from '../../components/Onboarding/OnboardingSlide';
 import { Pagination } from '../../components/Onboarding/Pagination';
-import { RoleSelectionStep } from '../../components/Onboarding/RoleSelectionStep';
 import { LocationStep } from '../../components/Onboarding/LocationStep';
 import { ONBOARDING_SLIDES } from '../../components/Onboarding/slides';
+import { RoleSelectionStep } from '@/components/Onboarding/RoleSelectionStep';
 
 const { width, height } = Dimensions.get('window');
 
@@ -73,10 +73,10 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) 
         <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, backgroundColor: 'white' }}>
             <View style={{ flex: 1 }}>
 
-                
+
                 <View style={{
                     position: 'absolute',
-                    top: 60, 
+                    top: 60,
                     right: 20,
                     zIndex: 10,
                 }}>
