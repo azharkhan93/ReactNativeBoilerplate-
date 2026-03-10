@@ -33,6 +33,7 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
             visible={visible}
             title="Add Car Wash Service"
             onClose={onClose}
+            height={"80%"}
         >
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="px-5 py-4 pb-12">

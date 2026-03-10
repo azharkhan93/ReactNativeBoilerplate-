@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import { User, Briefcase } from 'lucide-react-native';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Typography } from '../../theme/Typography';
@@ -48,16 +48,16 @@ export const RoleSelectionStep: React.FC<RoleSelectionStepProps> = ({ onSelect, 
 
             <Container variant="column" className="w-full">
                 {ROLES.map((role, index) => (
-                    <RoleOption
-                        key={role.id}
-                        className={index === 0 ? 'mb-6' : ''}
-                        title={role.title}
-                        description={role.description}
-                        icon={role.icon}
-                        isSelected={selectedRole === role.id}
-                        onPress={() => onSelect(role.id)}
-                        delay={role.delay}
-                    />
+                    <View key={role.id} className={index === 0 ? 'mb-8' : ''}>
+                        <RoleOption
+                            title={role.title}
+                            description={role.description}
+                            icon={role.icon}
+                            isSelected={selectedRole === role.id}
+                            onPress={() => onSelect(role.id)}
+                            delay={role.delay}
+                        />
+                    </View>
                 ))}
             </Container>
         </Container>

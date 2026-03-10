@@ -11,7 +11,6 @@ export interface RoleOptionProps {
     isSelected: boolean;
     onPress: () => void;
     delay: number;
-    className?: string;
 }
 
 export const RoleOption: React.FC<RoleOptionProps> = ({
@@ -20,10 +19,9 @@ export const RoleOption: React.FC<RoleOptionProps> = ({
     icon: Icon,
     isSelected,
     onPress,
-    delay,
-    className
+    delay
 }) => (
-    <Animated.View entering={FadeInDown.delay(delay)} className={className}>
+    <Animated.View entering={FadeInDown.delay(delay)}>
         <TouchableOpacity
             onPress={onPress}
             activeOpacity={0.7}
