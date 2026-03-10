@@ -48,7 +48,7 @@ export const RoleSelectionStep: React.FC<RoleSelectionStepProps> = ({ onSelect, 
 
             <Container variant="column" className="w-full">
                 {ROLES.map((role, index) => (
-                    <View key={role.id} className={index === 0 ? 'mb-8' : ''}>
+                    <View key={role.id} className={index === 0 ? 'mb-4' : ''}>
                         <RoleOption
                             title={role.title}
                             description={role.description}

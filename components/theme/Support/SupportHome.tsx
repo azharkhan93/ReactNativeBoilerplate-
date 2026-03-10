@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, ScrollView, TouchableOpacity, TextInput } from 'react-native';
-import { CircleHelp, Search, X, MessageCircle } from 'lucide-react-native';
+import { CircleHelp, Search, X, MessageCircle, AlertCircle } from 'lucide-react-native';
 import { Typography } from '../Typography';
 import { FAQSection } from './FAQSection';
 
@@ -8,9 +8,17 @@ export interface SupportHomeProps {
     search: string;
     onSearchChange: (text: string) => void;
     onStartChat: () => void;
+    onNavigate: (screen: string) => void;
+    onReportIssue?: () => void;
 }
 
-export const SupportHome: React.FC<SupportHomeProps> = ({ search, onSearchChange, onStartChat }) => (
+export const SupportHome: React.FC<SupportHomeProps> = ({
+    search,
+    onSearchChange,
+    onStartChat,
+    onNavigate,
+    onReportIssue
+}) => (
     <ScrollView className="flex-1 bg-white" showsVerticalScrollIndicator={false}>
         {/* Compressed Custom Header */}
         <View className="px-5 pt-2">
@@ -47,6 +55,21 @@ export const SupportHome: React.FC<SupportHomeProps> = ({ search, onSearchChange
         </View>
 
         <FAQSection search={search} />
+
+        <View className="px-5 mt-4 mb-4">
+            <TouchableOpacity
+                onPress={() => onReportIssue ? onReportIssue() : onNavigate('serviceDispute')}
+                className="bg-error-50 p-5 rounded-3xl border border-error-100 flex-row items-center"
+            >
+                <View className="bg-error-500 p-2.5 rounded-xl mr-4">
+                    <AlertCircle size={22} color="white" />
+                </View>
+                <View className="flex-1">
+                    <Typography variant="body-sm" className="font-bold text-error-900">Report a problem</Typography>
+                    <Typography variant="body-sm" className="text-error-700 text-[11px] mt-0.5">Issue with a recent car wash? Let us know.</Typography>
+                </View>
+            </TouchableOpacity>
+        </View>
 
         <View className="px-5 mt-4 mb-10">
             <TouchableOpacity

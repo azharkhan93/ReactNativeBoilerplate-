@@ -5,5 +5,7 @@ export * from './NearbyProvidersScreen';
 export * from './LiveTrackingScreen';
 export * from './CustomerBookingsScreen';
 export * from './SupportScreen';
+export * from './RatingReviewScreen';
+export * from './ServiceDisputeScreen';
 
 

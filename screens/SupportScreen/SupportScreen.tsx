@@ -4,7 +4,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SupportHome, SupportChatView } from '@/components/theme';
 import { useSupportChat } from '@/hooks/useSupportChat';
 
-export const SupportScreen: React.FC = () => {
+export interface SupportScreenProps {
+    onNavigate: (screen: string) => void;
+}
+
+export const SupportScreen: React.FC<SupportScreenProps> = ({ onNavigate }) => {
     const insets = useSafeAreaInsets();
     const { messages, isTyping, sendMessage } = useSupportChat();
 
@@ -23,6 +27,8 @@ export const SupportScreen: React.FC = () => {
                     search={search}
                     onSearchChange={setSearch}
                     onStartChat={() => setShowChat(true)}
+                    onNavigate={onNavigate}
+                    onReportIssue={() => onNavigate('serviceDispute')}
                 />
             ) : (
                 <SupportChatView
