@@ -13,4 +13,8 @@ export * from './ProviderList';
 export * from './ProviderMap';
 export * from './TrackingMap';
 export * from './DriverCard';
+export * from './BookingCard';
+export * from './Support';
+
+
 

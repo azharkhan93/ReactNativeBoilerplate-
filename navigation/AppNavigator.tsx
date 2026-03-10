@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { TopBar } from '@/components/TopBar';
 import { BottomTabNavigator } from '@/components/BottomTabNavigator';
-import { HomeScreen, ProfileScreen, BookingsScreen, NearbyProvidersScreen, LiveTrackingScreen } from '@/screens';
+import { HomeScreen, ProfileScreen, BookingsScreen, NearbyProvidersScreen, LiveTrackingScreen, CustomerBookingsScreen, SupportScreen } from '@/screens';
+
 import { VendorDashboard } from '@/components/Vendor/VendorDashboard';
 import { VendorAnalyticsScreen } from '@/components/Vendor/VendorAnalyticsScreen';
 import { OnboardingScreen } from '@/screens/OnboardingScreen/OnboardingScreen';
@@ -36,13 +37,16 @@ export const AppNavigator: React.FC = () => {
     const renderScreen = () => {
         switch (activeTab) {
             case 'dashboard': return <VendorDashboard onNavigate={setActiveTab} />;
-            case 'bookings': return <BookingsScreen />;
+            case 'bookings': return userRole === 'provider' ? <BookingsScreen /> : <CustomerBookingsScreen onNavigate={setActiveTab} />;
+
             case 'analytics': return <VendorAnalyticsScreen />;
 
             case 'profile': return <ProfileScreen userRole={userRole} onNavigate={setActiveTab} />;
             case 'nearbyProviders': return <NearbyProvidersScreen onNavigate={setActiveTab} />;
             case 'liveTracking': return <LiveTrackingScreen onNavigate={setActiveTab} />;
+            case 'support': return <SupportScreen />;
             default: return <HomeScreen userRole={userRole} onNavigate={setActiveTab} />;
+
         }
     };
 
