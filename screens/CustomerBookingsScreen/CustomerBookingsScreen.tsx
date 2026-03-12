@@ -58,7 +58,14 @@ export const CustomerBookingsScreen: React.FC<CustomerBookingsScreenProps> = ({ 
 
             <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
                 {bookings.length > 0 ? (
-                    bookings.map(b => <BookingCard key={b.id} booking={b} onTrackPress={() => onNavigate?.('liveTracking')} />)
+                    bookings.map(b => (
+                        <BookingCard 
+                            key={b.id} 
+                            booking={b} 
+                            onTrackPress={() => onNavigate?.('liveTracking')} 
+                            onReviewPress={() => onNavigate?.('ratingReview')}
+                        />
+                    ))
                 ) : (
                     <View className="flex-1 items-center justify-center py-20">
                         <Typography className="text-gray-400 italic">No {activeTab} bookings found</Typography>

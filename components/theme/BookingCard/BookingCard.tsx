@@ -11,6 +11,7 @@ export interface BookingCardProps {
     booking: Booking;
     onPress?: (booking: Booking) => void;
     onTrackPress?: (booking: Booking) => void;
+    onReviewPress?: (booking: Booking) => void;
 }
 
 const statusColors = {
@@ -21,7 +22,7 @@ const statusColors = {
     cancelled: 'bg-red-100 text-red-700',
 };
 
-export const BookingCard: React.FC<BookingCardProps> = ({ booking, onPress, onTrackPress }) => {
+export const BookingCard: React.FC<BookingCardProps> = ({ booking, onPress, onTrackPress, onReviewPress }) => {
     return (
         <TouchableOpacity
             activeOpacity={0.9}
@@ -77,6 +78,19 @@ export const BookingCard: React.FC<BookingCardProps> = ({ booking, onPress, onTr
                         className="w-full"
                     >
                         Track Provider
+                    </Button>
+                </View>
+            )}
+
+            {booking.status === 'completed' && (
+                <View className="mt-4">
+                    <Button
+                        variant="outlined"
+                        size="sm"
+                        onPress={() => onReviewPress?.(booking)}
+                        className="w-full border-primary-500 bg-primary-50"
+                    >
+                        Rate Service
                     </Button>
                 </View>
             )}

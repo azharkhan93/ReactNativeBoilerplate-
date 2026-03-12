@@ -14,7 +14,7 @@ export const RatingReviewScreen: React.FC<RatingReviewScreenProps> = ({ onNaviga
     const handleSubmit = (data: any) => {
         console.log('Submitted Rating:', data);
         // Integrate with API here
-        onNavigate('support');
+        onNavigate('reviewSuccess');
     };
 
     return (

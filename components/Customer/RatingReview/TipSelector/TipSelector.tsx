@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, ScrollView } from 'react-native';
-import { Typography } from '../../theme/Typography';
-import { Container } from '../../theme/Container';
+import { Typography } from '../../../theme/Typography';
+import { Container } from '../../../theme/Container';
 
 interface TipSelectorProps {
     selectedAmount: number | null;

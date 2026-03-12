@@ -7,5 +7,6 @@ export * from './CustomerBookingsScreen';
 export * from './SupportScreen';
 export * from './RatingReviewScreen';
 export * from './ServiceDisputeScreen';
+export * from "./RatingReviewScreen"
 
 

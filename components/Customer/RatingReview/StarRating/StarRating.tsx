@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { Star } from 'lucide-react-native';
-import { Container } from '../../theme/Container';
+import { Container } from '../../../theme/Container';
 
 interface StarRatingProps {
     rating: number;

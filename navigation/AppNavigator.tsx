@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { View } from 'react-native';
 import { TopBar } from '@/components/TopBar';
 import { BottomTabNavigator } from '@/components/BottomTabNavigator';
-import { HomeScreen, ProfileScreen, BookingsScreen, NearbyProvidersScreen, LiveTrackingScreen, CustomerBookingsScreen, SupportScreen, RatingReviewScreen, ServiceDisputeScreen } from '@/screens';
+import { HomeScreen, ProfileScreen, BookingsScreen, NearbyProvidersScreen, LiveTrackingScreen, CustomerBookingsScreen, SupportScreen, RatingReviewScreen, ServiceDisputeScreen, } from '@/screens';
 
 import { VendorDashboard } from '@/components/Vendor/VendorDashboard';
 import { VendorAnalyticsScreen } from '@/components/Vendor/VendorAnalyticsScreen';
 import { OnboardingScreen } from '@/screens/OnboardingScreen/OnboardingScreen';
 import { VENDOR_TABS, CUSTOMER_TABS, HIDDEN_TOPBAR_ROUTES } from './tabs';
 import { PhoneVerificationModal } from './PhoneVerificationModal';
+import { ReviewSuccessScreen } from '@/screens/ReviewSuccessScreen';
 
 type UserRole = 'customer' | 'provider';
 
@@ -47,6 +48,7 @@ export const AppNavigator: React.FC = () => {
             case 'support': return <SupportScreen onNavigate={setActiveTab} />;
             case 'serviceDispute': return <ServiceDisputeScreen onNavigate={setActiveTab} />;
             case 'ratingReview': return <RatingReviewScreen onNavigate={setActiveTab} />;
+            case 'reviewSuccess': return <ReviewSuccessScreen onNavigate={setActiveTab} />;
             default: return <HomeScreen userRole={userRole} onNavigate={setActiveTab} />;
 
         }
