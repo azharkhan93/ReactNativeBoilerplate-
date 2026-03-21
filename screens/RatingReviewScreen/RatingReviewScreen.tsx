@@ -1,6 +1,7 @@
+import { RatingReview } from '@/components/Customer/RatingReview/RatingReview';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { RatingReview } from '../../components/Customer/RatingReview';
+
 
 export interface RatingReviewScreenProps {
     onNavigate: (screen: string) => void;
