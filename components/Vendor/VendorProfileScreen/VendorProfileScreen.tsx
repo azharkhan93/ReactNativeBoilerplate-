@@ -5,6 +5,7 @@ import { BottomSheetModal } from '@/components/shared/BottomSheetModal';
 import { AvailabilityContent } from '../Availability';
 import { BankAccountDetails } from '../BankAccountDetails';
 import { BusinessProfile } from '../BusinessProfile';
+import { ManageServices } from '../ManageServices';
 import {
     ProfileHeader,
     ProfileInfo,
@@ -22,11 +23,13 @@ export const VendorProfileScreen: React.FC<VendorProfileScreenProps> = ({ onNavi
     const [showAvailability, setShowAvailability] = React.useState(false);
     const [showBankAccount, setShowBankAccount] = React.useState(false);
     const [showBusinessProfile, setShowBusinessProfile] = React.useState(false);
+    const [showManageServices, setShowManageServices] = React.useState(false);
 
     const handleLinkPress = (id: string) => {
         if (id === 'availability') { setShowAvailability(true); return; }
         if (id === 'bank') { setShowBankAccount(true); return; }
         if (id === 'business') { setShowBusinessProfile(true); return; }
+        if (id === 'services') { setShowManageServices(true); return; }
         if (onNavigate) onNavigate(id);
         console.log('Navigate to:', id);
     };
@@ -72,6 +75,15 @@ export const VendorProfileScreen: React.FC<VendorProfileScreenProps> = ({ onNavi
                 height="85%"
             >
                 <BusinessProfile />
+            </BottomSheetModal>
+
+            <BottomSheetModal
+                visible={showManageServices}
+                onClose={() => setShowManageServices(false)}
+                height="100%"
+                title="Manage Services"
+            >
+                <ManageServices />
             </BottomSheetModal>
         </View>
     );

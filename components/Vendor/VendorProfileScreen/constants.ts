@@ -6,6 +6,25 @@ export const VENDOR_STATS = [
     { label: 'ON-TIME', value: '98%' },
 ];
 
+export const MOCK_SERVICES = [
+    {
+        id: '1',
+        name: 'Premium SUV Wash',
+        price: '45.00',
+        duration: '45 mins',
+        location: 'Downtown Area',
+        description: 'Complete interior and exterior wash tailored for SUVs. Includes wax, tire shine, and deep vacuuming.',
+    },
+    {
+        id: '2',
+        name: 'Basic Sedan Wash',
+        price: '25.00',
+        duration: '30 mins',
+        location: 'Northside',
+        description: 'Standard exterior wash and quick interior vacuum for sedans. Good for regular maintenance.',
+    },
+];
+
 export const MANAGEMENT_LINKS = [
     {
         id: 'business',
