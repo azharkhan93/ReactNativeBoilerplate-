@@ -15,7 +15,7 @@ export const ManageServices: React.FC = () => {
                     <View className="flex-row justify-between items-center mb-6">
                         <View>
                             <Typography variant="h3" className="text-xl mb-1">Your Services</Typography>
-                            <Typography variant="body" className="text-gray-400">Manage your service offerings</Typography>
+                            <Typography variant="body" >Manage your service offerings</Typography>
                         </View>
                         <TouchableOpacity
                             onPress={() => setShowAddService(true)}
