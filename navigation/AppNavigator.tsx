@@ -10,8 +10,7 @@ import { OnboardingScreen } from '@/screens/OnboardingScreen/OnboardingScreen';
 import { VENDOR_TABS, CUSTOMER_TABS, HIDDEN_TOPBAR_ROUTES } from './tabs';
 import { PhoneVerificationModal } from './PhoneVerificationModal';
 import { ReviewSuccessScreen } from '@/screens/ReviewSuccessScreen';
-
-type UserRole = 'customer' | 'provider';
+import { UserRole } from '../__generated__/graphql';
 
 export const AppNavigator: React.FC = () => {
     const [activeTab, setActiveTab] = useState('home');
@@ -23,7 +22,7 @@ export const AppNavigator: React.FC = () => {
     const handleOnboardingFinish = (role: UserRole) => {
         setUserRole(role);
         setShowOnboarding(false);
-        if (role === 'customer') {
+        if (role === UserRole.Customer) {
             setActiveTab('home');
             setTimeout(() => setShowPhoneModal(true), 500);
         } else {
@@ -38,7 +37,7 @@ export const AppNavigator: React.FC = () => {
     const renderScreen = () => {
         switch (activeTab) {
             case 'dashboard': return <VendorDashboard onNavigate={setActiveTab} />;
-            case 'bookings': return userRole === 'provider' ? <BookingsScreen /> : <CustomerBookingsScreen onNavigate={setActiveTab} />;
+            case 'bookings': return userRole === UserRole.Provider ? <BookingsScreen /> : <CustomerBookingsScreen onNavigate={setActiveTab} />;
 
             case 'analytics': return <VendorAnalyticsScreen />;
 
@@ -54,7 +53,7 @@ export const AppNavigator: React.FC = () => {
         }
     };
 
-    const tabs = userRole === 'provider' ? VENDOR_TABS : CUSTOMER_TABS;
+    const tabs = userRole === UserRole.Provider ? VENDOR_TABS : CUSTOMER_TABS;
     const showTopBar = !HIDDEN_TOPBAR_ROUTES.includes(activeTab);
 
     return (

@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { ChevronRight } from 'lucide-react-native';
+import { LucideIcon, ChevronRight } from 'lucide-react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { Typography } from '../../theme/Typography';
 
 export interface RoleOptionProps {
     title: string;
     description: string;
-    icon: any;
+    icon: LucideIcon;
     isSelected: boolean;
     onPress: () => void;
     delay: number;

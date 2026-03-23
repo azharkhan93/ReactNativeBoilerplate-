@@ -9,27 +9,21 @@ import {
   Typography
 } from '@/components';
 import { SERVICE_CATEGORIES } from '@/utils/constants';
-import {
-  getFeaturedServices,
-  getNearbyServices,
-  getRecommendedServices
-} from './helpers/homeHelpers';
+import { UserRole } from '../../__generated__/graphql';
+import { useHome } from './hooks/useHome';
 
 export interface HomeScreenProps {
-  userRole?: 'customer' | 'provider' | null;
+  userRole?: UserRole | null;
   onNavigate?: (route: string) => void;
 }
 
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({ userRole, onNavigate }) => {
+  const { featuredServices, nearbyServices, recommendedServices } = useHome();
+  
   // Navigation & Action Handlers
   const handleServicePress = (serviceId: string) => console.log('Service:', serviceId);
   const handleViewAllProviders = () => onNavigate?.('nearbyProviders');
-
-  // Get Mapped Data from Helpers
-  const featuredServices = getFeaturedServices();
-  const nearbyServices = getNearbyServices();
-  const recommendedServices = getRecommendedServices();
 
   return (
     <View className="flex-1">
@@ -59,7 +53,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ userRole, onNavigate }) 
           </ScrollView>
         </View>
 
-        {/* Section: Special Offers */}
+       
         <View className="mt-8">
           <FlashSale
             title="Special Offers"
@@ -69,7 +63,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ userRole, onNavigate }) 
           />
         </View>
 
-        {/* Section: Nearby Car Washers */}
+       
         <View className="mt-4">
           <BestSellers
             title="Nearby Car Washers"

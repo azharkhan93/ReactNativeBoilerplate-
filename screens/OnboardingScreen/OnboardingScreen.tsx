@@ -2,23 +2,24 @@ import React, { useState, useRef } from 'react';
 import { View, TouchableOpacity, FlatList, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ChevronRight } from 'lucide-react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import Animated, { FadeIn } from 'react-native-reanimated';
 import { Typography, Button } from '../../components/theme';
 import { OnboardingSlide } from '../../components/Onboarding/OnboardingSlide';
 import { Pagination } from '../../components/Onboarding/Pagination';
 import { LocationStep } from '../../components/Onboarding/LocationStep';
 import { ONBOARDING_SLIDES } from '../../components/Onboarding/slides';
 import { RoleSelectionStep } from '@/components/Onboarding/RoleSelectionStep';
+import { UserRole } from '../../__generated__/graphql';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 interface OnboardingScreenProps {
-    onFinish: (role: 'customer' | 'provider') => void;
+    onFinish: (role: UserRole) => void;
 }
 
 export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) => {
     const [currentStep, setCurrentStep] = useState(0);
-    const [selectedRole, setSelectedRole] = useState<'customer' | 'provider' | null>(null);
+    const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
     const flatListRef = useRef<FlatList>(null);
     const totalSlides = ONBOARDING_SLIDES.length;
     const totalSteps = totalSlides + 2;
@@ -72,8 +73,6 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) 
     return (
         <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, backgroundColor: 'white' }}>
             <View style={{ flex: 1 }}>
-
-
                 <View style={{
                     position: 'absolute',
                     top: 60,
@@ -105,7 +104,6 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) 
 
                 {/* Footer Navigation */}
                 <View style={{ paddingHorizontal: 32, paddingBottom: 40 }}>
-                    {/* Centered Pagination Row with Links */}
                     <View style={{
                         flexDirection: 'row',
                         alignItems: 'center',

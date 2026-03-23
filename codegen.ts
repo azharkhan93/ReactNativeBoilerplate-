@@ -1,26 +1,19 @@
 import { CodegenConfig } from '@graphql-codegen/cli';
+import { GRAPHQL_API_URL } from './utils/api';
 
 const config: CodegenConfig = {
-  schema: 'http://localhost:4000/graphql',
+  schema: GRAPHQL_API_URL,
   documents: ['**/*.{ts,tsx}', '!**/*.d.ts', '!**/node_modules/**'],
   generates: {
-    './types/graphql.ts': {
-      plugins: [
-        'typescript',
-        'typescript-operations',
-        'typescript-react-apollo',
-      ],
-      config: {
-        withHooks: true,
-        withComponent: false,
-        withHOC: false,
-        withRefetchFn: true,
+    './__generated__/': {
+      preset: 'client',
+      plugins: [],
+      presetConfig: {
+        gqlTagName: 'gql',
       },
     },
   },
-  hooks: {
-    afterAllFileWrite: ['prettier --write'],
-  },
+  ignoreNoDocuments: true,
 };
 
 export default config;

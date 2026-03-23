@@ -5,6 +5,9 @@ export const USER_ROLES = {
     PROVIDER: 'provider',
 } as const;
 
+import { GRAPHQL_API_URL } from './api';
+export { GRAPHQL_API_URL };
+
 export const BOOKING_STATUS = {
     PENDING: 'pending',
     ACCEPTED: 'accepted',

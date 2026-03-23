@@ -5,19 +5,20 @@ import Animated, { FadeInUp } from 'react-native-reanimated';
 import { Typography } from '../../theme/Typography';
 import { Container } from '../../theme/Container';
 import { RoleOption } from './RoleOption';
+import { UserRole } from '../../../__generated__/graphql';
 
 const { width } = Dimensions.get('window');
 
 const ROLES = [
     {
-        id: 'customer' as const,
+        id: UserRole.Customer,
         title: 'Customer',
         description: 'I want to book car wash services',
         icon: User,
         delay: 400
     },
     {
-        id: 'provider' as const,
+        id: UserRole.Provider,
         title: 'Service Provider',
         description: 'I want to offer car wash services',
         icon: Briefcase,
@@ -26,8 +27,8 @@ const ROLES = [
 ];
 
 interface RoleSelectionStepProps {
-    onSelect: (role: 'customer' | 'provider') => void;
-    selectedRole: 'customer' | 'provider' | null;
+    onSelect: (role: UserRole) => void;
+    selectedRole: UserRole | null;
 }
 
 export const RoleSelectionStep: React.FC<RoleSelectionStepProps> = ({ onSelect, selectedRole }) => {

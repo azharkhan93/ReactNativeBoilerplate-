@@ -3,15 +3,16 @@ import { ScrollView, View } from 'react-native';
 import { ProfileHeader, AccountOverviewSection } from '@/components/Profile';
 import { VendorProfileScreen } from '@/components/Vendor/VendorProfileScreen';
 import { Container } from '@/components/theme';
+import { UserRole } from '../../__generated__/graphql';
 import { PROFILE_USER_DATA, ACCOUNT_MENU_ITEMS } from './constants';
 
 export interface ProfileScreenProps {
-  userRole?: 'customer' | 'provider' | null;
+  userRole?: UserRole | null;
   onNavigate?: (route: string) => void;
 }
 
 export const ProfileScreen: React.FC<ProfileScreenProps> = ({ userRole, onNavigate }) => {
-  const isVendor = userRole === 'provider';
+  const isVendor = userRole === UserRole.Provider;
 
   const handleMenuPress = () => {
     console.log('Menu pressed');
