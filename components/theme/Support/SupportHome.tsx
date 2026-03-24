@@ -20,7 +20,7 @@ export const SupportHome: React.FC<SupportHomeProps> = ({
     onReportIssue
 }) => (
     <ScrollView className="flex-1 bg-white" showsVerticalScrollIndicator={false}>
-        {/* Compressed Custom Header */}
+       
         <View className="px-5 pt-2">
             <View className="flex-row items-center justify-between mb-4">
                 <View className="flex-row items-center">
