@@ -1,1 +1,1 @@
-export { OtpTimer } from './OtpTimer';
+export * from './OtpTimer';

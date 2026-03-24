@@ -72,9 +72,8 @@ export const AppNavigator: React.FC = () => {
             <PhoneVerificationModal
                 visible={showPhoneModal}
                 onClose={() => setShowPhoneModal(false)}
-                onSuccess={(sid) => {
-                    console.log('OTP SMS Sent. SID:', sid);
-                    setShowPhoneModal(false);
+                onSuccess={(status) => {
+                    console.log('Phone Verification Status:', status);
                 }}
             />
         </View>
