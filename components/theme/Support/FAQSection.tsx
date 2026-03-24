@@ -29,7 +29,7 @@ export const FAQSection: React.FC<FAQSectionProps> = ({ search = '' }) => {
 
     return (
         <View className="px-5 mt-2">
-            {/* Category Tabs */}
+           
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-6 -mx-5 px-5">
 
                 <View className="flex-row space-x-2 pr-10">
