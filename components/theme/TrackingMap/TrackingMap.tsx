@@ -28,7 +28,7 @@ export const TrackingMap: React.FC<TrackingMapProps> = ({
                 style={StyleSheet.absoluteFillObject}
                 initialRegion={initialRegion}
             >
-                {/* Route Line */}
+               
                 <Polyline
                     coordinates={[driverLocation, destination]}
                     strokeWidth={4}
@@ -36,7 +36,7 @@ export const TrackingMap: React.FC<TrackingMapProps> = ({
                     lineDashPattern={[0]}
                 />
 
-                {/* Destination Marker */}
+               
                 <Marker coordinate={destination}>
                     <View className="bg-white p-2 rounded-full border-2 border-primary-500 shadow-xl">
                         <View className="w-3 h-3 rounded-full bg-primary-500" />
