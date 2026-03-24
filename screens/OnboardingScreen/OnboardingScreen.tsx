@@ -133,7 +133,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) 
                         </View>
                     </View>
 
-                    {/* Action Button for Multi-stage finalization */}
+                   
                     {(currentStep === totalSlides || currentStep === totalSteps - 1) && (
                         <Animated.View entering={FadeIn.duration(400)}>
                             <Button
