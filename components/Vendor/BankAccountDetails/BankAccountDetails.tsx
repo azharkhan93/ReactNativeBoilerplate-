@@ -91,12 +91,8 @@ export const BankAccountDetails: React.FC = () => {
             </Button>
 
 
-            {/* <View className="flex-row items-center justify-center mt-6 opacity-60">
-                <ShieldCheck size={14} color="#22c55e" />
-                <Typography variant="body" className=" ml-2 uppercase tracking-widest">
-                    PCI-DSS Compliant
-                </Typography>
-            </View> */}
+            
+          
         </ScrollView>
     );
 };
