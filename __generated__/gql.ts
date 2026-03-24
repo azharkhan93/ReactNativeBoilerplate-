@@ -16,12 +16,14 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 type Documents = {
     "\n  mutation CreateNewRole($roleName: UserRole!) {\n    createRole(name: $roleName) {\n      id\n      name\n      createdAt\n    }\n  }\n": typeof types.CreateNewRoleDocument,
     "\n  query GetRoles {\n    roles {\n      id\n      name\n    }\n  }\n": typeof types.GetRolesDocument,
-    "\n  query GetHomeData {\n    items {\n      id\n      name\n      description\n    }\n  }\n": typeof types.GetHomeDataDocument,
+    "\n  mutation VerifyOtp($phone: String!, $code: String!) {\n    verifyOtp(phoneNumber: $phone, code: $code) {\n      success\n      message\n    }\n  }\n": typeof types.VerifyOtpDocument,
+    "\n  mutation RequestOtp($phone: String!) {\n    requestOtp(phoneNumber: $phone) {\n      success\n      message\n      sid\n    }\n  }\n": typeof types.RequestOtpDocument,
 };
 const documents: Documents = {
     "\n  mutation CreateNewRole($roleName: UserRole!) {\n    createRole(name: $roleName) {\n      id\n      name\n      createdAt\n    }\n  }\n": types.CreateNewRoleDocument,
     "\n  query GetRoles {\n    roles {\n      id\n      name\n    }\n  }\n": types.GetRolesDocument,
-    "\n  query GetHomeData {\n    items {\n      id\n      name\n      description\n    }\n  }\n": types.GetHomeDataDocument,
+    "\n  mutation VerifyOtp($phone: String!, $code: String!) {\n    verifyOtp(phoneNumber: $phone, code: $code) {\n      success\n      message\n    }\n  }\n": types.VerifyOtpDocument,
+    "\n  mutation RequestOtp($phone: String!) {\n    requestOtp(phoneNumber: $phone) {\n      success\n      message\n      sid\n    }\n  }\n": types.RequestOtpDocument,
 };
 
 /**
@@ -49,7 +51,11 @@ export function gql(source: "\n  query GetRoles {\n    roles {\n      id\n      
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query GetHomeData {\n    items {\n      id\n      name\n      description\n    }\n  }\n"): (typeof documents)["\n  query GetHomeData {\n    items {\n      id\n      name\n      description\n    }\n  }\n"];
+export function gql(source: "\n  mutation VerifyOtp($phone: String!, $code: String!) {\n    verifyOtp(phoneNumber: $phone, code: $code) {\n      success\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation VerifyOtp($phone: String!, $code: String!) {\n    verifyOtp(phoneNumber: $phone, code: $code) {\n      success\n      message\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation RequestOtp($phone: String!) {\n    requestOtp(phoneNumber: $phone) {\n      success\n      message\n      sid\n    }\n  }\n"): (typeof documents)["\n  mutation RequestOtp($phone: String!) {\n    requestOtp(phoneNumber: $phone) {\n      success\n      message\n      sid\n    }\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};

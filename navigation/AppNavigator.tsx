@@ -7,8 +7,8 @@ import { HomeScreen, ProfileScreen, BookingsScreen, NearbyProvidersScreen, LiveT
 import { VendorDashboard } from '@/components/Vendor/VendorDashboard';
 import { VendorAnalyticsScreen } from '@/components/Vendor/VendorAnalyticsScreen';
 import { OnboardingScreen } from '@/screens/OnboardingScreen/OnboardingScreen';
+import { PhoneVerificationModal } from '@/components/Verification/PhoneVerificationModal';
 import { VENDOR_TABS, CUSTOMER_TABS, HIDDEN_TOPBAR_ROUTES } from './tabs';
-import { PhoneVerificationModal } from './PhoneVerificationModal';
 import { ReviewSuccessScreen } from '@/screens/ReviewSuccessScreen';
 import { UserRole } from '../__generated__/graphql';
 
@@ -17,7 +17,6 @@ export const AppNavigator: React.FC = () => {
     const [userRole, setUserRole] = useState<UserRole | null>(null);
     const [showOnboarding, setShowOnboarding] = useState(true);
     const [showPhoneModal, setShowPhoneModal] = useState(false);
-    const [phoneNumber, setPhoneNumber] = useState('');
 
     const handleOnboardingFinish = (role: UserRole) => {
         setUserRole(role);
@@ -72,9 +71,11 @@ export const AppNavigator: React.FC = () => {
 
             <PhoneVerificationModal
                 visible={showPhoneModal}
-                value={phoneNumber}
-                onChange={setPhoneNumber}
-                onConfirm={() => setShowPhoneModal(false)}
+                onClose={() => setShowPhoneModal(false)}
+                onSuccess={(sid) => {
+                    console.log('OTP SMS Sent. SID:', sid);
+                    setShowPhoneModal(false);
+                }}
             />
         </View>
     );
