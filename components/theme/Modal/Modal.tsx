@@ -39,7 +39,7 @@ export const Modal: React.FC<ModalProps> = ({
         <View className={`flex-1 bg-black/50 justify-end pt-[${insets.top}px] ${className || ''}`}>
           <TouchableWithoutFeedback>
             <View className={`bg-gray-950 rounded-t-3xl w-full ${contentClassName || ''}`} style={contentStyle}>
-              {/* Drag Indicator */}
+           
               <View className="w-full items-center pt-3 pb-1">
                 <View className="w-10 h-1.5 bg-gray-800 rounded-full" />
               </View>
