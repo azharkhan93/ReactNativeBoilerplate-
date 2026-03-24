@@ -10,7 +10,6 @@ export * from './Profile';
 export * from './Onboarding';
 export * from './Vendor';
 
-
 export * from './Vendor/VendorDashboard';
 export * from './Vendor/VendorProfileScreen';
 export * from './Vendor/VendorAnalyticsScreen';
@@ -19,3 +18,4 @@ export * from './Vendor/ServiceManagement';
 export * from './Vendor/BankAccountDetails';
 export * from './Vendor/VendorAccountDetails';
 export * from './Vendor/Availability';
+export * from './Verification';
