@@ -1,4 +1,7 @@
+import React from 'react';
+import { View, DimensionValue } from 'react-native';
 import { LucideIcon, User, Package, RefreshCw, Lock, Languages } from 'lucide-react-native';
+import { Typography } from '@/components/theme';
 
 export interface AccountMenuItemData {
   id: string;
@@ -13,34 +16,27 @@ export const PROFILE_USER_DATA = {
 };
 
 export const ACCOUNT_MENU_ITEMS: AccountMenuItemData[] = [
-  {
-    id: '1',
-    label: 'My Profile',
-    icon: User,
-    iconColor: '#60a5fa', // light blue
-  },
-  {
-    id: '2',
-    label: 'My Orders',
-    icon: Package,
-    iconColor: '#4ade80', // light green
-  },
-  {
-    id: '3',
-    label: 'Refund',
-    icon: RefreshCw,
-    iconColor: '#a855f7', // purple
-  },
-  {
-    id: '4',
-    label: 'Change Password',
-    icon: Lock,
-    iconColor: '#fb923c', // orange
-  },
-  {
-    id: '5',
-    label: 'Change Language',
-    icon: Languages,
-    iconColor: '#ec4899', // pink
-  },
+  { id: 'profile', label: 'My Profile', icon: User, iconColor: '#60a5fa' },
+  { id: 'orders', label: 'My Orders', icon: Package, iconColor: '#4ade80' },
+  { id: 'refund', label: 'Refund', icon: RefreshCw, iconColor: '#a855f7' },
+  { id: 'password', label: 'Change Password', icon: Lock, iconColor: '#fb923c' },
+  { id: 'language', label: 'Change Language', icon: Languages, iconColor: '#ec4899' },
+];
+
+export interface ModalConfigItem {
+  id: string;
+  title: string;
+  height?: DimensionValue;
+  isPlaceholder?: boolean;
+  placeholderText?: string;
+}
+
+export const MODAL_ITEMS: ModalConfigItem[] = [
+  { id: 'availability', title: 'Availability' },
+  { id: 'bank', title: 'Bank Account Details' },
+  { id: 'business', title: 'Business Profile', height: '85%' },
+  { id: 'services', title: 'Manage Services' },
+  { id: 'profile', title: 'Edit My Profile', height: '85%', isPlaceholder: true, placeholderText: 'Profile Edit Content' },
+  { id: 'orders', title: 'My Orders', isPlaceholder: true, placeholderText: 'My Orders Content' },
+  { id: 'refund', title: 'Refund Status', isPlaceholder: true, placeholderText: 'Refund History' },
 ];

@@ -8,7 +8,6 @@ export * from './Profile';
 export * from './Onboarding';
 export * from './Vendor';
 export * from './Vendor/VendorDashboard';
-export * from './Vendor/VendorProfileScreen';
 export * from './Vendor/VendorAnalyticsScreen';
 export * from './Vendor/BookingTabs';
 export * from './Vendor/ServiceManagement';

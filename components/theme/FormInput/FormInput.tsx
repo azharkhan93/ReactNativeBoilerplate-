@@ -7,6 +7,8 @@ interface FormInputProps extends TextInputProps {
     containerClassName?: string;
     inputClassName?: string;
     icon?: React.ReactNode;
+    prefix?: string;
+    error?: string;
 }
 
 export const FormInput: React.FC<FormInputProps> = ({
@@ -14,6 +16,8 @@ export const FormInput: React.FC<FormInputProps> = ({
     containerClassName = '',
     inputClassName = '',
     icon,
+    prefix,
+    error,
     ...props
 }) => {
     const isMultiline = props.multiline;
@@ -25,8 +29,13 @@ export const FormInput: React.FC<FormInputProps> = ({
                     {label}
                 </Typography>
             )}
-            <View className={`relative flex-row items-center bg-gray-900 border border-gray-800 rounded-2xl ${inputClassName}`}>
+            <View className={`relative flex-row items-center bg-gray-900 border ${error ? 'border-red-500' : 'border-gray-800'} rounded-2xl ${inputClassName}`}>
                 {icon && <View className="pl-4">{icon}</View>}
+                {prefix && (
+                    <View className="pl-4 pr-1">
+                        <Typography className="text-gray-500 font-body">{prefix}</Typography>
+                    </View>
+                )}
                 <TextInput
                     className={`flex-1 py-4 px-4 text-white font-body ${isMultiline ? 'text-top' : ''}`}
                     placeholderTextColor="#4b5563"
@@ -34,6 +43,11 @@ export const FormInput: React.FC<FormInputProps> = ({
                     {...props}
                 />
             </View>
+            {error ? (
+                <Typography variant="body-sm" className="text-red-500 mt-1 ml-1">
+                    {error}
+                </Typography>
+            ): null}
         </View>
     );
 };

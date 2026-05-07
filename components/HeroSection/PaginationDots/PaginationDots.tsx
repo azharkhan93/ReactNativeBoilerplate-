@@ -27,7 +27,7 @@ export const PaginationDots: React.FC<PaginationDotsProps> = ({
             'h-1.5 rounded-full transition-all duration-300',
             index === activeIndex
               ? 'w-6 bg-primary-500'
-              : 'w-1.5 bg-white/30'
+              : 'w-1.5 bg-gray-300'
           )}
         />
       ))}

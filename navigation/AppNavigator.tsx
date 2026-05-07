@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import { TopBar } from '@/components/TopBar';
 import { BottomTabNavigator } from '@/components/BottomTabNavigator';
 import { HomeScreen, ProfileScreen, BookingsScreen, NearbyProvidersScreen, LiveTrackingScreen, CustomerBookingsScreen, SupportScreen, RatingReviewScreen, ServiceDisputeScreen, } from '@/screens';
-
 import { VendorDashboard } from '@/components/Vendor/VendorDashboard';
 import { VendorAnalyticsScreen } from '@/components/Vendor/VendorAnalyticsScreen';
 import { OnboardingScreen } from '@/screens/OnboardingScreen/OnboardingScreen';

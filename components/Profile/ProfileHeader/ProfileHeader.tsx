@@ -1,66 +1,60 @@
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
+import { ChevronLeft, Settings, MoreVertical } from 'lucide-react-native';
+import { Typography } from '../../theme';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { MoreVertical } from 'lucide-react-native';
-import { Container, Typography } from '../../theme';
-import { ProfileAvatar } from '../ProfileAvatar';
 
 export interface ProfileHeaderProps {
-  userName: string;
-  userPhone: string;
-  onMenuPress?: () => void;
-  onEditProfilePress?: () => void;
+  title: string;
+  showBackButton?: boolean;
+  onBackPress?: () => void;
+  onRightActionPress?: () => void;
+  rightIcon?: 'settings' | 'more';
 }
 
 export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
-  userName,
-  userPhone,
-  onMenuPress,
-  onEditProfilePress,
+  title,
+  showBackButton = false,
+  onBackPress,
+  onRightActionPress,
+  rightIcon = 'more',
 }) => {
   const insets = useSafeAreaInsets();
-
+  
   return (
-    <Container
-      className="bg-primary-800 relative overflow-hidden"
-      // eslint-disable-next-line react-native/no-inline-styles
-      style={{
-        paddingTop: Math.max(insets.top, 20),
-        paddingBottom: 40,
-        paddingHorizontal: 20,
-      }}
+    <View
+      className="px-5 pb-2 flex-row items-center justify-between mb-6"
+      style={{ paddingTop: Math.max(insets.top, 20) + 10 }}
     >
-     
-
-
-      
-      <Container variant="between" className="mb-6">
-        <Typography variant="h2">
-          Profile
-        </Typography>
-        {onMenuPress ? (
-          <TouchableOpacity
-            onPress={onMenuPress}
-            activeOpacity={0.7}
-            className="w-10 h-10 rounded-full bg-white items-center justify-center"
+      <View className="w-10">
+        {showBackButton && (
+          <TouchableOpacity 
+            onPress={onBackPress}
+            className="w-10 h-10 items-center justify-center rounded-full bg-gray-900/50"
           >
-            <MoreVertical size={20} color="#1e40af" />
+            <ChevronLeft size={22} color="white" />
           </TouchableOpacity>
-        ): null}
-      </Container>
+        )}
+      </View>
 
-    
-      <Container variant="column-centered" gap={3}>
-        <ProfileAvatar size={100} onEditPress={onEditProfilePress} />
-        <Container variant="column-centered" gap={1}>
-          <Typography variant="h3">
-            {userName}
-          </Typography>
-          <Typography variant="body">
-            {userPhone}
-          </Typography>
-        </Container>
-      </Container>
-    </Container>
+      <Typography variant="h3" className="text-white text-lg font-heading-semibold">
+        {title}
+      </Typography>
+
+      <View className="w-10">
+        {onRightActionPress && (
+          <TouchableOpacity 
+            onPress={onRightActionPress}
+            className="w-10 h-10 items-center justify-center rounded-full bg-gray-900/50"
+          >
+            {rightIcon === 'settings' ? (
+              <Settings size={20} color="white" />
+            ) : (
+              <MoreVertical size={20} color="white" />
+            )}
+          </TouchableOpacity>
+        )}
+      </View>
+    </View>
   );
 };

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { Typography, Button } from '../../theme';
-import { Plus, Edit2, Trash2, Clock, MapPin, DollarSign } from 'lucide-react-native';
-import { MOCK_SERVICES } from '../VendorProfileScreen/constants';
+import { Plus, Edit2, Trash2, Clock, MapPin, IndianRupee } from 'lucide-react-native';
+import { MOCK_SERVICES } from '../vendorProfileConstants';
 import { ServiceManagement } from '../ServiceManagement';
 
 export const ManageServices: React.FC = () => {
@@ -31,8 +31,8 @@ export const ManageServices: React.FC = () => {
                             <View className="flex-row justify-between items-start mb-3">
                                 <Typography variant="subheading" className="flex-1 mr-4">{service.name}</Typography>
                                 <View className="bg-green-500/10 px-3 py-1 rounded-full flex-row items-center border border-green-500/20">
-                                    <DollarSign size={14} color="#22c55e" />
-                                    <Typography className="text-green-500 font-body-bold">{service.price}</Typography>
+                                    <IndianRupee size={14} color="#22c55e" />
+                                    <Typography className="text-green-500 font-body-bold">₹{service.price}</Typography>
                                 </View>
                             </View>
 

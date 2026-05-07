@@ -2,48 +2,80 @@ import React, { useState } from 'react';
 import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { Typography, Button, FormInput } from '../../theme';
 import { Clock, ChevronRight, Globe } from 'lucide-react-native';
+import { Dropzone } from '../../shared/Dropzone';
+import { useBusinessProfile } from './hooks/useBusinessProfile';
 
 export const BusinessProfile: React.FC = () => {
+    const { 
+        formData, 
+        errors, 
+        handleChange, 
+        handleSubmit, 
+        handleImageUpload, 
+        handleImageRemove 
+    } = useBusinessProfile();
     const [radius, setRadius] = useState('5km');
 
     return (
         <ScrollView showsVerticalScrollIndicator={false}>
             <View className="px-5 py-4 gap-8 pb-12">
-
-
-
-
                 <View>
                     <View className="mb-6">
                         <Typography variant='subheading' className="mb-2">
                             Business Information
                         </Typography>
-                        <Typography variant="body" className=" leading-5">
-                            Provide your legal registration details as they appear on your documents.
+                        <Typography variant="body" className=" leading-5 text-gray-400">
+                            Provide your legal registration details as per Indian regulations.
                         </Typography>
                     </View>
 
                     <View>
-                        <FormInput
-                            label="Legal Business Name"
-                            placeholder="e.g. Shiny Wheels LLC"
+                        <Dropzone 
+                            label="Business Storefront / Logo"
+                            onUpload={handleImageUpload}
+                            onRemove={handleImageRemove}
+                            imageUri={formData.imageUri}
                         />
 
                         <FormInput
-                            label="Business Registration Number"
-                            placeholder="Tax ID or Registration No."
+                            label="Legal Business Name"
+                            placeholder="e.g. Sparkle Detailing India"
+                            value={formData.businessName}
+                            onChangeText={(v) => handleChange('businessName', v)}
+                            error={errors.businessName}
+                        />
+
+                        <FormInput
+                            label="GST Identification Number"
+                            placeholder="22AAAAA0000A1Z5"
+                            autoCapitalize="characters"
+                            value={formData.gstNumber}
+                            onChangeText={(v) => handleChange('gstNumber', v)}
+                            error={errors.gstNumber}
+                        />
+
+                        <FormInput
+                            label="Contact Number"
+                            placeholder="98765 43210"
+                            keyboardType="phone-pad"
+                            prefix="+91"
+                            value={formData.contactNumber}
+                            onChangeText={(v) => handleChange('contactNumber', v)}
+                            error={errors.contactNumber}
                         />
 
                         <FormInput
                             label="Business Address"
-                            placeholder="Enter full street address"
+                            placeholder="Shop No, Building, Street, City, Pincode"
                             multiline
                             textAlignVertical="top"
                             inputClassName="min-h-[100px]"
+                            value={formData.address}
+                            onChangeText={(v) => handleChange('address', v)}
+                            error={errors.address}
                         />
                     </View>
                 </View>
-
 
                 <View className="gap-4">
                     <View>
@@ -73,7 +105,6 @@ export const BusinessProfile: React.FC = () => {
                     </View>
 
                     <View className="relative bg-gray-900 rounded-3xl overflow-hidden border border-gray-800 h-48">
-                        {/* Map Placeholder Image */}
                         <Image
                             source={{ uri: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=800' }}
                             className="w-full h-full opacity-50"
@@ -88,21 +119,19 @@ export const BusinessProfile: React.FC = () => {
                     </View>
                 </View>
 
-                {/* Operating Hours Row */}
                 <TouchableOpacity className="bg-gray-900 border border-gray-800 rounded-3xl px-5 py-5 flex-row items-center">
                     <View className="w-12 h-12 bg-blue-500/10 rounded-full items-center justify-center mr-4">
                         <Clock size={24} color="#3b82f6" />
                     </View>
                     <View className="flex-1">
                         <Typography variant='body'>Operating Hours</Typography>
-                        <Typography variant="body" >Mon - Fri, 08:00 AM - 06:00 PM</Typography>
+                        <Typography variant="body" className="text-gray-400">Mon - Sat, 09:00 AM - 08:00 PM</Typography>
                     </View>
                     <ChevronRight size={20} color="#4b5563" />
                 </TouchableOpacity>
 
-
-                <Button variant='primary'>
-                    Continue →
+                <Button variant='primary' onPress={handleSubmit}>
+                    Update Profile →
                 </Button>
             </View>
         </ScrollView>

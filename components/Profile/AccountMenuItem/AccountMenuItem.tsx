@@ -5,42 +5,52 @@ import { Container, Typography } from '../../theme';
 
 export interface AccountMenuItemProps {
   label: string;
+  subtitle?: string;
   icon: React.ComponentType<{ size?: number; color?: string }>;
   iconColor: string;
   onPress?: () => void;
+  showChevron?: boolean;
 }
 
 export const AccountMenuItem: React.FC<AccountMenuItemProps> = ({
   label,
+  subtitle,
   icon: Icon,
   iconColor,
   onPress,
+  showChevron = true,
 }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.7}
-      className="py-4"
+      className="py-4 px-1"
     >
       <Container variant="between" className="items-center">
         <Container variant="row" gap={4} className="items-center flex-1">
           <Container
             variant="centered"
-            className="rounded-full"
-            // eslint-disable-next-line react-native/no-inline-styles
+            className="rounded-xl"
             style={{
-              width: 40,
-              height: 40,
-              backgroundColor: `${iconColor}20`,
+              width: 44,
+              height: 44,
+              backgroundColor: `${iconColor}15`,
             }}
           >
             <Icon size={20} color={iconColor} />
           </Container>
-          <Typography variant="body">
-            {label}
-          </Typography>
+          <Container variant="column" className="flex-1">
+            <Typography variant="body" className="font-body-semibold text-gray-100">
+              {label}
+            </Typography>
+            {subtitle ? (
+              <Typography variant="body-sm" className="text-gray-500 mt-0.5">
+                {subtitle}
+              </Typography>
+            ) : null}
+          </Container>
         </Container>
-        <ChevronRight size={20} color="#9ca3af" />
+        {showChevron && <ChevronRight size={18} color="#4b5563" />}
       </Container>
     </TouchableOpacity>
   );
