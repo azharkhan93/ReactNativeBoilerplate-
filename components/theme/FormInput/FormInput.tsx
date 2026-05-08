@@ -2,25 +2,35 @@ import React from 'react';
 import { View, TextInput, TextInputProps } from 'react-native';
 import { Typography } from '../Typography';
 
-interface FormInputProps extends TextInputProps {
+interface FormInputProps extends Omit<TextInputProps, 'onChangeText'> {
     label?: string;
+    name?: string;
     containerClassName?: string;
     inputClassName?: string;
     icon?: React.ReactNode;
     prefix?: string;
     error?: string;
+    onChangeText?: (text: string, name?: string) => void;
 }
 
 export const FormInput: React.FC<FormInputProps> = ({
     label,
+    name,
     containerClassName = '',
     inputClassName = '',
     icon,
     prefix,
     error,
+    onChangeText,
     ...props
 }) => {
     const isMultiline = props.multiline;
+
+    const handleTextChange = (text: string) => {
+        if (onChangeText) {
+            onChangeText(text, name);
+        }
+    };
 
     return (
         <View className={`mb-6 ${containerClassName}`}>
@@ -40,6 +50,7 @@ export const FormInput: React.FC<FormInputProps> = ({
                     className={`flex-1 py-4 px-4 text-white font-body ${isMultiline ? 'text-top' : ''}`}
                     placeholderTextColor="#4b5563"
                     textAlignVertical={isMultiline ? 'top' : 'center'}
+                    onChangeText={handleTextChange}
                     {...props}
                 />
             </View>

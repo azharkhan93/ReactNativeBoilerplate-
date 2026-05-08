@@ -1,8 +1,8 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 
 const IFSC_REGEX = /^[A-Z]{4}0[A-Z0-9]{6}$/;
 
-interface BankFormData {
+export interface BankFormData {
   accountHolder: string;
   bankName: string;
   ifscCode: string;
@@ -21,11 +21,11 @@ export const useBankAccountDetails = () => {
 
   const validate = useCallback(() => {
     const newErrors: Partial<Record<keyof BankFormData, string>> = {};
-    
+
     if (!formData.accountHolder) newErrors.accountHolder = 'Account holder name is required';
     if (!formData.bankName) newErrors.bankName = 'Bank name is required';
     if (!formData.accountNumber) newErrors.accountNumber = 'Account number is required';
-    
+
     if (!formData.ifscCode) {
       newErrors.ifscCode = 'IFSC code is required';
     } else if (!IFSC_REGEX.test(formData.ifscCode)) {
@@ -36,28 +36,29 @@ export const useBankAccountDetails = () => {
     return Object.keys(newErrors).length === 0;
   }, [formData]);
 
-  const handleChange = (field: keyof BankFormData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }));
+  const handleInputChange = useCallback((value: string, field?: string) => {
+    if (!field) return;
+    const key = field as keyof BankFormData;
+    setFormData(prev => ({ ...prev, [key]: value }));
+    if (errors[key]) {
+      setErrors(prev => ({ ...prev, [key]: undefined }));
     }
-  };
+  }, [errors]);
 
   const handleSubmit = useCallback(() => {
     if (validate()) {
       console.log('Saving bank details:', formData);
-      // API call
     }
   }, [formData, validate]);
 
-  const isFormValid = formData.accountHolder && formData.bankName && 
-                     IFSC_REGEX.test(formData.ifscCode) && formData.accountNumber;
+  const isFormValid = formData.accountHolder && formData.bankName &&
+    IFSC_REGEX.test(formData.ifscCode) && formData.accountNumber;
 
   return {
     formData,
     errors,
     isFormValid,
-    handleChange,
+    handleInputChange,
     handleSubmit,
   };
 };

@@ -3,7 +3,7 @@ import { View, ScrollView } from 'react-native';
 import { Typography, Button, FormInput } from '../../theme';
 import { ShieldCheck, Lock } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useBankAccountDetails } from './hooks/useBankAccountDetails';
+import { useBankAccountDetails, BankFormData } from './hooks/useBankAccountDetails';
 
 export const BankAccountDetails: React.FC = () => {
     const insets = useSafeAreaInsets();
@@ -11,7 +11,7 @@ export const BankAccountDetails: React.FC = () => {
         formData, 
         errors, 
         isFormValid, 
-        handleChange, 
+        handleInputChange, 
         handleSubmit 
     } = useBankAccountDetails();
 
@@ -34,37 +34,41 @@ export const BankAccountDetails: React.FC = () => {
             <View>
                 <FormInput
                     label="Account Holder Name"
+                    name="accountHolder"
                     placeholder="As per bank records"
                     value={formData.accountHolder}
-                    onChangeText={(v) => handleChange('accountHolder', v)}
+                    onChangeText={handleInputChange}
                     error={errors.accountHolder}
                 />
 
                 <FormInput
                     label="Bank Name"
+                    name="bankName"
                     placeholder="e.g. HDFC Bank, ICICI, SBI"
                     value={formData.bankName}
-                    onChangeText={(v) => handleChange('bankName', v)}
+                    onChangeText={handleInputChange}
                     error={errors.bankName}
                 />
 
                 <FormInput
                     label="IFSC Code"
+                    name="ifscCode"
                     placeholder="11 characters (e.g. SBIN0001234)"
                     autoCapitalize="characters"
                     maxLength={11}
                     value={formData.ifscCode}
-                    onChangeText={(v) => handleChange('ifscCode', v)}
+                    onChangeText={handleInputChange}
                     error={errors.ifscCode}
                 />
 
                 <FormInput
                     label="Account Number"
+                    name="accountNumber"
                     placeholder="Enter your account number"
                     keyboardType="numeric"
                     secureTextEntry
                     value={formData.accountNumber}
-                    onChangeText={(v) => handleChange('accountNumber', v)}
+                    onChangeText={handleInputChange}
                     error={errors.accountNumber}
                 />
             </View>
