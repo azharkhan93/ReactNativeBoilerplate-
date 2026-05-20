@@ -1,45 +1,83 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client/react';
+import type {
+  CreateVendorProfileInput,
+  GetVendorProfileQuery,
+  UpdateVendorProfileInput,
+} from '@/__generated__/graphql';
 import {
-  GET_VENDOR_PROFILE,
   CREATE_VENDOR_PROFILE,
-  UPDATE_VENDOR_PROFILE,
   DELETE_VENDOR_PROFILE,
+  GET_VENDOR_PROFILE,
+  UPDATE_VENDOR_PROFILE,
 } from '../../vendorQueries';
 import { getUserId } from '@/utils/store/authStore';
-import {
-  VendorProfile,
-  toFormProfile,
-  toCreateInput,
-  toUpdateInput,
-} from '../profile.types';
 
-export type BusinessProfileData = ReturnType<typeof toFormProfile>;
+export type VendorProfile = GetVendorProfileQuery['getVendorProfile'];
 
-const EMPTY_PROFILE: BusinessProfileData = {
+export type BusinessProfileFormData = Required<
+  Pick<
+    CreateVendorProfileInput,
+    'businessName' | 'gstNumber' | 'contactNumber' | 'address' | 'serviceRadius' | 'operatingHours'
+  >
+> & {
+  id?: string;
+  imageUri: string | null;
+};
+
+const DEFAULT_OPERATING_HOURS = 'Mon - Sat, 09:00 AM - 08:00 PM';
+
+const EMPTY_FORM: BusinessProfileFormData = {
   businessName: '',
   gstNumber: '',
   address: '',
   contactNumber: '',
   imageUri: null,
   serviceRadius: '5km',
-  operatingHours: 'Mon - Sat, 09:00 AM - 08:00 PM',
+  operatingHours: DEFAULT_OPERATING_HOURS,
 };
 
-/**
- * Backend (NestGqlBoilerplate) vendor profile behavior:
- * - 1:1 with User via unique userId (Prisma VendorProfile.userId @unique)
- * - createVendorProfile → upsertByUserId (create OR update by userId, not a new row each time)
- * - updateVendorProfile → partial update by profile id
- * - deleteVendorProfile → hard delete by id
- * - Child modules (bank, services, availability) use vendorProfile.id, not userId
- */
+const toFormData = (profile: VendorProfile): BusinessProfileFormData => ({
+  id: profile.id,
+  businessName: profile.businessName ?? '',
+  gstNumber: profile.gstNumber ?? '',
+  address: profile.address ?? '',
+  contactNumber: profile.contactNumber ?? '',
+  imageUri: profile.imageUri ?? null,
+  serviceRadius: profile.serviceRadius ?? '5km',
+  operatingHours: profile.operatingHours ?? DEFAULT_OPERATING_HOURS,
+});
+
+const toCreateInput = (
+  form: BusinessProfileFormData,
+  userId: string,
+): CreateVendorProfileInput => ({
+  userId,
+  businessName: form.businessName,
+  imageUri: form.imageUri ?? undefined,
+  gstNumber: form.gstNumber || undefined,
+  contactNumber: form.contactNumber || undefined,
+  address: form.address || undefined,
+  serviceRadius: form.serviceRadius,
+  operatingHours: form.operatingHours,
+});
+
+const toUpdateInput = (form: BusinessProfileFormData): UpdateVendorProfileInput => ({
+  businessName: form.businessName,
+  imageUri: form.imageUri ?? undefined,
+  gstNumber: form.gstNumber || undefined,
+  contactNumber: form.contactNumber || undefined,
+  address: form.address || undefined,
+  serviceRadius: form.serviceRadius,
+  operatingHours: form.operatingHours,
+});
+
 export const useBusinessProfile = () => {
   const [userId, setUserId] = useState<string | null>(null);
-  const [profile, setProfile] = useState<BusinessProfileData | null>(null);
+  const [profile, setProfile] = useState<BusinessProfileFormData | null>(null);
   const [vendorProfileId, setVendorProfileId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingProfile, setEditingProfile] = useState<BusinessProfileData | null>(null);
+  const [editingProfile, setEditingProfile] = useState<BusinessProfileFormData | null>(null);
 
   useEffect(() => {
     getUserId().then(id => {
@@ -48,9 +86,8 @@ export const useBusinessProfile = () => {
   }, []);
 
   const { data, loading: loadingProfile, refetch } = useQuery(GET_VENDOR_PROFILE, {
-    variables: { userId: userId || '' },
+    variables: { userId: userId ?? '' },
     skip: !userId,
-    // getVendorProfile may error when no row exists (schema is non-null)
     errorPolicy: 'all',
   });
 
@@ -59,9 +96,9 @@ export const useBusinessProfile = () => {
   const [deleteProfile, { loading: deleting }] = useMutation(DELETE_VENDOR_PROFILE);
 
   useEffect(() => {
-    const vendorProfile = data?.getVendorProfile as VendorProfile | undefined;
+    const vendorProfile = data?.getVendorProfile;
     if (vendorProfile?.id) {
-      setProfile(toFormProfile(vendorProfile));
+      setProfile(toFormData(vendorProfile));
       setVendorProfileId(vendorProfile.id);
     } else {
       setProfile(null);
@@ -87,26 +124,23 @@ export const useBusinessProfile = () => {
   }, []);
 
   const handleSaveProfile = useCallback(
-    async (formData: BusinessProfileData) => {
+    async (formData: BusinessProfileFormData) => {
       if (!userId) return;
 
-      const form = { ...formData };
       const profileId = editingProfile?.id ?? profile?.id;
 
       try {
         if (profileId) {
-          // Explicit update when we already have a profile id
           await updateProfile({
             variables: {
               id: profileId,
-              input: toUpdateInput(form),
+              input: toUpdateInput(formData),
             },
           });
         } else {
-          // Backend createVendorProfile upserts by userId (createOrUpdate)
           await createProfile({
             variables: {
-              input: toCreateInput(form, userId),
+              input: toCreateInput(formData, userId),
             },
           });
         }
@@ -146,6 +180,6 @@ export const useBusinessProfile = () => {
     handleCloseModal,
     handleSaveProfile,
     handleDeleteProfile,
-    emptyProfile: EMPTY_PROFILE,
+    emptyProfile: EMPTY_FORM,
   };
 };

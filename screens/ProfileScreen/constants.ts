@@ -1,7 +1,7 @@
-import React from 'react';
-import { View, DimensionValue } from 'react-native';
+
+import {DimensionValue } from 'react-native';
 import { LucideIcon, User, Package, RefreshCw, Lock, Languages } from 'lucide-react-native';
-import { Typography } from '@/components/theme';
+
 
 export interface AccountMenuItemData {
   id: string;
@@ -27,6 +27,7 @@ export interface ModalConfigItem {
   id: string;
   title: string;
   height?: DimensionValue;
+  scrollable?: boolean;
   isPlaceholder?: boolean;
   placeholderText?: string;
 }
@@ -34,7 +35,7 @@ export interface ModalConfigItem {
 export const MODAL_ITEMS: ModalConfigItem[] = [
   { id: 'availability', title: 'Availability' },
   { id: 'bank', title: 'Bank Account Details' },
-  { id: 'business', title: 'Business Profile', height: '85%' },
+  { id: 'business', title: 'Business Profile', height: '85%', scrollable: true },
   { id: 'services', title: 'Manage Services' },
   { id: 'profile', title: 'Edit My Profile', height: '85%', isPlaceholder: true, placeholderText: 'Profile Edit Content' },
   { id: 'orders', title: 'My Orders', isPlaceholder: true, placeholderText: 'My Orders Content' },

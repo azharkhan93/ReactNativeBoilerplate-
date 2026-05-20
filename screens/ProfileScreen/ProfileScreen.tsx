@@ -27,7 +27,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ userRole, onNaviga
   const { userData, isVendor, handleEditAvatar, handleEditProfile } = useProfile(userRole);
   const [modalType, setModalType] = useState<string | null>(null);
 
-  const MODAL_CONFIG = MODAL_ITEMS.reduce((acc: Record<string, { title: string; content: React.ReactNode; height?: DimensionValue }>, item: ModalConfigItem) => {
+  const MODAL_CONFIG = MODAL_ITEMS.reduce((acc: Record<string, { title: string; content: React.ReactNode; height?: DimensionValue; scrollable?: boolean }>, item: ModalConfigItem) => {
     let content: ReactNode = null;
     
     // Assign specific components based on ID
@@ -39,7 +39,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ userRole, onNaviga
       content = <View className="p-10"><Typography className="text-white text-center">{item.placeholderText}</Typography></View>;
     }
 
-    acc[item.id] = { title: item.title, content, height: item.height };
+    acc[item.id] = { title: item.title, content, height: item.height, scrollable: item.scrollable };
     return acc;
   }, {});
 
@@ -71,7 +71,13 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ userRole, onNaviga
           />
         </View>
       </ScrollView>
-      <BottomSheetModal visible={!!modalType} onClose={() => setModalType(null)} title={config?.title || ''} height={config?.height || '100%'}>
+      <BottomSheetModal
+        visible={!!modalType}
+        onClose={() => setModalType(null)}
+        title={config?.title || ''}
+        height={config?.height || '100%'}
+        scrollable={config?.scrollable}
+      >
         {config?.content}
       </BottomSheetModal>
     </View>

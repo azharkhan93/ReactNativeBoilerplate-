@@ -31,8 +31,6 @@ export const Modal: React.FC<ModalProps> = ({
     })
   };
 
-  const ContentWrapper = scrollable ? ScrollView : View;
-
   return (
     <RNModal visible={visible} animationType={animationType} transparent={transparent} onRequestClose={onRequestClose} statusBarTranslucent {...props}>
       <TouchableWithoutFeedback onPress={onRequestClose}>
@@ -58,9 +56,19 @@ export const Modal: React.FC<ModalProps> = ({
                   ) : null}
                 </View>
               )}
-              <ContentWrapper className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={scrollable ? { flexGrow: 1 } : undefined}>
-                {children}
-              </ContentWrapper>
+              {scrollable ? (
+                <ScrollView
+                  style={{ flex: 1 }}
+                  showsVerticalScrollIndicator
+                  keyboardShouldPersistTaps="handled"
+                  nestedScrollEnabled
+                  contentContainerStyle={{ paddingBottom: 24 }}
+                >
+                  {children}
+                </ScrollView>
+              ) : (
+                <View style={{ flex: 1 }}>{children}</View>
+              )}
             </View>
           </TouchableWithoutFeedback>
         </View>

@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, ScrollView, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { Typography, Button } from '../../theme';
 import { Pencil, Trash2, Building2 } from 'lucide-react-native';
-import { useBusinessProfile, BusinessProfileData } from './hooks/useBusinessProfile';
+import { useBusinessProfile, BusinessProfileFormData } from './hooks/useBusinessProfile';
 import { BusinessProfileForm } from './BusinessProfileForm';
 
-const ProfileImage: React.FC<{ profile: BusinessProfileData }> = ({ profile }) => (
+const ProfileImage: React.FC<{ profile: BusinessProfileFormData }> = ({ profile }) => (
   <View className="rounded-3xl overflow-hidden border border-gray-800 mb-4">
     {profile.imageUri ? (
       <Image source={{ uri: profile.imageUri }} className="w-full h-44" resizeMode="cover" />
@@ -34,7 +34,7 @@ const DetailRow: React.FC<DetailRowProps> = ({ label, value, isLast }) => (
   </View>
 );
 
-const BusinessDetails: React.FC<{ profile: BusinessProfileData }> = ({ profile }) => (
+const BusinessDetails: React.FC<{ profile: BusinessProfileFormData }> = ({ profile }) => (
   <View className="bg-gray-900 border border-gray-800 rounded-2xl px-4 mb-5">
     <Typography variant="subheading" className="text-white py-4 border-b border-gray-800/60">
       Business Details
@@ -96,32 +96,30 @@ export const BusinessProfile: React.FC = () => {
   }
 
   return (
-    <View className="flex-1 bg-gray-950">
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 32 }}>
-        <View className="px-5 pt-4">
-          <ProfileImage profile={profile} />
-          <BusinessDetails profile={profile} />
+    <View className="bg-gray-950">
+      <View className="px-5 pt-4 pb-8">
+        <ProfileImage profile={profile} />
+        <BusinessDetails profile={profile} />
 
-          <View className="flex-row items-stretch gap-3">
-            <TouchableOpacity
-              onPress={handleOpenEditModal}
-              className="flex-1 flex-row items-center justify-center bg-gray-900 border border-gray-800 rounded-2xl py-3.5"
-            >
-              <Pencil size={16} color="#3b82f6" />
-              <Typography className="text-primary-400 font-body-semibold ml-2">Edit Profile</Typography>
-            </TouchableOpacity>
+        <View className="flex-row items-stretch gap-3">
+          <TouchableOpacity
+            onPress={handleOpenEditModal}
+            className="flex-1 flex-row items-center justify-center bg-gray-900 border border-gray-800 rounded-2xl py-3.5"
+          >
+            <Pencil size={16} color="#3b82f6" />
+            <Typography className="text-primary-400 font-body-semibold ml-2">Edit Profile</Typography>
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={handleDeleteProfile}
-              disabled={loading}
-              className="flex-1 flex-row items-center justify-center bg-red-500/10 border border-red-500/25 rounded-2xl py-3.5"
-            >
-              <Trash2 size={16} color="#ef4444" />
-              <Typography className="text-red-400 font-body-semibold ml-2">Delete</Typography>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            onPress={handleDeleteProfile}
+            disabled={loading}
+            className="flex-1 flex-row items-center justify-center bg-red-500/10 border border-red-500/25 rounded-2xl py-3.5"
+          >
+            <Trash2 size={16} color="#ef4444" />
+            <Typography className="text-red-400 font-body-semibold ml-2">Delete</Typography>
+          </TouchableOpacity>
         </View>
-      </ScrollView>
+      </View>
 
       <BusinessProfileForm
         visible={isModalOpen}

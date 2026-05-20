@@ -24,10 +24,9 @@ export const BottomSheetModal: React.FC<BottomSheetModalProps> = ({
             onRequestClose={onClose}
             height={height}
             scrollable={scrollable}
+            contentClassName="bg-gray-950"
         >
-            <View className="flex-1 bg-gray-950">
-                {children}
-            </View>
+            {children}
         </Modal>
     );
 };
