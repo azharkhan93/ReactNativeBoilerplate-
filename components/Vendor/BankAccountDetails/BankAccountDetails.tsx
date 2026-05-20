@@ -1,9 +1,10 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { View, ScrollView } from 'react-native';
 import { Typography, Button, FormInput } from '../../theme';
 import { ShieldCheck, Lock } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useBankAccountDetails, BankFormData } from './hooks/useBankAccountDetails';
+import { useBankAccountDetails, } from './hooks/useBankAccountDetails';
 
 export const BankAccountDetails: React.FC = () => {
     const insets = useSafeAreaInsets();

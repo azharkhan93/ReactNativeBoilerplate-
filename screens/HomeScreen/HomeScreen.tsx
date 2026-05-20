@@ -18,7 +18,7 @@ export interface HomeScreenProps {
 }
 
 
-export const HomeScreen: React.FC<HomeScreenProps> = ({ userRole, onNavigate }) => {
+export const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
   const { featuredServices, nearbyServices, recommendedServices } = useHome();
   
   // Navigation & Action Handlers

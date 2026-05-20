@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { MapPin, BadgeCheck, Pencil, Phone } from 'lucide-react-native';
-import { Typography, Container } from '../../theme';
+import { Typography} from '../../theme';
 import { ProfileAvatar } from '../ProfileAvatar';
 
 export interface ProfileUserInfoProps {

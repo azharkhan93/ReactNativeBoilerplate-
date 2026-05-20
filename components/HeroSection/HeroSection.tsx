@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, Dimensions, NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
+import { View, FlatList, Dimensions, } from 'react-native';
 import { twMerge } from 'tailwind-merge';
 
 export interface HeroSectionProps {

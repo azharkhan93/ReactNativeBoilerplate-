@@ -4,7 +4,7 @@ import { ChevronUp, ChevronDown } from 'lucide-react-native';
 import { Typography } from '@/components/theme';
 import { parseTime, formatTime } from '@/helpers/dateHelpers';
 
-// ─── Stepper ────────────────────────────────────────────────────
+
 const Stepper: React.FC<{
     value: string;
     onInc: () => void;

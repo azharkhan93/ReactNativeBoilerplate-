@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { Typography, Button } from '../../theme';
-import { Plus, Edit2, Trash2, Clock, MapPin, IndianRupee } from 'lucide-react-native';
+import { Plus,  Trash2, Clock, MapPin, IndianRupee } from 'lucide-react-native';
 import { MOCK_SERVICES } from '../vendorProfileConstants';
 import { ServiceManagement } from '../ServiceManagement';
 

@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 
 const IFSC_REGEX = /^[A-Z]{4}0[A-Z0-9]{6}$/;
 
@@ -17,14 +17,18 @@ export const useBankAccountDetails = () => {
     accountNumber: '',
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof BankFormData, string>>>({});
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof BankFormData, string>>
+  >({});
 
   const validate = useCallback(() => {
     const newErrors: Partial<Record<keyof BankFormData, string>> = {};
 
-    if (!formData.accountHolder) newErrors.accountHolder = 'Account holder name is required';
+    if (!formData.accountHolder)
+      newErrors.accountHolder = 'Account holder name is required';
     if (!formData.bankName) newErrors.bankName = 'Bank name is required';
-    if (!formData.accountNumber) newErrors.accountNumber = 'Account number is required';
+    if (!formData.accountNumber)
+      newErrors.accountNumber = 'Account number is required';
 
     if (!formData.ifscCode) {
       newErrors.ifscCode = 'IFSC code is required';
@@ -36,14 +40,17 @@ export const useBankAccountDetails = () => {
     return Object.keys(newErrors).length === 0;
   }, [formData]);
 
-  const handleInputChange = useCallback((value: string, field?: string) => {
-    if (!field) return;
-    const key = field as keyof BankFormData;
-    setFormData(prev => ({ ...prev, [key]: value }));
-    if (errors[key]) {
-      setErrors(prev => ({ ...prev, [key]: undefined }));
-    }
-  }, [errors]);
+  const handleInputChange = useCallback(
+    (value: string, field?: string) => {
+      if (!field) return;
+      const key = field as keyof BankFormData;
+      setFormData(prev => ({ ...prev, [key]: value }));
+      if (errors[key]) {
+        setErrors(prev => ({ ...prev, [key]: undefined }));
+      }
+    },
+    [errors],
+  );
 
   const handleSubmit = useCallback(() => {
     if (validate()) {
@@ -51,8 +58,11 @@ export const useBankAccountDetails = () => {
     }
   }, [formData, validate]);
 
-  const isFormValid = formData.accountHolder && formData.bankName &&
-    IFSC_REGEX.test(formData.ifscCode) && formData.accountNumber;
+  const isFormValid =
+    formData.accountHolder &&
+    formData.bankName &&
+    IFSC_REGEX.test(formData.ifscCode) &&
+    formData.accountNumber;
 
   return {
     formData,
