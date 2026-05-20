@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, ScrollView, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { Typography, Button } from '../../theme';
-import { Clock, Pencil, MapPin, Phone, FileText, Trash2, Building2 } from 'lucide-react-native';
+import { Pencil, Trash2, Building2 } from 'lucide-react-native';
 import { useBusinessProfile, BusinessProfileData } from './hooks/useBusinessProfile';
 import { BusinessProfileForm } from './BusinessProfileForm';
 
@@ -17,28 +17,35 @@ const ProfileImage: React.FC<{ profile: BusinessProfileData }> = ({ profile }) =
   </View>
 );
 
-const CompactMeta: React.FC<{ profile: BusinessProfileData }> = ({ profile }) => (
-  <View className="flex-row flex-wrap gap-2 mb-4">
-    <View className="flex-row items-center bg-gray-900 border border-gray-800 rounded-xl px-3 py-2">
-      <MapPin size={14} color="#a855f7" />
-      <Typography variant="body-sm" className="text-gray-300 ml-2">
-        {profile.serviceRadius}
-      </Typography>
-    </View>
-    <View className="flex-row items-center bg-gray-900 border border-gray-800 rounded-xl px-3 py-2">
-      <Phone size={14} color="#22c55e" />
-      <Typography variant="body-sm" className="text-gray-300 ml-2">
-        +91 {profile.contactNumber}
-      </Typography>
-    </View>
-    {profile.gstNumber ? (
-      <View className="flex-row items-center bg-gray-900 border border-gray-800 rounded-xl px-3 py-2">
-        <FileText size={14} color="#f59e0b" />
-        <Typography variant="body-sm" className="text-gray-300 ml-2">
-          {profile.gstNumber}
-        </Typography>
-      </View>
-    ) : null}
+interface DetailRowProps {
+  label: string;
+  value: string;
+  isLast?: boolean;
+}
+
+const DetailRow: React.FC<DetailRowProps> = ({ label, value, isLast }) => (
+  <View className={`py-3 ${isLast ? '' : 'border-b border-gray-800/60'}`}>
+    <Typography variant="body-sm" className="text-gray-500 mb-1">
+      {label}
+    </Typography>
+    <Typography variant="body-sm" className="text-white leading-5">
+      {value || '—'}
+    </Typography>
+  </View>
+);
+
+const BusinessDetails: React.FC<{ profile: BusinessProfileData }> = ({ profile }) => (
+  <View className="bg-gray-900 border border-gray-800 rounded-2xl px-4 mb-5">
+    <Typography variant="subheading" className="text-white py-4 border-b border-gray-800/60">
+      Business Details
+    </Typography>
+
+    <DetailRow label="Business Name" value={profile.businessName} />
+    <DetailRow label="GST Number" value={profile.gstNumber} />
+    <DetailRow label="Contact Number" value={profile.contactNumber ? `+91 ${profile.contactNumber}` : ''} />
+    <DetailRow label="Business Address" value={profile.address} />
+    <DetailRow label="Service Radius" value={profile.serviceRadius} />
+    <DetailRow label="Operating Hours" value={profile.operatingHours} isLast />
   </View>
 );
 
@@ -93,54 +100,26 @@ export const BusinessProfile: React.FC = () => {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 32 }}>
         <View className="px-5 pt-4">
           <ProfileImage profile={profile} />
+          <BusinessDetails profile={profile} />
 
-          <Typography variant="h3" className="text-white text-xl mb-3">
-            {profile.businessName}
-          </Typography>
+          <View className="flex-row items-stretch gap-3">
+            <TouchableOpacity
+              onPress={handleOpenEditModal}
+              className="flex-1 flex-row items-center justify-center bg-gray-900 border border-gray-800 rounded-2xl py-3.5"
+            >
+              <Pencil size={16} color="#3b82f6" />
+              <Typography className="text-primary-400 font-body-semibold ml-2">Edit Profile</Typography>
+            </TouchableOpacity>
 
-          <CompactMeta profile={profile} />
-
-          <View className="bg-gray-900 border border-gray-800 rounded-2xl px-4 py-3 flex-row items-center mb-4">
-            <View className="w-9 h-9 bg-blue-500/10 rounded-xl items-center justify-center mr-3">
-              <Clock size={18} color="#3b82f6" />
-            </View>
-            <View className="flex-1">
-              <Typography variant="body-sm" className="text-gray-500">
-                Operating Hours
-              </Typography>
-              <Typography variant="body-sm" className="text-white mt-0.5">
-                {profile.operatingHours}
-              </Typography>
-            </View>
+            <TouchableOpacity
+              onPress={handleDeleteProfile}
+              disabled={loading}
+              className="flex-1 flex-row items-center justify-center bg-red-500/10 border border-red-500/25 rounded-2xl py-3.5"
+            >
+              <Trash2 size={16} color="#ef4444" />
+              <Typography className="text-red-400 font-body-semibold ml-2">Delete</Typography>
+            </TouchableOpacity>
           </View>
-
-          {profile.address ? (
-            <View className="bg-gray-900 border border-gray-800 rounded-2xl px-4 py-3 mb-5">
-              <Typography variant="body-sm" className="text-gray-500 mb-1">
-                Address
-              </Typography>
-              <Typography variant="body-sm" className="text-gray-300 leading-5">
-                {profile.address}
-              </Typography>
-            </View>
-          ) : null}
-
-          <TouchableOpacity
-            onPress={handleOpenEditModal}
-            className="flex-row items-center justify-center bg-gray-900 border border-gray-800 rounded-2xl py-3.5 mb-3"
-          >
-            <Pencil size={16} color="#3b82f6" />
-            <Typography className="text-primary-400 font-body-semibold ml-2">Edit Profile</Typography>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={handleDeleteProfile}
-            disabled={loading}
-            className="flex-row items-center justify-center py-3"
-          >
-            <Trash2 size={16} color="#ef4444" />
-            <Typography className="text-red-400 font-body-medium ml-2 text-sm">Delete Profile</Typography>
-          </TouchableOpacity>
         </View>
       </ScrollView>
 
