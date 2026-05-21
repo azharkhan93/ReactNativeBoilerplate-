@@ -29,7 +29,7 @@ export const useManageServices = () => {
 
   // 1. Fetch Vendor Profile to get vendorProfileId
   const { data: profileData, loading: loadingProfile } = useQuery(GET_VENDOR_PROFILE, {
-    variables: { userId },
+    variables: { userId: userId ?? '' },
     skip: !userId,
   });
 
@@ -45,7 +45,7 @@ export const useManageServices = () => {
   const [updateService, { loading: updating }] = useMutation(UPDATE_VENDOR_SERVICE);
   const [deleteService, { loading: deleting }] = useMutation(DELETE_VENDOR_SERVICE);
 
-  // Synchronize services from GraphQL query to local state
+
   useEffect(() => {
     if (servicesData?.getVendorServices) {
       setServices(servicesData.getVendorServices.map(s => ({
@@ -82,11 +82,12 @@ export const useManageServices = () => {
     duration: string;
     location: string;
     description: string;
+    images?: string[];
   }) => {
     if (!vendorProfileId) return;
 
     // Parse duration into a number of minutes (e.g. "45 mins" -> 45)
-    const durationMinutes = parseInt(data.duration.replace(/[^0-9]/g, '')) || 30;
+    const durationMinutes = parseInt(data.duration.replace(/[^0-9]/g, ''), 10) || 30;
 
     const payload = {
       vendorProfileId,
@@ -96,7 +97,7 @@ export const useManageServices = () => {
       duration: durationMinutes,
       location: data.location,
       features: [],
-      images: [],
+      images: data.images || [],
     };
 
     try {

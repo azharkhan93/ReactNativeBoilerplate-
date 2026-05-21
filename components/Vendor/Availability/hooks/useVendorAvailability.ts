@@ -15,15 +15,6 @@ const DAY_TO_NUMBER: Record<string, number> = {
   Sunday: 7,
 };
 
-const NUMBER_TO_DAY: Record<number, string> = {
-  1: 'Monday',
-  2: 'Tuesday',
-  3: 'Wednesday',
-  4: 'Thursday',
-  5: 'Friday',
-  6: 'Saturday',
-  7: 'Sunday',
-};
 
 const MONTH_NAMES = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
@@ -42,7 +33,7 @@ export const useVendorAvailability = () => {
 
   // 1. Fetch Vendor Profile to get vendorProfileId
   const { data: profileData, loading: loadingProfile } = useQuery(GET_VENDOR_PROFILE, {
-    variables: { userId },
+    variables: { userId: userId ?? '' },
     skip: !userId,
   });
 
@@ -130,6 +121,31 @@ export const useVendorAvailability = () => {
     setBreaks(prev => prev.filter(b => b.id !== id));
   }, []);
 
+  const handleAddBreak = useCallback((label: string, startTime: string, endTime: string) => {
+    setBreaks(prev => [
+      ...prev,
+      {
+        id: `temp-${Date.now()}`,
+        label,
+        time: `${startTime} - ${endTime}`,
+        repeat: 'Daily',
+      },
+    ]);
+  }, []);
+
+  const handleAddException = useCallback((label: string, month: string, day: number, type: 'blocked' | 'shortened') => {
+    setExceptions(prev => [
+      ...prev,
+      {
+        id: `temp-${Date.now()}`,
+        month,
+        day,
+        label,
+        type,
+      },
+    ]);
+  }, []);
+
   const handleSave = useCallback(async () => {
     if (!vendorProfileId) return;
 
@@ -191,6 +207,8 @@ export const useVendorAvailability = () => {
     handleChangeStart,
     handleChangeEnd,
     handleRemoveBreak,
+    handleAddBreak,
+    handleAddException,
     handleSave,
   };
 };

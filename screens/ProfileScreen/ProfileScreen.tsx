@@ -55,10 +55,10 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({ userRole, onNaviga
       <ProfileHeader title={isVendor ? "Provider Profile" : "My Profile"} onRightActionPress={() => {}} rightIcon="settings" />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <ProfileUserInfo
-          name={isVendor ? "Sparkle Detailing Co." : userData.name}
-          subtitle={isVendor ? undefined : userData.phone}
-          location={isVendor ? userData.location : undefined}
-          isVerified={isVendor}
+          name={userData.name}
+          subtitle={userData.phone}
+          location={userData.location}
+          isVerified={userData.isVerified}
           onEditAvatar={handleEditAvatar}
           onEditProfile={handleEditProfile}
         />
