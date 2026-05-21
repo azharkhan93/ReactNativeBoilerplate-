@@ -1,6 +1,10 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client/react';
-import { GET_VENDOR_PROFILE, GET_VENDOR_AVAILABILITY, SAVE_FULL_AVAILABILITY } from '../../vendorQueries';
+import {
+  GET_VENDOR_PROFILE,
+  GET_VENDOR_AVAILABILITY,
+  SAVE_FULL_AVAILABILITY,
+} from '../../vendorQueries';
 import { DaySchedule, BreakTime, AvailabilityException } from '../types/types';
 import { DAYS } from '../constants';
 import { getUserId } from '@/utils/store/authStore';
@@ -15,8 +19,20 @@ const DAY_TO_NUMBER: Record<string, number> = {
   Sunday: 7,
 };
 
-
-const MONTH_NAMES = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+const MONTH_NAMES = [
+  'JAN',
+  'FEB',
+  'MAR',
+  'APR',
+  'MAY',
+  'JUN',
+  'JUL',
+  'AUG',
+  'SEP',
+  'OCT',
+  'NOV',
+  'DEC',
+];
 
 export const useVendorAvailability = () => {
   const [userId, setUserId] = useState<string | null>(null);
@@ -32,20 +48,29 @@ export const useVendorAvailability = () => {
   const [exceptions, setExceptions] = useState<AvailabilityException[]>([]);
 
   // 1. Fetch Vendor Profile to get vendorProfileId
-  const { data: profileData, loading: loadingProfile } = useQuery(GET_VENDOR_PROFILE, {
-    variables: { userId: userId ?? '' },
-    skip: !userId,
-  });
+  const { data: profileData, loading: loadingProfile } = useQuery(
+    GET_VENDOR_PROFILE,
+    {
+      variables: { userId: userId ?? '' },
+      skip: !userId,
+    },
+  );
 
   const vendorProfileId = profileData?.getVendorProfile?.id;
 
   // 2. Fetch Availability once vendorProfileId is loaded
-  const { data: availData, loading: loadingAvail, refetch: refetchAvail } = useQuery(GET_VENDOR_AVAILABILITY, {
+  const {
+    data: availData,
+    loading: loadingAvail,
+    refetch: refetchAvail,
+  } = useQuery(GET_VENDOR_AVAILABILITY, {
     variables: { vendorProfileId: vendorProfileId || '' },
     skip: !vendorProfileId,
   });
 
-  const [saveFullAvailability, { loading: saving }] = useMutation(SAVE_FULL_AVAILABILITY);
+  const [saveFullAvailability, { loading: saving }] = useMutation(
+    SAVE_FULL_AVAILABILITY,
+  );
 
   // Sync GQL availability payload with local React state
   useEffect(() => {
@@ -66,24 +91,28 @@ export const useVendorAvailability = () => {
       setSchedule(newSchedule);
 
       // 2. Map breaks
-      setBreaks(avail.breaks.map(b => ({
-        id: b.id,
-        label: b.name,
-        time: `${b.startTime} - ${b.endTime}`,
-        repeat: 'Daily',
-      })));
+      setBreaks(
+        avail.breaks.map(b => ({
+          id: b.id,
+          label: b.name,
+          time: `${b.startTime} - ${b.endTime}`,
+          repeat: 'Daily',
+        })),
+      );
 
       // 3. Map exceptions
-      setExceptions(avail.exceptions.map(ex => {
-        const dateObj = new Date(ex.date);
-        return {
-          id: ex.id,
-          month: MONTH_NAMES[dateObj.getMonth()] || 'MAY',
-          day: dateObj.getDate() || 1,
-          label: ex.description || 'Custom Exception',
-          type: (ex.type as any) === 'BLOCKED' ? 'blocked' : 'shortened',
-        };
-      }));
+      setExceptions(
+        avail.exceptions.map(ex => {
+          const dateObj = new Date(ex.date);
+          return {
+            id: ex.id,
+            month: MONTH_NAMES[dateObj.getMonth()] || 'MAY',
+            day: dateObj.getDate() || 1,
+            label: ex.description || 'Custom Exception',
+            type: (ex.type as any) === 'BLOCKED' ? 'blocked' : 'shortened',
+          };
+        }),
+      );
     }
   }, [availData]);
 
@@ -121,30 +150,41 @@ export const useVendorAvailability = () => {
     setBreaks(prev => prev.filter(b => b.id !== id));
   }, []);
 
-  const handleAddBreak = useCallback((label: string, startTime: string, endTime: string) => {
-    setBreaks(prev => [
-      ...prev,
-      {
-        id: `temp-${Date.now()}`,
-        label,
-        time: `${startTime} - ${endTime}`,
-        repeat: 'Daily',
-      },
-    ]);
-  }, []);
+  const handleAddBreak = useCallback(
+    (label: string, startTime: string, endTime: string) => {
+      setBreaks(prev => [
+        ...prev,
+        {
+          id: `temp-${Date.now()}`,
+          label,
+          time: `${startTime} - ${endTime}`,
+          repeat: 'Daily',
+        },
+      ]);
+    },
+    [],
+  );
 
-  const handleAddException = useCallback((label: string, month: string, day: number, type: 'blocked' | 'shortened') => {
-    setExceptions(prev => [
-      ...prev,
-      {
-        id: `temp-${Date.now()}`,
-        month,
-        day,
-        label,
-        type,
-      },
-    ]);
-  }, []);
+  const handleAddException = useCallback(
+    (
+      label: string,
+      month: string,
+      day: number,
+      type: 'blocked' | 'shortened',
+    ) => {
+      setExceptions(prev => [
+        ...prev,
+        {
+          id: `temp-${Date.now()}`,
+          month,
+          day,
+          label,
+          type,
+        },
+      ]);
+    },
+    [],
+  );
 
   const handleSave = useCallback(async () => {
     if (!vendorProfileId) return;
@@ -170,7 +210,11 @@ export const useVendorAvailability = () => {
       // Form date string safely for current year
       const currentYear = new Date().getFullYear();
       const monthIdx = MONTH_NAMES.indexOf(ex.month);
-      const dateVal = new Date(currentYear, monthIdx !== -1 ? monthIdx : 4, ex.day);
+      const dateVal = new Date(
+        currentYear,
+        monthIdx !== -1 ? monthIdx : 4,
+        ex.day,
+      );
 
       return {
         date: dateVal,
@@ -196,7 +240,14 @@ export const useVendorAvailability = () => {
     } catch (err) {
       console.error('Failed to save availability:', err);
     }
-  }, [vendorProfileId, schedule, breaks, exceptions, saveFullAvailability, refetchAvail]);
+  }, [
+    vendorProfileId,
+    schedule,
+    breaks,
+    exceptions,
+    saveFullAvailability,
+    refetchAvail,
+  ]);
 
   return {
     schedule,
