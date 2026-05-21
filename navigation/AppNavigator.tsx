@@ -10,6 +10,7 @@ import { PhoneVerificationModal } from '@/components/Verification/PhoneVerificat
 import { VENDOR_TABS, CUSTOMER_TABS, HIDDEN_TOPBAR_ROUTES } from './tabs';
 import { ReviewSuccessScreen } from '@/screens/ReviewSuccessScreen';
 import { UserRole } from '../__generated__/graphql';
+import { setAuthData } from '@/utils/store/authStore';
 
 export const AppNavigator: React.FC = () => {
     const [activeTab, setActiveTab] = useState('home');
@@ -25,6 +26,7 @@ export const AppNavigator: React.FC = () => {
             setTimeout(() => setShowPhoneModal(true), 500);
         } else {
             setActiveTab('dashboard');
+            setTimeout(() => setShowPhoneModal(true), 500);
         }
     };
 
@@ -70,9 +72,12 @@ export const AppNavigator: React.FC = () => {
 
             <PhoneVerificationModal
                 visible={showPhoneModal}
+                role={userRole}
                 onClose={() => setShowPhoneModal(false)}
-                onSuccess={(status) => {
-                    console.log('Phone Verification Status:', status);
+                onSuccess={(status, token, uid) => {
+                    if (token && uid) {
+                        setAuthData(token, uid);
+                    }
                 }}
             />
         </View>

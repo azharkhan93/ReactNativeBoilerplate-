@@ -1,1 +1,1 @@
-export * from './AvailabilityModal';
+export * from './AvailabilityContent';

@@ -1,4 +1,4 @@
-import { LucideIcon, Shield, Zap, Star, Clock, Car } from 'lucide-react-native';
+import {  Shield, Zap, Star, Clock, Car } from 'lucide-react-native';
 
 export const USER_ROLES = {
     CUSTOMER: 'customer',

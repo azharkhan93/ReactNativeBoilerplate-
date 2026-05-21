@@ -7,13 +7,16 @@ import { isValidIndianPhoneNumber } from '@/utils/validationHelper';
 import { PhoneStep } from './PhoneStep';
 import { OtpStep } from './OtpStep';
 
+import { UserRole } from '../../../__generated__/graphql';
+
 type PhoneVerificationModalProps = {
     visible: boolean;
+    role?: UserRole | null;
     onClose: () => void;
-    onSuccess?: (sid: string) => void;
+    onSuccess?: (status: string, token?: string, userId?: string) => void;
 }
 
-export const PhoneVerificationModal: React.FC<PhoneVerificationModalProps> = ({ visible, onClose, onSuccess }) => {
+export const PhoneVerificationModal: React.FC<PhoneVerificationModalProps> = ({ visible, role, onClose, onSuccess }) => {
     const [step, setStep] = useState<'phone' | 'otp'>('phone');
     const { phoneNumber, setPhoneNumber, loading: requestingSms, handleRequestOtp, error: phoneError } = usePhoneVerification({
         onSuccess: (sid) => {
@@ -24,8 +27,9 @@ export const PhoneVerificationModal: React.FC<PhoneVerificationModalProps> = ({ 
 
     const { loading: verifyingOtp, error: otpError, handleVerify } = useOtpVerification({
         phone: `+91${phoneNumber}`,
-        onSuccess: () => {
-            onSuccess?.('verified');
+        role,
+        onSuccess: (token, userId) => {
+            onSuccess?.('verified', token, userId);
             onClose();
         }
     });

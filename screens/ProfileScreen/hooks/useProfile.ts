@@ -11,7 +11,7 @@ const MOCK_USER = {
 };
 
 export const useProfile = (userRole?: UserRole | null) => {
-  const [userData, setUserData] = useState(MOCK_USER);
+  const [userData, ] = useState(MOCK_USER);
   const isVendor = userRole === UserRole.Provider;
 
   const handleLogout = useCallback(() => {

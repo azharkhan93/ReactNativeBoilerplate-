@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { View, TextInput } from 'react-native';
 import { Typography } from '../../theme/Typography';

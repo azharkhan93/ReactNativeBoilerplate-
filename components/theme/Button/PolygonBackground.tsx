@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import Svg, { Path, Defs, LinearGradient, Stop, Rect } from 'react-native-svg';
+import Svg, { Path, Defs, LinearGradient, Stop,  } from 'react-native-svg';
 
 interface PolygonBackgroundProps {
     variant: 'primary' | 'outlined' | 'disabled';

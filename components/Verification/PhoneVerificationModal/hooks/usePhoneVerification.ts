@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useMutation } from '@apollo/client/react';
 import { gql } from '../../../../__generated__';
 import { useState } from 'react';
@@ -40,7 +41,7 @@ export const usePhoneVerification = ({ onSuccess }: UsePhoneVerificationProps = 
                 onSuccess?.(data.requestOtp.sid || '');
             }
         } catch (err) {
-            // Error is handled by Apollo's error state
+           
         }
     };
 
