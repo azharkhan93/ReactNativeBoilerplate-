@@ -57,7 +57,7 @@ export const ManageServices: React.FC = () => {
                                     <Typography variant="subheading" className="flex-1 mr-4 text-white">{service.name}</Typography>
                                     <View className="bg-green-500/10 px-3 py-1 rounded-full flex-row items-center border border-green-500/20">
                                         <IndianRupee size={14} color="#22c55e" />
-                                        <Typography className="text-green-500 font-body-bold">₹{service.price}</Typography>
+                                        <Typography className="text-green-500 font-body-bold ml-1">{service.price}</Typography>
                                     </View>
                                 </View>
 
@@ -91,12 +91,6 @@ export const ManageServices: React.FC = () => {
                                 </View>
                             </View>
                         ))
-                    )}
-
-                    {services.length > 0 && (
-                        <Button variant="primary" className="mt-2 shadow-lg shadow-primary-500/10" onPress={handleOpenAddModal}>
-                            Add New Service
-                        </Button>
                     )}
                 </View>
             </ScrollView>

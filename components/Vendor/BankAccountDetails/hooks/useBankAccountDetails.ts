@@ -32,7 +32,7 @@ export const useBankAccountDetails = () => {
 
   // 1. Fetch Vendor Profile to get vendorProfileId
   const { data: profileData, loading: loadingProfile } = useQuery(GET_VENDOR_PROFILE, {
-    variables: { userId },
+    variables: { userId: userId || '' },
     skip: !userId,
   });
 

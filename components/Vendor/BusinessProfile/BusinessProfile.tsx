@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { Typography, Button } from '../../theme';
 import { Pencil, Trash2, Building2 } from 'lucide-react-native';
 import { useBusinessProfile, BusinessProfileFormData } from './hooks/useBusinessProfile';
@@ -40,12 +40,12 @@ const BusinessDetails: React.FC<{ profile: BusinessProfileFormData }> = ({ profi
       Business Details
     </Typography>
 
-    <DetailRow label="Business Name" value={profile.businessName} />
-    <DetailRow label="GST Number" value={profile.gstNumber} />
+    <DetailRow label="Business Name" value={profile.businessName || ''} />
+    <DetailRow label="GST Number" value={profile.gstNumber || ''} />
     <DetailRow label="Contact Number" value={profile.contactNumber ? `+91 ${profile.contactNumber}` : ''} />
-    <DetailRow label="Business Address" value={profile.address} />
-    <DetailRow label="Service Radius" value={profile.serviceRadius} />
-    <DetailRow label="Operating Hours" value={profile.operatingHours} isLast />
+    <DetailRow label="Business Address" value={profile.address || ''} />
+    <DetailRow label="Service Radius" value={profile.serviceRadius || ''} />
+    <DetailRow label="Operating Hours" value={profile.operatingHours || ''} isLast />
   </View>
 );
 
@@ -96,30 +96,32 @@ export const BusinessProfile: React.FC = () => {
   }
 
   return (
-    <View className="bg-gray-950">
-      <View className="px-5 pt-4 pb-8">
-        <ProfileImage profile={profile} />
-        <BusinessDetails profile={profile} />
+    <>
+      <ScrollView className="flex-1 bg-gray-950" showsVerticalScrollIndicator={false}>
+        <View className="px-5 pt-4 pb-8">
+          <ProfileImage profile={profile} />
+          <BusinessDetails profile={profile} />
 
-        <View className="flex-row items-stretch gap-3">
-          <TouchableOpacity
-            onPress={handleOpenEditModal}
-            className="flex-1 flex-row items-center justify-center bg-gray-900 border border-gray-800 rounded-2xl py-3.5"
-          >
-            <Pencil size={16} color="#3b82f6" />
-            <Typography className="text-primary-400 font-body-semibold ml-2">Edit Profile</Typography>
-          </TouchableOpacity>
+          <View className="flex-row items-stretch gap-3">
+            <TouchableOpacity
+              onPress={handleOpenEditModal}
+              className="flex-1 flex-row items-center justify-center bg-gray-900 border border-gray-800 rounded-2xl py-3.5"
+            >
+              <Pencil size={16} color="#3b82f6" />
+              <Typography className="text-primary-400 font-body-semibold ml-2">Edit Profile</Typography>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={handleDeleteProfile}
-            disabled={loading}
-            className="flex-1 flex-row items-center justify-center bg-red-500/10 border border-red-500/25 rounded-2xl py-3.5"
-          >
-            <Trash2 size={16} color="#ef4444" />
-            <Typography className="text-red-400 font-body-semibold ml-2">Delete</Typography>
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleDeleteProfile}
+              disabled={loading}
+              className="flex-1 flex-row items-center justify-center bg-red-500/10 border border-red-500/25 rounded-2xl py-3.5"
+            >
+              <Trash2 size={16} color="#ef4444" />
+              <Typography className="text-red-400 font-body-semibold ml-2">Delete</Typography>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </ScrollView>
 
       <BusinessProfileForm
         visible={isModalOpen}
@@ -128,6 +130,6 @@ export const BusinessProfile: React.FC = () => {
         onSave={handleSaveProfile}
         loading={loading}
       />
-    </View>
+    </>
   );
 };

@@ -42,7 +42,7 @@ export const FormInput: React.FC<FormInputProps> = ({
       ) : null}
 
       <View
-        className={`flex-row bg-gray-900 border rounded-2xl overflow-hidden ${
+        className={`w-full flex-row bg-gray-900 border rounded-2xl overflow-hidden ${
           error ? 'border-red-500' : 'border-gray-800'
         } ${isMultiline ? 'items-start' : 'items-center'} ${inputClassName}`}
         style={isMultiline ? { minHeight: 120 } : { minHeight: SINGLE_LINE_HEIGHT }}
@@ -66,7 +66,8 @@ export const FormInput: React.FC<FormInputProps> = ({
           multiline={isMultiline}
           textAlignVertical={isMultiline ? 'top' : 'center'}
           onChangeText={handleTextChange}
-          style={
+          {...props}
+          style={[
             isMultiline
               ? {
                   paddingHorizontal: 16,
@@ -83,9 +84,9 @@ export const FormInput: React.FC<FormInputProps> = ({
                   ...(Platform.OS === 'android'
                     ? { includeFontPadding: false, textAlignVertical: 'center' as const }
                     : {}),
-                }
-          }
-          {...props}
+                },
+            props.style,
+          ]}
         />
       </View>
 

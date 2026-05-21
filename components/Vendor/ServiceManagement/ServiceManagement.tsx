@@ -140,19 +140,25 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
                     />
 
                     <View className="flex-row gap-4">
-                        <FormInput
-                            label="Price (₹)"
-                            placeholder="0.00"
-                            keyboardType="numeric"
-                            value={formData.price}
-                            onChangeText={(text: string) => setFormData({ ...formData, price: text })}
-                        />
-                        <FormInput
-                            label="Duration"
-                            placeholder="30 mins"
-                            value={formData.duration}
-                            onChangeText={(text: string) => setFormData({ ...formData, duration: text })}
-                        />
+                        <View className="flex-1">
+                            <FormInput
+                                style={{ textAlign: 'center' }}
+                                label="Price (₹)"
+                                placeholder="0.00"
+                                keyboardType="numeric"
+                                value={formData.price}
+                                onChangeText={(text: string) => setFormData({ ...formData, price: text })}
+                            />
+                        </View>
+                        <View className="flex-1">
+                            <FormInput
+                                style={{ textAlign: 'center' }}
+                                label="Duration"
+                                placeholder="30 mins"
+                                value={formData.duration}
+                                onChangeText={(text: string) => setFormData({ ...formData, duration: text })}
+                            />
+                        </View>
                     </View>
 
                     <FormInput

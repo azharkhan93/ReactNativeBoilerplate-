@@ -35,7 +35,7 @@ export interface ModalConfigItem {
 export const MODAL_ITEMS: ModalConfigItem[] = [
   { id: 'availability', title: 'Availability' },
   { id: 'bank', title: 'Bank Account Details' },
-  { id: 'business', title: 'Business Profile', height: '85%', scrollable: true },
+  { id: 'business', title: 'Business Profile', height: '85%', scrollable: false },
   { id: 'services', title: 'Manage Services' },
   { id: 'profile', title: 'Edit My Profile', height: '85%', isPlaceholder: true, placeholderText: 'Profile Edit Content' },
   { id: 'orders', title: 'My Orders', isPlaceholder: true, placeholderText: 'My Orders Content' },
