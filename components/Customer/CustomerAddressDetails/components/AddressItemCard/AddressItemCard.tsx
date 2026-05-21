@@ -54,8 +54,12 @@ export const AddressItemCard: React.FC<AddressItemCardProps> = ({
             <Typography className="text-white font-body-bold text-sm">
               {address.label}
             </Typography>
-            <View className={`px-2 py-0.5 rounded-full border ${colors.bg} ${colors.border}`}>
-              <Typography className={`text-[9px] font-body-bold tracking-widest uppercase ${colors.text}`}>
+            <View
+              className={`px-2 py-0.5 rounded-full border ${colors.bg} ${colors.border}`}
+            >
+              <Typography
+                className={`text-[9px] font-body-bold tracking-widest uppercase ${colors.text}`}
+              >
                 {address.type}
               </Typography>
             </View>

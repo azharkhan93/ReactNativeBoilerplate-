@@ -1,4 +1,7 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { useQuery, useMutation } from '@apollo/client/react';
+import { GET_CUSTOMER_PROFILE, UPSERT_CUSTOMER_PROFILE } from '../../customerQueries';
+import { getUserId } from '@/utils/store/authStore';
 
 export interface CustomerProfileData {
   name: string;
@@ -8,16 +11,47 @@ export interface CustomerProfileData {
 }
 
 const DEFAULT_PROFILE: CustomerProfileData = {
-  name: 'Md Abu Ubayda',
-  phone: '+88001712346789',
-  email: 'ubayda@example.com',
-  location: 'Greater Seattle Area, WA',
+  name: '',
+  phone: '',
+  email: '',
+  location: '',
 };
 
 export const useCustomerProfile = (onSaveCallback?: () => void) => {
+  const [userId, setUserId] = useState<string | null>(null);
   const [profile, setProfile] = useState<CustomerProfileData>(DEFAULT_PROFILE);
-  const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Partial<Record<keyof CustomerProfileData, string>>>({});
+
+  // 1. Get current user ID
+  useEffect(() => {
+    getUserId().then(id => {
+      if (id) setUserId(id);
+    });
+  }, []);
+
+  // 2. Query customer profile
+  const { data, loading: loadingQuery } = useQuery(GET_CUSTOMER_PROFILE, {
+    variables: { userId: userId ?? '' },
+    skip: !userId,
+  });
+
+  // 3. Populate state when query data is loaded
+  useEffect(() => {
+    if (data?.getCustomerProfile) {
+      const cp = data.getCustomerProfile;
+      setProfile({
+        name: cp.name || '',
+        phone: cp.phone || '',
+        email: cp.email || '',
+        location: cp.location || '',
+      });
+    }
+  }, [data]);
+
+  // 4. Mutation to upsert profile
+  const [upsertProfile, { loading: saving }] = useMutation(UPSERT_CUSTOMER_PROFILE, {
+    refetchQueries: userId ? [{ query: GET_CUSTOMER_PROFILE, variables: { userId } }] : [],
+  });
 
   const handleChange = useCallback((field: keyof CustomerProfileData, value: string) => {
     setProfile(prev => ({ ...prev, [field]: value }));
@@ -39,16 +73,26 @@ export const useCustomerProfile = (onSaveCallback?: () => void) => {
       return;
     }
 
-    setLoading(true);
-    // Simulate API saving delay
-    await new Promise<void>(resolve => setTimeout(resolve, 800));
-    setLoading(false);
-    onSaveCallback?.();
-  }, [profile, onSaveCallback]);
+    try {
+      await upsertProfile({
+        variables: {
+          input: {
+            name: profile.name,
+            phone: profile.phone,
+            email: profile.email,
+            location: profile.location,
+          },
+        },
+      });
+      onSaveCallback?.();
+    } catch (err) {
+      console.error('Error saving customer profile:', err);
+    }
+  }, [profile, upsertProfile, onSaveCallback]);
 
   return {
     profile,
-    loading,
+    loading: loadingQuery || saving,
     errors,
     handleChange,
     handleSave,

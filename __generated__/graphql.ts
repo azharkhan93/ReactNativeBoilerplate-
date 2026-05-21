@@ -84,6 +84,33 @@ export type CreateVendorServiceInput = {
   vendorProfileId: Scalars['ID']['input'];
 };
 
+export type CustomerAddressType = {
+  __typename?: 'CustomerAddressType';
+  city: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  customerProfileId: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
+  label: Scalars['String']['output'];
+  state: Scalars['String']['output'];
+  street: Scalars['String']['output'];
+  type: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  zipCode: Scalars['String']['output'];
+};
+
+export type CustomerProfileType = {
+  __typename?: 'CustomerProfileType';
+  addresses?: Maybe<Array<Maybe<CustomerAddressType>>>;
+  createdAt: Scalars['DateTime']['output'];
+  email?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  location?: Maybe<Scalars['String']['output']>;
+  name: Scalars['String']['output'];
+  phone: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  userId: Scalars['String']['output'];
+};
+
 export enum ExceptionType {
   BlockedOut = 'BLOCKED_OUT',
   ShortenedHours = 'SHORTENED_HOURS'
@@ -104,10 +131,13 @@ export type Mutation = {
   addVendorBreak: VendorBreak;
   addVendorException: VendorException;
   adminLogin: AdminAuthPayloadType;
+  createCustomerAddress: CustomerAddressType;
   createRole: Role;
   createServiceCategory: ServiceCategory;
   createVendorProfile: VendorProfileType;
   createVendorService: VendorService;
+  deleteCustomerAddress: Scalars['Boolean']['output'];
+  deleteCustomerProfile: Scalars['Boolean']['output'];
   deleteHeroContent: Scalars['Boolean']['output'];
   deleteImage: Scalars['Boolean']['output'];
   deleteServiceCategory: Scalars['Boolean']['output'];
@@ -122,6 +152,7 @@ export type Mutation = {
   requestOtp: SmsResponse;
   saveFullAvailability: VendorAvailabilityResponse;
   syncServiceCategories: Array<ServiceCategory>;
+  updateCustomerAddress: CustomerAddressType;
   updateHeroContent: HeroContent;
   updateServiceCategory: ServiceCategory;
   updateVendorBreak: VendorBreak;
@@ -131,6 +162,7 @@ export type Mutation = {
   updateVendorScheduleItem: VendorSchedule;
   updateVendorService: VendorService;
   uploadImage: UploadResponseType;
+  upsertCustomerProfile: CustomerProfileType;
   upsertVendorBankDetails: BankDetailsType;
   verifyOtp: VerifyOtpResponse;
 };
@@ -154,6 +186,12 @@ export type MutationAdminLoginArgs = {
 };
 
 
+export type MutationCreateCustomerAddressArgs = {
+  customerProfileId: Scalars['ID']['input'];
+  input: UpsertCustomerAddressInput;
+};
+
+
 export type MutationCreateRoleArgs = {
   name: UserRole;
 };
@@ -171,6 +209,16 @@ export type MutationCreateVendorProfileArgs = {
 
 export type MutationCreateVendorServiceArgs = {
   input: CreateVendorServiceInput;
+};
+
+
+export type MutationDeleteCustomerAddressArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteCustomerProfileArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -237,6 +285,12 @@ export type MutationSyncServiceCategoriesArgs = {
 };
 
 
+export type MutationUpdateCustomerAddressArgs = {
+  id: Scalars['ID']['input'];
+  input: UpsertCustomerAddressInput;
+};
+
+
 export type MutationUpdateHeroContentArgs = {
   input: UpdateHeroContentInput;
 };
@@ -289,6 +343,11 @@ export type MutationUploadImageArgs = {
 };
 
 
+export type MutationUpsertCustomerProfileArgs = {
+  input: UpsertCustomerProfileInput;
+};
+
+
 export type MutationUpsertVendorBankDetailsArgs = {
   input: UpsertBankDetailsInput;
   vendorProfileId: Scalars['ID']['input'];
@@ -302,6 +361,8 @@ export type MutationVerifyOtpArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  getCustomerAddresses: Array<CustomerAddressType>;
+  getCustomerProfile?: Maybe<CustomerProfileType>;
   getHeroContent?: Maybe<HeroContent>;
   getVendorAvailability: VendorAvailabilityResponse;
   getVendorBankDetails?: Maybe<BankDetailsType>;
@@ -315,6 +376,16 @@ export type Query = {
   serviceCategories: Array<ServiceCategory>;
   user: UserType;
   users: Array<UserType>;
+};
+
+
+export type QueryGetCustomerAddressesArgs = {
+  customerProfileId: Scalars['ID']['input'];
+};
+
+
+export type QueryGetCustomerProfileArgs = {
+  userId: Scalars['String']['input'];
 };
 
 
@@ -461,6 +532,22 @@ export type UpsertBankDetailsInput = {
   ifscCode: Scalars['String']['input'];
 };
 
+export type UpsertCustomerAddressInput = {
+  city: Scalars['String']['input'];
+  label: Scalars['String']['input'];
+  state: Scalars['String']['input'];
+  street: Scalars['String']['input'];
+  type: Scalars['String']['input'];
+  zipCode: Scalars['String']['input'];
+};
+
+export type UpsertCustomerProfileInput = {
+  email?: InputMaybe<Scalars['String']['input']>;
+  location?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
+  phone: Scalars['String']['input'];
+};
+
 /** Available user roles */
 export enum UserRole {
   Customer = 'CUSTOMER',
@@ -551,6 +638,50 @@ export type VerifyOtpResponse = {
   message: Scalars['String']['output'];
   success: Scalars['Boolean']['output'];
 };
+
+export type GetCustomerProfileQueryVariables = Exact<{
+  userId: Scalars['String']['input'];
+}>;
+
+
+export type GetCustomerProfileQuery = { __typename?: 'Query', getCustomerProfile?: { __typename?: 'CustomerProfileType', id: string, userId: string, name: string, phone: string, email?: string | null, location?: string | null } | null };
+
+export type UpsertCustomerProfileMutationVariables = Exact<{
+  input: UpsertCustomerProfileInput;
+}>;
+
+
+export type UpsertCustomerProfileMutation = { __typename?: 'Mutation', upsertCustomerProfile: { __typename?: 'CustomerProfileType', id: string, userId: string, name: string, phone: string, email?: string | null, location?: string | null } };
+
+export type GetCustomerAddressesQueryVariables = Exact<{
+  customerProfileId: Scalars['ID']['input'];
+}>;
+
+
+export type GetCustomerAddressesQuery = { __typename?: 'Query', getCustomerAddresses: Array<{ __typename?: 'CustomerAddressType', id: string, customerProfileId: string, label: string, street: string, city: string, state: string, zipCode: string, type: string }> };
+
+export type CreateCustomerAddressMutationVariables = Exact<{
+  customerProfileId: Scalars['ID']['input'];
+  input: UpsertCustomerAddressInput;
+}>;
+
+
+export type CreateCustomerAddressMutation = { __typename?: 'Mutation', createCustomerAddress: { __typename?: 'CustomerAddressType', id: string, customerProfileId: string, label: string, street: string, city: string, state: string, zipCode: string, type: string } };
+
+export type UpdateCustomerAddressMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  input: UpsertCustomerAddressInput;
+}>;
+
+
+export type UpdateCustomerAddressMutation = { __typename?: 'Mutation', updateCustomerAddress: { __typename?: 'CustomerAddressType', id: string, customerProfileId: string, label: string, street: string, city: string, state: string, zipCode: string, type: string } };
+
+export type DeleteCustomerAddressMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteCustomerAddressMutation = { __typename?: 'Mutation', deleteCustomerAddress: boolean };
 
 export type CreateNewRoleMutationVariables = Exact<{
   roleName: UserRole;
@@ -684,6 +815,12 @@ export type RequestOtpMutationVariables = Exact<{
 export type RequestOtpMutation = { __typename?: 'Mutation', requestOtp: { __typename?: 'SmsResponse', success: boolean, message?: string | null, sid?: string | null } };
 
 
+export const GetCustomerProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCustomerProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getCustomerProfile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"location"}}]}}]}}]} as unknown as DocumentNode<GetCustomerProfileQuery, GetCustomerProfileQueryVariables>;
+export const UpsertCustomerProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpsertCustomerProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpsertCustomerProfileInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upsertCustomerProfile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"location"}}]}}]}}]} as unknown as DocumentNode<UpsertCustomerProfileMutation, UpsertCustomerProfileMutationVariables>;
+export const GetCustomerAddressesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCustomerAddresses"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"customerProfileId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getCustomerAddresses"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"customerProfileId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"customerProfileId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"customerProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"zipCode"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]} as unknown as DocumentNode<GetCustomerAddressesQuery, GetCustomerAddressesQueryVariables>;
+export const CreateCustomerAddressDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateCustomerAddress"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"customerProfileId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpsertCustomerAddressInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createCustomerAddress"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"customerProfileId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"customerProfileId"}}},{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"customerProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"zipCode"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]} as unknown as DocumentNode<CreateCustomerAddressMutation, CreateCustomerAddressMutationVariables>;
+export const UpdateCustomerAddressDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateCustomerAddress"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpsertCustomerAddressInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateCustomerAddress"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"customerProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"zipCode"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]} as unknown as DocumentNode<UpdateCustomerAddressMutation, UpdateCustomerAddressMutationVariables>;
+export const DeleteCustomerAddressDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteCustomerAddress"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteCustomerAddress"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<DeleteCustomerAddressMutation, DeleteCustomerAddressMutationVariables>;
 export const CreateNewRoleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateNewRole"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roleName"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserRole"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createRole"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roleName"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}}]} as unknown as DocumentNode<CreateNewRoleMutation, CreateNewRoleMutationVariables>;
 export const GetRolesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetRoles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"roles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetRolesQuery, GetRolesQueryVariables>;
 export const GetVendorProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetVendorProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getVendorProfile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"businessName"}},{"kind":"Field","name":{"kind":"Name","value":"imageUri"}},{"kind":"Field","name":{"kind":"Name","value":"gstNumber"}},{"kind":"Field","name":{"kind":"Name","value":"contactNumber"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"serviceRadius"}},{"kind":"Field","name":{"kind":"Name","value":"operatingHours"}}]}}]}}]} as unknown as DocumentNode<GetVendorProfileQuery, GetVendorProfileQueryVariables>;

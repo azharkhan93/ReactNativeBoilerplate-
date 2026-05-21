@@ -14,6 +14,12 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
+    "\n  query GetCustomerProfile($userId: String!) {\n    getCustomerProfile(userId: $userId) {\n      id\n      userId\n      name\n      phone\n      email\n      location\n    }\n  }\n": typeof types.GetCustomerProfileDocument,
+    "\n  mutation UpsertCustomerProfile($input: UpsertCustomerProfileInput!) {\n    upsertCustomerProfile(input: $input) {\n      id\n      userId\n      name\n      phone\n      email\n      location\n    }\n  }\n": typeof types.UpsertCustomerProfileDocument,
+    "\n  query GetCustomerAddresses($customerProfileId: ID!) {\n    getCustomerAddresses(customerProfileId: $customerProfileId) {\n      id\n      customerProfileId\n      label\n      street\n      city\n      state\n      zipCode\n      type\n    }\n  }\n": typeof types.GetCustomerAddressesDocument,
+    "\n  mutation CreateCustomerAddress($customerProfileId: ID!, $input: UpsertCustomerAddressInput!) {\n    createCustomerAddress(customerProfileId: $customerProfileId, input: $input) {\n      id\n      customerProfileId\n      label\n      street\n      city\n      state\n      zipCode\n      type\n    }\n  }\n": typeof types.CreateCustomerAddressDocument,
+    "\n  mutation UpdateCustomerAddress($id: ID!, $input: UpsertCustomerAddressInput!) {\n    updateCustomerAddress(id: $id, input: $input) {\n      id\n      customerProfileId\n      label\n      street\n      city\n      state\n      zipCode\n      type\n    }\n  }\n": typeof types.UpdateCustomerAddressDocument,
+    "\n  mutation DeleteCustomerAddress($id: ID!) {\n    deleteCustomerAddress(id: $id)\n  }\n": typeof types.DeleteCustomerAddressDocument,
     "\n  mutation CreateNewRole($roleName: UserRole!) {\n    createRole(name: $roleName) {\n      id\n      name\n      createdAt\n    }\n  }\n": typeof types.CreateNewRoleDocument,
     "\n  query GetRoles {\n    roles {\n      id\n      name\n    }\n  }\n": typeof types.GetRolesDocument,
     "\n  query GetVendorProfile($userId: String!) {\n    getVendorProfile(userId: $userId) {\n      id\n      userId\n      businessName\n      imageUri\n      gstNumber\n      contactNumber\n      address\n      serviceRadius\n      operatingHours\n    }\n  }\n": typeof types.GetVendorProfileDocument,
@@ -34,6 +40,12 @@ type Documents = {
     "\n  mutation RequestOtp($phone: String!) {\n    requestOtp(phoneNumber: $phone) {\n      success\n      message\n      sid\n    }\n  }\n": typeof types.RequestOtpDocument,
 };
 const documents: Documents = {
+    "\n  query GetCustomerProfile($userId: String!) {\n    getCustomerProfile(userId: $userId) {\n      id\n      userId\n      name\n      phone\n      email\n      location\n    }\n  }\n": types.GetCustomerProfileDocument,
+    "\n  mutation UpsertCustomerProfile($input: UpsertCustomerProfileInput!) {\n    upsertCustomerProfile(input: $input) {\n      id\n      userId\n      name\n      phone\n      email\n      location\n    }\n  }\n": types.UpsertCustomerProfileDocument,
+    "\n  query GetCustomerAddresses($customerProfileId: ID!) {\n    getCustomerAddresses(customerProfileId: $customerProfileId) {\n      id\n      customerProfileId\n      label\n      street\n      city\n      state\n      zipCode\n      type\n    }\n  }\n": types.GetCustomerAddressesDocument,
+    "\n  mutation CreateCustomerAddress($customerProfileId: ID!, $input: UpsertCustomerAddressInput!) {\n    createCustomerAddress(customerProfileId: $customerProfileId, input: $input) {\n      id\n      customerProfileId\n      label\n      street\n      city\n      state\n      zipCode\n      type\n    }\n  }\n": types.CreateCustomerAddressDocument,
+    "\n  mutation UpdateCustomerAddress($id: ID!, $input: UpsertCustomerAddressInput!) {\n    updateCustomerAddress(id: $id, input: $input) {\n      id\n      customerProfileId\n      label\n      street\n      city\n      state\n      zipCode\n      type\n    }\n  }\n": types.UpdateCustomerAddressDocument,
+    "\n  mutation DeleteCustomerAddress($id: ID!) {\n    deleteCustomerAddress(id: $id)\n  }\n": types.DeleteCustomerAddressDocument,
     "\n  mutation CreateNewRole($roleName: UserRole!) {\n    createRole(name: $roleName) {\n      id\n      name\n      createdAt\n    }\n  }\n": types.CreateNewRoleDocument,
     "\n  query GetRoles {\n    roles {\n      id\n      name\n    }\n  }\n": types.GetRolesDocument,
     "\n  query GetVendorProfile($userId: String!) {\n    getVendorProfile(userId: $userId) {\n      id\n      userId\n      businessName\n      imageUri\n      gstNumber\n      contactNumber\n      address\n      serviceRadius\n      operatingHours\n    }\n  }\n": types.GetVendorProfileDocument,
@@ -68,6 +80,30 @@ const documents: Documents = {
  */
 export function gql(source: string): unknown;
 
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetCustomerProfile($userId: String!) {\n    getCustomerProfile(userId: $userId) {\n      id\n      userId\n      name\n      phone\n      email\n      location\n    }\n  }\n"): (typeof documents)["\n  query GetCustomerProfile($userId: String!) {\n    getCustomerProfile(userId: $userId) {\n      id\n      userId\n      name\n      phone\n      email\n      location\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UpsertCustomerProfile($input: UpsertCustomerProfileInput!) {\n    upsertCustomerProfile(input: $input) {\n      id\n      userId\n      name\n      phone\n      email\n      location\n    }\n  }\n"): (typeof documents)["\n  mutation UpsertCustomerProfile($input: UpsertCustomerProfileInput!) {\n    upsertCustomerProfile(input: $input) {\n      id\n      userId\n      name\n      phone\n      email\n      location\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetCustomerAddresses($customerProfileId: ID!) {\n    getCustomerAddresses(customerProfileId: $customerProfileId) {\n      id\n      customerProfileId\n      label\n      street\n      city\n      state\n      zipCode\n      type\n    }\n  }\n"): (typeof documents)["\n  query GetCustomerAddresses($customerProfileId: ID!) {\n    getCustomerAddresses(customerProfileId: $customerProfileId) {\n      id\n      customerProfileId\n      label\n      street\n      city\n      state\n      zipCode\n      type\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreateCustomerAddress($customerProfileId: ID!, $input: UpsertCustomerAddressInput!) {\n    createCustomerAddress(customerProfileId: $customerProfileId, input: $input) {\n      id\n      customerProfileId\n      label\n      street\n      city\n      state\n      zipCode\n      type\n    }\n  }\n"): (typeof documents)["\n  mutation CreateCustomerAddress($customerProfileId: ID!, $input: UpsertCustomerAddressInput!) {\n    createCustomerAddress(customerProfileId: $customerProfileId, input: $input) {\n      id\n      customerProfileId\n      label\n      street\n      city\n      state\n      zipCode\n      type\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UpdateCustomerAddress($id: ID!, $input: UpsertCustomerAddressInput!) {\n    updateCustomerAddress(id: $id, input: $input) {\n      id\n      customerProfileId\n      label\n      street\n      city\n      state\n      zipCode\n      type\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateCustomerAddress($id: ID!, $input: UpsertCustomerAddressInput!) {\n    updateCustomerAddress(id: $id, input: $input) {\n      id\n      customerProfileId\n      label\n      street\n      city\n      state\n      zipCode\n      type\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation DeleteCustomerAddress($id: ID!) {\n    deleteCustomerAddress(id: $id)\n  }\n"): (typeof documents)["\n  mutation DeleteCustomerAddress($id: ID!) {\n    deleteCustomerAddress(id: $id)\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
