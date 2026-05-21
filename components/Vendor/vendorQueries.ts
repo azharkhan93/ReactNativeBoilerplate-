@@ -136,6 +136,12 @@ export const UPSERT_VENDOR_BANK_DETAILS = gql(`
   }
 `);
 
+export const DELETE_VENDOR_BANK_DETAILS = gql(`
+  mutation DeleteVendorBankDetails($id: ID!) {
+    deleteVendorBankDetails(id: $id)
+  }
+`);
+
 export const GET_VENDOR_SERVICES = gql(`
   query GetVendorServices($vendorProfileId: ID!) {
     getVendorServices(vendorProfileId: $vendorProfileId) {

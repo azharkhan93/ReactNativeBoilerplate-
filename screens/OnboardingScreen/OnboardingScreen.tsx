@@ -73,22 +73,6 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) 
     return (
         <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, backgroundColor: '#030712' }}>
             <View style={{ flex: 1 }}>
-                <View style={{
-                    position: 'absolute',
-                    top: 60,
-                    right: 20,
-                    zIndex: 10,
-                }}>
-                    {currentStep < totalSlides && (
-                        <TouchableOpacity
-                            onPress={handleSkip}
-                            className="px-5 py-2.5 bg-black/40 rounded-full border border-white/20 shadow-md"
-                        >
-                            <Typography className="text-white font-body-bold tracking-widest">SKIP</Typography>
-                        </TouchableOpacity>
-                    )}
-                </View>
-
                 {/* Content */}
                 <FlatList
                     ref={flatListRef}
@@ -102,8 +86,27 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) 
                     style={{ flex: 1 }}
                 />
 
-                {/* Footer Navigation */}
-                <View style={{ paddingHorizontal: 32, paddingBottom: 40, backgroundColor: '#030712' }}>
+                {/* Floating SKIP button (Rendered after FlatList to ensure it stays on top of content slides) */}
+                {currentStep < totalSlides && (
+                    <View style={{
+                        position: 'absolute',
+                        top: 60,
+                        right: 20,
+                        zIndex: 20,
+                    }}>
+                        <TouchableOpacity
+                            onPress={handleSkip}
+                            hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+                            className="px-5 py-2.5 bg-black/40 rounded-full border border-white/20 shadow-md"
+                            activeOpacity={0.8}
+                        >
+                            <Typography className="text-white font-body-bold tracking-widest">SKIP</Typography>
+                        </TouchableOpacity>
+                    </View>
+                )}
+
+                {/* Footer Navigation (Solid container with zIndex ensures it stays above overflowing slide content) */}
+                <View style={{ paddingHorizontal: 32, paddingBottom: 40, backgroundColor: '#030712', zIndex: 10 }}>
                     <View style={{
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -112,9 +115,14 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) 
                         marginBottom: 16
                     }}>
                         {/* Back Link */}
-                        <View style={{ width: 60 }}>
+                        <View style={{ width: 80 }}>
                             {currentStep > 0 && (
-                                <TouchableOpacity onPress={handleBack} style={{ paddingVertical: 8 }}>
+                                <TouchableOpacity
+                                    onPress={handleBack}
+                                    hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+                                    style={{ paddingVertical: 8 }}
+                                    activeOpacity={0.7}
+                                >
                                     <Typography className="text-[#A1A1A1] font-body-medium">Back</Typography>
                                 </TouchableOpacity>
                             )}
@@ -124,9 +132,14 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) 
                         <Pagination total={totalSteps} current={currentStep} />
 
                         {/* Next Link */}
-                        <View style={{ width: 60, alignItems: 'flex-end' }}>
+                        <View style={{ width: 80, alignItems: 'flex-end' }}>
                             {(currentStep < totalSteps - 1 && (currentStep !== totalSlides || selectedRole)) && (
-                                <TouchableOpacity onPress={handleNext} style={{ paddingVertical: 8 }}>
+                                <TouchableOpacity
+                                    onPress={handleNext}
+                                    hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
+                                    style={{ paddingVertical: 8 }}
+                                    activeOpacity={0.7}
+                                >
                                     <Typography className="text-[#A1A1A1] font-body-medium text-lg">Next</Typography>
                                 </TouchableOpacity>
                             )}

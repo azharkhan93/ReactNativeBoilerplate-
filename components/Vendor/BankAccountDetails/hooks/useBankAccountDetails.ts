@@ -1,34 +1,39 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client/react';
-import { GET_VENDOR_PROFILE, GET_VENDOR_BANK_DETAILS, UPSERT_VENDOR_BANK_DETAILS } from '../../vendorQueries';
+import {
+  GET_VENDOR_PROFILE,
+  GET_VENDOR_BANK_DETAILS,
+  UPSERT_VENDOR_BANK_DETAILS,
+  DELETE_VENDOR_BANK_DETAILS,
+} from '../../vendorQueries';
 import { getUserId } from '@/utils/store/authStore';
 
-const IFSC_REGEX = /^[A-Z]{4}0[A-Z0-9]{6}$/;
-
 export interface BankFormData {
+  id?: string;
   accountHolder: string;
   bankName: string;
   ifscCode: string;
   accountNumber: string;
 }
 
+const EMPTY_FORM: BankFormData = {
+  accountHolder: '',
+  bankName: '',
+  ifscCode: '',
+  accountNumber: '',
+};
+
 export const useBankAccountDetails = () => {
   const [userId, setUserId] = useState<string | null>(null);
+  const [profile, setProfile] = useState<BankFormData | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingProfile, setEditingProfile] = useState<BankFormData | null>(null);
 
   useEffect(() => {
     getUserId().then(id => {
       if (id) setUserId(id);
     });
   }, []);
-
-  const [formData, setFormData] = useState<BankFormData>({
-    accountHolder: '',
-    bankName: '',
-    ifscCode: '',
-    accountNumber: '',
-  });
-
-  const [errors, setErrors] = useState<Partial<Record<keyof BankFormData, string>>>({});
 
   // 1. Fetch Vendor Profile to get vendorProfileId
   const { data: profileData, loading: loadingProfile } = useQuery(GET_VENDOR_PROFILE, {
@@ -42,88 +47,96 @@ export const useBankAccountDetails = () => {
   const { data: bankData, loading: loadingBank, refetch: refetchBank } = useQuery(GET_VENDOR_BANK_DETAILS, {
     variables: { vendorProfileId: vendorProfileId || '' },
     skip: !vendorProfileId,
+    errorPolicy: 'all',
   });
 
   const [upsertBankDetails, { loading: saving }] = useMutation(UPSERT_VENDOR_BANK_DETAILS);
+  const [deleteBankDetails, { loading: deleting }] = useMutation(DELETE_VENDOR_BANK_DETAILS);
 
-  // Sync loaded banking data with form state
+  // Sync loaded banking data with local profile state
   useEffect(() => {
-    if (bankData?.getVendorBankDetails) {
-      const b = bankData.getVendorBankDetails;
-      setFormData({
-        accountHolder: b.accountHolder || '',
-        bankName: b.bankName || '',
-        ifscCode: b.ifscCode || '',
-        accountNumber: b.accountNumber || '',
+    const b = bankData?.getVendorBankDetails;
+    if (b) {
+      setProfile({
+        id: b.id,
+        accountHolder: b.accountHolder,
+        bankName: b.bankName,
+        ifscCode: b.ifscCode,
+        accountNumber: b.accountNumber,
       });
+    } else {
+      setProfile(null);
     }
   }, [bankData]);
 
-  const validate = useCallback(() => {
-    const newErrors: Partial<Record<keyof BankFormData, string>> = {};
+  const handleOpenAddModal = useCallback(() => {
+    setEditingProfile(null);
+    setIsModalOpen(true);
+  }, []);
 
-    if (!formData.accountHolder) {
-      newErrors.accountHolder = 'Account holder name is required';
+  const handleOpenEditModal = useCallback(() => {
+    if (profile) {
+      setEditingProfile(profile);
+      setIsModalOpen(true);
     }
-    if (!formData.bankName) {
-      newErrors.bankName = 'Bank name is required';
-    }
-    if (!formData.accountNumber) {
-      newErrors.accountNumber = 'Account number is required';
-    }
+  }, [profile]);
 
-    if (!formData.ifscCode) {
-      newErrors.ifscCode = 'IFSC code is required';
-    } else if (!IFSC_REGEX.test(formData.ifscCode)) {
-      newErrors.ifscCode = 'Invalid IFSC format (e.g. SBIN0001234)';
-    }
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+    setEditingProfile(null);
+  }, []);
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  }, [formData]);
+  const handleSaveProfile = useCallback(
+    async (formData: BankFormData) => {
+      if (!vendorProfileId) return;
 
-  const handleInputChange = useCallback((value: string, field?: string) => {
-    if (!field) return;
-    const key = field as keyof BankFormData;
-    setFormData(prev => ({ ...prev, [key]: value }));
-    if (errors[key]) {
-      setErrors(prev => ({ ...prev, [key]: undefined }));
-    }
-  }, [errors]);
+      try {
+        await upsertBankDetails({
+          variables: {
+            vendorProfileId,
+            input: {
+              accountHolder: formData.accountHolder,
+              bankName: formData.bankName,
+              ifscCode: formData.ifscCode,
+              accountNumber: formData.accountNumber,
+            },
+          },
+        });
+        await refetchBank();
+        handleCloseModal();
+      } catch (err) {
+        console.error('Failed to save bank details:', err);
+      }
+    },
+    [vendorProfileId, upsertBankDetails, refetchBank, handleCloseModal]
+  );
 
-  const handleSubmit = useCallback(async () => {
-    if (!validate() || !vendorProfileId) return;
+  const handleDeleteProfile = useCallback(async () => {
+    const id = profile?.id;
+    if (!id) return;
 
     try {
-      await upsertBankDetails({
-        variables: {
-          vendorProfileId,
-          input: {
-            accountHolder: formData.accountHolder,
-            bankName: formData.bankName,
-            ifscCode: formData.ifscCode,
-            accountNumber: formData.accountNumber,
-          },
-        },
+      await deleteBankDetails({
+        variables: { id },
       });
-      refetchBank();
+      setProfile(null);
+      await refetchBank();
     } catch (err) {
-      console.error('Failed to save bank details:', err);
+      console.error('Failed to delete bank details:', err);
     }
-  }, [formData, validate, vendorProfileId, upsertBankDetails, refetchBank]);
-
-  const isFormValid =
-    formData.accountHolder &&
-    formData.bankName &&
-    IFSC_REGEX.test(formData.ifscCode) &&
-    formData.accountNumber;
+  }, [profile?.id, deleteBankDetails, refetchBank]);
 
   return {
-    formData,
-    errors,
-    isFormValid,
-    loading: loadingProfile || loadingBank || saving,
-    handleInputChange,
-    handleSubmit,
+    profile,
+    vendorProfileId,
+    loading: loadingProfile || loadingBank || saving || deleting,
+    isModalOpen,
+    editingProfile,
+    handleOpenAddModal,
+    handleOpenEditModal,
+    handleCloseModal,
+    handleSaveProfile,
+    handleDeleteProfile,
+    emptyProfile: EMPTY_FORM,
   };
 };
