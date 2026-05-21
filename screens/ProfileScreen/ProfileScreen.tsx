@@ -12,6 +12,7 @@ import { AvailabilityContent } from '@/components/Vendor/Availability';
 import { BankAccountDetails } from '@/components/Vendor/BankAccountDetails';
 import { BusinessProfile } from '@/components/Vendor/BusinessProfile';
 import { ManageServices } from '@/components/Vendor/ManageServices';
+import { CustomerProfileForm, CustomerAddressDetails } from '@/components/Customer';
 import { UserRole } from '../../__generated__/graphql';
 import { ACCOUNT_MENU_ITEMS, MODAL_ITEMS, ModalConfigItem } from './constants';
 import {
@@ -130,6 +131,8 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
       else if (item.id === 'bank') content = <BankAccountDetails />;
       else if (item.id === 'business') content = <BusinessProfile />;
       else if (item.id === 'services') content = <ManageServices />;
+      else if (item.id === 'profile') content = <CustomerProfileForm onClose={() => setModalType(null)} />;
+      else if (item.id === 'addresses') content = <CustomerAddressDetails />;
       else if (item.id === 'avatar_upload') {
         content = (
           <AvatarUploadContent
@@ -150,6 +153,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
           </View>
         );
       }
+
 
       acc[item.id] = {
         title: item.title,
