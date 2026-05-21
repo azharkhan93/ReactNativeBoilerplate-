@@ -53,7 +53,7 @@ export const useBankAccountDetails = () => {
   const [upsertBankDetails, { loading: saving }] = useMutation(UPSERT_VENDOR_BANK_DETAILS);
   const [deleteBankDetails, { loading: deleting }] = useMutation(DELETE_VENDOR_BANK_DETAILS);
 
-  // Sync loaded banking data with local profile state
+
   useEffect(() => {
     const b = bankData?.getVendorBankDetails;
     if (b) {

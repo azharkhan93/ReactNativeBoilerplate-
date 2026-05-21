@@ -8,6 +8,7 @@ import {
 import { DaySchedule, BreakTime, AvailabilityException } from '../types/types';
 import { DAYS } from '../constants';
 import { getUserId } from '@/utils/store/authStore';
+import { ExceptionType } from '@/__generated__/graphql';
 
 const DAY_TO_NUMBER: Record<string, number> = {
   Monday: 1,
@@ -77,7 +78,7 @@ export const useVendorAvailability = () => {
     if (availData?.getVendorAvailability) {
       const avail = availData.getVendorAvailability;
 
-      // 1. Map schedules
+     
       const newSchedule: Record<string, DaySchedule> = {};
       DAYS.forEach(day => {
         const num = DAY_TO_NUMBER[day];
@@ -90,7 +91,7 @@ export const useVendorAvailability = () => {
       });
       setSchedule(newSchedule);
 
-      // 2. Map breaks
+     
       setBreaks(
         avail.breaks.map(b => ({
           id: b.id,
@@ -109,7 +110,7 @@ export const useVendorAvailability = () => {
             month: MONTH_NAMES[dateObj.getMonth()] || 'MAY',
             day: dateObj.getDate() || 1,
             label: ex.description || 'Custom Exception',
-            type: (ex.type as any) === 'BLOCKED' ? 'blocked' : 'shortened',
+            type: ex.type === ExceptionType.BlockedOut ? 'blocked' : 'shortened',
           };
         }),
       );
@@ -165,6 +166,23 @@ export const useVendorAvailability = () => {
     [],
   );
 
+  const handleRemoveException = useCallback((id: string) => {
+    setExceptions(prev => prev.filter(ex => ex.id !== id));
+  }, []);
+
+  const handleUpdateBreak = useCallback(
+    (id: string, label: string, startTime: string, endTime: string) => {
+      setBreaks(prev =>
+        prev.map(b =>
+          b.id === id
+            ? { ...b, label, time: `${startTime} - ${endTime}` }
+            : b
+        )
+      );
+    },
+    []
+  );
+
   const handleAddException = useCallback(
     (
       label: string,
@@ -184,6 +202,25 @@ export const useVendorAvailability = () => {
       ]);
     },
     [],
+  );
+
+  const handleUpdateException = useCallback(
+    (
+      id: string,
+      label: string,
+      month: string,
+      day: number,
+      type: 'blocked' | 'shortened',
+    ) => {
+      setExceptions(prev =>
+        prev.map(ex =>
+          ex.id === id
+            ? { ...ex, label, month, day, type }
+            : ex
+        )
+      );
+    },
+    []
   );
 
   const handleSave = useCallback(async () => {
@@ -206,19 +243,22 @@ export const useVendorAvailability = () => {
     });
 
     const mappedExceptionsInput = exceptions.map(ex => {
-      // Form date string safely for current year
+      // Form date string safely for current year using UTC to prevent timezone shifts
       const currentYear = new Date().getFullYear();
       const monthIdx = MONTH_NAMES.indexOf(ex.month);
-      const dateVal = new Date(
+      const dateVal = new Date(Date.UTC(
         currentYear,
         monthIdx !== -1 ? monthIdx : 4,
         ex.day,
-      );
+        12, // Set to noon UTC to prevent any boundary date shifts
+        0,
+        0
+      ));
 
       return {
-        date: dateVal,
+        date: dateVal.toISOString(),
         description: ex.label,
-        type: ex.type === 'blocked' ? ('BLOCKED' as any) : ('SHORTENED' as any),
+        type: ex.type === 'blocked' ? ExceptionType.BlockedOut : ExceptionType.ShortenedHours,
         startTime: '10:00 AM',
         endTime: '02:00 PM',
       };
@@ -258,7 +298,10 @@ export const useVendorAvailability = () => {
     handleChangeEnd,
     handleRemoveBreak,
     handleAddBreak,
+    handleUpdateBreak,
+    handleRemoveException,
     handleAddException,
+    handleUpdateException,
     handleSave,
   };
 };

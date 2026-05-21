@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import {
-  ScrollView,
-  TouchableOpacity,
-  View,
-  ActivityIndicator,
-} from 'react-native';
-import { Coffee, CalendarX, Trash2, ChevronRight } from 'lucide-react-native';
-import { Typography, FormInput, Button } from '@/components/theme';
+import { ScrollView, TouchableOpacity, View, ActivityIndicator } from 'react-native';
+import { Coffee, CalendarX } from 'lucide-react-native';
+import { Typography } from '@/components/theme';
 import { WeekStrip } from '../WeekStrip';
 import { DayRow } from '../DayRow';
 import { SectionHeader } from '../components/SectionHeader';
-import { DAYS, CARD_STYLE } from '../constants';
+import { DAYS } from '../constants';
 import { useVendorAvailability } from '../hooks/useVendorAvailability';
+import { BreakFormCard } from './components/BreakFormCard';
+import { BreakItemCard } from './components/BreakItemCard';
+import { ExceptionFormCard } from './components/ExceptionFormCard';
+import { ExceptionItemCard } from './components/ExceptionItemCard';
 
 const EMPTY_BREAK = { name: '', start: '12:00 PM', end: '01:00 PM' };
 
@@ -21,6 +20,7 @@ interface ExceptionForm {
   day: string;
   type: 'blocked' | 'shortened';
 }
+
 const EMPTY_EXCEPTION: ExceptionForm = {
   label: '',
   month: 'MAY',
@@ -29,14 +29,12 @@ const EMPTY_EXCEPTION: ExceptionForm = {
 };
 
 const EmptyCard: React.FC<{ message: string }> = ({ message }) => (
-  <View className="bg-gray-900 border border-gray-800 rounded-3xl p-5 items-center justify-center mb-6">
-    <Typography className="text-gray-500 text-[13px]">{message}</Typography>
+  <View className="bg-gray-900/60 border border-gray-800/80 rounded-3xl p-5 items-center justify-center mb-6">
+    <Typography className="text-gray-500 text-[13px] font-body-semibold">{message}</Typography>
   </View>
 );
 
-export const AvailabilityContent: React.FC<{ onClose: () => void }> = ({
-  onClose,
-}) => {
+export const AvailabilityContent: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const {
     schedule,
     breaks,
@@ -47,28 +45,43 @@ export const AvailabilityContent: React.FC<{ onClose: () => void }> = ({
     handleChangeEnd,
     handleRemoveBreak,
     handleAddBreak,
+    handleUpdateBreak,
+    handleRemoveException,
     handleAddException,
+    handleUpdateException,
     handleSave,
   } = useVendorAvailability();
 
   const [showBreak, setShowBreak] = useState(false);
   const [breakForm, setBreakForm] = useState(EMPTY_BREAK);
+  const [editingBreakId, setEditingBreakId] = useState<string | null>(null);
 
   const [showException, setShowException] = useState(false);
   const [exForm, setExForm] = useState<ExceptionForm>(EMPTY_EXCEPTION);
+  const [editingExceptionId, setEditingExceptionId] = useState<string | null>(null);
 
   const handleSaveAndClose = async () => {
     await handleSave();
     onClose();
   };
 
+  const resetBreakState = () => {
+    setShowBreak(false);
+    setBreakForm(EMPTY_BREAK);
+    setEditingBreakId(null);
+  };
+
+  const resetExceptionState = () => {
+    setShowException(false);
+    setExForm(EMPTY_EXCEPTION);
+    setEditingExceptionId(null);
+  };
+
   if (loading && Object.keys(schedule).length === 0) {
     return (
       <View className="flex-1 items-center justify-center bg-gray-950 p-10 min-h-[300px]">
         <ActivityIndicator size="large" color="#3b82f6" />
-        <Typography className="text-gray-400 mt-4 font-body">
-          Loading Schedule...
-        </Typography>
+        <Typography className="text-gray-400 mt-4 font-body">Loading Schedule...</Typography>
       </View>
     );
   }
@@ -104,238 +117,123 @@ export const AvailabilityContent: React.FC<{ onClose: () => void }> = ({
         />
       ))}
 
+      {/* Break Times Section */}
       <SectionHeader
         icon={<Coffee size={16} color="#3b82f6" />}
         title="Break Times"
-        onAdd={() => setShowBreak(true)}
+        onAdd={() => {
+          setEditingBreakId(null);
+          setBreakForm(EMPTY_BREAK);
+          setShowBreak(true);
+        }}
         addLabel="Add Break"
       />
 
       {showBreak && (
-        <View className="bg-gray-900 border border-gray-800 rounded-3xl p-5 mb-5">
-          <Typography className="text-white font-body-semibold mb-3">
-            Add New Break
-          </Typography>
-          <FormInput
-            label="Break Name"
-            placeholder="e.g. Lunch Break"
-            value={breakForm.name}
-            onChangeText={v => setBreakForm(f => ({ ...f, name: v }))}
-          />
-          <View className="flex-row gap-3">
-            <View className="flex-1">
-              <FormInput
-                label="Start Time"
-                placeholder="12:00 PM"
-                value={breakForm.start}
-                onChangeText={v => setBreakForm(f => ({ ...f, start: v }))}
-              />
-            </View>
-            <View className="flex-1">
-              <FormInput
-                label="End Time"
-                placeholder="01:00 PM"
-                value={breakForm.end}
-                onChangeText={v => setBreakForm(f => ({ ...f, end: v }))}
-              />
-            </View>
-          </View>
-          <View className="flex-row justify-end gap-3 mt-2">
-            <Button
-              variant="outlined"
-              size="sm"
-              onPress={() => {
-                setShowBreak(false);
-                setBreakForm(EMPTY_BREAK);
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="primary"
-              size="sm"
-              disabled={!breakForm.name}
-              onPress={() => {
-                handleAddBreak(breakForm.name, breakForm.start, breakForm.end);
-                setShowBreak(false);
-                setBreakForm(EMPTY_BREAK);
-              }}
-            >
-              Add
-            </Button>
-          </View>
-        </View>
+        <BreakFormCard
+          name={breakForm.name}
+          start={breakForm.start}
+          end={breakForm.end}
+          onChangeName={v => setBreakForm(f => ({ ...f, name: v }))}
+          onChangeStart={v => setBreakForm(f => ({ ...f, start: v }))}
+          onChangeEnd={v => setBreakForm(f => ({ ...f, end: v }))}
+          onCancel={resetBreakState}
+          onSave={() => {
+            if (editingBreakId) {
+              handleUpdateBreak(editingBreakId, breakForm.name, breakForm.start, breakForm.end);
+            } else {
+              handleAddBreak(breakForm.name, breakForm.start, breakForm.end);
+            }
+            resetBreakState();
+          }}
+          isEdit={!!editingBreakId}
+        />
       )}
 
       {breaks.length === 0 ? (
         <EmptyCard message="No breaks set today" />
       ) : (
         breaks.map(b => (
-          <View
+          <BreakItemCard
             key={b.id}
-            className={`${CARD_STYLE} flex-row items-center justify-between`}
-          >
-            <View>
-              <Typography className="text-white font-body-semibold">
-                {b.label}
-              </Typography>
-              <Typography className="text-gray-500 text-[12px] mt-0.5">
-                {b.time} • {b.repeat}
-              </Typography>
-            </View>
-            <TouchableOpacity
-              onPress={() => handleRemoveBreak(b.id)}
-              className="w-8 h-8 bg-gray-800 rounded-xl items-center justify-center"
-            >
-              <Trash2 size={14} color="#ef4444" />
-            </TouchableOpacity>
-          </View>
+            breakItem={b}
+            onEdit={() => {
+              const parts = b.time.split(' - ');
+              setBreakForm({
+                name: b.label,
+                start: parts[0] || '12:00 PM',
+                end: parts[1] || '01:00 PM',
+              });
+              setEditingBreakId(b.id);
+              setShowBreak(true);
+            }}
+            onRemove={() => handleRemoveBreak(b.id)}
+          />
         ))
       )}
 
+      {/* Exceptions Section */}
       <SectionHeader
         icon={<CalendarX size={16} color="#3b82f6" />}
         title="Exceptions"
-        onAdd={() => setShowException(true)}
+        onAdd={() => {
+          setEditingExceptionId(null);
+          setExForm(EMPTY_EXCEPTION);
+          setShowException(true);
+        }}
         addLabel="Add Date"
       />
 
       {showException && (
-        <View className="bg-gray-900 border border-gray-800 rounded-3xl p-5 mb-5">
-          <Typography className="text-white font-body-semibold mb-3">
-            Add Exception Date
-          </Typography>
-          <FormInput
-            label="Reason / Label"
-            placeholder="e.g. Independence Day"
-            value={exForm.label}
-            onChangeText={v => setExForm(f => ({ ...f, label: v }))}
-          />
-          <View className="flex-row gap-3">
-            <View className="flex-1">
-              <FormInput
-                label="Month (3 letters)"
-                placeholder="MAY"
-                autoCapitalize="characters"
-                maxLength={3}
-                value={exForm.month}
-                onChangeText={v =>
-                  setExForm(f => ({ ...f, month: v.toUpperCase() }))
-                }
-              />
-            </View>
-            <View className="flex-1">
-              <FormInput
-                label="Day of Month"
-                placeholder="25"
-                keyboardType="numeric"
-                value={exForm.day}
-                onChangeText={v => setExForm(f => ({ ...f, day: v }))}
-              />
-            </View>
-          </View>
-          <Typography variant="body-sm" className="text-gray-400 mb-2 ml-1">
-            Exception Type
-          </Typography>
-          <View className="flex-row gap-3 mb-4">
-            {(['blocked', 'shortened'] as const).map(t => (
-              <TouchableOpacity
-                key={t}
-                onPress={() => setExForm(f => ({ ...f, type: t }))}
-                className={`flex-1 py-2.5 rounded-xl items-center border ${
-                  exForm.type === t
-                    ? t === 'blocked'
-                      ? 'bg-red-500/10 border-red-500/40'
-                      : 'bg-yellow-500/10 border-yellow-500/40'
-                    : 'bg-gray-950 border-gray-800'
-                }`}
-              >
-                <Typography
-                  className={
-                    exForm.type === t
-                      ? t === 'blocked'
-                        ? 'text-red-400 font-body-bold'
-                        : 'text-yellow-400 font-body-bold'
-                      : 'text-gray-400'
-                  }
-                >
-                  {t === 'blocked' ? 'Blocked Out' : 'Shortened'}
-                </Typography>
-              </TouchableOpacity>
-            ))}
-          </View>
-          <View className="flex-row justify-end gap-3 mt-2">
-            <Button
-              variant="outlined"
-              size="sm"
-              onPress={() => {
-                setShowException(false);
-                setExForm(EMPTY_EXCEPTION);
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="primary"
-              size="sm"
-              disabled={!exForm.label || !exForm.day}
-              onPress={() => {
-                handleAddException(
-                  exForm.label,
-                  exForm.month || 'MAY',
-                  parseInt(exForm.day, 10) || 1,
-                  exForm.type,
-                );
-                setShowException(false);
-                setExForm(EMPTY_EXCEPTION);
-              }}
-            >
-              Add
-            </Button>
-          </View>
-        </View>
+        <ExceptionFormCard
+          exForm={exForm}
+          onChangeLabel={v => setExForm(f => ({ ...f, label: v }))}
+          onChangeMonth={v => setExForm(f => ({ ...f, month: v.toUpperCase() }))}
+          onChangeDay={v => setExForm(f => ({ ...f, day: v }))}
+          onChangeType={t => setExForm(f => ({ ...f, type: t }))}
+          onCancel={resetExceptionState}
+          onSave={() => {
+            const dayVal = parseInt(exForm.day, 10) || 1;
+            if (editingExceptionId) {
+              handleUpdateException(
+                editingExceptionId,
+                exForm.label,
+                exForm.month || 'MAY',
+                dayVal,
+                exForm.type,
+              );
+            } else {
+              handleAddException(exForm.label, exForm.month || 'MAY', dayVal, exForm.type);
+            }
+            resetExceptionState();
+          }}
+          isEdit={!!editingExceptionId}
+        />
       )}
 
       {exceptions.length === 0 ? (
         <EmptyCard message="No holiday exceptions set" />
       ) : (
         exceptions.map(ex => (
-          <TouchableOpacity
+          <ExceptionItemCard
             key={ex.id}
-            className={`${CARD_STYLE} flex-row items-center`}
-            activeOpacity={0.8}
-          >
-            <View className="bg-gray-800 rounded-xl px-3 py-2 items-center mr-4">
-              <Typography className="text-primary-400 text-[10px] font-body-bold tracking-wider">
-                {ex.month}
-              </Typography>
-              <Typography className="text-white text-lg font-heading-bold leading-5">
-                {ex.day}
-              </Typography>
-            </View>
-            <View className="flex-1">
-              <Typography className="text-white font-body-semibold">
-                {ex.label}
-              </Typography>
-              <View
-                className={`self-start mt-1 px-2 py-0.5 rounded-full ${
-                  ex.type === 'blocked' ? 'bg-red-500/20' : 'bg-yellow-500/20'
-                }`}
-              >
-                <Typography
-                  className={`text-[10px] font-body-bold tracking-wider uppercase ${
-                    ex.type === 'blocked' ? 'text-red-400' : 'text-yellow-400'
-                  }`}
-                >
-                  {ex.type === 'blocked' ? 'Blocked Out' : 'Shortened Hours'}
-                </Typography>
-              </View>
-            </View>
-            <ChevronRight size={16} color="#4b5563" />
-          </TouchableOpacity>
+            exception={ex}
+            onEdit={() => {
+              setExForm({
+                label: ex.label,
+                month: ex.month,
+                day: String(ex.day),
+                type: ex.type,
+              });
+              setEditingExceptionId(ex.id);
+              setShowException(true);
+            }}
+            onRemove={() => handleRemoveException(ex.id)}
+          />
         ))
       )}
 
+      {/* Save Button */}
       <TouchableOpacity
         className="bg-primary-500 py-4 rounded-2xl items-center mt-2 shadow-lg shadow-primary-500/25 flex-row justify-center"
         activeOpacity={0.85}
@@ -345,9 +243,7 @@ export const AvailabilityContent: React.FC<{ onClose: () => void }> = ({
         {loading ? (
           <ActivityIndicator size="small" color="white" />
         ) : (
-          <Typography className="text-white font-body-bold text-base">
-            Save Availability
-          </Typography>
+          <Typography className="text-white font-body-bold text-base">Save Availability</Typography>
         )}
       </TouchableOpacity>
     </ScrollView>
