@@ -47,12 +47,12 @@ export const FlashSale: React.FC<FlashSaleProps> = ({
     <View className={cn('px-4 py-4', className)}>
       <View className="flex-row items-center justify-between mb-4">
         <View className="flex-1">
-          <Typography variant="h3" className="text-gray-900 font-heading-semibold mb-1">
+          <Typography variant="h3" className="text-white font-heading-bold mb-1">
             {title}
           </Typography>
           {endTime && (
             <View className="flex-row items-center mt-1">
-              <Typography variant="body-sm" className="text-gray-700 mr-2">
+              <Typography variant="body-sm" className="text-gray-400 mr-2">
                 Ends in:
               </Typography>
               <View className="flex-row items-center gap-1">

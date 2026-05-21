@@ -52,21 +52,21 @@ export const LocationStep: React.FC<{ onBack: () => void }> = ({ onBack }) => {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View style={{ width }} className="flex-1 bg-white px-6 pt-4">
+            <View style={{ width }} className="flex-1 bg-[#030712] px-6 pt-4">
                 <Animated.View entering={FadeIn.duration(500)} className="flex-1">
                     <Container variant="between" className="mb-8">
-                        <TouchableOpacity onPress={onBack} className="p-2 -ml-2"><ChevronLeft color="#1e293b" size={28} /></TouchableOpacity>
-                        <Typography variant="subheading" className="text-slate-900">Location Access</Typography>
+                        <TouchableOpacity onPress={onBack} className="p-2 -ml-2"><ChevronLeft color="#ffffff" size={28} /></TouchableOpacity>
+                        <Typography variant="subheading" className="text-white font-heading-bold">Location Access</Typography>
                         <View className="w-8" />
                     </Container>
 
-                    <Typography variant="body" className="text-black uppercase">Final Step</Typography>
-                    <View className="h-1.5 w-full bg-slate-100 rounded-full mb-10 overflow-hidden">
-                        <View className="h-full bg-blue-500" style={{ width: '100%' }} />
+                    <Typography variant="body" className="text-primary-500 uppercase font-body-bold">Final Step</Typography>
+                    <View className="h-1.5 w-full bg-gray-800 rounded-full mb-10 overflow-hidden">
+                        <View className="h-full bg-primary-500" style={{ width: '100%' }} />
                     </View>
 
-                    <Typography variant="h2" className="text-black text-black mb-3">Set Your Location</Typography>
-                    <Typography variant="body" className="text-black mb-8 leading-6">
+                    <Typography variant="h2" className="text-white mb-3 font-heading-bold">Set Your Location</Typography>
+                    <Typography variant="body" className="text-gray-400 mb-8 leading-6">
                         We'll use this to find the best car wash service providers near you and ensure precise delivery.
                     </Typography>
 
@@ -85,7 +85,7 @@ export const LocationStep: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         {loading ? 'Locating...' : 'Use Current Location'}
                     </Button>
 
-                    <View className="flex-1 mt-6 rounded-3xl overflow-hidden border border-slate-100 relative shadow-sm">
+                    <View className="flex-1 mt-6 rounded-3xl overflow-hidden border border-gray-800 relative shadow-sm bg-gray-900">
                         <MapView
                             ref={mapRef}
                             style={StyleSheet.absoluteFillObject}
@@ -94,16 +94,16 @@ export const LocationStep: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                         >
                             {pos && (
                                 <Marker coordinate={pos}>
-                                    <View className="w-10 h-10 bg-blue-500/20 rounded-full items-center justify-center">
-                                        <View className="w-4 h-4 bg-blue-500 rounded-full border-2 border-white shadow-lg" />
+                                    <View className="w-10 h-10 bg-primary-500/20 rounded-full items-center justify-center">
+                                        <View className="w-4 h-4 bg-primary-500 rounded-full border-2 border-white shadow-lg" />
                                     </View>
                                 </Marker>
                             )}
                         </MapView>
 
-                        <View className="absolute bottom-4 left-4 right-4 bg-white/90 p-3 rounded-2xl border border-slate-100 flex-row items-center">
-                            <MapPin size={18} color="#3b82f6" />
-                            <Typography variant="body" className="!text-black ml-2 flex-1" numberOfLines={1}>
+                        <View className="absolute bottom-4 left-4 right-4 bg-gray-900/90 p-3 rounded-2xl border border-gray-800 flex-row items-center">
+                            <MapPin size={18} color="#FF7A51" />
+                            <Typography variant="body" className="text-white ml-2 flex-1" numberOfLines={1}>
                                 {address || (loading ? 'Locating...' : 'Search or use current location')}
                             </Typography>
                         </View>

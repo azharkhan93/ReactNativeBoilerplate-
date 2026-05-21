@@ -54,6 +54,13 @@ export const Button: React.FC<ButtonProps> = ({
     disabled: '#4b5563',
   };
 
+  const cleanClassName = className
+    ? className
+        .split(' ')
+        .filter((c) => !c.startsWith('shadow') && c !== 'shadow')
+        .join(' ')
+    : '';
+
   return (
     <TouchableOpacity
       disabled={isDisabled}
@@ -63,7 +70,7 @@ export const Button: React.FC<ButtonProps> = ({
         'relative items-center justify-center overflow-hidden',
         sizeStyles[size],
         isDisabled && 'opacity-60',
-        className
+        cleanClassName
       )}
       {...props}
     >

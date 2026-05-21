@@ -40,7 +40,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
 
   return (
     <TouchableOpacity
-      className={cn('bg-white rounded-lg overflow-hidden shadow-sm', className)}
+      className={cn('bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-sm', className)}
       activeOpacity={activeOpacity}
       {...props}
     >
@@ -52,8 +52,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             resizeMode="cover"
           />
         ) : (
-          <View className="w-full h-40 bg-gray-200 items-center justify-center">
-            <Typography variant="body-sm" className="text-gray-400">
+          <View className="w-full h-40 bg-gray-800 items-center justify-center">
+            <Typography variant="body-sm" className="text-gray-500">
               No Image
             </Typography>
           </View>
@@ -70,12 +70,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         {onFavoritePress && (
           <TouchableOpacity
             onPress={onFavoritePress}
-            className="absolute top-2 right-2 bg-white/90 p-2 rounded-full"
+            className="absolute top-2 right-2 bg-gray-950/80 p-2 rounded-full border border-gray-800"
             activeOpacity={0.7}
           >
             <Heart
               size={18}
-              color={isFavorite ? '#ef4444' : '#6b7280'}
+              color={isFavorite ? '#ef4444' : '#9ca3af'}
               fill={isFavorite ? '#ef4444' : 'none'}
             />
           </TouchableOpacity>
@@ -85,7 +85,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       <View className="p-3">
         <Typography
           variant="body-sm"
-          className="text-gray-900 font-body-medium mb-1"
+          className="text-white font-body-medium mb-1"
           numberOfLines={2}
         >
           {name}
@@ -96,14 +96,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <Typography variant="body-sm" className="text-yellow-500 mr-1">
               ★
             </Typography>
-            <Typography variant="body-sm" className="text-gray-600">
+            <Typography variant="body-sm" className="text-gray-400">
               {rating.toFixed(1)}
             </Typography>
           </View>
         )}
 
         <View className="flex-row items-center">
-          <Typography variant="body" className="text-gray-900 font-body-semibold">
+          <Typography variant="body" className="text-white font-body-bold">
             ${price.toFixed(2)}
           </Typography>
           {originalPrice && originalPrice > price && (

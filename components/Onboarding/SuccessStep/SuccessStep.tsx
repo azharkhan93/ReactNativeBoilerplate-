@@ -13,28 +13,28 @@ interface SuccessStepProps {
 
 export const SuccessStep: React.FC<SuccessStepProps> = ({ onFinish }) => {
     return (
-        <View style={{ width }} className="flex-1 items-center justify-between px-8 py-12 bg-white">
+        <View style={{ width }} className="flex-1 items-center justify-between px-8 py-12 bg-[#030712]">
             <Animated.View entering={FadeIn.duration(500)} className="w-full">
                 <X color="#94a3b8" size={24} className="self-start opacity-70 mb-4" />
-                <Typography variant="h3" className="text-slate-900 text-center mb-8">Success</Typography>
+                <Typography variant="h3" className="text-white text-center mb-8">Success</Typography>
             </Animated.View>
 
             <View className="items-center">
                 <Animated.View
                     entering={ZoomIn.duration(600).springify()}
-                    className="w-64 h-64 rounded-full items-center justify-center mb-12 relative overflow-hidden bg-blue-50 border border-blue-100 shadow-sm"
+                    className="w-64 h-64 rounded-full items-center justify-center mb-12 relative overflow-hidden bg-gray-900 border border-gray-800 shadow-sm"
                 >
                     {/* Subtle background glow */}
-                    <View className="absolute inset-0 bg-blue-500/5" />
+                    <View className="absolute inset-0 bg-primary-500/5" />
 
                     {/* Icon or Image Placeholder */}
-                    <View className="w-48 h-48 rounded-full border-2 border-white items-center justify-center bg-white shadow-sm">
-                        <CheckCircle2 size={80} color="#3b82f6" strokeWidth={1} />
+                    <View className="w-48 h-48 rounded-full border-2 border-gray-800 items-center justify-center bg-gray-950 shadow-sm">
+                        <CheckCircle2 size={80} color="#FF7A51" strokeWidth={1} />
                     </View>
                 </Animated.View>
 
-                <Typography variant="h2" >You're Ready to Book</Typography>
-                <Typography variant="body-lg">
+                <Typography variant="h2" className="text-white mb-3 text-center">You're Ready to Book</Typography>
+                <Typography variant="body-lg" className="text-gray-400 text-center px-4">
                     Your account is all set. Browse top-rated providers and schedule your first professional service in minutes.
                 </Typography>
             </View>
@@ -69,7 +69,7 @@ const PaginationDots = ({ current, total }: { current: number, total: number }) 
                 className="h-1 rounded-full"
                 style={{
                     width: i === current ? 32 : 12,
-                    backgroundColor: i === current ? '#3b82f6' : '#E2E8F0'
+                    backgroundColor: i === current ? '#FF7A51' : '#374151'
                 }}
             />
         ))}

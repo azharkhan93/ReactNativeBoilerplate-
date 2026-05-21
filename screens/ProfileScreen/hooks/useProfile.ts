@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useQuery } from '@apollo/client/react';
+import { useQuery, useMutation } from '@apollo/client/react';
 import { UserRole } from '../../../__generated__/graphql';
-import { GET_VENDOR_PROFILE } from '../../../components/Vendor/vendorQueries';
+import { GET_VENDOR_PROFILE, UPDATE_VENDOR_PROFILE } from '../../../components/Vendor/vendorQueries';
 import { getUserId } from '@/utils/store/authStore';
 
 // Mock data - in a real app, this would come from a global state or API
@@ -31,6 +31,8 @@ export const useProfile = (userRole?: UserRole | null) => {
     errorPolicy: 'all',
   });
 
+  const [updateVendorProfile, { loading: updating }] = useMutation(UPDATE_VENDOR_PROFILE);
+
   const vendorProfile = vendorData?.getVendorProfile;
 
   const userData = {
@@ -47,6 +49,23 @@ export const useProfile = (userRole?: UserRole | null) => {
     avatarUrl: isVendor ? vendorProfile?.imageUri : null,
   };
 
+  const handleSaveAvatar = useCallback(async (imageUrl: string | null) => {
+    if (!vendorProfile?.id) return;
+    try {
+      await updateVendorProfile({
+        variables: {
+          id: vendorProfile.id,
+          input: {
+            imageUri: imageUrl,
+          },
+        },
+        refetchQueries: [{ query: GET_VENDOR_PROFILE, variables: { userId: userId ?? '' } }],
+      });
+    } catch (err) {
+      console.error('Error updating vendor avatar:', err);
+    }
+  }, [vendorProfile?.id, userId, updateVendorProfile]);
+
   const handleLogout = useCallback(() => {
     console.log('Logging out...');
   }, []);
@@ -55,17 +74,14 @@ export const useProfile = (userRole?: UserRole | null) => {
     console.log('Navigating to edit profile...');
   }, []);
 
-  const handleEditAvatar = useCallback(() => {
-    console.log('Opening avatar picker...');
-  }, []);
-
   return {
     userData,
     isVendor,
-    loading: loadingVendor,
+    loading: loadingVendor || updating,
     handleLogout,
     handleEditProfile,
-    handleEditAvatar,
+    handleSaveAvatar,
   };
 };
+
 

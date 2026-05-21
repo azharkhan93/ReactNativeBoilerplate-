@@ -35,26 +35,26 @@ export const Category: React.FC<CategoryProps> = ({
 
   const variantStyles = {
     default: {
-      container: 'bg-gray-100',
-      icon: 'text-gray-700',
-      text: 'text-gray-700',
+      container: 'bg-gray-900 border border-gray-800',
+      icon: 'text-gray-400',
+      text: 'text-gray-300',
     },
     primary: {
-      container: 'bg-primary-100',
-      icon: 'text-primary-600',
-      text: 'text-primary-900',
+      container: 'bg-primary-950/40 border border-primary-500/30',
+      icon: 'text-primary-400',
+      text: 'text-primary-200',
     },
     secondary: {
-      container: 'bg-secondary-100',
-      icon: 'text-secondary-600',
-      text: 'text-secondary-900',
+      container: 'bg-green-950/40 border border-green-500/30',
+      icon: 'text-green-400',
+      text: 'text-green-200',
     },
   };
 
   const currentSize = sizeStyles[size];
   const currentVariant = variantStyles[variant];
 
-  const iconColor = variant === 'default' ? '#374151' : variant === 'primary' ? '#2563eb' : '#16a34a';
+  const iconColor = variant === 'default' ? '#9ca3af' : variant === 'primary' ? '#FF7A51' : '#4ade80';
 
   return (
     <TouchableOpacity

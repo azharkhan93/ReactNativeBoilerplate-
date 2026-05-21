@@ -16,7 +16,7 @@ export const Pagination: React.FC<PaginationProps> = ({ total, current }) => {
                 const animatedStyle = useAnimatedStyle(() => {
                     return {
                         width: withSpring(isActive ? 32 : 10, { damping: 15 }),
-                        backgroundColor: withSpring(isActive ? '#FF7A51' : '#E5E7EB'),
+                        backgroundColor: withSpring(isActive ? '#FF7A51' : '#374151'),
                     };
                 });
 

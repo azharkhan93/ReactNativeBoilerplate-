@@ -42,7 +42,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
       </Typography>
 
       <View className="w-10">
-        {onRightActionPress && (
+        {onRightActionPress ? (
           <TouchableOpacity 
             onPress={onRightActionPress}
             className="w-10 h-10 items-center justify-center rounded-full bg-gray-900/50"
@@ -53,7 +53,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
               <MoreVertical size={20} color="white" />
             )}
           </TouchableOpacity>
-        )}
+        ): null}
       </View>
     </View>
   );

@@ -26,27 +26,27 @@ export const RoleOption: React.FC<RoleOptionProps> = ({
             onPress={onPress}
             activeOpacity={0.7}
             className={`flex-row items-center p-6 rounded-3xl border-2 transition-all ${isSelected
-                ? 'border-primary-500 bg-primary-50/50'
-                : 'border-slate-100 bg-white'
+                ? 'border-primary-500 bg-primary-950/40'
+                : 'border-gray-800 bg-gray-900/50'
                 }`}
         >
-            <View className={`w-14 h-14 rounded-2xl items-center justify-center mr-4  ${isSelected ? 'bg-primary-500' : 'bg-slate-50'
+            <View className={`w-14 h-14 rounded-2xl items-center justify-center mr-4  ${isSelected ? 'bg-primary-500' : 'bg-gray-800'
                 }`}>
-                <Icon size={28} color={isSelected ? 'white' : '#64748B'} />
+                <Icon size={28} color={isSelected ? 'white' : '#9ca3af'} />
             </View>
             <View className="flex-1">
                 <Typography
                     variant="body-lg"
-                    className={`font-heading-semibold ${isSelected ? 'text-primary-700' : 'text-slate-900'
+                    className={`font-heading-semibold ${isSelected ? 'text-white' : 'text-gray-200'
                         }`}
                 >
                     {title}
                 </Typography>
-                <Typography variant="body-sm" className="text-slate-500">
+                <Typography variant="body-sm" className={isSelected ? 'text-primary-300/80' : 'text-gray-400'}>
                     {description}
                 </Typography>
             </View>
-            {isSelected && <ChevronRight size={20} color="#3b82f6" />}
+            {isSelected && <ChevronRight size={20} color="#FF7A51" />}
         </TouchableOpacity>
     </Animated.View>
 );

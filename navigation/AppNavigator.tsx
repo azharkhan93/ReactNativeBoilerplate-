@@ -57,10 +57,10 @@ export const AppNavigator: React.FC = () => {
     const showTopBar = !HIDDEN_TOPBAR_ROUTES.includes(activeTab);
 
     return (
-        <View style={{ flex: 1 }} >
+        <View className="flex-1 bg-gray-950">
             {showTopBar && <TopBar placeholder="Search products, brands..." />}
 
-            <View style={{ flex: 1 }}>
+            <View className="flex-1">
                 {renderScreen()}
             </View>
 

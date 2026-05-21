@@ -39,10 +39,10 @@ export const RoleSelectionStep: React.FC<RoleSelectionStepProps> = ({ onSelect, 
             className="flex-1 px-6 justify-center"
         >
             <Animated.View entering={FadeInUp.delay(200)} className="items-center mb-12">
-                <Typography variant="h3" className="text-center mb-4 tracking-tight">
+                <Typography variant="h3" className="text-center mb-4 tracking-tight text-white font-heading-bold">
                     Choose Your Role
                 </Typography>
-                <Typography variant="body" className="text-center px-6">
+                <Typography variant="body" className="text-center px-6 text-gray-400">
                     Select how you want to use the platform to get started.
                 </Typography>
             </Animated.View>

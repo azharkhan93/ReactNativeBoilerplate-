@@ -189,7 +189,6 @@ export const useVendorAvailability = () => {
   const handleSave = useCallback(async () => {
     if (!vendorProfileId) return;
 
-    // Map local state to backend types
     const mappedScheduleInput = Object.keys(schedule).map(day => ({
       dayOfWeek: DAY_TO_NUMBER[day],
       startTime: schedule[day].start,

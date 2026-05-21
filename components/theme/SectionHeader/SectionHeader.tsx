@@ -28,11 +28,11 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   return (
     <View className={cn('flex-row items-center justify-between mb-4', className)}>
       <View className="flex-1">
-        <Typography variant="h3" className="text-gray-900 font-heading-semibold">
+        <Typography variant="h3" className="text-white font-heading-bold">
           {title}
         </Typography>
         {subtitle && (
-          <Typography variant="body-sm" className="text-gray-500 mt-1">
+          <Typography variant="body-sm" className="text-gray-400 mt-1">
             {subtitle}
           </Typography>
         )}
@@ -44,10 +44,10 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           className="flex-row items-center"
           {...props}
         >
-          <Typography variant="body-sm" className="text-primary-600 font-body-semibold mr-1">
+          <Typography variant="body-sm" className="text-primary-500 font-body-semibold mr-1">
             View All
           </Typography>
-          <ChevronRight size={16} color="#2563eb" />
+          <ChevronRight size={16} color="#FF7A51" />
         </TouchableOpacity>
       )}
     </View>

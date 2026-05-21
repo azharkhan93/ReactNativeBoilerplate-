@@ -26,7 +26,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
   const handleViewAllProviders = () => onNavigate?.('nearbyProviders');
 
   return (
-    <View className="flex-1">
+    <View className="flex-1 bg-gray-950">
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
@@ -35,7 +35,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
         <HeroSection />
 
         <View className="px-5 pt-6">
-          <Typography variant="body-lg" className="mb-4 font-bold text-black">
+          <Typography variant="body-lg" className="mb-4 font-bold text-white">
             Service Categories
           </Typography>
           <ScrollView

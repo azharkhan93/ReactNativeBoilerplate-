@@ -71,7 +71,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) 
     };
 
     return (
-        <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, backgroundColor: 'white' }}>
+        <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, backgroundColor: '#030712' }}>
             <View style={{ flex: 1 }}>
                 <View style={{
                     position: 'absolute',
@@ -103,7 +103,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) 
                 />
 
                 {/* Footer Navigation */}
-                <View style={{ paddingHorizontal: 32, paddingBottom: 40 }}>
+                <View style={{ paddingHorizontal: 32, paddingBottom: 40, backgroundColor: '#030712' }}>
                     <View style={{
                         flexDirection: 'row',
                         alignItems: 'center',

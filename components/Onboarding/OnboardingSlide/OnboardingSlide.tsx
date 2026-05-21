@@ -17,7 +17,7 @@ export const OnboardingSlide: React.FC<OnboardingSlideProps> = ({
     image
 }) => {
     return (
-        <View style={{ width, flex: 1, backgroundColor: 'white' }}>
+        <View style={{ width, flex: 1, backgroundColor: '#030712' }}>
             <Animated.View
                 entering={FadeInUp.delay(200).duration(800)}
                 className="w-full h-[75%] items-center justify-center overflow-hidden"
@@ -35,14 +35,14 @@ export const OnboardingSlide: React.FC<OnboardingSlideProps> = ({
             >
                 <Typography
                     variant="h2"
-                    className="text-center mb-3 text-[#1A1A1A] font-heading-bold"
-                    style={{ textShadowColor: 'rgba(0,0,0,0.1)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4 }}
+                    className="text-center mb-3 text-white font-heading-bold"
+                    style={{ textShadowColor: 'rgba(0,0,0,0.3)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 6 }}
                 >
                     {title}
                 </Typography>
                 <Typography
                     variant="body"
-                    className="text-center text-[#666666] leading-6 font-body-medium"
+                    className="text-center text-gray-400 leading-6 font-body-medium"
                 >
                     {description}
                 </Typography>

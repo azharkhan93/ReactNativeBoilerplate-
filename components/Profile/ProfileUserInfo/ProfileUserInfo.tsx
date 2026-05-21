@@ -20,13 +20,14 @@ export const ProfileUserInfo: React.FC<ProfileUserInfoProps> = ({
   subtitle,
   location,
   isVerified,
+  avatarUrl,
   onEditAvatar,
   onEditProfile,
   showEditButton = true,
 }) => (
   <View className="items-center px-5 mb-6">
     <View className="mb-4">
-      <ProfileAvatar size={100} onEditPress={onEditAvatar} />
+      <ProfileAvatar size={100} avatarUrl={avatarUrl} onEditPress={onEditAvatar} />
     </View>
     
     <Typography variant="h2" className="text-white text-2xl mb-1 text-center">
