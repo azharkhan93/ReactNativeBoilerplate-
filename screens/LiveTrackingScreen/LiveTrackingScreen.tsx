@@ -20,7 +20,7 @@ export const LiveTrackingScreen: React.FC<LiveTrackingScreenProps> = ({ onNaviga
 
     return (
         <View className="flex-1 bg-white">
-            {/* Full Screen Map */}
+           
             <TrackingMap
                 driverLocation={currentLocation}
                 destination={MOCK_TRACKING_SESSION.destination}
@@ -53,7 +53,7 @@ export const LiveTrackingScreen: React.FC<LiveTrackingScreenProps> = ({ onNaviga
                 </TouchableOpacity>
             </View>
 
-            {/* Bottom Driver Info Overlay */}
+           
             <View className="absolute bottom-10 left-5 right-5 z-20">
                 <View className="mb-4 flex-row items-center justify-center">
                     <View className="bg-black/80 px-4 py-2 rounded-full flex-row items-center">

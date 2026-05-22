@@ -1,4 +1,10 @@
-import { split, HttpLink, ApolloClient, InMemoryCache, Operation } from '@apollo/client';
+import {
+  split,
+  HttpLink,
+  ApolloClient,
+  InMemoryCache,
+  Operation,
+} from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
