@@ -1,0 +1,1 @@
+export { SatisfactionCard } from './SatisfactionCard';
