@@ -11,6 +11,7 @@ import {
   ProfileStats,
   ProfileUserInfo,
   ProfileMenuItemData,
+  LogoutButton,
 } from '@/components/Profile';
 import { BottomSheetModal } from '@/components/shared/BottomSheetModal';
 import { AvailabilityContent } from '@/components/Vendor/Availability';
@@ -32,7 +33,6 @@ import { Typography } from '@/components/theme';
 import { Dropzone } from '@/components/shared/Dropzone';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { uploadAssetToCloudinary } from '@/utils/uploadHelper';
-import { LogOut, ChevronRight } from 'lucide-react-native';
 import { useLogout } from '@/hooks/useLogout';
 
 export interface ProfileScreenProps {
@@ -228,31 +228,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
           />
         </View>
 
-        <View className="px-5 mb-8">
-          <TouchableOpacity
-            onPress={handleLogoutPress}
-            activeOpacity={0.7}
-            disabled={loggingOut}
-            className={`bg-red-500/10 border border-red-500/20 rounded-3xl py-4 px-5 flex-row items-center justify-between ${
-              loggingOut ? 'opacity-50' : ''
-            }`}
-          >
-            <View className="flex-row items-center gap-4 flex-1">
-              <View className="w-11 h-11 rounded-xl bg-red-500/20 items-center justify-center">
-                <LogOut size={20} color="#f87171" />
-              </View>
-              <View className="flex-column flex-1">
-                <Typography variant="body" className="font-body-semibold text-red-400">
-                  {loggingOut ? 'Logging Out...' : 'Log Out'}
-                </Typography>
-                <Typography variant="body-sm" className="text-red-500/60 mt-0.5">
-                  Securely sign out of your account
-                </Typography>
-              </View>
-            </View>
-            <ChevronRight size={18} color="#f87171" />
-          </TouchableOpacity>
-        </View>
+        <LogoutButton onPress={handleLogoutPress} loading={loggingOut} />
       </ScrollView>
       <BottomSheetModal
         visible={!!modalType}
