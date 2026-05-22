@@ -2,7 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { TopBar } from '@/components/TopBar';
 import { BottomTabNavigator } from '@/components/BottomTabNavigator';
-import { HomeScreen, ProfileScreen, BookingsScreen, NearbyProvidersScreen, LiveTrackingScreen, CustomerBookingsScreen, SupportScreen, RatingReviewScreen, ServiceDisputeScreen, } from '@/screens';
+import {
+  HomeScreen,
+  ProfileScreen,
+  BookingsScreen,
+  NearbyProvidersScreen,
+  LiveTrackingScreen,
+  CustomerBookingsScreen,
+  SupportScreen,
+  RatingReviewScreen,
+  ServiceDisputeScreen,
+} from '@/screens';
 import { VendorDashboard } from '@/components/Vendor/VendorDashboard';
 import { VendorAnalyticsScreen } from '@/components/Vendor/VendorAnalyticsScreen';
 import { OnboardingScreen } from '@/screens/OnboardingScreen/OnboardingScreen';
@@ -13,79 +23,101 @@ import { UserRole } from '../__generated__/graphql';
 import { setAuthData } from '@/utils/store/authStore';
 
 export const AppNavigator: React.FC = () => {
-    const [activeTab, setActiveTab] = useState('home');
-    const [userRole, setUserRole] = useState<UserRole | null>(null);
-    const [showOnboarding, setShowOnboarding] = useState(true);
-    const [showPhoneModal, setShowPhoneModal] = useState(false);
+  const [activeTab, setActiveTab] = useState('home');
+  const [userRole, setUserRole] = useState<UserRole | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(true);
+  const [showPhoneModal, setShowPhoneModal] = useState(false);
 
-   useEffect(() => {
-        if (userRole === UserRole.Provider && activeTab === 'home') {
-            setActiveTab('dashboard');
-        }
-    }, [userRole, activeTab]);
-
-    const handleOnboardingFinish = (role: UserRole) => {
-        setUserRole(role);
-        setShowOnboarding(false);
-        if (role === UserRole.Customer) {
-            setActiveTab('home');
-            setTimeout(() => setShowPhoneModal(true), 500);
-        } else {
-            setActiveTab('dashboard');
-            setTimeout(() => setShowPhoneModal(true), 500);
-        }
-    };
-
-    if (showOnboarding) {
-        return <OnboardingScreen onFinish={handleOnboardingFinish} />;
+  useEffect(() => {
+    if (userRole === UserRole.Provider && activeTab === 'home') {
+      setActiveTab('dashboard');
     }
+  }, [userRole, activeTab]);
 
-    const renderScreen = () => {
-        switch (activeTab) {
-            case 'dashboard': return <VendorDashboard onNavigate={setActiveTab} />;
-            case 'bookings': return userRole === UserRole.Provider ? <BookingsScreen /> : <CustomerBookingsScreen onNavigate={setActiveTab} />;
+  const handleOnboardingFinish = (role: UserRole) => {
+    setUserRole(role);
+    setShowOnboarding(false);
+    if (role === UserRole.Customer) {
+      setActiveTab('home');
+      setTimeout(() => setShowPhoneModal(true), 500);
+    } else {
+      setActiveTab('dashboard');
+      setTimeout(() => setShowPhoneModal(true), 500);
+    }
+  };
 
-            case 'analytics': return <VendorAnalyticsScreen />;
+  if (showOnboarding) {
+    return <OnboardingScreen onFinish={handleOnboardingFinish} />;
+  }
 
-            case 'profile': return <ProfileScreen userRole={userRole} onNavigate={setActiveTab} />;
-            case 'nearbyProviders': return <NearbyProvidersScreen onNavigate={setActiveTab} />;
-            case 'liveTracking': return <LiveTrackingScreen onNavigate={setActiveTab} />;
-            case 'support': return <SupportScreen onNavigate={setActiveTab} />;
-            case 'serviceDispute': return <ServiceDisputeScreen onNavigate={setActiveTab} />;
-            case 'ratingReview': return <RatingReviewScreen onNavigate={setActiveTab} />;
-            case 'reviewSuccess': return <ReviewSuccessScreen onNavigate={setActiveTab} />;
-            default: return <HomeScreen userRole={userRole} onNavigate={setActiveTab} />;
+  const renderScreen = () => {
+    switch (activeTab) {
+      case 'dashboard':
+        return <VendorDashboard onNavigate={setActiveTab} />;
+      case 'bookings':
+        return userRole === UserRole.Provider ? (
+          <BookingsScreen />
+        ) : (
+          <CustomerBookingsScreen onNavigate={setActiveTab} />
+        );
 
-        }
-    };
+      case 'analytics':
+        return <VendorAnalyticsScreen />;
 
-    const tabs = userRole === UserRole.Provider ? VENDOR_TABS : CUSTOMER_TABS;
-    const showTopBar = !HIDDEN_TOPBAR_ROUTES.includes(activeTab);
+      case 'profile':
+        return (
+          <ProfileScreen 
+            userRole={userRole} 
+            onNavigate={setActiveTab} 
+            onLogout={() => {
+              setUserRole(null);
+              setShowOnboarding(true);
+              setActiveTab('home');
+            }} 
+          />
+        );
+      case 'nearbyProviders':
+        return <NearbyProvidersScreen onNavigate={setActiveTab} />;
+      case 'liveTracking':
+        return <LiveTrackingScreen onNavigate={setActiveTab} />;
+      case 'support':
+        return <SupportScreen onNavigate={setActiveTab} />;
+      case 'serviceDispute':
+        return <ServiceDisputeScreen onNavigate={setActiveTab} />;
+      case 'ratingReview':
+        return <RatingReviewScreen onNavigate={setActiveTab} />;
+      case 'reviewSuccess':
+        return <ReviewSuccessScreen onNavigate={setActiveTab} />;
+      default:
+        return <HomeScreen userRole={userRole} onNavigate={setActiveTab} />;
+    }
+  };
 
-    return (
-        <View className="flex-1 bg-gray-950">
-            {showTopBar && <TopBar placeholder="Search products, brands..." />}
+  const tabs = userRole === UserRole.Provider ? VENDOR_TABS : CUSTOMER_TABS;
+  const showTopBar = !HIDDEN_TOPBAR_ROUTES.includes(activeTab);
 
-            <View className="flex-1">
-                {renderScreen()}
-            </View>
+  return (
+    <View className="flex-1 bg-gray-950">
+      {showTopBar && <TopBar placeholder="Search products, brands..." />}
 
-            <BottomTabNavigator
-                tabs={tabs}
-                activeTab={activeTab}
-                onTabPress={setActiveTab}
-            />
+      <View className="flex-1">{renderScreen()}</View>
 
-            <PhoneVerificationModal
-                visible={showPhoneModal}
-                role={userRole}
-                onClose={() => setShowPhoneModal(false)}
-                onSuccess={(status, token, uid) => {
-                    if (token && uid) {
-                        setAuthData(token, uid);
-                    }
-                }}
-            />
-        </View>
-    );
+      <BottomTabNavigator
+        tabs={tabs}
+        activeTab={activeTab}
+        onTabPress={setActiveTab}
+      />
+
+      <PhoneVerificationModal
+        visible={showPhoneModal}
+        role={userRole}
+        onClose={() => setShowPhoneModal(false)}
+        onSuccess={(status, token, uid) => {
+          if (token && uid) {
+            setAuthData(token, uid);
+          }
+        }}
+      />
+    </View>
+  );
 };

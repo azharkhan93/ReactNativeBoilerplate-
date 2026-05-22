@@ -38,6 +38,7 @@ type Documents = {
     "\n  mutation VerifyOtp($phone: String!, $code: String!) {\n    verifyOtp(phoneNumber: $phone, code: $code) {\n      success\n      message\n    }\n  }\n": typeof types.VerifyOtpDocument,
     "\n  mutation LoginByPhone($phone: String!, $code: String!, $role: UserRole!) {\n    loginByPhone(phoneNumber: $phone, code: $code, role: $role) {\n      token\n      user {\n        id\n        phoneNumber\n        role {\n          id\n          name\n        }\n      }\n    }\n  }\n": typeof types.LoginByPhoneDocument,
     "\n  mutation RequestOtp($phone: String!) {\n    requestOtp(phoneNumber: $phone) {\n      success\n      message\n      sid\n    }\n  }\n": typeof types.RequestOtpDocument,
+    "\n  mutation LogoutUser {\n    logout\n  }\n": typeof types.LogoutUserDocument,
     "\n  query GetDriverLocation($bookingId: ID!) {\n    driverLocation(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": typeof types.GetDriverLocationDocument,
     "\n  subscription OnDriverLocationUpdated($bookingId: ID!) {\n    driverLocationUpdated(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": typeof types.OnDriverLocationUpdatedDocument,
 };
@@ -66,6 +67,7 @@ const documents: Documents = {
     "\n  mutation VerifyOtp($phone: String!, $code: String!) {\n    verifyOtp(phoneNumber: $phone, code: $code) {\n      success\n      message\n    }\n  }\n": types.VerifyOtpDocument,
     "\n  mutation LoginByPhone($phone: String!, $code: String!, $role: UserRole!) {\n    loginByPhone(phoneNumber: $phone, code: $code, role: $role) {\n      token\n      user {\n        id\n        phoneNumber\n        role {\n          id\n          name\n        }\n      }\n    }\n  }\n": types.LoginByPhoneDocument,
     "\n  mutation RequestOtp($phone: String!) {\n    requestOtp(phoneNumber: $phone) {\n      success\n      message\n      sid\n    }\n  }\n": types.RequestOtpDocument,
+    "\n  mutation LogoutUser {\n    logout\n  }\n": types.LogoutUserDocument,
     "\n  query GetDriverLocation($bookingId: ID!) {\n    driverLocation(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": types.GetDriverLocationDocument,
     "\n  subscription OnDriverLocationUpdated($bookingId: ID!) {\n    driverLocationUpdated(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": types.OnDriverLocationUpdatedDocument,
 };
@@ -180,6 +182,10 @@ export function gql(source: "\n  mutation LoginByPhone($phone: String!, $code: S
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation RequestOtp($phone: String!) {\n    requestOtp(phoneNumber: $phone) {\n      success\n      message\n      sid\n    }\n  }\n"): (typeof documents)["\n  mutation RequestOtp($phone: String!) {\n    requestOtp(phoneNumber: $phone) {\n      success\n      message\n      sid\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation LogoutUser {\n    logout\n  }\n"): (typeof documents)["\n  mutation LogoutUser {\n    logout\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
