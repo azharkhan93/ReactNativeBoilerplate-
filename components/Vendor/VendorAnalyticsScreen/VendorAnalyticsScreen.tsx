@@ -1,10 +1,16 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Typography } from '../../theme';
 import { CalendarDays, TrendingUp, TrendingDown, Target, Users } from 'lucide-react-native';
 
-// ─── Mock Data ───────────────────────────────────────────────────
+// ─── Constants ────────────────────────────────────────────────────
+const BG = '#030712';
+const CARD = '#0f1623';
+const BORDER = '#1e293b';
+const MUTED = '#64748b';
+
 const TIME_RANGES = ['Last 7 Days', 'Last 30 Days', 'Monthly'] as const;
 
 const CHART_BARS = [
@@ -46,7 +52,7 @@ const INSIGHTS = [
 // ─── Sub-components ───────────────────────────────────────────────
 const SectionTitle: React.FC<{ label: string; right?: React.ReactNode }> = ({ label, right }) => (
     <View className="flex-row justify-between items-center mb-4">
-        <Typography className="text-gray-900 text-base font-heading-semibold">{label}</Typography>
+        <Typography className="text-white text-base font-heading-semibold">{label}</Typography>
         {right}
     </View>
 );
@@ -64,12 +70,12 @@ const BarChart: React.FC = () => {
                             style={{
                                 height: barH,
                                 width: '60%',
-                                backgroundColor: isLast ? '#3b82f6' : '#dbeafe',
+                                backgroundColor: isLast ? '#3b82f6' : '#1e3a5f',
                                 borderRadius: 6,
                                 marginBottom: 6,
                             }}
                         />
-                        <Typography className="text-gray-400 text-[10px] font-body-medium">
+                        <Typography className="text-[10px] font-body-medium" style={{ color: MUTED }}>
                             {b.day}
                         </Typography>
                     </View>
@@ -86,13 +92,10 @@ const StarBar: React.FC<{ stars: number; pct: number }> = ({ stars, pct }) => (
                 <Typography key={i} className="text-yellow-400 text-[13px]">★</Typography>
             ))}
         </View>
-        <View className="flex-1 bg-gray-100 rounded-full h-2 mr-3">
-            <View
-                className="bg-primary-500 h-2 rounded-full"
-                style={{ width: `${pct}%` }}
-            />
+        <View className="flex-1 rounded-full h-2 mr-3" style={{ backgroundColor: BORDER }}>
+            <View className="bg-primary-500 h-2 rounded-full" style={{ width: `${pct}%` }} />
         </View>
-        <Typography className="text-gray-500 text-[13px]" style={{ width: 32, textAlign: 'right' }}>
+        <Typography className="text-[13px]" style={{ color: MUTED, width: 32, textAlign: 'right' }}>
             {pct}%
         </Typography>
     </View>
@@ -104,15 +107,22 @@ export const VendorAnalyticsScreen: React.FC = () => {
     const [range, setRange] = useState<(typeof TIME_RANGES)[number]>('Last 7 Days');
 
     return (
-        <View className="flex-1 bg-gray-50">
+        <View className="flex-1" style={{ backgroundColor: BG }}>
             {/* Header */}
             <View
-                className="bg-white px-5 pb-4 border-b border-gray-100"
-                style={{ paddingTop: Math.max(insets.top, 20) + 10 }}>
+                className="px-5 pb-4"
+                style={{
+                    paddingTop: Math.max(insets.top, 20) + 10,
+                    backgroundColor: CARD,
+                    borderBottomWidth: 1,
+                    borderBottomColor: BORDER,
+                }}>
                 <View className="flex-row items-center justify-between">
-                    <Typography className="text-gray-900 text-xl font-heading-bold">Analytics</Typography>
-                    <TouchableOpacity className="w-9 h-9 bg-gray-100 rounded-xl items-center justify-center">
-                        <CalendarDays size={18} color="#6b7280" />
+                    <Typography className="text-white text-xl font-heading-bold">Analytics</Typography>
+                    <TouchableOpacity
+                        className="w-9 h-9 rounded-xl items-center justify-center"
+                        style={{ backgroundColor: BORDER }}>
+                        <CalendarDays size={18} color={MUTED} />
                     </TouchableOpacity>
                 </View>
 
@@ -122,10 +132,12 @@ export const VendorAnalyticsScreen: React.FC = () => {
                         <TouchableOpacity
                             key={r}
                             onPress={() => setRange(r)}
-                            className={`px-4 py-2 rounded-full ${r === range ? 'bg-primary-500' : 'bg-gray-100'}`}
+                            className={`px-4 py-2 rounded-full ${r === range ? 'bg-primary-500' : ''}`}
+                            style={r !== range ? { backgroundColor: BORDER } : undefined}
                             activeOpacity={0.8}>
                             <Typography
-                                className={`text-sm font-body-semibold ${r === range ? 'text-white' : 'text-gray-500'}`}>
+                                className={`text-sm font-body-semibold ${r === range ? 'text-white' : ''}`}
+                                style={r !== range ? { color: MUTED } : undefined}>
                                 {r}
                             </Typography>
                         </TouchableOpacity>
@@ -138,27 +150,31 @@ export const VendorAnalyticsScreen: React.FC = () => {
                 contentContainerStyle={{ padding: 20, paddingBottom: 40 }}>
 
                 {/* Performance Score */}
-                <View className="bg-white rounded-3xl p-6 mb-4 border border-gray-100">
-                    <Typography className="text-gray-400 text-xs font-body-bold tracking-widest uppercase mb-2">
+                <View
+                    className="rounded-3xl p-6 mb-4"
+                    style={{ backgroundColor: CARD, borderWidth: 1, borderColor: BORDER }}>
+                    <Typography className="text-xs font-body-bold tracking-widest uppercase mb-2" style={{ color: MUTED }}>
                         Performance Score
                     </Typography>
                     <View className="flex-row items-end mb-3">
-                        <Typography className="text-gray-900 text-5xl font-heading-bold">4.8</Typography>
-                        <Typography className="text-gray-400 text-xl font-body-medium mb-1.5 ml-1">/ 5.0</Typography>
+                        <Typography className="text-white text-5xl font-heading-bold">4.8</Typography>
+                        <Typography className="text-xl font-body-medium mb-1.5 ml-1" style={{ color: MUTED }}>/ 5.0</Typography>
                     </View>
                     <View className="bg-green-500/10 self-start px-3 py-1 rounded-full flex-row items-center mb-4">
                         <View className="w-2 h-2 bg-green-500 rounded-full mr-2" />
-                        <Typography className="text-green-600 text-xs font-body-bold tracking-widest uppercase">
+                        <Typography className="text-green-500 text-xs font-body-bold tracking-widest uppercase">
                             Top Rated Provider
                         </Typography>
                     </View>
-                    <View className="bg-gray-100 rounded-full h-2">
+                    <View className="rounded-full h-2" style={{ backgroundColor: BORDER }}>
                         <View className="bg-primary-500 h-2 rounded-full" style={{ width: '96%' }} />
                     </View>
                 </View>
 
                 {/* Earnings Growth */}
-                <View className="bg-white rounded-3xl p-6 mb-4 border border-gray-100">
+                <View
+                    className="rounded-3xl p-6 mb-4"
+                    style={{ backgroundColor: CARD, borderWidth: 1, borderColor: BORDER }}>
                     <SectionTitle
                         label="Earnings Growth"
                         right={
@@ -176,12 +192,14 @@ export const VendorAnalyticsScreen: React.FC = () => {
                 {/* Stats Row */}
                 <View className="flex-row gap-3 mb-4">
                     {/* Booking Conversion */}
-                    <View className="flex-1 bg-white rounded-3xl p-5 border border-gray-100">
-                        <View className="w-10 h-10 bg-blue-50 rounded-xl items-center justify-center mb-3">
+                    <View
+                        className="flex-1 rounded-3xl p-5"
+                        style={{ backgroundColor: CARD, borderWidth: 1, borderColor: BORDER }}>
+                        <View className="w-10 h-10 rounded-xl items-center justify-center mb-3" style={{ backgroundColor: '#1e3a5f' }}>
                             <Target size={20} color="#3b82f6" />
                         </View>
-                        <Typography className="text-gray-500 text-xs mb-1">Booking Conversion</Typography>
-                        <Typography className="text-gray-900 text-2xl font-heading-bold mb-1">84.2%</Typography>
+                        <Typography className="text-xs mb-1" style={{ color: MUTED }}>Booking Conversion</Typography>
+                        <Typography className="text-white text-2xl font-heading-bold mb-1">84.2%</Typography>
                         <View className="flex-row items-center">
                             <TrendingUp size={12} color="#22c55e" />
                             <Typography className="text-green-500 text-xs font-body-semibold ml-1">↑ 2.4%</Typography>
@@ -189,12 +207,14 @@ export const VendorAnalyticsScreen: React.FC = () => {
                     </View>
 
                     {/* Avg Response */}
-                    <View className="flex-1 bg-white rounded-3xl p-5 border border-gray-100">
-                        <View className="w-10 h-10 bg-orange-50 rounded-xl items-center justify-center mb-3">
+                    <View
+                        className="flex-1 rounded-3xl p-5"
+                        style={{ backgroundColor: CARD, borderWidth: 1, borderColor: BORDER }}>
+                        <View className="w-10 h-10 rounded-xl items-center justify-center mb-3" style={{ backgroundColor: '#2a1f0e' }}>
                             <Typography className="text-orange-400 text-lg">😊</Typography>
                         </View>
-                        <Typography className="text-gray-500 text-xs mb-1">Avg Response</Typography>
-                        <Typography className="text-gray-900 text-2xl font-heading-bold mb-1">14m</Typography>
+                        <Typography className="text-xs mb-1" style={{ color: MUTED }}>Avg Response</Typography>
+                        <Typography className="text-white text-2xl font-heading-bold mb-1">14m</Typography>
                         <View className="flex-row items-center">
                             <TrendingDown size={12} color="#22c55e" />
                             <Typography className="text-green-500 text-xs font-body-semibold ml-1">↓ 3m</Typography>
@@ -203,32 +223,37 @@ export const VendorAnalyticsScreen: React.FC = () => {
                 </View>
 
                 {/* Customer Satisfaction */}
-                <View className="bg-white rounded-3xl p-6 mb-4 border border-gray-100">
+                <View
+                    className="rounded-3xl p-6 mb-4"
+                    style={{ backgroundColor: CARD, borderWidth: 1, borderColor: BORDER }}>
                     <SectionTitle label="Customer Satisfaction" />
                     {SATISFACTION.map(s => (
                         <StarBar key={s.stars} stars={s.stars} pct={s.pct} />
                     ))}
                 </View>
 
-                {/* Business Insights */}
-                <View className="bg-white rounded-3xl p-6 border border-gray-100">
+                
+                <View
+                    className="rounded-3xl p-6"
+                    style={{ backgroundColor: CARD, borderWidth: 1, borderColor: BORDER }}>
                     <SectionTitle label="Business Insights" />
                     {INSIGHTS.map(insight => {
                         const Icon = insight.icon;
                         return (
                             <View
                                 key={insight.id}
-                                className="flex-row items-start mb-4 last:mb-0 bg-gray-50 rounded-2xl p-4">
+                                className="flex-row items-start mb-4 last:mb-0 rounded-2xl p-4"
+                                style={{ backgroundColor: BG }}>
                                 <View
                                     className="w-10 h-10 rounded-full items-center justify-center mr-4 mt-0.5"
                                     style={{ backgroundColor: insight.bg }}>
                                     <Icon size={18} color={insight.color} />
                                 </View>
                                 <View className="flex-1">
-                                    <Typography className="text-gray-900 font-body-semibold mb-1">
+                                    <Typography className="text-white font-body-semibold mb-1">
                                         {insight.title}
                                     </Typography>
-                                    <Typography className="text-gray-500 text-[13px] leading-5">
+                                    <Typography className="text-[13px] leading-5" style={{ color: MUTED }}>
                                         {insight.body}
                                     </Typography>
                                 </View>
