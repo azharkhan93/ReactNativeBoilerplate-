@@ -65,12 +65,16 @@ export type CreateServiceCategoryInput = {
 export type CreateVendorProfileInput = {
   address?: InputMaybe<Scalars['String']['input']>;
   businessName: Scalars['String']['input'];
+  categoryIds?: InputMaybe<Array<Scalars['String']['input']>>;
   contactNumber?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   gstNumber?: InputMaybe<Scalars['String']['input']>;
   imageUri?: InputMaybe<Scalars['String']['input']>;
+  images?: InputMaybe<Array<Scalars['String']['input']>>;
   operatingHours?: InputMaybe<Scalars['String']['input']>;
   serviceRadius?: InputMaybe<Scalars['String']['input']>;
   userId?: InputMaybe<Scalars['String']['input']>;
+  whyChooseMe?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateVendorServiceInput = {
@@ -109,6 +113,16 @@ export type CustomerProfileType = {
   phone: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
   userId: Scalars['String']['output'];
+};
+
+export type DriverLocationType = {
+  __typename?: 'DriverLocationType';
+  bookingId: Scalars['ID']['output'];
+  eta: Scalars['Int']['output'];
+  latitude: Scalars['Float']['output'];
+  longitude: Scalars['Float']['output'];
+  status: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export enum ExceptionType {
@@ -153,6 +167,7 @@ export type Mutation = {
   saveFullAvailability: VendorAvailabilityResponse;
   syncServiceCategories: Array<ServiceCategory>;
   updateCustomerAddress: CustomerAddressType;
+  updateDriverLocation: DriverLocationType;
   updateHeroContent: HeroContent;
   updateServiceCategory: ServiceCategory;
   updateVendorBreak: VendorBreak;
@@ -291,6 +306,15 @@ export type MutationUpdateCustomerAddressArgs = {
 };
 
 
+export type MutationUpdateDriverLocationArgs = {
+  bookingId: Scalars['ID']['input'];
+  eta: Scalars['Int']['input'];
+  latitude: Scalars['Float']['input'];
+  longitude: Scalars['Float']['input'];
+  status: Scalars['String']['input'];
+};
+
+
 export type MutationUpdateHeroContentArgs = {
   input: UpdateHeroContentInput;
 };
@@ -361,6 +385,7 @@ export type MutationVerifyOtpArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  driverLocation?: Maybe<DriverLocationType>;
   getCustomerAddresses: Array<CustomerAddressType>;
   getCustomerProfile?: Maybe<CustomerProfileType>;
   getHeroContent?: Maybe<HeroContent>;
@@ -376,6 +401,11 @@ export type Query = {
   serviceCategories: Array<ServiceCategory>;
   user: UserType;
   users: Array<UserType>;
+};
+
+
+export type QueryDriverLocationArgs = {
+  bookingId: Scalars['ID']['input'];
 };
 
 
@@ -459,6 +489,16 @@ export type SmsResponse = {
   success: Scalars['Boolean']['output'];
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  driverLocationUpdated: DriverLocationType;
+};
+
+
+export type SubscriptionDriverLocationUpdatedArgs = {
+  bookingId: Scalars['ID']['input'];
+};
+
 export type SyncServiceCategoryInput = {
   icon: Scalars['String']['input'];
   id?: InputMaybe<Scalars['String']['input']>;
@@ -500,11 +540,15 @@ export type UpdateServiceCategoryInput = {
 export type UpdateVendorProfileInput = {
   address?: InputMaybe<Scalars['String']['input']>;
   businessName?: InputMaybe<Scalars['String']['input']>;
+  categoryIds?: InputMaybe<Array<Scalars['String']['input']>>;
   contactNumber?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   gstNumber?: InputMaybe<Scalars['String']['input']>;
   imageUri?: InputMaybe<Scalars['String']['input']>;
+  images?: InputMaybe<Array<Scalars['String']['input']>>;
   operatingHours?: InputMaybe<Scalars['String']['input']>;
   serviceRadius?: InputMaybe<Scalars['String']['input']>;
+  whyChooseMe?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UpdateVendorServiceInput = {
@@ -598,15 +642,19 @@ export type VendorProfileType = {
   __typename?: 'VendorProfileType';
   address?: Maybe<Scalars['String']['output']>;
   businessName: Scalars['String']['output'];
+  categories: Array<ServiceCategory>;
   contactNumber?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
   gstNumber?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   imageUri?: Maybe<Scalars['String']['output']>;
+  images: Array<Scalars['String']['output']>;
   operatingHours?: Maybe<Scalars['String']['output']>;
   serviceRadius?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['DateTime']['output'];
   userId: Scalars['String']['output'];
+  whyChooseMe?: Maybe<Scalars['String']['output']>;
 };
 
 export type VendorSchedule = {
@@ -814,6 +862,20 @@ export type RequestOtpMutationVariables = Exact<{
 
 export type RequestOtpMutation = { __typename?: 'Mutation', requestOtp: { __typename?: 'SmsResponse', success: boolean, message?: string | null, sid?: string | null } };
 
+export type GetDriverLocationQueryVariables = Exact<{
+  bookingId: Scalars['ID']['input'];
+}>;
+
+
+export type GetDriverLocationQuery = { __typename?: 'Query', driverLocation?: { __typename?: 'DriverLocationType', bookingId: string, latitude: number, longitude: number, status: string, eta: number, updatedAt: any } | null };
+
+export type OnDriverLocationUpdatedSubscriptionVariables = Exact<{
+  bookingId: Scalars['ID']['input'];
+}>;
+
+
+export type OnDriverLocationUpdatedSubscription = { __typename?: 'Subscription', driverLocationUpdated: { __typename?: 'DriverLocationType', bookingId: string, latitude: number, longitude: number, status: string, eta: number, updatedAt: any } };
+
 
 export const GetCustomerProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCustomerProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getCustomerProfile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"location"}}]}}]}}]} as unknown as DocumentNode<GetCustomerProfileQuery, GetCustomerProfileQueryVariables>;
 export const UpsertCustomerProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpsertCustomerProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpsertCustomerProfileInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upsertCustomerProfile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"phone"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"location"}}]}}]}}]} as unknown as DocumentNode<UpsertCustomerProfileMutation, UpsertCustomerProfileMutationVariables>;
@@ -839,3 +901,5 @@ export const DeleteVendorServiceDocument = {"kind":"Document","definitions":[{"k
 export const VerifyOtpDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"VerifyOtp"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"phone"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"code"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"verifyOtp"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"phoneNumber"},"value":{"kind":"Variable","name":{"kind":"Name","value":"phone"}}},{"kind":"Argument","name":{"kind":"Name","value":"code"},"value":{"kind":"Variable","name":{"kind":"Name","value":"code"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"success"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<VerifyOtpMutation, VerifyOtpMutationVariables>;
 export const LoginByPhoneDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"LoginByPhone"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"phone"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"code"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"role"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserRole"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"loginByPhone"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"phoneNumber"},"value":{"kind":"Variable","name":{"kind":"Name","value":"phone"}}},{"kind":"Argument","name":{"kind":"Name","value":"code"},"value":{"kind":"Variable","name":{"kind":"Name","value":"code"}}},{"kind":"Argument","name":{"kind":"Name","value":"role"},"value":{"kind":"Variable","name":{"kind":"Name","value":"role"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"token"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"phoneNumber"}},{"kind":"Field","name":{"kind":"Name","value":"role"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]} as unknown as DocumentNode<LoginByPhoneMutation, LoginByPhoneMutationVariables>;
 export const RequestOtpDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RequestOtp"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"phone"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"requestOtp"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"phoneNumber"},"value":{"kind":"Variable","name":{"kind":"Name","value":"phone"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"success"}},{"kind":"Field","name":{"kind":"Name","value":"message"}},{"kind":"Field","name":{"kind":"Name","value":"sid"}}]}}]}}]} as unknown as DocumentNode<RequestOtpMutation, RequestOtpMutationVariables>;
+export const GetDriverLocationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetDriverLocation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"bookingId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"driverLocation"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"bookingId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"bookingId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bookingId"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"eta"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<GetDriverLocationQuery, GetDriverLocationQueryVariables>;
+export const OnDriverLocationUpdatedDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"OnDriverLocationUpdated"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"bookingId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"driverLocationUpdated"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"bookingId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"bookingId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bookingId"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"eta"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<OnDriverLocationUpdatedSubscription, OnDriverLocationUpdatedSubscriptionVariables>;

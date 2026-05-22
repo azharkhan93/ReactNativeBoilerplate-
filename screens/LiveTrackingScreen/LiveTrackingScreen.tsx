@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { ChevronLeft, Info, MoreVertical } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Typography, TrackingMap, DriverCard } from '@/components/theme';
 import { MOCK_TRACKING_SESSION } from '@/data/mockTracking';
-import { useTrackingSimulation } from './useTrackingSimulation';
+import { useLiveTracking } from './useLiveTracking';
 
 export interface LiveTrackingScreenProps {
     onNavigate?: (route: string) => void;
@@ -12,7 +12,11 @@ export interface LiveTrackingScreenProps {
 
 export const LiveTrackingScreen: React.FC<LiveTrackingScreenProps> = ({ onNavigate }) => {
     const insets = useSafeAreaInsets();
-    const { currentLocation, eta } = useTrackingSimulation(MOCK_TRACKING_SESSION);
+    const { currentLocation, eta, status } = useLiveTracking(
+        MOCK_TRACKING_SESSION.id,
+        MOCK_TRACKING_SESSION.currentLocation,
+        MOCK_TRACKING_SESSION.estimatedArrivalMinutes
+    );
 
     return (
         <View className="flex-1 bg-white">
@@ -55,7 +59,11 @@ export const LiveTrackingScreen: React.FC<LiveTrackingScreenProps> = ({ onNaviga
                     <View className="bg-black/80 px-4 py-2 rounded-full flex-row items-center">
                         <Info size={14} color="white" />
                         <Typography variant="body-sm" className="ml-2 text-white font-medium">
-                            Driver is approaching your location
+                            {status === 'arrived' 
+                              ? 'Driver has arrived at your location' 
+                              : status === 'picked_up' 
+                              ? 'Trip is in progress' 
+                              : 'Driver is approaching your location'}
                         </Typography>
                     </View>
                 </View>

@@ -1,14 +1,29 @@
 import React from 'react';
-import { View, ScrollView, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import { Typography, Button } from '../../theme';
 import { Pencil, Trash2, Building2 } from 'lucide-react-native';
-import { useBusinessProfile, BusinessProfileFormData } from './hooks/useBusinessProfile';
+import {
+  useBusinessProfile,
+  BusinessProfileFormData,
+} from './hooks/useBusinessProfile';
 import { BusinessProfileForm } from './BusinessProfileForm';
 
-const ProfileImage: React.FC<{ profile: BusinessProfileFormData }> = ({ profile }) => (
+const ProfileImage: React.FC<{ profile: BusinessProfileFormData }> = ({
+  profile,
+}) => (
   <View className="rounded-3xl overflow-hidden border border-gray-800 mb-4">
     {profile.imageUri ? (
-      <Image source={{ uri: profile.imageUri }} className="w-full h-44" resizeMode="cover" />
+      <Image
+        source={{ uri: profile.imageUri }}
+        className="w-full h-44"
+        resizeMode="cover"
+      />
     ) : (
       <View className="w-full h-44 bg-gray-900 items-center justify-center">
         <Building2 size={36} color="#374151" />
@@ -34,18 +49,30 @@ const DetailRow: React.FC<DetailRowProps> = ({ label, value, isLast }) => (
   </View>
 );
 
-const BusinessDetails: React.FC<{ profile: BusinessProfileFormData }> = ({ profile }) => (
+const BusinessDetails: React.FC<{ profile: BusinessProfileFormData }> = ({
+  profile,
+}) => (
   <View className="bg-gray-900 border border-gray-800 rounded-2xl px-4 mb-5">
-    <Typography variant="subheading" className="text-white py-4 border-b border-gray-800/60">
+    <Typography
+      variant="subheading"
+      className="text-white py-4 border-b border-gray-800/60"
+    >
       Business Details
     </Typography>
 
     <DetailRow label="Business Name" value={profile.businessName || ''} />
     <DetailRow label="GST Number" value={profile.gstNumber || ''} />
-    <DetailRow label="Contact Number" value={profile.contactNumber ? `+91 ${profile.contactNumber}` : ''} />
+    <DetailRow
+      label="Contact Number"
+      value={profile.contactNumber ? `+91 ${profile.contactNumber}` : ''}
+    />
     <DetailRow label="Business Address" value={profile.address || ''} />
     <DetailRow label="Service Radius" value={profile.serviceRadius || ''} />
-    <DetailRow label="Operating Hours" value={profile.operatingHours || ''} isLast />
+    <DetailRow
+      label="Operating Hours"
+      value={profile.operatingHours || ''}
+      isLast
+    />
   </View>
 );
 
@@ -66,7 +93,9 @@ export const BusinessProfile: React.FC = () => {
     return (
       <View className="flex-1 items-center justify-center bg-gray-950 p-10 min-h-[300px]">
         <ActivityIndicator size="large" color="#3b82f6" />
-        <Typography className="text-gray-400 mt-4 font-body">Loading Business Profile...</Typography>
+        <Typography className="text-gray-400 mt-4 font-body">
+          Loading Business Profile...
+        </Typography>
       </View>
     );
   }
@@ -76,7 +105,10 @@ export const BusinessProfile: React.FC = () => {
       <View className="flex-1 bg-gray-950">
         <View className="px-5 py-8 items-center">
           <Building2 size={40} color="#3b82f6" />
-          <Typography variant="subheading" className="text-white mt-4 mb-6 text-center">
+          <Typography
+            variant="subheading"
+            className="text-white mt-4 mb-6 text-center"
+          >
             Set Up Your Business
           </Typography>
           <Button variant="primary" onPress={handleOpenAddModal}>
@@ -97,7 +129,10 @@ export const BusinessProfile: React.FC = () => {
 
   return (
     <>
-      <ScrollView className="flex-1 bg-gray-950" showsVerticalScrollIndicator={false}>
+      <ScrollView
+        className="flex-1 bg-gray-950"
+        showsVerticalScrollIndicator={false}
+      >
         <View className="px-5 pt-4 pb-8">
           <ProfileImage profile={profile} />
           <BusinessDetails profile={profile} />
@@ -108,7 +143,9 @@ export const BusinessProfile: React.FC = () => {
               className="flex-1 flex-row items-center justify-center bg-gray-900 border border-gray-800 rounded-2xl py-3.5"
             >
               <Pencil size={16} color="#3b82f6" />
-              <Typography className="text-primary-400 font-body-semibold ml-2">Edit Profile</Typography>
+              <Typography className="text-primary-400 font-body-semibold ml-2">
+                Edit Profile
+              </Typography>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -117,7 +154,9 @@ export const BusinessProfile: React.FC = () => {
               className="flex-1 flex-row items-center justify-center bg-red-500/10 border border-red-500/25 rounded-2xl py-3.5"
             >
               <Trash2 size={16} color="#ef4444" />
-              <Typography className="text-red-400 font-body-semibold ml-2">Delete</Typography>
+              <Typography className="text-red-400 font-body-semibold ml-2">
+                Delete
+              </Typography>
             </TouchableOpacity>
           </View>
         </View>
