@@ -129,11 +129,12 @@ export const WhyChooseMeForm: React.FC<WhyChooseMeFormProps> = ({
                 onChangeText={setNewItem}
                 onSubmitEditing={handleAddItem}
                 returnKeyType="done"
+                containerClassName="mb-0"
               />
             </View>
             <TouchableOpacity
               onPress={handleAddItem}
-              className="bg-primary-600 w-12 h-12 rounded-2xl items-center justify-center mb-0.5"
+              className="bg-primary-600 w-[52px] h-[52px] rounded-2xl items-center justify-center"
               activeOpacity={0.8}
             >
               <Plus size={20} color="white" />
