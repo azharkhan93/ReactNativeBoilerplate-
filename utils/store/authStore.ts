@@ -1,42 +1,42 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Keychain from 'react-native-keychain';
 
-const TOKEN_KEY = '@auth_token';
-const USER_ID_KEY = '@user_id';
-
-export const setAuthData = async (token: string, userId: string) => {
+export const setAuthData = async (
+  token: string,
+  userId: string,
+): Promise<void> => {
   try {
-    await Promise.all([
-      AsyncStorage.setItem(TOKEN_KEY, token),
-      AsyncStorage.setItem(USER_ID_KEY, userId),
-    ]);
-  } catch (e) {
-    console.error('Failed to save auth data', e);
+    await Keychain.setGenericPassword(userId, token);
+  } catch {}
+};
+
+export const getAuthToken = async (): Promise<string | null> => {
+  try {
+    const credentials = await Keychain.getGenericPassword();
+    if (credentials) {
+      return credentials.password;
+    }
+    return null;
+  } catch {
+    return null;
   }
 };
 
-export const getAuthToken = async () => {
-    try {
-        return await AsyncStorage.getItem(TOKEN_KEY);
-    } catch (e) {
-        return null;
-    }
-};
-
-export const getUserId = async () => {
-    try {
-        return await AsyncStorage.getItem(USER_ID_KEY);
-    } catch (e) {
-        return null;
-    }
-};
-
-export const clearAuthData = async () => {
+export const getUserId = async (): Promise<string | null> => {
   try {
-    await Promise.all([
-      AsyncStorage.removeItem(TOKEN_KEY),
-      AsyncStorage.removeItem(USER_ID_KEY),
-    ]);
-  } catch (e) {
-    console.error('Failed to clear auth data', e);
+    const credentials = await Keychain.getGenericPassword();
+    if (credentials) {
+      return credentials.username;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+};
+
+export const clearAuthData = async (): Promise<void> => {
+  try {
+    await Keychain.resetGenericPassword();
+  } catch {
+    // Fail silently in production per senior engineering guidelines
   }
 };
