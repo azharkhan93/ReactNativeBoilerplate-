@@ -2,7 +2,6 @@ import { Home, User, LayoutDashboard, CalendarDays, BarChart3, MapPin, Navigatio
 import { TabItem } from '@/components/BottomTabNavigator';
 
 export const VENDOR_TABS: TabItem[] = [
-    { label: 'Home', icon: Home, route: 'home' },
     { label: 'Dashboard', icon: LayoutDashboard, route: 'dashboard' },
     { label: 'Bookings', icon: CalendarDays, route: 'bookings' },
     { label: 'Analytics', icon: BarChart3, route: 'analytics' },

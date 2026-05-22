@@ -23,6 +23,9 @@ export type BusinessProfileFormData = Required<
 > & {
   id?: string;
   imageUri: string | null;
+  whyChooseMe?: string | null;
+  description?: string | null;
+  images?: string[] | null;
 };
 
 const DEFAULT_OPERATING_HOURS = 'Mon - Sat, 09:00 AM - 08:00 PM';
@@ -35,6 +38,9 @@ const EMPTY_FORM: BusinessProfileFormData = {
   imageUri: null,
   serviceRadius: '5km',
   operatingHours: DEFAULT_OPERATING_HOURS,
+  whyChooseMe: '',
+  description: '',
+  images: [],
 };
 
 const toFormData = (profile: VendorProfile): BusinessProfileFormData => ({
@@ -46,6 +52,9 @@ const toFormData = (profile: VendorProfile): BusinessProfileFormData => ({
   imageUri: profile.imageUri ?? null,
   serviceRadius: profile.serviceRadius ?? '5km',
   operatingHours: profile.operatingHours ?? DEFAULT_OPERATING_HOURS,
+  whyChooseMe: profile.whyChooseMe ?? '',
+  description: profile.description ?? '',
+  images: profile.images ?? [],
 });
 
 const toCreateInput = (
@@ -60,6 +69,9 @@ const toCreateInput = (
   address: form.address || undefined,
   serviceRadius: form.serviceRadius,
   operatingHours: form.operatingHours,
+  whyChooseMe: form.whyChooseMe || undefined,
+  description: form.description || undefined,
+  images: form.images ?? [],
 });
 
 const toUpdateInput = (form: BusinessProfileFormData): UpdateVendorProfileInput => ({
@@ -70,6 +82,9 @@ const toUpdateInput = (form: BusinessProfileFormData): UpdateVendorProfileInput 
   address: form.address || undefined,
   serviceRadius: form.serviceRadius,
   operatingHours: form.operatingHours,
+  whyChooseMe: form.whyChooseMe || undefined,
+  description: form.description || undefined,
+  images: form.images ?? [],
 });
 
 export const useBusinessProfile = () => {

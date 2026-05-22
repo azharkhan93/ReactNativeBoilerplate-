@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from 'react-native';
 import { TopBar } from '@/components/TopBar';
 import { BottomTabNavigator } from '@/components/BottomTabNavigator';
@@ -17,6 +17,12 @@ export const AppNavigator: React.FC = () => {
     const [userRole, setUserRole] = useState<UserRole | null>(null);
     const [showOnboarding, setShowOnboarding] = useState(true);
     const [showPhoneModal, setShowPhoneModal] = useState(false);
+
+   useEffect(() => {
+        if (userRole === UserRole.Provider && activeTab === 'home') {
+            setActiveTab('dashboard');
+        }
+    }, [userRole, activeTab]);
 
     const handleOnboardingFinish = (role: UserRole) => {
         setUserRole(role);

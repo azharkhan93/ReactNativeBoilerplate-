@@ -1,0 +1,1 @@
+export { BusinessExtendedDetails } from './BusinessExtendedDetails';

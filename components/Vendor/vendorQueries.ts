@@ -12,6 +12,9 @@ export const GET_VENDOR_PROFILE = gql(`
       address
       serviceRadius
       operatingHours
+      whyChooseMe
+      description
+      images
     }
   }
 `);
@@ -28,6 +31,9 @@ export const CREATE_VENDOR_PROFILE = gql(`
       address
       serviceRadius
       operatingHours
+      whyChooseMe
+      description
+      images
     }
   }
 `);
@@ -44,6 +50,9 @@ export const UPDATE_VENDOR_PROFILE = gql(`
       address
       serviceRadius
       operatingHours
+      whyChooseMe
+      description
+      images
     }
   }
 `);

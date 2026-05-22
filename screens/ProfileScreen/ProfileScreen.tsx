@@ -1,5 +1,10 @@
 import React, { ReactNode, useState } from 'react';
-import { ScrollView, View, DimensionValue, TouchableOpacity } from 'react-native';
+import {
+  ScrollView,
+  View,
+  DimensionValue,
+  TouchableOpacity,
+} from 'react-native';
 import {
   ProfileHeader,
   ProfileMenuSection,
@@ -12,7 +17,10 @@ import { AvailabilityContent } from '@/components/Vendor/Availability';
 import { BankAccountDetails } from '@/components/Vendor/BankAccountDetails';
 import { BusinessProfile } from '@/components/Vendor/BusinessProfile';
 import { ManageServices } from '@/components/Vendor/ManageServices';
-import { CustomerProfileForm, CustomerAddressDetails } from '@/components/Customer';
+import {
+  CustomerProfileForm,
+  CustomerAddressDetails,
+} from '@/components/Customer';
 import { UserRole } from '../../__generated__/graphql';
 import { ACCOUNT_MENU_ITEMS, MODAL_ITEMS, ModalConfigItem } from './constants';
 import {
@@ -45,7 +53,10 @@ const AvatarUploadContent: React.FC<AvatarUploadContentProps> = ({
   const [currentUri, setCurrentUri] = useState<string | null>(avatarUrl);
 
   const triggerUpload = async () => {
-    const result = await launchImageLibrary({ mediaType: 'photo', quality: 0.8 });
+    const result = await launchImageLibrary({
+      mediaType: 'photo',
+      quality: 0.8,
+    });
 
     if (result.assets?.[0]?.uri) {
       setUploading(true);
@@ -82,13 +93,17 @@ const AvatarUploadContent: React.FC<AvatarUploadContentProps> = ({
           onPress={onClose}
           className="flex-1 py-3.5 rounded-2xl items-center bg-gray-900 border border-gray-800"
         >
-          <Typography className="text-gray-400 font-body-semibold">Cancel</Typography>
+          <Typography className="text-gray-400 font-body-semibold">
+            Cancel
+          </Typography>
         </TouchableOpacity>
-        
+
         <TouchableOpacity
           onPress={() => onSave(currentUri)}
           disabled={uploading}
-          className={`flex-1 py-3.5 rounded-2xl items-center bg-primary-600 ${uploading ? 'opacity-55' : ''}`}
+          className={`flex-1 py-3.5 rounded-2xl items-center bg-primary-600 ${
+            uploading ? 'opacity-55' : ''
+          }`}
         >
           <Typography className="text-white font-body-semibold">
             {uploading ? 'Uploading...' : 'Save Image'}
@@ -103,13 +118,18 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
   userRole,
   onNavigate,
 }) => {
-  const { userData, isVendor, handleSaveAvatar, handleEditProfile } =
+  const { userData, isVendor, handleSaveAvatar,  } =
     useProfile(userRole);
   const [modalType, setModalType] = useState<string | null>(null);
 
   const MODAL_CONFIG = [
     ...MODAL_ITEMS,
-    { id: 'avatar_upload', title: 'Upload Profile Picture', height: '60%', scrollable: false } as ModalConfigItem
+    {
+      id: 'avatar_upload',
+      title: 'Upload Profile Picture',
+      height: '60%',
+      scrollable: false,
+    } as ModalConfigItem,
   ].reduce(
     (
       acc: Record<
@@ -131,13 +151,14 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
       else if (item.id === 'bank') content = <BankAccountDetails />;
       else if (item.id === 'business') content = <BusinessProfile />;
       else if (item.id === 'services') content = <ManageServices />;
-      else if (item.id === 'profile') content = <CustomerProfileForm onClose={() => setModalType(null)} />;
+      else if (item.id === 'profile')
+        content = <CustomerProfileForm onClose={() => setModalType(null)} />;
       else if (item.id === 'addresses') content = <CustomerAddressDetails />;
       else if (item.id === 'avatar_upload') {
         content = (
           <AvatarUploadContent
             avatarUrl={userData.avatarUrl ?? null}
-            onSave={async (url) => {
+            onSave={async url => {
               await handleSaveAvatar(url);
               setModalType(null);
             }}
@@ -153,7 +174,6 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
           </View>
         );
       }
-
 
       acc[item.id] = {
         title: item.title,
@@ -175,9 +195,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
 
   return (
     <View className="flex-1 bg-gray-950">
-      <ProfileHeader
-        title={isVendor ? 'Provider Profile' : 'My Profile'}
-      />
+      <ProfileHeader title={isVendor ? 'Provider Profile' : 'My Profile'} />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         <ProfileUserInfo
           name={userData.name}

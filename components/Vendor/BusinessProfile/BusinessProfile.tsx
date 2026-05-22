@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   ScrollView,
@@ -13,24 +13,18 @@ import {
   BusinessProfileFormData,
 } from './hooks/useBusinessProfile';
 import { BusinessProfileForm } from './BusinessProfileForm';
+import {
+  BusinessExtendedDetails,
+  BusinessExtendedDetailsForm,
+  WhyChooseMeForm,
+} from './components';
 
-const ProfileImage: React.FC<{ profile: BusinessProfileFormData }> = ({
-  profile,
-}) => (
-  <View className="rounded-3xl overflow-hidden border border-gray-800 mb-4">
-    {profile.imageUri ? (
-      <Image
-        source={{ uri: profile.imageUri }}
-        className="w-full h-44"
-        resizeMode="cover"
-      />
-    ) : (
-      <View className="w-full h-44 bg-gray-900 items-center justify-center">
-        <Building2 size={36} color="#374151" />
-      </View>
-    )}
-  </View>
-);
+interface BusinessDetailsProps {
+  profile: BusinessProfileFormData;
+  onEditPress: () => void;
+  onDeletePress: () => void;
+  loading: boolean;
+}
 
 interface DetailRowProps {
   label: string;
@@ -39,26 +33,59 @@ interface DetailRowProps {
 }
 
 const DetailRow: React.FC<DetailRowProps> = ({ label, value, isLast }) => (
-  <View className={`py-3 ${isLast ? '' : 'border-b border-gray-800/60'}`}>
-    <Typography variant="body-sm" className="text-gray-500 mb-1">
+  <View className={`flex-row items-start justify-between py-3 ${isLast ? '' : 'border-b border-gray-800/60'}`}>
+    <Typography variant="body-sm" className="text-gray-500 font-body">
       {label}
     </Typography>
-    <Typography variant="body-sm" className="text-white leading-5">
+    <Typography variant="body-sm" className="text-white font-body-semibold text-right max-w-[65%] leading-5">
       {value || '—'}
     </Typography>
   </View>
 );
 
-const BusinessDetails: React.FC<{ profile: BusinessProfileFormData }> = ({
+const BusinessDetails: React.FC<BusinessDetailsProps> = ({
   profile,
+  onEditPress,
+  onDeletePress,
+  loading,
 }) => (
-  <View className="bg-gray-900 border border-gray-800 rounded-2xl px-4 mb-5">
-    <Typography
-      variant="subheading"
-      className="text-white py-4 border-b border-gray-800/60"
-    >
-      Business Details
-    </Typography>
+  <View className="bg-gray-900 border border-gray-800 rounded-3xl p-4 mb-5">
+    <View className="flex-row items-center justify-between pb-3 border-b border-gray-800/60 mb-4">
+      <Typography variant="subheading" className="text-white font-body-semibold">
+        Business Details
+      </Typography>
+      <View className="flex-row items-center gap-2">
+        <TouchableOpacity
+          onPress={onEditPress}
+          className="w-8 h-8 bg-gray-800 rounded-full items-center justify-center border border-gray-700"
+          activeOpacity={0.7}
+        >
+          <Pencil size={13} color="#3b82f6" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={onDeletePress}
+          disabled={loading}
+          className="w-8 h-8 bg-red-500/10 rounded-full items-center justify-center border border-red-500/10"
+          activeOpacity={0.7}
+        >
+          <Trash2 size={13} color="#ef4444" />
+        </TouchableOpacity>
+      </View>
+    </View>
+
+    <View className="rounded-2xl overflow-hidden border border-gray-800 mb-4 bg-gray-950">
+      {profile.imageUri ? (
+        <Image
+          source={{ uri: profile.imageUri }}
+          className="w-full h-40"
+          resizeMode="cover"
+        />
+      ) : (
+        <View className="w-full h-40 bg-gray-900 items-center justify-center">
+          <Building2 size={32} color="#4B5563" />
+        </View>
+      )}
+    </View>
 
     <DetailRow label="Business Name" value={profile.businessName || ''} />
     <DetailRow label="GST Number" value={profile.gstNumber || ''} />
@@ -88,6 +115,29 @@ export const BusinessProfile: React.FC = () => {
     handleSaveProfile,
     handleDeleteProfile,
   } = useBusinessProfile();
+
+  const [isExtendedModalOpen, setIsExtendedModalOpen] = useState(false);
+  const [isWhyChooseMeModalOpen, setIsWhyChooseMeModalOpen] = useState(false);
+
+  const handleOpenExtended = useCallback(() => setIsExtendedModalOpen(true), []);
+  const handleCloseExtended = useCallback(() => setIsExtendedModalOpen(false), []);
+  const handleOpenWhyChooseMe = useCallback(() => setIsWhyChooseMeModalOpen(true), []);
+  const handleCloseWhyChooseMe = useCallback(() => setIsWhyChooseMeModalOpen(false), []);
+
+  const handleSaveExtended = useCallback(async (updatedData: BusinessProfileFormData) => {
+    await handleSaveProfile(updatedData);
+    setIsExtendedModalOpen(false);
+  }, [handleSaveProfile]);
+
+  const handleSaveWhyChooseMe = useCallback(async (updatedWhyChooseMe: string) => {
+    if (profile) {
+      await handleSaveProfile({
+        ...profile,
+        whyChooseMe: updatedWhyChooseMe,
+      });
+      setIsWhyChooseMeModalOpen(false);
+    }
+  }, [profile, handleSaveProfile]);
 
   if (loading && !profile) {
     return (
@@ -134,31 +184,18 @@ export const BusinessProfile: React.FC = () => {
         showsVerticalScrollIndicator={false}
       >
         <View className="px-5 pt-4 pb-8">
-          <ProfileImage profile={profile} />
-          <BusinessDetails profile={profile} />
+          <BusinessDetails
+            profile={profile}
+            onEditPress={handleOpenEditModal}
+            onDeletePress={handleDeleteProfile}
+            loading={loading}
+          />
 
-          <View className="flex-row items-stretch gap-3">
-            <TouchableOpacity
-              onPress={handleOpenEditModal}
-              className="flex-1 flex-row items-center justify-center bg-gray-900 border border-gray-800 rounded-2xl py-3.5"
-            >
-              <Pencil size={16} color="#3b82f6" />
-              <Typography className="text-primary-400 font-body-semibold ml-2">
-                Edit Profile
-              </Typography>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={handleDeleteProfile}
-              disabled={loading}
-              className="flex-1 flex-row items-center justify-center bg-red-500/10 border border-red-500/25 rounded-2xl py-3.5"
-            >
-              <Trash2 size={16} color="#ef4444" />
-              <Typography className="text-red-400 font-body-semibold ml-2">
-                Delete
-              </Typography>
-            </TouchableOpacity>
-          </View>
+          <BusinessExtendedDetails
+            profile={profile}
+            onEditPress={handleOpenExtended}
+            onWhyChooseMeEditPress={handleOpenWhyChooseMe}
+          />
         </View>
       </ScrollView>
 
@@ -167,6 +204,22 @@ export const BusinessProfile: React.FC = () => {
         initialProfile={editingProfile}
         onClose={handleCloseModal}
         onSave={handleSaveProfile}
+        loading={loading}
+      />
+
+      <BusinessExtendedDetailsForm
+        visible={isExtendedModalOpen}
+        initialData={profile}
+        onClose={handleCloseExtended}
+        onSave={handleSaveExtended}
+        loading={loading}
+      />
+
+      <WhyChooseMeForm
+        visible={isWhyChooseMeModalOpen}
+        initialValue={profile.whyChooseMe}
+        onClose={handleCloseWhyChooseMe}
+        onSave={handleSaveWhyChooseMe}
         loading={loading}
       />
     </>
