@@ -148,7 +148,7 @@ export const VendorDetailScreen: React.FC<VendorDetailScreenProps> = ({
                 {vendor.businessName}
               </Typography>
             </View>
-            <View className="items-end">
+             <View className="items-end">
               <Typography
                 variant="body-sm"
                 className="text-gray-500 uppercase tracking-widest font-body-semibold text-[10px]"
@@ -159,7 +159,7 @@ export const VendorDetailScreen: React.FC<VendorDetailScreenProps> = ({
                 variant="h3"
                 className="text-primary-400 font-heading-bold"
               >
-                ${startingPrice}
+                ₹{startingPrice}
               </Typography>
             </View>
           </View>
@@ -227,6 +227,8 @@ export const VendorDetailScreen: React.FC<VendorDetailScreenProps> = ({
               </Typography>
             </View>
           )}
+
+
 
           {/* Why Choose Me Section */}
           {vendor.whyChooseMe && (
@@ -318,13 +320,13 @@ export const VendorDetailScreen: React.FC<VendorDetailScreenProps> = ({
             Starting Price
           </Typography>
           <Typography variant="h2" className="text-white font-heading-bold">
-            ${startingPrice}
+            ₹{startingPrice}
           </Typography>
         </View>
         <Button
           variant="primary"
           className="w-1/2"
-          onPress={() => console.log('Book Now pressed for:', vendor.id)}
+          onPress={() => onNavigate('liveTracking')}
         >
           Book Now
         </Button>
