@@ -141,6 +141,7 @@ export const AppNavigator: React.FC = () => {
 
   const tabs = userRole === UserRole.Provider ? VENDOR_TABS : CUSTOMER_TABS;
   const showTopBar = !HIDDEN_TOPBAR_ROUTES.includes(activeTab);
+  const showTabBar = tabs.some((tab) => tab.route === activeTab);
 
   return (
     <View className="flex-1 bg-gray-950">
@@ -155,11 +156,13 @@ export const AppNavigator: React.FC = () => {
 
       <View className="flex-1">{renderScreen()}</View>
 
-      <BottomTabNavigator
-        tabs={tabs}
-        activeTab={activeTab}
-        onTabPress={handleNavigate}
-      />
+      {showTabBar && (
+        <BottomTabNavigator
+          tabs={tabs}
+          activeTab={activeTab}
+          onTabPress={handleNavigate}
+        />
+      )}
 
       <FilterModal
         visible={isFilterModalOpen}
