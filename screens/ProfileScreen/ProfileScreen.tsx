@@ -204,8 +204,12 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
 
   return (
     <View className="flex-1 bg-gray-950">
-      <ProfileHeader title={isVendor ? 'Provider Profile' : 'My Profile'} />
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+      <ProfileHeader 
+        title={isVendor ? 'Provider Profile' : 'My Profile'} 
+        onRightActionPress={handleLogoutPress}
+        rightIcon="logout"
+      />
+      <ScrollView className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 110 }}>
         <ProfileUserInfo
           name={userData.name}
           avatarUrl={userData.avatarUrl ?? undefined}
@@ -227,8 +231,6 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
             onItemPress={handleMenuPress}
           />
         </View>
-
-        <LogoutButton onPress={handleLogoutPress} loading={loggingOut} />
       </ScrollView>
       <BottomSheetModal
         visible={!!modalType}

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Typography, BookingCard } from '@/components/theme';
-import { MOCK_BOOKINGS, Booking } from '@/data/mockBookings';
+import { MOCK_BOOKINGS} from '@/data/mockBookings';
 
 export interface CustomerBookingsScreenProps {
     onNavigate?: (route: string) => void;
@@ -36,9 +36,12 @@ export const CustomerBookingsScreen: React.FC<CustomerBookingsScreenProps> = ({ 
 
 
     return (
-        <View className="flex-1 bg-white">
-            <View className="px-5 pb-4" style={{ paddingTop: Math.max(insets.top, 20) }}>
-                <Typography variant="h3" className="font-black text-black">My Bookings</Typography>
+        <View className="flex-1 bg-gray-950">
+            <View
+                className="bg-gray-950 px-5 pb-4 border-b border-white/10 rounded-bl-xl rounded-br-xl shadow-xl shadow-black/10 z-50 mb-6"
+                style={{ paddingTop: Math.max(insets.top, 20) + 10 }}
+            >
+                <Typography variant="h3" className="text-white text-lg font-heading-semibold">My Bookings</Typography>
             </View>
 
             <View className="flex-row px-5 mb-6 space-x-2">
@@ -46,9 +49,9 @@ export const CustomerBookingsScreen: React.FC<CustomerBookingsScreenProps> = ({ 
                     <TouchableOpacity
                         key={tab.id}
                         onPress={() => setActiveTab(tab.id)}
-                        className={`flex-1 items-center py-3 rounded-2xl ${activeTab === tab.id ? `${tab.activeBg} shadow-lg` : 'bg-gray-50'}`}
+                        className={`flex-1 items-center py-3 rounded-2xl ${activeTab === tab.id ? `${tab.activeBg} shadow-lg` : 'bg-gray-900 border border-gray-800'}`}
                     >
-                        <Typography className={`text-[13px] font-bold ${activeTab === tab.id ? 'text-white' : 'text-gray-400'}`}>
+                        <Typography className={`text-[13px] font-body-bold ${activeTab === tab.id ? 'text-white' : 'text-gray-400'}`}>
                             {tab.label}
                         </Typography>
                     </TouchableOpacity>
@@ -56,7 +59,7 @@ export const CustomerBookingsScreen: React.FC<CustomerBookingsScreenProps> = ({ 
             </View>
 
 
-            <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 40 }}>
+            <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
                 {bookings.length > 0 ? (
                     bookings.map(b => (
                         <BookingCard 
@@ -68,7 +71,7 @@ export const CustomerBookingsScreen: React.FC<CustomerBookingsScreenProps> = ({ 
                     ))
                 ) : (
                     <View className="flex-1 items-center justify-center py-20">
-                        <Typography className="text-gray-400 italic">No {activeTab} bookings found</Typography>
+                        <Typography className="text-gray-500 italic font-body">No {activeTab} bookings found</Typography>
                     </View>
                 )}
             </ScrollView>

@@ -1,7 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client/react';
-import { GET_VENDOR_PROFILE, GET_VENDOR_SERVICES, CREATE_VENDOR_SERVICE, UPDATE_VENDOR_SERVICE, DELETE_VENDOR_SERVICE } from '../../vendorQueries';
+import { GET_VENDOR_PROFILE, GET_VENDOR_SERVICES, CREATE_VENDOR_SERVICE, UPDATE_VENDOR_SERVICE, DELETE_VENDOR_SERVICE, VENDOR_PROFILE_FIELDS } from '../../vendorQueries';
 import { getUserId } from '@/utils/store/authStore';
+import { useFragment } from '@/__generated__/fragment-masking';
 
 export interface ServiceItem {
   id?: string;
@@ -33,7 +34,8 @@ export const useManageServices = () => {
     skip: !userId,
   });
 
-  const vendorProfileId = profileData?.getVendorProfile?.id;
+  const profileFragment = useFragment(VENDOR_PROFILE_FIELDS, profileData?.getVendorProfile);
+  const vendorProfileId = profileFragment?.id;
 
   // 2. Fetch Services once vendorProfileId is resolved
   const { data: servicesData, loading: loadingServices, refetch: refetchServices } = useQuery(GET_VENDOR_SERVICES, {

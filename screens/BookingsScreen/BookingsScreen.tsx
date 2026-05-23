@@ -11,9 +11,9 @@ export const BookingsScreen: React.FC = () => {
         <View className="flex-1 bg-gray-950">
 
             <View
-                className="px-5 pb-5"
+                className="bg-gray-950 px-5 pb-4 border-b border-white/10 rounded-bl-xl rounded-br-xl shadow-xl shadow-black/10 z-50 mb-6"
                 style={{ paddingTop: Math.max(insets.top, 20) + 10 }}>
-                <Typography variant="subheading" className="text-white">Bookings</Typography>
+                <Typography variant="h3" className="text-white text-lg font-heading-semibold">Bookings</Typography>
             </View>
 
             <ScrollView

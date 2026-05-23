@@ -5,8 +5,10 @@ import {
   GET_VENDOR_BANK_DETAILS,
   UPSERT_VENDOR_BANK_DETAILS,
   DELETE_VENDOR_BANK_DETAILS,
+  VENDOR_PROFILE_FIELDS,
 } from '../../vendorQueries';
 import { getUserId } from '@/utils/store/authStore';
+import { useFragment } from '@/__generated__/fragment-masking';
 
 export interface BankFormData {
   id?: string;
@@ -41,7 +43,8 @@ export const useBankAccountDetails = () => {
     skip: !userId,
   });
 
-  const vendorProfileId = profileData?.getVendorProfile?.id;
+  const profileFragment = useFragment(VENDOR_PROFILE_FIELDS, profileData?.getVendorProfile);
+  const vendorProfileId = profileFragment?.id;
 
   // 2. Fetch Bank Details once vendorProfileId is available
   const { data: bankData, loading: loadingBank, refetch: refetchBank } = useQuery(GET_VENDOR_BANK_DETAILS, {

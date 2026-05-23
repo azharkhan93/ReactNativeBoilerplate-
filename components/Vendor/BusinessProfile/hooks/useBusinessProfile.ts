@@ -4,16 +4,19 @@ import type {
   CreateVendorProfileInput,
   GetVendorProfileQuery,
   UpdateVendorProfileInput,
+  VendorProfileFieldsFragment,
 } from '@/__generated__/graphql';
 import {
   CREATE_VENDOR_PROFILE,
   DELETE_VENDOR_PROFILE,
   GET_VENDOR_PROFILE,
   UPDATE_VENDOR_PROFILE,
+  VENDOR_PROFILE_FIELDS,
 } from '../../vendorQueries';
 import { getUserId } from '@/utils/store/authStore';
+import { useFragment } from '@/__generated__/fragment-masking';
 
-export type VendorProfile = GetVendorProfileQuery['getVendorProfile'];
+export type VendorProfile = VendorProfileFieldsFragment;
 
 export type BusinessProfileFormData = Required<
   Pick<
@@ -106,20 +109,21 @@ export const useBusinessProfile = () => {
     errorPolicy: 'all',
   });
 
+  const unmaskedProfile = useFragment(VENDOR_PROFILE_FIELDS, data?.getVendorProfile);
+
   const [createProfile, { loading: creating }] = useMutation(CREATE_VENDOR_PROFILE);
   const [updateProfile, { loading: updating }] = useMutation(UPDATE_VENDOR_PROFILE);
   const [deleteProfile, { loading: deleting }] = useMutation(DELETE_VENDOR_PROFILE);
 
   useEffect(() => {
-    const vendorProfile = data?.getVendorProfile;
-    if (vendorProfile?.id) {
-      setProfile(toFormData(vendorProfile));
-      setVendorProfileId(vendorProfile.id);
+    if (unmaskedProfile?.id) {
+      setProfile(toFormData(unmaskedProfile));
+      setVendorProfileId(unmaskedProfile.id);
     } else {
       setProfile(null);
       setVendorProfileId(null);
     }
-  }, [data]);
+  }, [unmaskedProfile]);
 
   const handleOpenAddModal = useCallback(() => {
     setEditingProfile(null);

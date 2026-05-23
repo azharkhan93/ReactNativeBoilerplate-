@@ -1,8 +1,9 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client/react';
 import { UserRole } from '../../../__generated__/graphql';
-import { GET_VENDOR_PROFILE, UPDATE_VENDOR_PROFILE } from '../../../components/Vendor/vendorQueries';
+import { GET_VENDOR_PROFILE, UPDATE_VENDOR_PROFILE, VENDOR_PROFILE_FIELDS } from '../../../components/Vendor/vendorQueries';
 import { getUserId } from '@/utils/store/authStore';
+import { useFragment } from '@/__generated__/fragment-masking';
 
 // Mock data - in a real app, this would come from a global state or API
 const MOCK_USER = {
@@ -33,7 +34,7 @@ export const useProfile = (userRole?: UserRole | null) => {
 
   const [updateVendorProfile, { loading: updating }] = useMutation(UPDATE_VENDOR_PROFILE);
 
-  const vendorProfile = vendorData?.getVendorProfile;
+  const vendorProfile = useFragment(VENDOR_PROFILE_FIELDS, vendorData?.getVendorProfile);
 
   const userData = {
     name: isVendor 

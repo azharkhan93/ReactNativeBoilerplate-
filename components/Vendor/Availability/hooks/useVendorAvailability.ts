@@ -4,11 +4,13 @@ import {
   GET_VENDOR_PROFILE,
   GET_VENDOR_AVAILABILITY,
   SAVE_FULL_AVAILABILITY,
+  VENDOR_PROFILE_FIELDS,
 } from '../../vendorQueries';
 import { DaySchedule, BreakTime, AvailabilityException } from '../types/types';
 import { DAYS } from '../constants';
 import { getUserId } from '@/utils/store/authStore';
 import { ExceptionType } from '@/__generated__/graphql';
+import { useFragment } from '@/__generated__/fragment-masking';
 
 const DAY_TO_NUMBER: Record<string, number> = {
   Monday: 1,
@@ -57,7 +59,8 @@ export const useVendorAvailability = () => {
     },
   );
 
-  const vendorProfileId = profileData?.getVendorProfile?.id;
+  const profile = useFragment(VENDOR_PROFILE_FIELDS, profileData?.getVendorProfile);
+  const vendorProfileId = profile?.id;
 
   // 2. Fetch Availability once vendorProfileId is loaded
   const {
