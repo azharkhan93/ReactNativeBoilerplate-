@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { ReactNode, useState } from 'react';
 import {
   ScrollView,
@@ -11,7 +12,6 @@ import {
   ProfileStats,
   ProfileUserInfo,
   ProfileMenuItemData,
-  LogoutButton,
 } from '@/components/Profile';
 import { BottomSheetModal } from '@/components/shared/BottomSheetModal';
 import { AvailabilityContent } from '@/components/Vendor/Availability';
@@ -123,7 +123,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
   onLogout,
 }) => {
   const { userData, isVendor, handleSaveAvatar } = useProfile(userRole);
-  const { logout, loading: loggingOut } = useLogout();
+  const { logout } = useLogout();
 
   const handleLogoutPress = async () => {
     await logout();
@@ -204,12 +204,16 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
 
   return (
     <View className="flex-1 bg-gray-950">
-      <ProfileHeader 
-        title={isVendor ? 'Provider Profile' : 'My Profile'} 
+      <ProfileHeader
+        title={isVendor ? 'Provider Profile' : 'My Profile'}
         onRightActionPress={handleLogoutPress}
         rightIcon="logout"
       />
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 110 }}>
+      <ScrollView
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 110 }}
+      >
         <ProfileUserInfo
           name={userData.name}
           avatarUrl={userData.avatarUrl ?? undefined}

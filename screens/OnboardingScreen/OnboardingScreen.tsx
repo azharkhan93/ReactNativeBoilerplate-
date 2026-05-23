@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useState, useRef } from 'react';
 import { View, TouchableOpacity, FlatList, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -40,7 +41,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) 
         }
     };
 
-    const handleSkip = () => navigateToStep(totalSteps - 1);
+    const handleSkip = () => navigateToStep(totalSlides);
     const handleBack = () => currentStep > 0 && navigateToStep(currentStep - 1);
 
     const renderStep = ({ index }: { index: number }) => {

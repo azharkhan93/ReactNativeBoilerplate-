@@ -1,7 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { TouchableOpacity, Platform, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LucideIcon } from 'lucide-react-native';
 import { Typography } from '../theme';
 
@@ -34,8 +33,6 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
   activeTab,
   onTabPress,
 }) => {
-  
-
   return (
     <View
       className="absolute bottom-5 left-3 right-3 bg-gray-900/90 border border-white/10 rounded-[28px] py-2.5 px-1 z-50 flex-row items-center justify-between"
@@ -47,7 +44,9 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
           <TouchableOpacity
             key={route}
             className={`flex-1 items-center justify-center py-1.5 rounded-[18px] relative ${
-              isActive ? 'bg-primary-500/10 border border-primary-500/20' : 'border border-transparent'
+              isActive
+                ? 'bg-primary-500/10 border border-primary-500/20'
+                : 'border border-transparent'
             }`}
             onPress={() => onTabPress(route)}
             activeOpacity={0.75}

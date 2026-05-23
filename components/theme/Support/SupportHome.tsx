@@ -19,30 +19,31 @@ export const SupportHome: React.FC<SupportHomeProps> = ({
     onNavigate,
     onReportIssue
 }) => (
-    <ScrollView className="flex-1 bg-white" showsVerticalScrollIndicator={false}>
+    <ScrollView className="flex-1 bg-gray-950" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 125 }}>
        
         <View className="px-5 pt-2">
             <View className="flex-row items-center justify-between mb-4">
                 <View className="flex-row items-center">
-                    <View className="bg-primary-50 p-2.5 rounded-xl mr-3">
-                        <CircleHelp size={22} color="#3B82F6" />
+                    <View className="bg-primary-500/10 border border-primary-500/20 p-2.5 rounded-xl mr-3">
+                        <CircleHelp size={22} color="#3b82f6" />
                     </View>
                     <View>
-                        <Typography variant="body" className="font-black text-gray-900">Help Center</Typography>
+                        <Typography variant="body" className="font-body-bold text-white">Help Center</Typography>
                         <Typography variant="body-sm" className="text-gray-400 text-[10px]">24/7 Support</Typography>
                     </View>
                 </View>
                 <TouchableOpacity onPress={onStartChat} className="bg-primary-500 px-4 py-2 rounded-xl">
-                    <Typography className="text-white text-[12px] font-bold">Chat Now</Typography>
+                    <Typography className="text-white text-[12px] font-body-bold">Chat Now</Typography>
                 </TouchableOpacity>
             </View>
 
             {/* Compact Search Bar */}
-            <View className="bg-gray-100 rounded-xl px-3 py-2 flex-row items-center mb-4 border border-gray-200/50">
+            <View className="bg-gray-900 rounded-xl px-3 py-2 flex-row items-center mb-4 border border-gray-800">
                 <Search size={16} color="#9CA3AF" />
                 <TextInput
-                    className="flex-1 ml-2 text-gray-800 py-0.5 text-[13px]"
+                    className="flex-1 ml-2 text-white py-0.5 text-[13px]"
                     placeholder="Search for quick help..."
+                    placeholderTextColor="#6b7280"
                     value={search}
                     onChangeText={onSearchChange}
                 />
@@ -59,14 +60,14 @@ export const SupportHome: React.FC<SupportHomeProps> = ({
         <View className="px-5 mt-4 mb-4">
             <TouchableOpacity
                 onPress={() => onReportIssue ? onReportIssue() : onNavigate('serviceDispute')}
-                className="bg-error-50 p-5 rounded-3xl border border-error-100 flex-row items-center"
+                className="bg-red-500/5 p-5 rounded-3xl border border-red-500/20 flex-row items-center"
             >
-                <View className="bg-error-500 p-2.5 rounded-xl mr-4">
+                <View className="bg-red-500 p-2.5 rounded-xl mr-4">
                     <AlertCircle size={22} color="white" />
                 </View>
                 <View className="flex-1">
-                    <Typography variant="body-sm" className="font-bold text-error-900">Report a problem</Typography>
-                    <Typography variant="body-sm" className="text-error-700 text-[11px] mt-0.5">Issue with a recent car wash? Let us know.</Typography>
+                    <Typography variant="body-sm" className="font-body-bold text-red-400">Report a problem</Typography>
+                    <Typography variant="body-sm" className="text-red-500/60 text-[11px] mt-0.5 font-body">Issue with a recent car wash? Let us know.</Typography>
                 </View>
             </TouchableOpacity>
         </View>
@@ -74,11 +75,11 @@ export const SupportHome: React.FC<SupportHomeProps> = ({
         <View className="px-5 mt-4 mb-10">
             <TouchableOpacity
                 onPress={onStartChat}
-                className="bg-primary-50 p-5 rounded-3xl border border-primary-100 flex-row items-center"
+                className="bg-primary-500/5 p-5 rounded-3xl border border-primary-500/20 flex-row items-center"
             >
                 <View className="flex-1">
-                    <Typography variant="body-sm" className="font-bold text-primary-900">Still stuck?</Typography>
-                    <Typography variant="body-sm" className="text-primary-700 text-[11px] mt-0.5">Talk to our AI bot for instant answers</Typography>
+                    <Typography variant="body-sm" className="font-body-bold text-primary-400">Still stuck?</Typography>
+                    <Typography variant="body-sm" className="text-primary-500/60 text-[11px] mt-0.5 font-body">Talk to our AI bot for instant answers</Typography>
                 </View>
                 <View className="bg-primary-500 p-2.5 rounded-full">
                     <MessageCircle size={18} color="white" />
