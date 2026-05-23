@@ -116,20 +116,20 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
         </TouchableOpacity>
       )}
 
-      {/* Symmetrical Action Area */}
+      
       <View
         className="flex-row items-center justify-between px-2 h-[72px]"
         style={{ width: barWidth }}
       >
-        {/* Left tabs */}
+        
         <View className="flex-row flex-1 h-full items-center">
           {leftTabs.map(renderTabItem)}
         </View>
 
-        {/* Space for the middle button */}
+       {/* Space for the middle button */}
         <View className="w-16" />
 
-        {/* Right tabs */}
+     
         <View className="flex-row flex-1 h-full items-center">
           {rightTabs.map(renderTabItem)}
         </View>
