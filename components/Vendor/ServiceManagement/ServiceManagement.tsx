@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, ScrollView, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
 import { Typography, Button, FormInput } from '../../theme';
 import { BottomSheetModal } from '@/components/shared/BottomSheetModal';
-import { Camera, Image as ImageIcon } from 'lucide-react-native';
-import { uploadAssetToCloudinary } from '@/utils/uploadHelper';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { Camera } from 'lucide-react-native';
+import { useImageUpload } from '@/hooks/useImageUpload';
 import { SERVICE_CATEGORIES } from '@/utils/constants';
 
 export interface ServiceManagementProps {
@@ -38,7 +37,10 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
         categoryId: '',
     });
     const [imageUrl, setImageUrl] = useState<string | null>(null);
-    const [uploading, setUploading] = useState(false);
+    const { triggerUpload: handleImageUpload, uploading } = useImageUpload({
+        fileName: 'service_image.jpg',
+        onSuccess: setImageUrl,
+    });
 
     // Sync form data with initialService when editing
     useEffect(() => {
@@ -72,32 +74,6 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
         });
     };
 
-    const handleImageUpload = async () => {
-        const result = await launchImageLibrary({
-            mediaType: 'photo',
-            quality: 0.8,
-        });
-
-        if (result.assets && result.assets.length > 0) {
-            const uri = result.assets[0].uri;
-            if (uri) {
-                setUploading(true);
-                try {
-                    const res = await uploadAssetToCloudinary(
-                        uri,
-                        'service_image.jpg',
-                        'image/jpeg'
-                    );
-                    setImageUrl(res.url);
-                } catch (err) {
-                    console.error('Service image upload failed:', err);
-                } finally {
-                    setUploading(false);
-                }
-            }
-        }
-    };
-
     const isEditMode = !!initialService;
 
     return (
@@ -126,8 +102,8 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
                                 )}
                             </TouchableOpacity>
                             {imageUrl ? (
-                                <View className="w-24 h-24 bg-gray-900 rounded-2xl items-center justify-center border border-gray-800 overflow-hidden">
-                                    <ImageIcon size={24} color="#22c55e" />
+                                <View className="w-24 h-24 bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
+                                    <Image source={{ uri: imageUrl }} className="w-full h-full" resizeMode="cover" />
                                 </View>
                             ) : (
                                 <View className="w-24 h-24 bg-gray-900/50 rounded-2xl items-center justify-center border border-gray-800">
@@ -184,7 +160,7 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
                     <View className="flex-row gap-4">
                         <View className="flex-1">
                             <FormInput
-                                style={{ textAlign: 'center' }}
+                               
                                 label="Price (₹)"
                                 placeholder="0.00"
                                 keyboardType="numeric"
@@ -194,7 +170,7 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
                         </View>
                         <View className="flex-1">
                             <FormInput
-                                style={{ textAlign: 'center' }}
+                               
                                 label="Duration"
                                 placeholder="30 mins"
                                 value={formData.duration}

@@ -3,8 +3,7 @@ import { View, ScrollView, TouchableOpacity, Image, ActivityIndicator, StyleShee
 import { Typography, Button, FormInput } from '@/components/theme';
 import { BottomSheetModal } from '@/components/shared/BottomSheetModal';
 import { Plus, X } from 'lucide-react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
-import { uploadAssetToCloudinary } from '@/utils/uploadHelper';
+import { useImageUpload } from '@/hooks/useImageUpload';
 import { BusinessProfileFormData } from '../../hooks/useBusinessProfile';
 
 export interface BusinessExtendedDetailsFormProps {
@@ -23,7 +22,6 @@ export const BusinessExtendedDetailsForm: React.FC<BusinessExtendedDetailsFormPr
   loading = false,
 }) => {
   const [formData, setFormData] = useState<BusinessProfileFormData | null>(null);
-  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (visible && initialData) {
@@ -38,25 +36,13 @@ export const BusinessExtendedDetailsForm: React.FC<BusinessExtendedDetailsFormPr
     });
   }, []);
 
-  const handleUploadImage = async () => {
-    const result = await launchImageLibrary({ mediaType: 'photo', quality: 0.8 });
-    if (result.assets?.[0]?.uri) {
-      setUploading(true);
-      try {
-        const response = await uploadAssetToCloudinary(
-          result.assets[0].uri,
-          'business_gallery.jpg',
-          'image/jpeg',
-        );
-        const currentImages = formData?.images ?? [];
-        handleChange('images', [...currentImages, response.url]);
-      } catch (err) {
-        console.error('Failed to upload business image:', err);
-      } finally {
-        setUploading(false);
-      }
+  const { triggerUpload: handleUploadImage, uploading } = useImageUpload({
+    fileName: 'business_gallery.jpg',
+    onSuccess: (url) => {
+      const currentImages = formData?.images ?? [];
+      handleChange('images', [...currentImages, url]);
     }
-  };
+  });
 
   const handleRemoveImage = (indexToRemove: number) => {
     const currentImages = formData?.images ?? [];

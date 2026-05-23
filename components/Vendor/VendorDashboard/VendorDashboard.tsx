@@ -25,10 +25,10 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({ onNavigate }) 
     const [isAddServiceVisible, setIsAddServiceVisible] = useState(false);
     const [isAvailabilityVisible, setIsAvailabilityVisible] = useState(false);
 
-    // Fetch actual logged-in user profile details
+   
     const { userData } = useProfile(UserRole.Provider);
 
-    // Derived state
+
     const pendingRequests = MOCK_BOOKINGS.filter(b => b.status === BOOKING_STATUS.PENDING);
 
     const handleQuickActionPress = (id: string) => {

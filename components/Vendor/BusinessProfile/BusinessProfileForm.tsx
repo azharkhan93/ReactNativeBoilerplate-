@@ -4,8 +4,7 @@ import { Typography, Button, FormInput } from '../../theme';
 import { BottomSheetModal } from '@/components/shared/BottomSheetModal';
 import { Globe } from 'lucide-react-native';
 import { Dropzone } from '../../shared/Dropzone';
-import { launchImageLibrary } from 'react-native-image-picker';
-import { uploadAssetToCloudinary } from '@/utils/uploadHelper';
+import { useImageUpload } from '@/hooks/useImageUpload';
 import { BusinessProfileFormData } from './hooks/useBusinessProfile';
 
 const GST_REGEX = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
@@ -39,7 +38,16 @@ export const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
 }) => {
   const [formData, setFormData] = useState<BusinessProfileFormData>(EMPTY_FORM);
   const [errors, setErrors] = useState<Partial<Record<keyof BusinessProfileFormData, string>>>({});
-  const [uploading, setUploading] = useState(false);
+  
+  const handleChange = useCallback((field: keyof BusinessProfileFormData, value: string | null) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    setErrors(prev => (prev[field] ? { ...prev, [field]: undefined } : prev));
+  }, []);
+
+  const { triggerUpload, uploading } = useImageUpload({
+    fileName: 'storefront_logo.jpg',
+    onSuccess: (url) => handleChange('imageUri', url),
+  });
 
   const isEditMode = !!initialProfile?.id;
 
@@ -48,11 +56,6 @@ export const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
     setFormData(initialProfile ? { ...initialProfile } : { ...EMPTY_FORM });
     setErrors({});
   }, [initialProfile, visible]);
-
-  const handleChange = useCallback((field: keyof BusinessProfileFormData, value: string | null) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    setErrors(prev => (prev[field] ? { ...prev, [field]: undefined } : prev));
-  }, []);
 
   const validate = useCallback(() => {
     const newErrors: Partial<Record<keyof BusinessProfileFormData, string>> = {};
@@ -77,26 +80,6 @@ export const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
   const handleSubmit = () => {
     if (!validate()) return;
     onSave(formData);
-  };
-
-  const triggerUpload = async () => {
-    const result = await launchImageLibrary({ mediaType: 'photo', quality: 0.8 });
-
-    if (result.assets?.[0]?.uri) {
-      setUploading(true);
-      try {
-        const response = await uploadAssetToCloudinary(
-          result.assets[0].uri,
-          'storefront_logo.jpg',
-          'image/jpeg',
-        );
-        handleChange('imageUri', response.url);
-      } catch (err) {
-        console.error('Image upload failed:', err);
-      } finally {
-        setUploading(false);
-      }
-    }
   };
 
   return (

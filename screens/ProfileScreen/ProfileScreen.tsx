@@ -31,8 +31,7 @@ import {
 import { useProfile } from './hooks/useProfile';
 import { Typography } from '@/components/theme';
 import { Dropzone } from '@/components/shared/Dropzone';
-import { launchImageLibrary } from 'react-native-image-picker';
-import { uploadAssetToCloudinary } from '@/utils/uploadHelper';
+import { useImageUpload } from '@/hooks/useImageUpload';
 import { useLogout } from '@/hooks/useLogout';
 
 export interface ProfileScreenProps {
@@ -52,31 +51,12 @@ const AvatarUploadContent: React.FC<AvatarUploadContentProps> = ({
   onSave,
   onClose,
 }) => {
-  const [uploading, setUploading] = useState(false);
   const [currentUri, setCurrentUri] = useState<string | null>(avatarUrl);
 
-  const triggerUpload = async () => {
-    const result = await launchImageLibrary({
-      mediaType: 'photo',
-      quality: 0.8,
-    });
-
-    if (result.assets?.[0]?.uri) {
-      setUploading(true);
-      try {
-        const response = await uploadAssetToCloudinary(
-          result.assets[0].uri,
-          'profile_avatar.jpg',
-          'image/jpeg',
-        );
-        setCurrentUri(response.url);
-      } catch (err) {
-        console.error('Image upload failed:', err);
-      } finally {
-        setUploading(false);
-      }
-    }
-  };
+  const { triggerUpload, uploading } = useImageUpload({
+    fileName: 'profile_avatar.jpg',
+    onSuccess: setCurrentUri,
+  });
 
   return (
     <View className="px-5 pt-2 pb-8 bg-gray-950">
@@ -167,7 +147,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
         content = (
           <AvatarUploadContent
             avatarUrl={userData.avatarUrl ?? null}
-            onSave={async url => {
+            onSave={async (url: string | null) => {
               await handleSaveAvatar(url);
               setModalType(null);
             }}
