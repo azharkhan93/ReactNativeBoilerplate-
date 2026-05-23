@@ -21,7 +21,7 @@ export const CUSTOMER_TABS: TabItem[] = [
 
 
 
-export const HIDDEN_TOPBAR_ROUTES = ['profile', 'dashboard', 'bookings', 'analytics', 'nearbyProviders', 'liveTracking', 'support', 'ratingReview', 'reviewSuccess'];
+export const HIDDEN_TOPBAR_ROUTES = ['profile', 'dashboard', 'bookings', 'analytics', 'nearbyProviders', 'liveTracking', 'support', 'ratingReview', 'reviewSuccess', 'vendorDetails'];
 
 
 

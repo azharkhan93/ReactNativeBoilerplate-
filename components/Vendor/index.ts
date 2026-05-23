@@ -6,3 +6,5 @@ export * from './BankAccountDetails';
 export * from './VendorAnalyticsScreen';
 export * from './Availability';
 export * from './BusinessProfile';
+export * from './RecentlyAdded';
+

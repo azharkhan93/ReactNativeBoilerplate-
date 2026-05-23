@@ -12,6 +12,7 @@ import {
   SupportScreen,
   RatingReviewScreen,
   ServiceDisputeScreen,
+  VendorDetailScreen,
 } from '@/screens';
 import { VendorDashboard } from '@/components/Vendor/VendorDashboard';
 import { VendorAnalyticsScreen } from '@/components/Vendor/VendorAnalyticsScreen';
@@ -24,6 +25,7 @@ import { setAuthData } from '@/utils/store/authStore';
 
 export const AppNavigator: React.FC = () => {
   const [activeTab, setActiveTab] = useState('home');
+  const [selectedVendorId, setSelectedVendorId] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [showOnboarding, setShowOnboarding] = useState(true);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
@@ -33,6 +35,13 @@ export const AppNavigator: React.FC = () => {
       setActiveTab('dashboard');
     }
   }, [userRole, activeTab]);
+
+  const handleNavigate = (route: string, params?: any) => {
+    if (route === 'vendorDetails' && params?.vendorId) {
+      setSelectedVendorId(params.vendorId);
+    }
+    setActiveTab(route);
+  };
 
   const handleOnboardingFinish = (role: UserRole) => {
     setUserRole(role);
@@ -53,12 +62,12 @@ export const AppNavigator: React.FC = () => {
   const renderScreen = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <VendorDashboard onNavigate={setActiveTab} />;
+        return <VendorDashboard onNavigate={handleNavigate} />;
       case 'bookings':
         return userRole === UserRole.Provider ? (
           <BookingsScreen />
         ) : (
-          <CustomerBookingsScreen onNavigate={setActiveTab} />
+          <CustomerBookingsScreen onNavigate={handleNavigate} />
         );
 
       case 'analytics':
@@ -68,7 +77,7 @@ export const AppNavigator: React.FC = () => {
         return (
           <ProfileScreen 
             userRole={userRole} 
-            onNavigate={setActiveTab} 
+            onNavigate={handleNavigate} 
             onLogout={() => {
               setUserRole(null);
               setShowOnboarding(true);
@@ -77,19 +86,21 @@ export const AppNavigator: React.FC = () => {
           />
         );
       case 'nearbyProviders':
-        return <NearbyProvidersScreen onNavigate={setActiveTab} />;
+        return <NearbyProvidersScreen onNavigate={handleNavigate} />;
       case 'liveTracking':
-        return <LiveTrackingScreen onNavigate={setActiveTab} />;
+        return <LiveTrackingScreen onNavigate={handleNavigate} />;
       case 'support':
-        return <SupportScreen onNavigate={setActiveTab} />;
+        return <SupportScreen onNavigate={handleNavigate} />;
       case 'serviceDispute':
-        return <ServiceDisputeScreen onNavigate={setActiveTab} />;
+        return <ServiceDisputeScreen onNavigate={handleNavigate} />;
       case 'ratingReview':
-        return <RatingReviewScreen onNavigate={setActiveTab} />;
+        return <RatingReviewScreen onNavigate={handleNavigate} />;
       case 'reviewSuccess':
-        return <ReviewSuccessScreen onNavigate={setActiveTab} />;
+        return <ReviewSuccessScreen onNavigate={handleNavigate} />;
+      case 'vendorDetails':
+        return <VendorDetailScreen vendorId={selectedVendorId} onNavigate={handleNavigate} />;
       default:
-        return <HomeScreen userRole={userRole} onNavigate={setActiveTab} />;
+        return <HomeScreen userRole={userRole} onNavigate={handleNavigate} />;
     }
   };
 
@@ -105,7 +116,7 @@ export const AppNavigator: React.FC = () => {
       <BottomTabNavigator
         tabs={tabs}
         activeTab={activeTab}
-        onTabPress={setActiveTab}
+        onTabPress={handleNavigate}
       />
 
       <PhoneVerificationModal

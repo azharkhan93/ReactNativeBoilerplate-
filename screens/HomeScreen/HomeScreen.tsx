@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 import {
@@ -6,7 +7,8 @@ import {
   FlashSale,
   BestSellers,
   NewArrivals,
-  Typography
+  Typography,
+  RecentlyAdded
 } from '@/components';
 import { SERVICE_CATEGORIES } from '@/utils/constants';
 import { UserRole } from '../../__generated__/graphql';
@@ -14,7 +16,7 @@ import { useHome } from './hooks/useHome';
 
 export interface HomeScreenProps {
   userRole?: UserRole | null;
-  onNavigate?: (route: string) => void;
+  onNavigate?: (route: string, params?: any) => void;
 }
 
 
@@ -24,6 +26,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
   // Navigation & Action Handlers
   const handleServicePress = (serviceId: string) => console.log('Service:', serviceId);
   const handleViewAllProviders = () => onNavigate?.('nearbyProviders');
+  const handleVendorPress = (vendorId: string) => {
+    onNavigate?.('vendorDetails', { vendorId });
+  };
 
   return (
     <View className="flex-1 bg-gray-950">
@@ -80,6 +85,14 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
             products={recommendedServices}
             onProductPress={handleServicePress}
             onViewAllPress={() => console.log('View all recommendations')}
+          />
+        </View>
+
+      
+        <View className="mt-4">
+          <RecentlyAdded
+            title="Latest Added Providers"
+            onVendorPress={handleVendorPress}
           />
         </View>
       </ScrollView>

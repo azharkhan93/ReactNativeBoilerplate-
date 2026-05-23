@@ -1,20 +1,27 @@
 import { gql } from '@/__generated__';
 
+// Core Fragment for reusable fields to enforce DRY and single-source-of-truth field mapping
+export const VENDOR_PROFILE_FIELDS = gql(`
+  fragment VendorProfileFields on VendorProfileType {
+    id
+    userId
+    businessName
+    imageUri
+    gstNumber
+    contactNumber
+    address
+    serviceRadius
+    operatingHours
+    whyChooseMe
+    description
+    images
+  }
+`);
+
 export const GET_VENDOR_PROFILE = gql(`
   query GetVendorProfile($userId: String!) {
     getVendorProfile(userId: $userId) {
-      id
-      userId
-      businessName
-      imageUri
-      gstNumber
-      contactNumber
-      address
-      serviceRadius
-      operatingHours
-      whyChooseMe
-      description
-      images
+      ...VendorProfileFields
     }
   }
 `);
@@ -22,18 +29,7 @@ export const GET_VENDOR_PROFILE = gql(`
 export const CREATE_VENDOR_PROFILE = gql(`
   mutation CreateVendorProfile($input: CreateVendorProfileInput!) {
     createVendorProfile(input: $input) {
-      id
-      userId
-      businessName
-      imageUri
-      gstNumber
-      contactNumber
-      address
-      serviceRadius
-      operatingHours
-      whyChooseMe
-      description
-      images
+      ...VendorProfileFields
     }
   }
 `);
@@ -41,18 +37,7 @@ export const CREATE_VENDOR_PROFILE = gql(`
 export const UPDATE_VENDOR_PROFILE = gql(`
   mutation UpdateVendorProfile($id: ID!, $input: UpdateVendorProfileInput!) {
     updateVendorProfile(id: $id, input: $input) {
-      id
-      userId
-      businessName
-      imageUri
-      gstNumber
-      contactNumber
-      address
-      serviceRadius
-      operatingHours
-      whyChooseMe
-      description
-      images
+      ...VendorProfileFields
     }
   }
 `);
@@ -202,5 +187,21 @@ export const UPDATE_VENDOR_SERVICE = gql(`
 export const DELETE_VENDOR_SERVICE = gql(`
   mutation DeleteVendorService($id: ID!) {
     deleteVendorService(id: $id)
+  }
+`);
+
+export const GET_VENDOR_PROFILES = gql(`
+  query GetVendorProfiles {
+    getVendorProfiles {
+      ...VendorProfileFields
+    }
+  }
+`);
+
+export const GET_VENDOR_PROFILE_BY_ID = gql(`
+  query GetVendorProfileById($id: ID!) {
+    getVendorProfileById(id: $id) {
+      ...VendorProfileFields
+    }
   }
 `);

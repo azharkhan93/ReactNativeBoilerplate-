@@ -1,0 +1,171 @@
+import React from 'react';
+import {
+  View,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import { Star, MapPin, Eye } from 'lucide-react-native';
+import { Typography } from '../../theme/Typography';
+import { SectionHeader } from '../../theme/SectionHeader';
+import { useRecentlyAdded } from './hooks/useRecentlyAdded';
+
+export interface RecentlyAddedProps {
+  title?: string;
+  onVendorPress?: (vendorId: string) => void;
+}
+
+const DEMO_IMAGE =
+  'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&q=80';
+
+const TEST_FALLBACK_VENDORS = [
+  {
+    id: 'test-vendor-1',
+    businessName: 'Sparkle Car Wash (Demo)',
+    imageUri: DEMO_IMAGE,
+    address: '742 Evergreen Terrace, Springfield',
+    serviceRadius: '5km',
+  },
+  {
+    id: 'test-vendor-2',
+    businessName: 'Elite Auto Spa (Demo)',
+    imageUri:
+      'https://images.unsplash.com/photo-1552930294-6b595f4c2974?w=800&q=80',
+    address: '123 Maple Avenue, Downtown',
+    serviceRadius: '10km',
+  },
+];
+
+export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
+  title = 'Recently Added',
+  onVendorPress,
+}) => {
+  const { vendors: gqlVendors, loading } = useRecentlyAdded();
+
+  if (loading) {
+    return (
+      <View className="px-4 py-8 items-center justify-center">
+        <ActivityIndicator size="small" color="#3b82f6" />
+      </View>
+    );
+  }
+
+  const vendors = gqlVendors?.length ? gqlVendors : TEST_FALLBACK_VENDORS;
+
+  return (
+    <View className="px-4 py-4">
+      <SectionHeader
+        title={title}
+        subtitle="Newly joined expert car washers in your area"
+      />
+
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ gap: 14 }}
+      >
+        {vendors.map(vendor => {
+          const handlePress = () => onVendorPress?.(vendor.id);
+          const rating = 4.8;
+          const price = 49;
+
+          return (
+            <TouchableOpacity
+              key={vendor.id}
+              className="w-48 bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-sm flex-col"
+              activeOpacity={0.8}
+              onPress={handlePress}
+            >
+              <View className="relative">
+                <Image
+                  source={{
+                    uri: vendor.imageUri?.trim() ? vendor.imageUri : DEMO_IMAGE,
+                  }}
+                  className="w-full h-28 bg-gray-800"
+                  resizeMode="cover"
+                />
+                {vendor.serviceRadius && (
+                  <View className="absolute top-2 left-2 bg-gray-950/80 px-2 py-0.5 rounded-md border border-gray-800">
+                    <Typography
+                      variant="body-sm"
+                      className="text-primary-400 text-[10px] font-body-medium"
+                    >
+                      {vendor.serviceRadius}
+                    </Typography>
+                  </View>
+                )}
+              </View>
+
+              <View className="p-3 flex-1 flex-col justify-between">
+                <View>
+                  <Typography
+                    variant="body"
+                    className="text-white font-body-semibold leading-tight mb-1"
+                    numberOfLines={1}
+                  >
+                    {vendor.businessName}
+                  </Typography>
+
+                  <View className="flex-row items-center mb-2">
+                    <Star size={12} color="#FBBF24" fill="#FBBF24" />
+                    <Typography
+                      variant="body-sm"
+                      className="text-gray-300 ml-1 font-body-medium text-[11px]"
+                    >
+                      {rating.toFixed(1)}
+                    </Typography>
+                    {vendor.address && (
+                      <>
+                        <View className="w-1 h-1 rounded-full bg-gray-700 mx-1.5" />
+                        <MapPin size={10} color="#9CA3AF" />
+                        <Typography
+                          variant="body-sm"
+                          className="text-gray-400 ml-0.5 text-[10px]"
+                          numberOfLines={1}
+                        >
+                          {vendor.address}
+                        </Typography>
+                      </>
+                    )}
+                  </View>
+                </View>
+
+                <View className="flex-row items-center justify-between mt-1 pt-2 border-t border-gray-800/60">
+                  <View className="flex-col">
+                    <Typography
+                      variant="body-sm"
+                      className="text-gray-500 text-[9px] uppercase font-body-semibold"
+                    >
+                      Starting From
+                    </Typography>
+                    <Typography
+                      variant="body"
+                      className="text-white font-body-bold text-[14px]"
+                    >
+                      ${price}
+                    </Typography>
+                  </View>
+
+                  <TouchableOpacity
+                    onPress={handlePress}
+                    className="flex-row items-center bg-primary-600/10 px-2 py-1.5 rounded-lg border border-primary-500/20"
+                    activeOpacity={0.7}
+                  >
+                    <Eye size={12} color="#3b82f6" />
+                    <Typography
+                      variant="body-sm"
+                      className="text-primary-500 font-body-bold text-[10px] ml-1"
+                    >
+                      Details
+                    </Typography>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+    </View>
+  );
+};

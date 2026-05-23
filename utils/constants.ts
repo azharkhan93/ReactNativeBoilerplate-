@@ -145,3 +145,10 @@ export const VENDOR_STATS = {
     rating: 4.9,
     activeBookings: 12,
 };
+
+export const VENDOR_DETAIL_DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&q=80';
+export const VENDOR_DETAIL_STATS = {
+    rating: 4.8,
+    reviewCount: 142,
+    startingPrice: 49,
+};
