@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client/react';
 import type {
   CreateVendorProfileInput,
-  GetVendorProfileQuery,
+
   UpdateVendorProfileInput,
   VendorProfileFieldsFragment,
 } from '@/__generated__/graphql';
