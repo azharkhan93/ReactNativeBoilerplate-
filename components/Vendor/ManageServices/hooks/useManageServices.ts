@@ -13,6 +13,7 @@ export interface ServiceItem {
   location: string;
   features?: string[];
   images?: string[];
+  categoryId?: string;
 }
 
 export const useManageServices = () => {
@@ -59,6 +60,7 @@ export const useManageServices = () => {
         location: s.location || '',
         features: s.features ? [...s.features] : [],
         images: s.images ? [...s.images] : [],
+        categoryId: s.categoryId || undefined,
       })));
     }
   }, [servicesData]);
@@ -85,6 +87,7 @@ export const useManageServices = () => {
     location: string;
     description: string;
     images?: string[];
+    categoryId?: string;
   }) => {
     if (!vendorProfileId) return;
 
@@ -100,6 +103,7 @@ export const useManageServices = () => {
       location: data.location,
       features: [],
       images: data.images || [],
+      categoryId: data.categoryId || null,
     };
 
     try {

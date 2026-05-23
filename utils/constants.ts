@@ -16,11 +16,11 @@ export const BOOKING_STATUS = {
 } as const;
 
 export const SERVICE_CATEGORIES = [
-    { id: '1', name: 'Sedan', icon: Car },
-    { id: '2', name: 'SUV', icon: Zap },
-    { id: '3', name: 'Luxury', icon: Shield },
-    { id: '4', name: 'Hatchback', icon: Star },
-    { id: '5', name: 'Bike', icon: Clock },
+    { id: 'category-sedan', name: 'Sedan', icon: Car },
+    { id: 'category-suv', name: 'SUV', icon: Zap },
+    { id: 'category-luxury', name: 'Luxury', icon: Shield },
+    { id: 'category-hatchback', name: 'Hatchback', icon: Star },
+    { id: 'category-bike', name: 'Bike', icon: Clock },
 ];
 
 export const MOCK_SERVICES = [

@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, TouchableOpacity, Platform, DimensionValue } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ChevronLeft } from 'lucide-react-native';
-import { Typography, Modal } from '@/components/theme';
+import {  DimensionValue } from 'react-native';
+
+import {  Modal } from '@/components/theme';
 
 export interface BottomSheetModalProps {
     visible: boolean;

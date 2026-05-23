@@ -76,3 +76,12 @@ export const DELETE_CUSTOMER_ADDRESS = gql(`
     deleteCustomerAddress(id: $id)
   }
 `);
+
+export const GET_USER_AVATAR = gql(`
+  query GetUserAvatar($id: ID!) {
+    user(id: $id) {
+      id
+      avatarUrl
+    }
+  }
+`);

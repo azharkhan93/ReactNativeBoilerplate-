@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SearchBar } from './SearchBar';
 import { Typography, IconButton } from '../theme';
@@ -14,6 +14,7 @@ export interface TopBarProps {
   placeholder?: string;
   searchValue?: string;
   location?: string;
+  avatarUrl?: string | null;
 }
 
 export const TopBar: React.FC<TopBarProps> = ({
@@ -24,6 +25,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   placeholder = 'Search services...',
   searchValue,
   location = MOCK_USER.location,
+  avatarUrl,
 }) => {
   const insets = useSafeAreaInsets();
 
@@ -50,9 +52,13 @@ export const TopBar: React.FC<TopBarProps> = ({
           <IconButton
             variant="circular"
             onPress={onProfilePress}
-            className="bg-gray-50 border border-gray-100"
+            className="bg-gray-900 border border-gray-800 overflow-hidden w-11 h-11 items-center justify-center rounded-full"
           >
-            <User size={22} color="#4B5563" />
+            {avatarUrl ? (
+              <Image source={{ uri: avatarUrl }} className="w-full h-full" resizeMode="cover" />
+            ) : (
+              <User size={20} color="#9ca3af" />
+            )}
           </IconButton>
         </View>
         

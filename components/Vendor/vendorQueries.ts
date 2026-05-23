@@ -148,6 +148,7 @@ export const GET_VENDOR_SERVICES = gql(`
       location
       features
       images
+      categoryId
     }
   }
 `);
@@ -164,6 +165,7 @@ export const CREATE_VENDOR_SERVICE = gql(`
       location
       features
       images
+      categoryId
     }
   }
 `);
@@ -180,6 +182,7 @@ export const UPDATE_VENDOR_SERVICE = gql(`
       location
       features
       images
+      categoryId
     }
   }
 `);

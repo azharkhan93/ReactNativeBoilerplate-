@@ -5,6 +5,7 @@ import { BottomSheetModal } from '@/components/shared/BottomSheetModal';
 import { Camera, Image as ImageIcon } from 'lucide-react-native';
 import { uploadAssetToCloudinary } from '@/utils/uploadHelper';
 import { launchImageLibrary } from 'react-native-image-picker';
+import { SERVICE_CATEGORIES } from '@/utils/constants';
 
 export interface ServiceManagementProps {
     visible: boolean;
@@ -16,6 +17,7 @@ export interface ServiceManagementProps {
         location: string;
         description: string;
         images?: string[];
+        categoryId?: string;
     } | null;
     onClose: () => void;
     onSave: (service: any) => void;
@@ -33,6 +35,7 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
         duration: '',
         location: '',
         description: '',
+        categoryId: '',
     });
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [uploading, setUploading] = useState(false);
@@ -46,6 +49,7 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
                 duration: initialService.duration,
                 location: initialService.location,
                 description: initialService.description,
+                categoryId: initialService.categoryId || '',
             });
             setImageUrl(initialService.images?.[0] || null);
         } else {
@@ -55,6 +59,7 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
                 duration: '',
                 location: '',
                 description: '',
+                categoryId: '',
             });
             setImageUrl(null);
         }
@@ -132,6 +137,43 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
                         </View>
                     </View>
 
+                    <View className="mb-6">
+                        <Typography variant="body" className="text-gray-400 font-body-semibold mb-3 ml-1">
+                            Vehicle Category
+                        </Typography>
+                        <ScrollView
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            // eslint-disable-next-line react-native/no-inline-styles
+                            contentContainerStyle={{ gap: 10, paddingVertical: 5 }}
+                        >
+                            {SERVICE_CATEGORIES.map((cat) => {
+                                const isSelected = formData.categoryId === cat.id;
+                                const IconComp = cat.icon;
+                                return (
+                                    <TouchableOpacity
+                                        key={cat.id}
+                                        onPress={() => setFormData({ ...formData, categoryId: cat.id })}
+                                        className={`flex-row items-center px-4 py-2.5 rounded-full border ${
+                                            isSelected
+                                                ? 'bg-primary-500/10 border-primary-500'
+                                                : 'bg-gray-900 border-gray-800'
+                                        }`}
+                                    >
+                                        <IconComp size={16} color={isSelected ? '#3b82f6' : '#9ca3af'} />
+                                        <Typography
+                                            className={`font-body-medium ml-2 ${
+                                                isSelected ? 'text-primary-500' : 'text-gray-400'
+                                            }`}
+                                        >
+                                            {cat.name}
+                                        </Typography>
+                                    </TouchableOpacity>
+                                );
+                            })}
+                        </ScrollView>
+                    </View>
+
                     <FormInput
                         label="Service Name"
                         placeholder="e.g. Premium SUV Wash"
@@ -180,7 +222,7 @@ export const ServiceManagement: React.FC<ServiceManagementProps> = ({
 
                     <Button
                         onPress={handleSave}
-                        variant={formData.name && formData.price ? 'primary' : 'disabled'}
+                        variant={formData.name && formData.price && formData.categoryId ? 'primary' : 'disabled'}
                     >
                         {isEditMode ? "Save Changes" : "Add Service"}
                     </Button>

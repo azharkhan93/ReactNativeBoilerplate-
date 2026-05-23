@@ -13,14 +13,20 @@ import {
 import { SERVICE_CATEGORIES } from '@/utils/constants';
 import { UserRole } from '../../__generated__/graphql';
 import { useHome } from './hooks/useHome';
+import { filterAndSortServices, FilterValues } from './helpers/homeHelpers';
 
 export interface HomeScreenProps {
   userRole?: UserRole | null;
   onNavigate?: (route: string, params?: any) => void;
+  activeFilters?: FilterValues | null;
+  onSelectCategory?: (categoryId: string) => void;
 }
 
-
-export const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
+export const HomeScreen: React.FC<HomeScreenProps> = ({
+  onNavigate,
+  activeFilters,
+  onSelectCategory
+}) => {
   const { featuredServices, nearbyServices, recommendedServices } = useHome();
   
   // Navigation & Action Handlers
@@ -29,6 +35,19 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
   const handleVendorPress = (vendorId: string) => {
     onNavigate?.('vendorDetails', { vendorId });
   };
+
+  // Refactored dynamic visual filtering logic using centralized helper
+  const filteredFeatured = React.useMemo(() => {
+    return filterAndSortServices(featuredServices, activeFilters);
+  }, [featuredServices, activeFilters]);
+
+  const filteredNearby = React.useMemo(() => {
+    return filterAndSortServices(nearbyServices, activeFilters);
+  }, [nearbyServices, activeFilters]);
+
+  const filteredRecommended = React.useMemo(() => {
+    return filterAndSortServices(recommendedServices, activeFilters);
+  }, [recommendedServices, activeFilters]);
 
   return (
     <View className="flex-1 bg-gray-950">
@@ -48,31 +67,34 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{ gap: 16, paddingRight: 20 }}
           >
-            {SERVICE_CATEGORIES.map((category) => (
-              <Category
-                key={category.id}
-                name={category.name}
-                icon={category.icon}
-              />
-            ))}
+            {SERVICE_CATEGORIES.map((category) => {
+              const isSelected = activeFilters?.categoryId === category.id;
+              return (
+                <Category
+                  key={category.id}
+                  name={category.name}
+                  icon={category.icon}
+                  className={isSelected ? 'bg-primary-500/20 border-primary-500' : ''}
+                  onPress={() => onSelectCategory?.(category.id)}
+                />
+              );
+            })}
           </ScrollView>
         </View>
 
-       
         <View className="mt-8">
           <FlashSale
             title="Special Offers"
-            products={featuredServices}
+            products={filteredFeatured}
             onProductPress={handleServicePress}
             onViewAllPress={() => console.log('View all offers')}
           />
         </View>
 
-       
         <View className="mt-4">
           <BestSellers
             title="Nearby Car Washers"
-            products={nearbyServices}
+            products={filteredNearby}
             onProductPress={handleServicePress}
             onViewAllPress={handleViewAllProviders}
           />
@@ -82,13 +104,12 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
         <View className="mt-4">
           <NewArrivals
             title="Recommended for You"
-            products={recommendedServices}
+            products={filteredRecommended}
             onProductPress={handleServicePress}
             onViewAllPress={() => console.log('View all recommendations')}
           />
         </View>
 
-      
         <View className="mt-4">
           <RecentlyAdded
             title="Latest Added Providers"
