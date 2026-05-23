@@ -1,14 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
 import {
   CircleHelp,
   Search,
-  X,
   MessageCircle,
   AlertCircle,
 } from 'lucide-react-native';
 import { Typography } from '../Typography';
+import { FormInput } from '../FormInput';
 import { FAQSection } from './FAQSection';
 
 export interface SupportHomeProps {
@@ -56,22 +56,16 @@ export const SupportHome: React.FC<SupportHomeProps> = ({
         </TouchableOpacity>
       </View>
 
-      {/* Compact Search Bar */}
-      <View className="bg-gray-900 rounded-xl px-3 py-2 flex-row items-center mb-4 border border-gray-800">
-        <Search size={16} color="#9CA3AF" />
-        <TextInput
-          className="flex-1 ml-2 text-white py-0.5 text-[13px]"
-          placeholder="Search for quick help..."
-          placeholderTextColor="#6b7280"
-          value={search}
-          onChangeText={onSearchChange}
-        />
-        {search.length > 0 && (
-          <TouchableOpacity onPress={() => onSearchChange('')}>
-            <X size={16} color="#9CA3AF" />
-          </TouchableOpacity>
-        )}
-      </View>
+      {/* Compact Search Bar utilizing FormInput */}
+      <FormInput
+        placeholder="Search for quick help..."
+        placeholderTextColor="#6b7280"
+        value={search}
+        onChangeText={onSearchChange}
+        containerClassName="mb-4"
+        inputClassName="h-11 bg-gray-900 border-gray-800 rounded-xl"
+        icon={<Search size={16} color="#9CA3AF" />}
+      />
     </View>
 
     <FAQSection search={search} />

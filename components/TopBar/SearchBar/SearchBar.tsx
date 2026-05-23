@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, TextInput, Keyboard } from 'react-native';
-import { Typography, IconButton } from '../../theme';
+import { View, Keyboard } from 'react-native';
+import { Search } from 'lucide-react-native';
+import { Typography, IconButton, FormInput } from '../../theme';
 
 export interface SearchBarProps {
   placeholder?: string;
@@ -16,7 +17,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   onFocus,
 }) => {
   const [searchValue, setSearchValue] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
 
   const isControlled = controlledValue !== undefined;
   const value = isControlled ? controlledValue : searchValue;
@@ -29,13 +29,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   const handleFocus = () => {
-    setIsFocused(true);
     onFocus?.();
-  };
-
-  const handleBlur = () => {
-    setIsFocused(false);
-    Keyboard.dismiss();
   };
 
   const handleClear = () => {
@@ -51,35 +45,31 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <View
-      className={`flex-row items-center rounded-full px-4 py-2.5 ${isFocused
-          ? 'bg-white border-2 border-primary-500'
-          : 'bg-gray-100'
-        }`}
-    >
-      <Typography className="text-gray-400 mr-2">🔍</Typography>
-      <TextInput
-        className="flex-1 text-body font-body text-gray-900"
+    <View className="relative w-full">
+      <FormInput
         placeholder={placeholder}
-        placeholderTextColor="#9CA3AF"
+        placeholderTextColor="#6b7280"
         value={value}
         onChangeText={handleChange}
         onFocus={handleFocus}
-        onBlur={handleBlur}
         returnKeyType="search"
         onSubmitEditing={handleSubmit}
+        containerClassName="mb-0"
+        inputClassName="h-12 bg-gray-900 border-gray-800 rounded-full pr-12"
+        icon={<Search size={16} color="#9CA3AF" />}
       />
-      {value.length > 0 ? (
-        <IconButton
-          onPress={handleClear}
-          className="ml-2 w-5 h-5"
-          size="sm"
-          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-          variant="default"
-        >
-          <Typography className="text-gray-400 text-lg">✕</Typography>
-        </IconButton>
-      ) : null}
+      {value.length > 0 && (
+        <View className="absolute right-4 top-1/2 -mt-3.5 z-20">
+          <IconButton
+            onPress={handleClear}
+            className="w-7 h-7 bg-white/10 rounded-full border border-white/5"
+            size="sm"
+            hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          >
+            <Typography className="text-gray-400 text-xs font-body-bold">✕</Typography>
+          </IconButton>
+        </View>
+      )}
     </View>
   );
 };
