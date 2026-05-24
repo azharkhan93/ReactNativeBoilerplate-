@@ -8,7 +8,7 @@ import {
   BestSellers,
   NewArrivals,
   Typography,
-  RecentlyAdded
+  RecentlyAdded,
 } from '@/components';
 import { SERVICE_CATEGORIES } from '@/utils/constants';
 import { UserRole } from '../../__generated__/graphql';
@@ -25,12 +25,13 @@ export interface HomeScreenProps {
 export const HomeScreen: React.FC<HomeScreenProps> = ({
   onNavigate,
   activeFilters,
-  onSelectCategory
+  onSelectCategory,
 }) => {
   const { featuredServices, nearbyServices, recommendedServices } = useHome();
-  
+
   // Navigation & Action Handlers
-  const handleServicePress = (serviceId: string) => console.log('Service:', serviceId);
+  const handleServicePress = (serviceId: string) =>
+    console.log('Service:', serviceId);
   const handleViewAllProviders = () => onNavigate?.('nearbyProviders');
   const handleVendorPress = (vendorId: string) => {
     onNavigate?.('vendorDetails', { vendorId });
@@ -69,19 +70,37 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={{ gap: 16, paddingRight: 20 }}
           >
-            {SERVICE_CATEGORIES.map((category) => {
+            {SERVICE_CATEGORIES.map(category => {
               const isSelected = activeFilters?.categoryId === category.id;
               return (
                 <Category
                   key={category.id}
                   name={category.name}
                   icon={category.icon}
-                  className={isSelected ? 'bg-primary-500/20 border-primary-500' : ''}
+                  className={
+                    isSelected ? 'bg-primary-500/20 border-primary-500' : ''
+                  }
                   onPress={() => onSelectCategory?.(category.id)}
                 />
               );
             })}
           </ScrollView>
+        </View>
+
+        <View className="mt-4">
+          <RecentlyAdded
+            title="Latest Added Providers"
+            onVendorPress={handleVendorPress}
+          />
+        </View>
+
+        <View className="mt-4">
+          <NewArrivals
+            title="Recommended for You"
+            products={filteredRecommended}
+            onProductPress={handleServicePress}
+            onViewAllPress={() => console.log('View all recommendations')}
+          />
         </View>
 
         <View className="mt-8">
@@ -102,22 +121,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           />
         </View>
 
-        {/* Section: Recommended for You */}
-        <View className="mt-4">
-          <NewArrivals
-            title="Recommended for You"
-            products={filteredRecommended}
-            onProductPress={handleServicePress}
-            onViewAllPress={() => console.log('View all recommendations')}
-          />
-        </View>
-
-        <View className="mt-4">
-          <RecentlyAdded
-            title="Latest Added Providers"
-            onVendorPress={handleVendorPress}
-          />
-        </View>
+        
       </ScrollView>
     </View>
   );

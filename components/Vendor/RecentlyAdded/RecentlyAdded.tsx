@@ -16,27 +16,6 @@ export interface RecentlyAddedProps {
   onVendorPress?: (vendorId: string) => void;
 }
 
-const DEMO_IMAGE =
-  'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&q=80';
-
-const TEST_FALLBACK_VENDORS = [
-  {
-    id: 'test-vendor-1',
-    businessName: 'Sparkle Car Wash (Demo)',
-    imageUri: DEMO_IMAGE,
-    address: '742 Evergreen Terrace, Springfield',
-    serviceRadius: '5km',
-  },
-  {
-    id: 'test-vendor-2',
-    businessName: 'Elite Auto Spa (Demo)',
-    imageUri:
-      'https://images.unsplash.com/photo-1552930294-6b595f4c2974?w=800&q=80',
-    address: '123 Maple Avenue, Downtown',
-    serviceRadius: '10km',
-  },
-];
-
 export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
   title = 'Recently Added',
   onVendorPress,
@@ -51,7 +30,7 @@ export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
     );
   }
 
-  const vendors = gqlVendors?.length ? gqlVendors : TEST_FALLBACK_VENDORS;
+  const vendors = gqlVendors || [];
 
   return (
     <View className="px-4 py-4">
@@ -73,18 +52,19 @@ export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
           return (
             <TouchableOpacity
               key={vendor.id}
-              className="w-48 bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-sm flex-col"
+              className="w-44 bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-sm flex-col"
               activeOpacity={0.8}
               onPress={handlePress}
             >
               <View className="relative">
                 <Image
                   source={{
-                    uri: vendor.imageUri?.trim() ? vendor.imageUri : DEMO_IMAGE,
+                    uri: vendor.imageUri || undefined,
                   }}
                   className="w-full h-28 bg-gray-800"
                   resizeMode="cover"
                 />
+
                 {vendor.serviceRadius && (
                   <View className="absolute top-2 left-2 bg-gray-950/80 px-2 py-0.5 rounded-md border border-gray-800">
                     <Typography
@@ -109,16 +89,20 @@ export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
 
                   <View className="flex-row items-center mb-2">
                     <Star size={12} color="#FBBF24" fill="#FBBF24" />
+
                     <Typography
                       variant="body-sm"
                       className="text-gray-300 ml-1 font-body-medium text-[11px]"
                     >
                       {rating.toFixed(1)}
                     </Typography>
+
                     {vendor.address && (
                       <>
                         <View className="w-1 h-1 rounded-full bg-gray-700 mx-1.5" />
+
                         <MapPin size={10} color="#9CA3AF" />
+
                         <Typography
                           variant="body-sm"
                           className="text-gray-400 ml-0.5 text-[10px]"
@@ -139,11 +123,12 @@ export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
                     >
                       Starting From
                     </Typography>
+
                     <Typography
                       variant="body"
                       className="text-white font-body-bold text-[14px]"
                     >
-                      ${price}
+                      ₹{price}
                     </Typography>
                   </View>
 
@@ -153,6 +138,7 @@ export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
                     activeOpacity={0.7}
                   >
                     <Eye size={12} color="#3b82f6" />
+
                     <Typography
                       variant="body-sm"
                       className="text-primary-500 font-body-bold text-[10px] ml-1"
