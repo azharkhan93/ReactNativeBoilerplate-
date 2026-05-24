@@ -57,6 +57,7 @@ export const CustomerProfileModalContent: React.FC<CustomerProfileModalContentPr
   return (
     <CustomerProfileForm
       onClose={hasProfile ? handleEditCancel : onClose}
+      isEditMode={hasProfile}
     />
   );
 };

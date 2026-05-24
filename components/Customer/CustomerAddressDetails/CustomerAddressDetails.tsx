@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { Typography } from '../../theme';
-import { useCustomerAddresses, AddressData } from './hooks/useCustomerAddresses';
+import {
+  useCustomerAddresses,
+  AddressData,
+} from './hooks/useCustomerAddresses';
 import { AddressItemCard } from './components/AddressItemCard';
 import { CustomerAddressForm } from './components/CustomerAddressForm';
 import { Plus, MapPin } from 'lucide-react-native';
@@ -15,7 +18,9 @@ export const CustomerAddressDetails: React.FC = () => {
   } = useCustomerAddresses();
 
   const [showForm, setShowForm] = useState(false);
-  const [editingAddress, setEditingAddress] = useState<AddressData | null>(null);
+  const [editingAddress, setEditingAddress] = useState<AddressData | null>(
+    null,
+  );
 
   const handleAddClick = () => {
     setEditingAddress(null);
@@ -50,19 +55,24 @@ export const CustomerAddressDetails: React.FC = () => {
           <View className="w-12 h-12 bg-primary-500/10 border border-primary-500/25 rounded-full items-center justify-center mb-3">
             <MapPin size={20} color="#3b82f6" />
           </View>
-          <Typography variant="subheading" className="text-white text-center font-body-bold">
+          <Typography
+            variant="subheading"
+            className="text-white text-center font-body-bold"
+          >
             Saved Addresses
           </Typography>
-          <Typography variant="body-sm" className="text-gray-400 text-center px-4 mt-1 leading-5">
+          <Typography
+            variant="body-sm"
+            className="text-gray-400 text-center px-4 mt-1 leading-5"
+          >
             Manage your delivery and service addresses for faster bookings.
           </Typography>
         </View>
 
-        {/* Section Action Row */}
-        {!showForm && (
+        {!showForm ? (
           <TouchableOpacity
             onPress={handleAddClick}
-            className="mb-5 bg-primary-500/10 border border-primary-500/20 py-4 px-5 rounded-3xl flex-row items-center justify-center gap-2"
+            className="mb-6 flex-row items-center justify-center gap-1.5 py-2"
             activeOpacity={0.7}
           >
             <Plus size={16} color="#3b82f6" />
@@ -70,35 +80,26 @@ export const CustomerAddressDetails: React.FC = () => {
               Add New Address
             </Typography>
           </TouchableOpacity>
-        )}
+        ) : null}
 
-        {/* Address Form Card */}
-        {showForm && (
+        {showForm ? (
           <CustomerAddressForm
             initialAddress={editingAddress}
             onSave={handleFormSave}
             onCancel={handleFormCancel}
             isEdit={!!editingAddress}
           />
-        )}
+        ) : null}
 
         {/* Addresses List */}
-        {addresses.length === 0 ? (
-          <View className="bg-gray-900/60 border border-gray-800 rounded-3xl p-8 items-center justify-center">
-            <Typography className="text-gray-500 text-[13px] font-body-semibold text-center">
-              No saved addresses found. Add an address to get started!
-            </Typography>
-          </View>
-        ) : (
-          addresses.map(addr => (
-            <AddressItemCard
-              key={addr.id}
-              address={addr}
-              onEdit={() => handleEditClick(addr)}
-              onRemove={() => handleRemoveAddress(addr.id)}
-            />
-          ))
-        )}
+        {addresses.map(addr => (
+          <AddressItemCard
+            key={addr.id}
+            address={addr}
+            onEdit={() => handleEditClick(addr)}
+            onRemove={() => handleRemoveAddress(addr.id)}
+          />
+        ))}
       </View>
     </ScrollView>
   );

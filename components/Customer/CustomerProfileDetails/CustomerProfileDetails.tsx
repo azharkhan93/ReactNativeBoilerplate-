@@ -28,9 +28,9 @@ export const CustomerProfileDetails: React.FC<CustomerProfileDetailsProps> = ({
   ), [profile.location]);
 
   return (
-    <View className="px-5 pt-2 pb-8 bg-gray-950">
+    <View className="flex-1 px-8 justify-center bg-gray-950 pb-12">
       {/* Top Actions Header */}
-      <View className="flex-row items-center justify-between mb-8 mt-2">
+      <View className="flex-row items-center justify-between mb-6">
         <Typography variant="subheading" className="text-white font-heading-bold text-xl">
           Profile Details
         </Typography>
@@ -59,11 +59,11 @@ export const CustomerProfileDetails: React.FC<CustomerProfileDetailsProps> = ({
       </View>
 
       {/* Info Card Container */}
-      <View className="bg-gray-900 border border-gray-800 rounded-3xl p-5 mb-4 shadow-2xl gap-5">
+      <View className="bg-gray-900 border border-gray-800 rounded-3xl p-8 mb-4 shadow-2xl">
         {/* Full Name */}
-        <View className="flex-row items-center border-b border-gray-800/50 pb-4">
-          <View className="w-10 h-10 rounded-2xl bg-gray-800/50 items-center justify-center mr-4">
-            <User size={18} color="#9ca3af" />
+        <View className="flex-row items-center">
+          <View className="w-10 h-10 rounded-full bg-gray-800/60 items-center justify-center mr-4">
+            <User size={18} color="#60a5fa" />
           </View>
           <View className="flex-1">
             <Typography variant="body-sm" className="text-gray-500 font-body-medium">
@@ -75,10 +75,12 @@ export const CustomerProfileDetails: React.FC<CustomerProfileDetailsProps> = ({
           </View>
         </View>
 
+        <View className="h-[1px] bg-gray-800/60 w-full my-4" />
+
         {/* Contact Number */}
-        <View className="flex-row items-center border-b border-gray-800/50 pb-4">
-          <View className="w-10 h-10 rounded-2xl bg-gray-800/50 items-center justify-center mr-4">
-            <Phone size={18} color="#9ca3af" />
+        <View className="flex-row items-center">
+          <View className="w-10 h-10 rounded-full bg-gray-800/60 items-center justify-center mr-4">
+            <Phone size={18} color="#34d399" />
           </View>
           <View className="flex-1">
             <Typography variant="body-sm" className="text-gray-500 font-body-medium">
@@ -90,10 +92,12 @@ export const CustomerProfileDetails: React.FC<CustomerProfileDetailsProps> = ({
           </View>
         </View>
 
+        <View className="h-[1px] bg-gray-800/60 w-full my-4" />
+
         {/* Email Address */}
-        <View className="flex-row items-center border-b border-gray-800/50 pb-4">
-          <View className="w-10 h-10 rounded-2xl bg-gray-800/50 items-center justify-center mr-4">
-            <Mail size={18} color="#9ca3af" />
+        <View className="flex-row items-center">
+          <View className="w-10 h-10 rounded-full bg-gray-800/60 items-center justify-center mr-4">
+            <Mail size={18} color="#a78bfa" />
           </View>
           <View className="flex-1">
             <Typography variant="body-sm" className="text-gray-500 font-body-medium">
@@ -105,10 +109,12 @@ export const CustomerProfileDetails: React.FC<CustomerProfileDetailsProps> = ({
           </View>
         </View>
 
+        <View className="h-[1px] bg-gray-800/60 w-full my-4" />
+
         {/* Location */}
         <View className="flex-row items-center">
-          <View className="w-10 h-10 rounded-2xl bg-gray-800/50 items-center justify-center mr-4">
-            <MapPin size={18} color="#9ca3af" />
+          <View className="w-10 h-10 rounded-full bg-gray-800/60 items-center justify-center mr-4">
+            <MapPin size={18} color="#fb7185" />
           </View>
           <View className="flex-1">
             <Typography variant="body-sm" className="text-gray-500 font-body-medium">

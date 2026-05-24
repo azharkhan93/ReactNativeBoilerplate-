@@ -52,7 +52,7 @@ export const MODAL_ITEMS: ModalConfigItem[] = [
     scrollable: false,
   },
   { id: 'services', title: 'Manage Services' },
-  { id: 'profile', title: 'Edit My Profile', height: '85%' },
+  { id: 'profile', title: 'Edit My Profile', height: '85%', scrollable: false },
   { id: 'addresses', title: 'Manage Addresses', height: '85%' },
   {
     id: 'orders',
