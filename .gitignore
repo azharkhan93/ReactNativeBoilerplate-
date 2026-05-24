@@ -332,3 +332,7 @@ playwright/.cache/
 *.bak
 *.tmp
 *.temp
+
+# Firebase Secrets
+android/app/google-services.json
+ios/GoogleService-Info.plist
