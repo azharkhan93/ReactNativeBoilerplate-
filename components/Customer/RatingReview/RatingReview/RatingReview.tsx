@@ -27,7 +27,7 @@ export const RatingReview: React.FC<RatingReviewProps> = ({ providerName, onSubm
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className="flex-1 bg-white">
             <ReviewHeader onClose={onClose} />
             
-            <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 40 }} showsVerticalScrollIndicator={false}>
+            <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 40 }} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
                 <Container variant="column-centered" className="px-6 pt-10">
                     <ProviderInfo providerName={providerName} />
 

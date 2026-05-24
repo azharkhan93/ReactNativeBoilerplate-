@@ -38,6 +38,7 @@ export const SupportChatView: React.FC<SupportChatViewProps> = ({
             )}
             className="flex-1 pt-4"
             contentContainerStyle={{ paddingBottom: 20 }}
+            keyboardShouldPersistTaps="handled"
         />
 
         <QuickReplies onReplySelect={onSend} />

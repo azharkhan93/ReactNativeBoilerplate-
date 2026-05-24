@@ -48,7 +48,7 @@ export const CustomerAddressDetails: React.FC = () => {
   };
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
       <View className="px-5 pt-2 pb-8 bg-gray-950">
         {/* Header Block */}
         <View className="items-center mb-6 mt-2">

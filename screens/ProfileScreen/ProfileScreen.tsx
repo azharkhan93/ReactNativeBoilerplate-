@@ -192,6 +192,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingBottom: 110 }}
       >
         <ProfileUserInfo

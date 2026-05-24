@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, TouchableOpacity } from 'react-native';
+import { View, TextInput, TouchableOpacity, Keyboard } from 'react-native';
 import { Search as SearchIcon, X } from 'lucide-react-native';
 
 export interface SearchBarProps {
@@ -27,6 +27,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                 value={value}
                 onChangeText={onChangeText}
                 autoCorrect={false}
+                returnKeyType="search"
+                onSubmitEditing={Keyboard.dismiss}
             />
             {value.length > 0 && onClear ? (
                 <TouchableOpacity onPress={onClear} activeOpacity={0.7} className="p-1">

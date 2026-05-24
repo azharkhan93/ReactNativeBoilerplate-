@@ -107,7 +107,7 @@ export const WhyChooseMeForm: React.FC<WhyChooseMeFormProps> = ({
       height="80%"
       scrollable={false}
     >
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
         <View className="px-5 pt-2 pb-8">
           <View className="flex-row items-center mb-2">
             <Sparkles size={18} color="#f59e0b" />

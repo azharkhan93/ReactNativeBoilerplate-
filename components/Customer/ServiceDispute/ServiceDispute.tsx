@@ -39,6 +39,7 @@ export const ServiceDispute: React.FC<ServiceDisputeProps> = ({
                 className="flex-1 bg-white"
                 contentContainerStyle={{ paddingBottom: 40 }}
                 showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps="handled"
             >
                 <Container variant="column" className="px-6 pt-8">
                     <Animated.View entering={FadeInUp.delay(100)} className="items-center mb-8 bg-error-50/50 p-6 rounded-[32px] border border-error-100/50 w-full">

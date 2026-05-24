@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { View, Keyboard } from 'react-native';
 import { useQuery } from '@apollo/client/react';
 import { TopBar } from '@/components/TopBar';
 import { BottomTabNavigator } from '@/components/BottomTabNavigator';
@@ -73,6 +73,7 @@ export const AppNavigator: React.FC = () => {
   }, [userRole, activeTab]);
 
   const handleNavigate = (route: string, params?: any) => {
+    Keyboard.dismiss();
     if (route === 'vendorDetails' && params?.vendorId) {
       setSelectedVendorId(params.vendorId);
     }

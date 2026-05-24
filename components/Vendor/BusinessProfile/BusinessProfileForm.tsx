@@ -90,7 +90,7 @@ export const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
       height="92%"
       scrollable={false}
     >
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
         <View className="px-5 pt-2 pb-8">
           <Typography variant="subheading" className="text-white mb-4">
             Business Information

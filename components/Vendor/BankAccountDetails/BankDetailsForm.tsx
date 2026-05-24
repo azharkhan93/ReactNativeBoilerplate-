@@ -88,7 +88,7 @@ export const BankDetailsForm: React.FC<BankDetailsFormProps> = ({
       height="88%"
       scrollable={false}
     >
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
         <View className="px-5 pt-2 pb-8">
           {/* Centered Secure Header */}
           <View className="items-center mb-6 mt-2">

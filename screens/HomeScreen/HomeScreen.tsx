@@ -54,6 +54,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingBottom: 110 }}
       >
         <HeroSection />
@@ -65,6 +66,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
             contentContainerStyle={{ gap: 16, paddingRight: 20 }}
           >
             {SERVICE_CATEGORIES.map((category) => {

@@ -20,7 +20,7 @@ export const CustomerProfileForm: React.FC<CustomerProfileFormProps> = ({ onClos
   );
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
       <View className="px-5 pt-2 pb-8 bg-gray-950">
         {/* Centered Profile Header */}
         <View className="items-center mb-6 mt-2">

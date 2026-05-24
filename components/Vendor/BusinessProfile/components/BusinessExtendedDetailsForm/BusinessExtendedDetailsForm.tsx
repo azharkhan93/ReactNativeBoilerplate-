@@ -67,7 +67,7 @@ export const BusinessExtendedDetailsForm: React.FC<BusinessExtendedDetailsFormPr
       height="85%"
       scrollable={false}
     >
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
         <View className="px-5 pt-2 pb-8">
           <Typography variant="subheading" className="text-white mb-2">
             Business Gallery (Multiple Images)

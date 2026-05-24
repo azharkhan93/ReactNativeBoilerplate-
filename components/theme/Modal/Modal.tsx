@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal as RNModal, ModalProps as RNModalProps, Platform, Dimensions, ScrollView, TouchableWithoutFeedback, View, DimensionValue, TouchableOpacity } from 'react-native';
+import { Modal as RNModal, ModalProps as RNModalProps, Platform, Dimensions, ScrollView, TouchableWithoutFeedback, View, DimensionValue, TouchableOpacity, Keyboard } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { X } from 'lucide-react-native';
 import { Typography } from '../Typography';
@@ -35,7 +35,7 @@ export const Modal: React.FC<ModalProps> = ({
     <RNModal visible={visible} animationType={animationType} transparent={transparent} onRequestClose={onRequestClose} statusBarTranslucent {...props}>
       <TouchableWithoutFeedback onPress={onRequestClose}>
         <View className={`flex-1 bg-black/50 justify-end pt-[${insets.top}px] ${className || ''}`}>
-          <TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View className={`bg-gray-950 rounded-t-3xl w-full ${contentClassName || ''}`} style={contentStyle}>
            
               <View className="w-full items-center pt-3 pb-1">
