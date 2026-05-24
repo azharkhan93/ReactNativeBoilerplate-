@@ -20,12 +20,17 @@ const PaginationDot: React.FC<PaginationDotProps> = ({ index, current }) => {
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
-      width: withSpring(isActive ? 32 : 10, { damping: 15 }),
-      backgroundColor: withSpring(isActive ? '#3b82f6' : '#374151'),
+      width: withSpring(isActive ? 28 : 8, { damping: 15, stiffness: 120 }),
+      height: 6,
+      opacity: withSpring(isActive ? 1 : 0.35, { damping: 15 }),
+      transform: [
+        { scale: withSpring(isActive ? 1.1 : 0.9, { damping: 15 }) },
+      ],
+      backgroundColor: withSpring(isActive ? '#3b82f6' : '#9ca3af'),
     };
   });
 
-  return <Animated.View className="h-1.5 rounded-full" style={animatedStyle} />;
+  return <Animated.View className="rounded-full" style={animatedStyle} />;
 };
 
 export const Pagination: React.FC<PaginationProps> = ({ total, current }) => {

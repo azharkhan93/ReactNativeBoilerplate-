@@ -1,14 +1,19 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 import {
   View,
-  TouchableOpacity,
   Dimensions,
   StyleSheet,
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { MapPin, ChevronLeft } from 'lucide-react-native';
+import { MapPin } from 'lucide-react-native';
 import MapView, { Marker } from 'react-native-maps';
 import {
   checkLocationPermission,
@@ -18,7 +23,6 @@ import {
 } from '../../../utils/locationHelper';
 import { RESULTS, check } from 'react-native-permissions';
 import { Typography } from '../../theme/Typography';
-import { Container } from '../../theme/Container';
 import { Button } from '../../theme/Button';
 import { FormInput } from '../../theme/FormInput';
 import Animated, { FadeIn } from 'react-native-reanimated';
@@ -27,7 +31,7 @@ const { width } = Dimensions.get('window');
 const DEFAULT_LOC = { latitude: 25.2048, longitude: 55.2708 };
 const DELTAS = { latitudeDelta: 0.0122, longitudeDelta: 0.0121 };
 
-export const LocationStep: React.FC<{ onBack: () => void }> = ({ onBack }) => {
+export const LocationStep: React.FC<{ onBack: () => void }> = () => {
   const mapRef = useRef<MapView>(null);
   const [pos, setPos] = useState<{
     latitude: number;
@@ -37,6 +41,7 @@ export const LocationStep: React.FC<{ onBack: () => void }> = ({ onBack }) => {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Handlers defined at the top
   const handleLocation = useCallback(async () => {
     setLoading(true);
     try {
@@ -51,7 +56,6 @@ export const LocationStep: React.FC<{ onBack: () => void }> = ({ onBack }) => {
       if (geoData) {
         setAddress(geoData.address);
         setQuery(geoData.full);
-        console.log('Position Details:', geoData.details);
       }
     } catch (e) {
       console.error('Location Error:', e);
@@ -60,37 +64,58 @@ export const LocationStep: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     }
   }, []);
 
+  const handleDismissKeyboard = useCallback(() => {
+    Keyboard.dismiss();
+  }, []);
+
+  const handleQueryChange = useCallback((text: string) => {
+    setQuery(text);
+  }, []);
+
   useEffect(() => {
     check(LOC_PERMISSION).then(s => {
       if (s === RESULTS.GRANTED) handleLocation();
     });
   }, [handleLocation]);
 
-  return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={{ width }} className="flex-1 bg-[#030712] px-6 pt-4">
-        <Animated.View entering={FadeIn.duration(500)} className="flex-1">
-          <Container variant="between" className="mb-8">
-            <TouchableOpacity onPress={onBack} className="p-2 -ml-2">
-              <ChevronLeft color="#ffffff" size={28} />
-            </TouchableOpacity>
-            <Typography
-              variant="subheading"
-              className="text-white font-heading-bold"
-            >
-              Location Access
-            </Typography>
-            <View className="w-8" />
-          </Container>
+  // Memoized values and sub-renders to avoid inline JSX/Ternaries
+  const buttonText = useMemo(
+    () => (loading ? 'Locating...' : 'Use Current Location'),
+    [loading],
+  );
 
+  const addressLabel = useMemo(
+    () =>
+      address || (loading ? 'Locating...' : 'Search or use current location'),
+    [address, loading],
+  );
+
+  const mapMarker = useMemo(() => {
+    if (!pos) return null;
+    return (
+      <Marker coordinate={pos}>
+        <View className="w-10 h-10 bg-primary-500/20 rounded-full items-center justify-center">
+          <View className="w-4 h-4 bg-primary-500 rounded-full border-2 border-white shadow-lg" />
+        </View>
+      </Marker>
+    );
+  }, [pos]);
+
+  return (
+    <TouchableWithoutFeedback
+      onPress={handleDismissKeyboard}
+      accessible={false}
+    >
+      <View style={styles.container} className="flex-1 bg-[#030712] px-6 pt-10">
+        <Animated.View entering={FadeIn.duration(500)} className="flex-1">
           <Typography
             variant="body"
             className="text-primary-500 uppercase font-body-bold"
           >
             Final Step
           </Typography>
-          <View className="h-1.5 w-full bg-gray-800 rounded-full mb-10 overflow-hidden">
-            <View className="h-full bg-primary-500" style={{ width: '100%' }} />
+          <View className="h-1 w-full bg-gray-800/50 rounded-full mb-10 overflow-hidden">
+            <View className="h-full bg-primary-500 rounded-full w-full" />
           </View>
 
           <Typography
@@ -107,11 +132,12 @@ export const LocationStep: React.FC<{ onBack: () => void }> = ({ onBack }) => {
           <FormInput
             placeholder="Enter your street address"
             value={query}
-            onChangeText={setQuery}
+            onChangeText={handleQueryChange}
             blurOnSubmit={true}
             returnKeyType="search"
-            onSubmitEditing={Keyboard.dismiss}
+            onSubmitEditing={handleDismissKeyboard}
             containerClassName="mb-4"
+            multiline={true}
           />
 
           <Button
@@ -120,13 +146,13 @@ export const LocationStep: React.FC<{ onBack: () => void }> = ({ onBack }) => {
             onPress={handleLocation}
             loading={loading}
           >
-            {loading ? 'Locating...' : 'Use Current Location'}
+            {buttonText}
           </Button>
 
           <View className="flex-1 mt-6 rounded-3xl overflow-hidden border border-gray-800 relative shadow-sm bg-gray-900">
             <MapView
               ref={mapRef}
-              style={StyleSheet.absoluteFillObject}
+              className="absolute inset-0"
               initialRegion={{
                 ...DEFAULT_LOC,
                 ...DELTAS,
@@ -135,13 +161,7 @@ export const LocationStep: React.FC<{ onBack: () => void }> = ({ onBack }) => {
               }}
               showsUserLocation
             >
-              {pos && (
-                <Marker coordinate={pos}>
-                  <View className="w-10 h-10 bg-primary-500/20 rounded-full items-center justify-center">
-                    <View className="w-4 h-4 bg-primary-500 rounded-full border-2 border-white shadow-lg" />
-                  </View>
-                </Marker>
-              )}
+              {mapMarker}
             </MapView>
 
             <View className="absolute bottom-4 left-4 right-4 bg-gray-900/90 p-3 rounded-2xl border border-gray-800 flex-row items-center">
@@ -151,8 +171,7 @@ export const LocationStep: React.FC<{ onBack: () => void }> = ({ onBack }) => {
                 className="text-white ml-2 flex-1"
                 numberOfLines={1}
               >
-                {address ||
-                  (loading ? 'Locating...' : 'Search or use current location')}
+                {addressLabel}
               </Typography>
             </View>
           </View>
@@ -161,3 +180,9 @@ export const LocationStep: React.FC<{ onBack: () => void }> = ({ onBack }) => {
     </TouchableWithoutFeedback>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    width,
+  },
+});
