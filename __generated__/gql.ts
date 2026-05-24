@@ -21,6 +21,8 @@ type Documents = {
     "\n  mutation UpdateCustomerAddress($id: ID!, $input: UpsertCustomerAddressInput!) {\n    updateCustomerAddress(id: $id, input: $input) {\n      id\n      customerProfileId\n      label\n      street\n      city\n      state\n      zipCode\n      type\n    }\n  }\n": typeof types.UpdateCustomerAddressDocument,
     "\n  mutation DeleteCustomerAddress($id: ID!) {\n    deleteCustomerAddress(id: $id)\n  }\n": typeof types.DeleteCustomerAddressDocument,
     "\n  query GetUserAvatar($id: ID!) {\n    user(id: $id) {\n      id\n      avatarUrl\n    }\n  }\n": typeof types.GetUserAvatarDocument,
+    "\n  mutation DeleteCustomerProfile($id: ID!) {\n    deleteCustomerProfile(id: $id)\n  }\n": typeof types.DeleteCustomerProfileDocument,
+    "\n  mutation UpdateUserAvatar($id: ID!, $avatarUrl: String!) {\n    updateUserAvatar(id: $id, avatarUrl: $avatarUrl) {\n      id\n      avatarUrl\n    }\n  }\n": typeof types.UpdateUserAvatarDocument,
     "\n  mutation CreateNewRole($roleName: UserRole!) {\n    createRole(name: $roleName) {\n      id\n      name\n      createdAt\n    }\n  }\n": typeof types.CreateNewRoleDocument,
     "\n  query GetRoles {\n    roles {\n      id\n      name\n    }\n  }\n": typeof types.GetRolesDocument,
     "\n  fragment VendorProfileFields on VendorProfileType {\n    id\n    userId\n    businessName\n    imageUri\n    gstNumber\n    contactNumber\n    address\n    serviceRadius\n    operatingHours\n    whyChooseMe\n    description\n    images\n  }\n": typeof types.VendorProfileFieldsFragmentDoc,
@@ -54,6 +56,8 @@ const documents: Documents = {
     "\n  mutation UpdateCustomerAddress($id: ID!, $input: UpsertCustomerAddressInput!) {\n    updateCustomerAddress(id: $id, input: $input) {\n      id\n      customerProfileId\n      label\n      street\n      city\n      state\n      zipCode\n      type\n    }\n  }\n": types.UpdateCustomerAddressDocument,
     "\n  mutation DeleteCustomerAddress($id: ID!) {\n    deleteCustomerAddress(id: $id)\n  }\n": types.DeleteCustomerAddressDocument,
     "\n  query GetUserAvatar($id: ID!) {\n    user(id: $id) {\n      id\n      avatarUrl\n    }\n  }\n": types.GetUserAvatarDocument,
+    "\n  mutation DeleteCustomerProfile($id: ID!) {\n    deleteCustomerProfile(id: $id)\n  }\n": types.DeleteCustomerProfileDocument,
+    "\n  mutation UpdateUserAvatar($id: ID!, $avatarUrl: String!) {\n    updateUserAvatar(id: $id, avatarUrl: $avatarUrl) {\n      id\n      avatarUrl\n    }\n  }\n": types.UpdateUserAvatarDocument,
     "\n  mutation CreateNewRole($roleName: UserRole!) {\n    createRole(name: $roleName) {\n      id\n      name\n      createdAt\n    }\n  }\n": types.CreateNewRoleDocument,
     "\n  query GetRoles {\n    roles {\n      id\n      name\n    }\n  }\n": types.GetRolesDocument,
     "\n  fragment VendorProfileFields on VendorProfileType {\n    id\n    userId\n    businessName\n    imageUri\n    gstNumber\n    contactNumber\n    address\n    serviceRadius\n    operatingHours\n    whyChooseMe\n    description\n    images\n  }\n": types.VendorProfileFieldsFragmentDoc,
@@ -122,6 +126,14 @@ export function gql(source: "\n  mutation DeleteCustomerAddress($id: ID!) {\n   
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query GetUserAvatar($id: ID!) {\n    user(id: $id) {\n      id\n      avatarUrl\n    }\n  }\n"): (typeof documents)["\n  query GetUserAvatar($id: ID!) {\n    user(id: $id) {\n      id\n      avatarUrl\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation DeleteCustomerProfile($id: ID!) {\n    deleteCustomerProfile(id: $id)\n  }\n"): (typeof documents)["\n  mutation DeleteCustomerProfile($id: ID!) {\n    deleteCustomerProfile(id: $id)\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UpdateUserAvatar($id: ID!, $avatarUrl: String!) {\n    updateUserAvatar(id: $id, avatarUrl: $avatarUrl) {\n      id\n      avatarUrl\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateUserAvatar($id: ID!, $avatarUrl: String!) {\n    updateUserAvatar(id: $id, avatarUrl: $avatarUrl) {\n      id\n      avatarUrl\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

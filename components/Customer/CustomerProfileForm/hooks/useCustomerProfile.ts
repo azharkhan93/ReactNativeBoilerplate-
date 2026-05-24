@@ -1,6 +1,11 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client/react';
-import { GET_CUSTOMER_PROFILE, UPSERT_CUSTOMER_PROFILE } from '../../customerQueries';
+import {
+  GET_CUSTOMER_PROFILE,
+  UPSERT_CUSTOMER_PROFILE,
+  DELETE_CUSTOMER_PROFILE,
+  GET_USER_AVATAR,
+} from '../../customerQueries';
 import { getUserId } from '@/utils/store/authStore';
 
 export interface CustomerProfileData {
@@ -50,7 +55,18 @@ export const useCustomerProfile = (onSaveCallback?: () => void) => {
 
   // 4. Mutation to upsert profile
   const [upsertProfile, { loading: saving }] = useMutation(UPSERT_CUSTOMER_PROFILE, {
-    refetchQueries: userId ? [{ query: GET_CUSTOMER_PROFILE, variables: { userId } }] : [],
+    refetchQueries: userId ? [
+      { query: GET_CUSTOMER_PROFILE, variables: { userId } },
+      { query: GET_USER_AVATAR, variables: { id: userId } }
+    ] : [],
+  });
+
+  // 5. Mutation to delete profile
+  const [deleteCustomerProfile, { loading: deleting }] = useMutation(DELETE_CUSTOMER_PROFILE, {
+    refetchQueries: userId ? [
+      { query: GET_CUSTOMER_PROFILE, variables: { userId } },
+      { query: GET_USER_AVATAR, variables: { id: userId } }
+    ] : [],
   });
 
   const handleChange = useCallback((field: keyof CustomerProfileData, value: string) => {
@@ -90,11 +106,29 @@ export const useCustomerProfile = (onSaveCallback?: () => void) => {
     }
   }, [profile, upsertProfile, onSaveCallback]);
 
+  const handleDelete = useCallback(async () => {
+    const profileId = data?.getCustomerProfile?.id;
+    if (!profileId) return;
+    try {
+      await deleteCustomerProfile({
+        variables: { id: profileId },
+      });
+      setProfile(DEFAULT_PROFILE);
+      onSaveCallback?.();
+    } catch (err) {
+      console.error('Error deleting customer profile:', err);
+    }
+  }, [data?.getCustomerProfile?.id, deleteCustomerProfile, onSaveCallback]);
+
+  const hasProfile = !!data?.getCustomerProfile;
+
   return {
     profile,
-    loading: loadingQuery || saving,
+    loading: loadingQuery || saving || deleting,
+    hasProfile,
     errors,
     handleChange,
     handleSave,
+    handleDelete,
   };
 };

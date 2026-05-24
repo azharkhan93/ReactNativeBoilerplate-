@@ -19,7 +19,7 @@ import { BankAccountDetails } from '@/components/Vendor/BankAccountDetails';
 import { BusinessProfile } from '@/components/Vendor/BusinessProfile';
 import { ManageServices } from '@/components/Vendor/ManageServices';
 import {
-  CustomerProfileForm,
+  CustomerProfileModalContent,
   CustomerAddressDetails,
 } from '@/components/Customer';
 import { UserRole } from '../../__generated__/graphql';
@@ -141,7 +141,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
       else if (item.id === 'business') content = <BusinessProfile />;
       else if (item.id === 'services') content = <ManageServices />;
       else if (item.id === 'profile')
-        content = <CustomerProfileForm onClose={() => setModalType(null)} />;
+        content = <CustomerProfileModalContent onClose={() => setModalType(null)} />;
       else if (item.id === 'addresses') content = <CustomerAddressDetails />;
       else if (item.id === 'avatar_upload') {
         content = (

@@ -78,6 +78,8 @@ export type CreateVendorProfileInput = {
 };
 
 export type CreateVendorServiceInput = {
+  availableAtCenter?: Scalars['Boolean']['input'];
+  availableAtHome?: Scalars['Boolean']['input'];
   categoryId?: InputMaybe<Scalars['ID']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   duration: Scalars['Int']['input'];
@@ -86,6 +88,7 @@ export type CreateVendorServiceInput = {
   location?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   price: Scalars['Float']['input'];
+  pricings?: InputMaybe<Array<ServicePricingInput>>;
   vendorProfileId: Scalars['ID']['input'];
 };
 
@@ -171,6 +174,7 @@ export type Mutation = {
   updateDriverLocation: DriverLocationType;
   updateHeroContent: HeroContent;
   updateServiceCategory: ServiceCategory;
+  updateUserAvatar: UserType;
   updateVendorBreak: VendorBreak;
   updateVendorException: VendorException;
   updateVendorProfile: VendorProfileType;
@@ -324,6 +328,12 @@ export type MutationUpdateHeroContentArgs = {
 export type MutationUpdateServiceCategoryArgs = {
   id: Scalars['String']['input'];
   input: UpdateServiceCategoryInput;
+};
+
+
+export type MutationUpdateUserAvatarArgs = {
+  avatarUrl: Scalars['String']['input'];
+  id: Scalars['ID']['input'];
 };
 
 
@@ -482,6 +492,17 @@ export type ServiceCategory = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+export type ServicePricing = {
+  __typename?: 'ServicePricing';
+  categoryId: Scalars['ID']['output'];
+  price: Scalars['Float']['output'];
+};
+
+export type ServicePricingInput = {
+  categoryId: Scalars['ID']['input'];
+  price: Scalars['Float']['input'];
+};
+
 export type SmsResponse = {
   __typename?: 'SmsResponse';
   errorCode?: Maybe<Scalars['Float']['output']>;
@@ -553,6 +574,8 @@ export type UpdateVendorProfileInput = {
 };
 
 export type UpdateVendorServiceInput = {
+  availableAtCenter?: InputMaybe<Scalars['Boolean']['input']>;
+  availableAtHome?: InputMaybe<Scalars['Boolean']['input']>;
   categoryId?: InputMaybe<Scalars['ID']['input']>;
   description?: InputMaybe<Scalars['String']['input']>;
   duration?: InputMaybe<Scalars['Int']['input']>;
@@ -561,6 +584,7 @@ export type UpdateVendorServiceInput = {
   location?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['Float']['input']>;
+  pricings?: InputMaybe<Array<ServicePricingInput>>;
 };
 
 export type UploadResponseType = {
@@ -670,6 +694,8 @@ export type VendorSchedule = {
 
 export type VendorService = {
   __typename?: 'VendorService';
+  availableAtCenter: Scalars['Boolean']['output'];
+  availableAtHome: Scalars['Boolean']['output'];
   categoryId?: Maybe<Scalars['ID']['output']>;
   createdAt: Scalars['DateTime']['output'];
   description?: Maybe<Scalars['String']['output']>;
@@ -680,6 +706,7 @@ export type VendorService = {
   location?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   price: Scalars['Float']['output'];
+  pricings?: Maybe<Array<ServicePricing>>;
   updatedAt: Scalars['DateTime']['output'];
   vendorProfileId: Scalars['ID']['output'];
 };
@@ -740,6 +767,21 @@ export type GetUserAvatarQueryVariables = Exact<{
 
 
 export type GetUserAvatarQuery = { __typename?: 'Query', user: { __typename?: 'UserType', id: string, avatarUrl?: string | null } };
+
+export type DeleteCustomerProfileMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type DeleteCustomerProfileMutation = { __typename?: 'Mutation', deleteCustomerProfile: boolean };
+
+export type UpdateUserAvatarMutationVariables = Exact<{
+  id: Scalars['ID']['input'];
+  avatarUrl: Scalars['String']['input'];
+}>;
+
+
+export type UpdateUserAvatarMutation = { __typename?: 'Mutation', updateUserAvatar: { __typename?: 'UserType', id: string, avatarUrl?: string | null } };
 
 export type CreateNewRoleMutationVariables = Exact<{
   roleName: UserRole;
@@ -928,6 +970,8 @@ export const CreateCustomerAddressDocument = {"kind":"Document","definitions":[{
 export const UpdateCustomerAddressDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateCustomerAddress"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpsertCustomerAddressInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateCustomerAddress"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"customerProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"label"}},{"kind":"Field","name":{"kind":"Name","value":"street"}},{"kind":"Field","name":{"kind":"Name","value":"city"}},{"kind":"Field","name":{"kind":"Name","value":"state"}},{"kind":"Field","name":{"kind":"Name","value":"zipCode"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]} as unknown as DocumentNode<UpdateCustomerAddressMutation, UpdateCustomerAddressMutationVariables>;
 export const DeleteCustomerAddressDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteCustomerAddress"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteCustomerAddress"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<DeleteCustomerAddressMutation, DeleteCustomerAddressMutationVariables>;
 export const GetUserAvatarDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUserAvatar"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}}]}}]}}]} as unknown as DocumentNode<GetUserAvatarQuery, GetUserAvatarQueryVariables>;
+export const DeleteCustomerProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteCustomerProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteCustomerProfile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<DeleteCustomerProfileMutation, DeleteCustomerProfileMutationVariables>;
+export const UpdateUserAvatarDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateUserAvatar"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"avatarUrl"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateUserAvatar"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"avatarUrl"},"value":{"kind":"Variable","name":{"kind":"Name","value":"avatarUrl"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}}]}}]}}]} as unknown as DocumentNode<UpdateUserAvatarMutation, UpdateUserAvatarMutationVariables>;
 export const CreateNewRoleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateNewRole"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roleName"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserRole"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createRole"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roleName"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}}]} as unknown as DocumentNode<CreateNewRoleMutation, CreateNewRoleMutationVariables>;
 export const GetRolesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetRoles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"roles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetRolesQuery, GetRolesQueryVariables>;
 export const GetVendorProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetVendorProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getVendorProfile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"VendorProfileFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"VendorProfileFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VendorProfileType"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"businessName"}},{"kind":"Field","name":{"kind":"Name","value":"imageUri"}},{"kind":"Field","name":{"kind":"Name","value":"gstNumber"}},{"kind":"Field","name":{"kind":"Name","value":"contactNumber"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"serviceRadius"}},{"kind":"Field","name":{"kind":"Name","value":"operatingHours"}},{"kind":"Field","name":{"kind":"Name","value":"whyChooseMe"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"images"}}]}}]} as unknown as DocumentNode<GetVendorProfileQuery, GetVendorProfileQueryVariables>;

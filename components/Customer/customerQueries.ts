@@ -85,3 +85,18 @@ export const GET_USER_AVATAR = gql(`
     }
   }
 `);
+
+export const DELETE_CUSTOMER_PROFILE = gql(`
+  mutation DeleteCustomerProfile($id: ID!) {
+    deleteCustomerProfile(id: $id)
+  }
+`);
+
+export const UPDATE_USER_AVATAR = gql(`
+  mutation UpdateUserAvatar($id: ID!, $avatarUrl: String!) {
+    updateUserAvatar(id: $id, avatarUrl: $avatarUrl) {
+      id
+      avatarUrl
+    }
+  }
+`);
