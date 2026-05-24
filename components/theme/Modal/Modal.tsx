@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { Modal as RNModal, ModalProps as RNModalProps, Platform, Dimensions, ScrollView, TouchableWithoutFeedback, View, DimensionValue, TouchableOpacity, Keyboard } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -62,6 +63,7 @@ export const Modal: React.FC<ModalProps> = ({
                   showsVerticalScrollIndicator
                   keyboardShouldPersistTaps="handled"
                   nestedScrollEnabled
+                 
                   contentContainerStyle={{ paddingBottom: 24 }}
                 >
                   {children}

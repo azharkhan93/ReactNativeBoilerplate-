@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { View, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import { SupportHeader } from './SupportHeader';

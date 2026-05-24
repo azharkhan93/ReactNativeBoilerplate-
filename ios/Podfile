@@ -21,6 +21,12 @@ end
 target 'NativeApp' do
   config = use_native_modules!
 
+  # Firebase requires these two pods to expose module maps so that
+  # FirebaseCoreInternal (a Swift pod) can import them as modules
+  # when building as static libraries. Scoped to avoid breaking RN C++ pods.
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'FirebaseCoreInternal', :modular_headers => true
+
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
