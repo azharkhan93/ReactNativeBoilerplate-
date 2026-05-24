@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { View, Keyboard } from 'react-native';
+import React, { ComponentType, useEffect, useState } from 'react';
+import { View, Keyboard, TouchableOpacity, Text } from 'react-native';
 import { useQuery } from '@apollo/client/react';
 import { TopBar } from '@/components/TopBar';
+import { useVendorSearch } from '@/hooks/useVendorSearch';
 import { BottomTabNavigator } from '@/components/BottomTabNavigator';
 import { FilterModal, FilterValues } from '@/components/FilterModal';
 import {
@@ -26,7 +27,7 @@ import { UserRole } from '../__generated__/graphql';
 import { setAuthData, getUserId } from '@/utils/store/authStore';
 import { GET_USER_AVATAR } from '@/components/Customer/customerQueries';
 
-const SCREENS: Record<string, React.ComponentType<any>> = {
+const SCREENS: Record<string, ComponentType<any>> = {
   dashboard: VendorDashboard,
   analytics: VendorAnalyticsScreen,
   nearbyProviders: NearbyProvidersScreen,
@@ -41,6 +42,8 @@ export const AppNavigator: React.FC = () => {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedVendorId, setSelectedVendorId] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<UserRole | null>(null);
+  const [searchValue, setSearchValue] = useState<string>('');
+  const { data, setSearchTerm } = useVendorSearch();
   const [showOnboarding, setShowOnboarding] = useState(true);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
@@ -103,21 +106,26 @@ export const AppNavigator: React.FC = () => {
 
     if (activeTab === 'profile') {
       return (
-        <ProfileScreen 
-          userRole={userRole} 
-          onNavigate={handleNavigate} 
+        <ProfileScreen
+          userRole={userRole}
+          onNavigate={handleNavigate}
           onLogout={() => {
             setUserRole(null);
             setUserId(null);
             setShowOnboarding(true);
             setActiveTab('home');
-          }} 
+          }}
         />
       );
     }
 
     if (activeTab === 'vendorDetails') {
-      return <VendorDetailScreen vendorId={selectedVendorId} onNavigate={handleNavigate} />;
+      return (
+        <VendorDetailScreen
+          vendorId={selectedVendorId}
+          onNavigate={handleNavigate}
+        />
+      );
     }
 
     const ScreenComp = SCREENS[activeTab];
@@ -126,12 +134,12 @@ export const AppNavigator: React.FC = () => {
     }
 
     return (
-      <HomeScreen 
-        userRole={userRole} 
-        onNavigate={handleNavigate} 
+      <HomeScreen
+        userRole={userRole}
+        onNavigate={handleNavigate}
         activeFilters={activeFilters}
-        onSelectCategory={(catId) => {
-          setActiveFilters((prev) => ({
+        onSelectCategory={catId => {
+          setActiveFilters(prev => ({
             ...prev,
             categoryId: prev.categoryId === catId ? null : catId,
           }));
@@ -142,34 +150,54 @@ export const AppNavigator: React.FC = () => {
 
   const tabs = userRole === UserRole.Provider ? VENDOR_TABS : CUSTOMER_TABS;
   const showTopBar = !HIDDEN_TOPBAR_ROUTES.includes(activeTab);
-  const showTabBar = tabs.some((tab) => tab.route === activeTab);
+  const showTabBar = tabs.some(tab => tab.route === activeTab);
 
   return (
     <View className="flex-1 bg-gray-950">
       {showTopBar && (
-        <TopBar 
-          placeholder="Search services..." 
+        <TopBar
+          placeholder="Search services..."
           avatarUrl={avatarUrl}
           onProfilePress={() => handleNavigate('profile')}
           onFilterPress={() => setIsFilterModalOpen(true)}
+          searchValue={searchValue}
+          onSearch={q => {
+            setSearchValue(q);
+            setSearchTerm(q);
+          }}
         />
       )}
 
       <View className="flex-1">{renderScreen()}</View>
+      {/* Vendor Search Results */}
+      {((data?.searchVendors) ?? []).length > 0 && (
+        <View className="absolute top-16 left-0 right-0 bg-gray-900 z-10 p-4">
+          {(data?.searchVendors ?? []).map((v: any) => (
+            <TouchableOpacity
+              key={v.id}
+              onPress={() =>
+                handleNavigate('vendorDetails', { vendorId: v.id })
+              }
+            >
+              <Text className="text-white">{v.businessName}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
 
-      {showTabBar && (
+      {showTabBar ? (
         <BottomTabNavigator
           tabs={tabs}
           activeTab={activeTab}
           onTabPress={handleNavigate}
         />
-      )}
+      ): null}
 
       <FilterModal
         visible={isFilterModalOpen}
         currentFilters={activeFilters}
         onClose={() => setIsFilterModalOpen(false)}
-        onApply={(filters) => {
+        onApply={filters => {
           setActiveFilters(filters);
           setIsFilterModalOpen(false);
         }}
