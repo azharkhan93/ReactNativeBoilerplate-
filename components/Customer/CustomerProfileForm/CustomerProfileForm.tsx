@@ -1,14 +1,15 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { Typography, FormInput, Button } from '../../theme';
 import { useCustomerProfile } from './hooks/useCustomerProfile';
 import { User } from 'lucide-react-native';
 
 export interface CustomerProfileFormProps {
   onClose: () => void;
+  isEditMode?: boolean;
 }
 
-export const CustomerProfileForm: React.FC<CustomerProfileFormProps> = ({ onClose }) => {
+export const CustomerProfileForm: React.FC<CustomerProfileFormProps> = ({ onClose, isEditMode = false }) => {
   const { profile, loading, errors, handleChange, handleSave } = useCustomerProfile(onClose);
 
   const isFormValid = !!(
@@ -78,8 +79,20 @@ export const CustomerProfileForm: React.FC<CustomerProfileFormProps> = ({ onClos
           loading={loading}
           className="w-full shadow-lg shadow-primary-500/20"
         >
-          Save Details
+          {isEditMode ? 'Update Details' : 'Save Details'}
         </Button>
+
+        {isEditMode && (
+          <TouchableOpacity
+            onPress={onClose}
+            activeOpacity={0.7}
+            className="w-full py-4 mt-3 rounded-2xl items-center justify-center bg-gray-900 border border-gray-800"
+          >
+            <Typography className="text-gray-400 font-body-semibold">
+              Cancel
+            </Typography>
+          </TouchableOpacity>
+        )}
       </View>
     </ScrollView>
   );
