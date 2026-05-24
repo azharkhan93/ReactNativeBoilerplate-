@@ -12,10 +12,10 @@ import {
 
 export default function App() {
   useEffect(() => {
-    // Retrieve and log the device FCM token for testing
+    
     getFCMToken();
 
-    // Listen for foreground notifications during active app state
+  
     const unsubscribe = listenToForegroundNotifications();
     return unsubscribe;
   }, []);
