@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { User, Mail, Phone, MapPin, Trash2, Edit } from 'lucide-react-native';
-import { Typography} from '../../theme';
+import { Typography } from '../../theme';
 
 interface ProfileInfo {
   name: string;
@@ -23,28 +23,43 @@ export const CustomerProfileDetails: React.FC<CustomerProfileDetailsProps> = ({
   onDelete,
   deleting = false,
 }) => {
-  // Memoized formatted location to avoid inline evaluation
   const formattedLocation = useMemo(() => (
     profile.location || 'Not Configured'
   ), [profile.location]);
 
   return (
     <View className="px-5 pt-2 pb-8 bg-gray-950">
-      {/* Header Info */}
-      <View className="items-center mb-6 mt-2">
-        <View className="w-12 h-12 bg-primary-500/10 border border-primary-500/25 rounded-full items-center justify-center mb-3">
-          <User size={20} color="#3b82f6" />
+      {/* Top Actions Header */}
+      <View className="flex-row items-center justify-between mb-8 mt-2">
+        <Typography variant="subheading" className="text-white font-heading-bold text-xl">
+          Profile Details
+        </Typography>
+
+        <View className="flex-row items-center gap-3">
+          {/* Edit Icon Button */}
+          <TouchableOpacity
+            onPress={onEdit}
+            disabled={deleting}
+            activeOpacity={0.7}
+            className="w-10 h-10 bg-primary-500/10 border border-primary-500/25 rounded-2xl items-center justify-center"
+          >
+            <Edit size={18} color="#3b82f6" />
+          </TouchableOpacity>
+
+          {/* Delete Icon Button */}
+          <TouchableOpacity
+            onPress={onDelete}
+            disabled={deleting}
+            activeOpacity={0.7}
+            className="w-10 h-10 bg-red-500/10 border border-red-500/20 rounded-2xl items-center justify-center"
+          >
+            <Trash2 size={18} color="#ef4444" />
+          </TouchableOpacity>
         </View>
-        <Typography variant="subheading" className="text-white text-center font-body-bold">
-          Account Profile Details
-        </Typography>
-        <Typography variant="body-sm" className="text-gray-400 text-center px-4 mt-1 leading-5">
-          These details are used to customize your car wash bookings and delivery notifications.
-        </Typography>
       </View>
 
       {/* Info Card Container */}
-      <View className="bg-gray-900 border border-gray-800 rounded-3xl p-5 mb-6 shadow-2xl gap-5">
+      <View className="bg-gray-900 border border-gray-800 rounded-3xl p-5 mb-4 shadow-2xl gap-5">
         {/* Full Name */}
         <View className="flex-row items-center border-b border-gray-800/50 pb-4">
           <View className="w-10 h-10 rounded-2xl bg-gray-800/50 items-center justify-center mr-4">
@@ -104,35 +119,6 @@ export const CustomerProfileDetails: React.FC<CustomerProfileDetailsProps> = ({
             </Typography>
           </View>
         </View>
-      </View>
-
-      {/* Actions */}
-      <View className="flex-row gap-4">
-        {/* Edit Button */}
-        <TouchableOpacity
-          onPress={onEdit}
-          disabled={deleting}
-          activeOpacity={0.7}
-          className="flex-1 py-4 bg-primary-600 rounded-2xl flex-row items-center justify-center shadow-lg shadow-primary-600/20"
-        >
-          <Edit size={16} color="#ffffff" />
-          <Typography className="text-white font-body-bold ml-2">
-            Edit Details
-          </Typography>
-        </TouchableOpacity>
-
-        {/* Delete Button */}
-        <TouchableOpacity
-          onPress={onDelete}
-          disabled={deleting}
-          activeOpacity={0.7}
-          className="flex-1 py-4 bg-red-950/40 border border-red-900/30 rounded-2xl flex-row items-center justify-center"
-        >
-          <Trash2 size={16} color="#ef4444" />
-          <Typography className="text-red-500 font-body-bold ml-2">
-            {deleting ? 'Deleting...' : 'Delete Profile'}
-          </Typography>
-        </TouchableOpacity>
       </View>
     </View>
   );
