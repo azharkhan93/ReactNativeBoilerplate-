@@ -92,9 +92,9 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
       className="absolute left-3 right-3 z-50 flex-row items-end h-[97px]"
       style={{ bottom: Platform.OS === 'ios' ? Math.max(bottom, 12) : 16 }}
     >
-      {/* Background Svg Shape */}
+     
       <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
-        <Svg width={barWidth} height={barHeight} className="mt-[25px]">
+        <Svg width={barWidth} height={barHeight} className="mt-[25px] ">
           <Path
             d={getPath(barWidth, barHeight)}
             fill="#111827"
@@ -104,17 +104,17 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
         </Svg>
       </View>
 
-      {/* Floating Center Button */}
-      {centerTab && (
+     
+      {centerTab ? (
         <TouchableOpacity
           onPress={() => onTabPress(centerTab.route)}
           activeOpacity={0.8}
           style={styles.centerButton}
-          className="w-14 h-14 rounded-full items-center justify-center bg-primary-500 border border-primary-400/20"
+          className=" w-14 h-14 rounded-full items-center justify-center bg-primary-500 border border-primary-400/20"
         >
-          <centerTab.icon size={24} color="white" strokeWidth={2.5} />
+          <centerTab.icon size={24} color="white" strokeWidth={2.5}  />
         </TouchableOpacity>
-      )}
+      ): null}
 
       
       <View
@@ -126,8 +126,8 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
           {leftTabs.map(renderTabItem)}
         </View>
 
-       {/* Space for the middle button */}
-        <View className="w-16" />
+     
+        <View className="w-1" />
 
      
         <View className="flex-row flex-1 h-full items-center">
