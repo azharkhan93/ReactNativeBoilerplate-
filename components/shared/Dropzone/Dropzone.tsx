@@ -27,7 +27,7 @@ export const Dropzone: React.FC<DropzoneProps> = ({
       )}
       
       {imageUri ? (
-        <View className="relative w-full h-48 rounded-3xl overflow-hidden border border-gray-800">
+        <View className="relative w-full h-48 rounded-3xl overflow-hidden border border-slate-200">
           <Image source={{ uri: imageUri }} className="w-full h-full" resizeMode="cover" />
           <TouchableOpacity 
             onPress={onRemove}
@@ -39,13 +39,13 @@ export const Dropzone: React.FC<DropzoneProps> = ({
       ) : (
         <TouchableOpacity
           onPress={onUpload}
-          className="w-full h-48 rounded-3xl border-2 border-dashed border-gray-800 bg-gray-900/50 items-center justify-center"
+          className="w-full h-48 rounded-3xl border-2 border-dashed border-slate-200 bg-white items-center justify-center shadow-sm shadow-slate-100"
         >
           <View className="w-12 h-12 bg-primary-500/10 rounded-full items-center justify-center mb-3">
             <Upload size={24} color="#3b82f6" />
           </View>
-          <Typography className="text-gray-400 font-body">Tap to upload business documents</Typography>
-          <Typography variant="body-sm" className="text-gray-600 mt-1">PNG, JPG up to 10MB</Typography>
+          <Typography className="text-slate-600 font-body-semibold">Tap to upload business documents</Typography>
+          <Typography variant="body-sm" className="text-slate-400 mt-1">PNG, JPG up to 10MB</Typography>
         </TouchableOpacity>
       )}
     </View>

@@ -15,24 +15,24 @@ export const SupportHeader: React.FC<SupportHeaderProps> = ({
   isOnline = true,
 }) => {
   return (
-    <View className="flex-row items-center justify-between px-4 pb-4 border-b border-gray-900 bg-gray-950">
+    <View className="flex-row items-center justify-between px-4 pb-4 border-b border-slate-100 bg-white">
       <View className="flex-row items-center">
         <TouchableOpacity onPress={onBack} className="p-1">
-          <ChevronLeft size={24} color="white" />
+          <ChevronLeft size={24} color="#0f172a" />
         </TouchableOpacity>
         <View className="ml-2">
-          <Typography variant="body" className="font-body-bold text-white">
+          <Typography variant="body" className="font-body-bold text-slate-900">
             {agentName}
           </Typography>
           <View className="flex-row items-center">
             <View
               className={`w-2 h-2 rounded-full ${
-                isOnline ? 'bg-green-500' : 'bg-gray-700'
+                isOnline ? 'bg-green-500' : 'bg-slate-300'
               }`}
             />
             <Typography
               variant="body-sm"
-              className="ml-1 text-gray-400 font-body"
+              className="ml-1 text-slate-500 font-body"
             >
               {isOnline ? 'Online' : 'Offline'}
             </Typography>
@@ -40,12 +40,12 @@ export const SupportHeader: React.FC<SupportHeaderProps> = ({
         </View>
       </View>
 
-      <View className="flex-row space-x-4">
-        <TouchableOpacity className="p-2 bg-gray-900 border border-gray-800 rounded-full">
-          <Phone size={20} color="#9ca3af" />
+      <View className="flex-row space-x-4 gap-2">
+        <TouchableOpacity className="p-2 bg-slate-50 border border-slate-200 rounded-full">
+          <Phone size={20} color="#64748b" />
         </TouchableOpacity>
-        <TouchableOpacity className="p-2 bg-gray-900 border border-gray-800 rounded-full">
-          <Info size={20} color="#9ca3af" />
+        <TouchableOpacity className="p-2 bg-slate-50 border border-slate-200 rounded-full">
+          <Info size={20} color="#64748b" />
         </TouchableOpacity>
       </View>
     </View>
