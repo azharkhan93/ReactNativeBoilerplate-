@@ -107,14 +107,14 @@ export const FormInput = React.forwardRef<TextInput, FormInputProps>(
     return (
       <View className={`mb-5 ${containerClassName}`}>
         {label && (
-          <Typography variant="body" className="mb-2.5 ml-1 text-gray-300">
+          <Typography variant="body" className="mb-2.5 ml-1 text-slate-700 font-body-semibold">
             {label}
           </Typography>
         )}
 
         <View
-          className={`w-full flex-row bg-gray-900 border rounded-2xl overflow-hidden ${
-            error ? 'border-red-500' : 'border-gray-800'
+          className={`w-full flex-row bg-white border rounded-2xl overflow-hidden ${
+            error ? 'border-red-500' : 'border-slate-200'
           } ${isMultiline ? 'items-start' : 'items-center'} ${inputClassName}`}
           style={containerStyle}
         >
@@ -124,10 +124,10 @@ export const FormInput = React.forwardRef<TextInput, FormInputProps>(
 
           {prefix && (
             <View
-              className="justify-center px-4 border-r border-gray-800"
+              className="justify-center px-4 border-r border-slate-200"
               style={prefixStyle}
             >
-              <Typography className="text-gray-400 font-body-medium text-base leading-5">
+              <Typography className="text-slate-500 font-body-medium text-base leading-5">
                 {prefix}
               </Typography>
             </View>
@@ -135,8 +135,8 @@ export const FormInput = React.forwardRef<TextInput, FormInputProps>(
 
           <TextInput
             ref={ref}
-            className="flex-1 text-white font-body text-base"
-            placeholderTextColor="#4b5563"
+            className="flex-1 text-slate-900 font-body text-base"
+            placeholderTextColor="#94a3b8"
             multiline={isMultiline}
             textAlignVertical={isMultiline ? 'top' : 'center'}
             onChangeText={handleTextChange}
