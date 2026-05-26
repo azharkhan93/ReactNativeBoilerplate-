@@ -9,7 +9,7 @@ import { BusinessProfileFormData } from './hooks/useBusinessProfile';
 
 const GST_REGEX = /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/;
 
-const RADIUS_OPTIONS = ['5km', '10km', '25km'] as const;
+const RADIUS_OPTIONS = ['1km', '2km', '3km', '4km'] as const;
 
 const EMPTY_FORM: BusinessProfileFormData = {
   businessName: '',
@@ -17,7 +17,7 @@ const EMPTY_FORM: BusinessProfileFormData = {
   address: '',
   contactNumber: '',
   imageUri: null,
-  serviceRadius: '5km',
+  serviceRadius: '4km',
   operatingHours: 'Mon - Sat, 09:00 AM - 08:00 PM',
 };
 

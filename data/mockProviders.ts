@@ -50,4 +50,14 @@ export const MOCK_PROVIDERS: Provider[] = [
         latitude: 25.256987,
         longitude: 55.316249,
     },
+    {
+        id: "5",
+        name: "Distant Wash Auto",
+        imageUrl: "https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=800&q=80",
+        rating: 4.0,
+        distanceKm: 12.5,
+        services: ["Detailing", "Interior"],
+        latitude: 25.376987,
+        longitude: 55.396249,
+    },
 ];

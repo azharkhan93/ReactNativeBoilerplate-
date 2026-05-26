@@ -49,7 +49,7 @@ const BusinessDetails: React.FC<BusinessDetailsProps> = ({
   onDeletePress,
   loading,
 }) => (
-  <View className="bg-gray-900 border border-gray-800 rounded-3xl p-4 mb-5">
+  <View className=" border border-gray-800 rounded-3xl p-4 mb-5">
     <View className="flex-row items-center justify-between pb-3 border-b border-gray-800/60 mb-4">
       <Typography variant="subheading" className="text-white font-body-semibold">
         Business Details
@@ -152,12 +152,12 @@ export const BusinessProfile: React.FC = () => {
 
   if (!profile) {
     return (
-      <View className="flex-1 bg-gray-950">
+      <View className="flex-1">
         <View className="px-5 py-8 items-center">
           <Building2 size={40} color="#3b82f6" />
           <Typography
             variant="subheading"
-            className="text-white mt-4 mb-6 text-center"
+            className="!text-black mt-4 mb-6 text-center"
           >
             Set Up Your Business
           </Typography>

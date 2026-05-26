@@ -25,7 +25,7 @@ export const useRecentlyAdded = () => {
   });
 
   return {
-    vendors: unmaskedVendors || [],
+    vendors: (unmaskedVendors || []).filter(v => parseFloat(v.serviceRadius ?? '0') <= 4),
     loading,
     error,
     refetch,
