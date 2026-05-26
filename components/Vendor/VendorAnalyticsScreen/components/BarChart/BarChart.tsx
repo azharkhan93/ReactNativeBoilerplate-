@@ -24,7 +24,7 @@ export const BarChart: React.FC = () => (
 const s = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'flex-end', height: MAX_BAR + 24 },
   bar: { width: '60%', borderRadius: 6, marginBottom: 6 },
-  barIdle: { backgroundColor: '#1e3a5f' },
+  barIdle: { backgroundColor: '#dbeafe' },
   barActive: { backgroundColor: '#3b82f6' },
   label: { fontSize: 10, fontWeight: '500', color: T.muted },
 });

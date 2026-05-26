@@ -18,11 +18,11 @@ export const AnalyticsHeader: React.FC<Props> = ({
 }) => (
   <View style={[s.container, { paddingTop }]}>
     <View className="flex-row items-center justify-between">
-      <Typography className="text-white text-xl font-heading-bold">
+      <Typography className="text-slate-900 text-xl font-heading-bold">
         Analytics
       </Typography>
       <TouchableOpacity style={s.iconBtn}>
-        <CalendarDays size={18} color={T.muted} />
+        <CalendarDays size={18} color="#64748b" />
       </TouchableOpacity>
     </View>
     <View className="flex-row mt-4 gap-2">
@@ -31,13 +31,13 @@ export const AnalyticsHeader: React.FC<Props> = ({
           key={r}
           onPress={() => onRangeChange(r)}
           className={`px-4 py-2 rounded-full ${
-            r === range ? 'bg-primary-500' : 'bg-[#1e293b]'
+            r === range ? 'bg-primary-500' : 'bg-slate-100'
           }`}
           activeOpacity={0.8}
         >
           <Typography
             className={`text-sm font-body-semibold ${
-              r === range ? 'text-white' : 'text-[#64748b]'
+              r === range ? 'text-white' : 'text-slate-600'
             }`}
           >
             {r}
@@ -51,15 +51,22 @@ export const AnalyticsHeader: React.FC<Props> = ({
 const s = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    paddingBottom: 16,
+    paddingBottom: 20,
     backgroundColor: T.card,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
     borderBottomWidth: 1,
-    borderBottomColor: T.border,
+    borderBottomColor: '#f1f5f9',
+    shadowColor: '#0f172a',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 3,
   },
   iconBtn: {
     width: 36,
     height: 36,
-    backgroundColor: T.border,
+    backgroundColor: '#f1f5f9',
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',

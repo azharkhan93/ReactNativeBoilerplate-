@@ -14,7 +14,7 @@ export const InsightsCard: React.FC = () => (
           <Icon size={18} color={color} />
         </View>
         <View className="flex-1">
-          <Typography className="text-white font-body-semibold mb-1">{title}</Typography>
+          <Typography className="text-slate-800 font-body-semibold mb-1">{title}</Typography>
           <Typography style={s.body}>{body}</Typography>
         </View>
       </View>
@@ -25,7 +25,7 @@ export const InsightsCard: React.FC = () => (
 const s = StyleSheet.create({
   card:    { backgroundColor: T.card, borderWidth: 1, borderColor: T.border, borderRadius: 24, padding: 24, marginBottom: 16 },
   last:    { marginBottom: 0 },
-  row:     { flexDirection: 'row', alignItems: 'flex-start', backgroundColor: T.bg, borderRadius: 16, padding: 16, marginBottom: 12 },
+  row:     { flexDirection: 'row', alignItems: 'flex-start', backgroundColor: '#F1F6FD', borderRadius: 16, padding: 16, marginBottom: 12 },
   iconWrap:{ width: 40, height: 40, borderRadius: 999, alignItems: 'center', justifyContent: 'center', marginRight: 16, marginTop: 2 },
   body:    { fontSize: 13, lineHeight: 20, color: T.muted },
 });

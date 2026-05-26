@@ -7,7 +7,7 @@ export const PerformanceCard: React.FC = () => (
   <View style={s.card}>
     <Typography style={s.overline}>Performance Score</Typography>
     <View className="flex-row items-end mb-3">
-      <Typography className="text-white text-5xl font-heading-bold">
+      <Typography className="text-slate-900 text-5xl font-heading-bold">
         4.8
       </Typography>
       <Typography style={[s.overline, s.subScore]}>/ 5.0</Typography>

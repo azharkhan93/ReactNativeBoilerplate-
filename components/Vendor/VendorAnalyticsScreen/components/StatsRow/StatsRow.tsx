@@ -7,9 +7,9 @@ import { T } from '../../analytics.theme';
 export const StatsRow: React.FC = () => (
   <View className="flex-row gap-3 mb-4">
     <View style={[s.card, s.flex1]}>
-      <View style={[s.badge, { backgroundColor: '#1e3a5f' }]}><Target size={20} color="#3b82f6" /></View>
+      <View style={[s.badge, { backgroundColor: '#dbeafe' }]}><Target size={20} color="#3b82f6" /></View>
       <Typography style={s.label}>Booking Conversion</Typography>
-      <Typography className="text-white text-2xl font-heading-bold mb-1">84.2%</Typography>
+      <Typography className="text-slate-900 text-2xl font-heading-bold mb-1">84.2%</Typography>
       <View className="flex-row items-center">
         <TrendingUp size={12} color="#22c55e" />
         <Typography className="text-green-500 text-xs font-body-semibold ml-1">↑ 2.4%</Typography>
@@ -17,11 +17,11 @@ export const StatsRow: React.FC = () => (
     </View>
 
     <View style={[s.card, s.flex1]}>
-      <View style={[s.badge, { backgroundColor: '#2a1f0e' }]}>
-        <Typography className="text-orange-400 text-lg">😊</Typography>
+      <View style={[s.badge, { backgroundColor: '#fef3c7' }]}>
+        <Typography className="text-orange-500 text-lg">😊</Typography>
       </View>
       <Typography style={s.label}>Avg Response</Typography>
-      <Typography className="text-white text-2xl font-heading-bold mb-1">14m</Typography>
+      <Typography className="text-slate-900 text-2xl font-heading-bold mb-1">14m</Typography>
       <View className="flex-row items-center">
         <TrendingDown size={12} color="#22c55e" />
         <Typography className="text-green-500 text-xs font-body-semibold ml-1">↓ 3m</Typography>

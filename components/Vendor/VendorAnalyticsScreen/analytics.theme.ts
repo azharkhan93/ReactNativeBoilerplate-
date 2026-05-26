@@ -1,7 +1,7 @@
 export const T = {
-  bg: '#030712',
-  card: '#0f1623',
-  border: '#1e293b',
+  bg: '#EEF4FC',
+  card: '#FFFFFF',
+  border: '#E2E8F0',
   muted: '#64748b',
 } as const;
 
