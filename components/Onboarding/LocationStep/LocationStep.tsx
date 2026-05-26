@@ -108,9 +108,9 @@ export const LocationStep: React.FC<{ onBack: () => void }> = () => {
       <View style={styles.container} className="flex-1 bg-[#F1F6FD] px-6 pt-10">
         <Animated.View entering={FadeIn.duration(500)} className="flex-1">
          
-          <View className="h-1 w-full bg-slate-200 rounded-full mb-10 overflow-hidden">
+          {/* <View className="h-1 w-full bg-slate-200 rounded-full mb-10 overflow-hidden">
             <View className="h-full bg-primary-500 rounded-full w-full" />
-          </View>
+          </View> */}
 
           <Typography
             variant="h2"

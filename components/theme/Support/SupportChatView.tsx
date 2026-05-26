@@ -3,10 +3,11 @@ import React from 'react';
 import { View, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import { SupportHeader } from './SupportHeader';
 import { MessageBubble } from './MessageBubble';
-import { QuickReplies } from './QuickReplies';
+
 import { ChatInput } from './ChatInput';
 import { Typography } from '../Typography';
 import { SupportMessage } from '@/data/mockSupport';
+import { QuickReplies } from './QuickReplies';
 
 export interface SupportChatViewProps {
     messages: SupportMessage[];
