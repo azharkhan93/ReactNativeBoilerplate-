@@ -17,12 +17,12 @@ export const ProfileStats: React.FC<ProfileStatsProps> = ({ stats, className = '
         {stats.map((stat, index) => (
             <View
                 key={stat.label}
-                className={`flex-1 items-center py-2 ${index < stats.length - 1 ? 'border-r border-gray-800' : ''}`}
+                className={`flex-1 items-center py-2 ${index < stats.length - 1 ? 'border-r border-slate-200' : ''}`}
             >
-                <Typography variant="h2" className="text-white text-2xl mb-1">
+                <Typography variant="h2" className="text-slate-900 text-2xl mb-1">
                     {stat.value}
                 </Typography>
-                <Typography variant="body-sm" className="text-gray-500 font-body-bold text-[10px] tracking-wider uppercase">
+                <Typography variant="body-sm" className="text-slate-500 font-body-bold text-[10px] tracking-wider uppercase">
                     {stat.label}
                 </Typography>
             </View>

@@ -61,13 +61,13 @@ export const BookingRequests: React.FC<BookingRequestProps> = ({ pendingRequests
                     </View>
 
                     <View className="flex-row gap-3">
-                        <TouchableOpacity className="flex-1 bg-green-500 py-3 rounded-2xl flex-row justify-center items-center">
+                        <TouchableOpacity className="flex-1 bg-primary-500 py-3 rounded-2xl flex-row justify-center items-center" activeOpacity={0.7}>
                             <Check size={16} color="white" />
-                            <Typography variant='body' className="ml-1.5 text-white">Accept</Typography>
+                            <Typography variant='body' className="ml-1.5 text-white font-body-bold">Accept</Typography>
                         </TouchableOpacity>
-                        <TouchableOpacity className="flex-1 bg-[#F1F6FD] py-3 rounded-2xl flex-row justify-center items-center border border-slate-200">
-                            <X size={16} color="#64748b" />
-                            <Typography className="text-slate-600 font-body-bold ml-1.5">Decline</Typography>
+                        <TouchableOpacity className="flex-1 bg-white border border-primary-500/30 py-3 rounded-2xl flex-row justify-center items-center" activeOpacity={0.7}>
+                            <X size={16} color="#3b82f6" />
+                            <Typography className="text-primary-600 font-body-bold ml-1.5">Decline</Typography>
                         </TouchableOpacity>
                     </View>
                 </View>

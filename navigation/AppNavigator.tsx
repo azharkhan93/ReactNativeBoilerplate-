@@ -170,7 +170,7 @@ export const AppNavigator: React.FC = () => {
 
       <View className="flex-1">{renderScreen()}</View>
       {/* Vendor Search Results */}
-      {((data?.searchVendors) ?? []).length > 0 && (
+      {(data?.searchVendors ?? []).length > 0 && (
         <View className="absolute top-36 left-4 right-4 bg-white border border-slate-200/80 shadow-xl z-50 p-4 rounded-2xl">
           {(data?.searchVendors ?? []).map((v: any) => (
             <TouchableOpacity
@@ -180,7 +180,9 @@ export const AppNavigator: React.FC = () => {
                 handleNavigate('vendorDetails', { vendorId: v.id })
               }
             >
-              <Text className="text-slate-900 font-medium">{v.businessName}</Text>
+              <Text className="text-slate-900 font-medium">
+                {v.businessName}
+              </Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -192,7 +194,7 @@ export const AppNavigator: React.FC = () => {
           activeTab={activeTab}
           onTabPress={handleNavigate}
         />
-      ): null}
+      ) : null}
 
       <FilterModal
         visible={isFilterModalOpen}

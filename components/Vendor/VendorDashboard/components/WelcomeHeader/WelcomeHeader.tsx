@@ -34,12 +34,12 @@ export const WelcomeHeader: React.FC<WelcomeHeaderProps> = ({
         <View className="flex-1">
           <Typography
             variant="body-sm"
-            className="text-gray-400 font-body-medium"
+            className="text-slate-500 font-body-medium"
           >
             WELCOME BACK
           </Typography>
           <Typography
-            className="text-white text-sm font-heading-bold leading-tight"
+            className="text-slate-900 text-sm font-heading-bold leading-tight"
             numberOfLines={1}
           >
             Good Morning, {userName || 'Alex'}

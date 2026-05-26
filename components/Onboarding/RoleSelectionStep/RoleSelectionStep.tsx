@@ -10,57 +10,66 @@ import { UserRole } from '../../../__generated__/graphql';
 const { width } = Dimensions.get('window');
 
 const ROLES = [
-    {
-        id: UserRole.Customer,
-        title: 'Customer',
-        description: 'I want to book car wash services',
-        icon: User,
-        delay: 400
-    },
-    {
-        id: UserRole.Provider,
-        title: 'Service Provider',
-        description: 'I want to offer car wash services',
-        icon: Briefcase,
-        delay: 600
-    }
+  {
+    id: UserRole.Customer,
+    title: 'Customer',
+    description: 'I want to book car wash services',
+    icon: User,
+    delay: 400,
+  },
+  {
+    id: UserRole.Provider,
+    title: 'Service Provider',
+    description: 'I want to offer car wash services',
+    icon: Briefcase,
+    delay: 600,
+  },
 ];
 
 interface RoleSelectionStepProps {
-    onSelect: (role: UserRole) => void;
-    selectedRole: UserRole | null;
+  onSelect: (role: UserRole) => void;
+  selectedRole: UserRole | null;
 }
 
-export const RoleSelectionStep: React.FC<RoleSelectionStepProps> = ({ onSelect, selectedRole }) => {
-    return (
-        <Container
-            variant="column-centered"
-            style={{ width }}
-            className="flex-1 px-6 justify-center"
+export const RoleSelectionStep: React.FC<RoleSelectionStepProps> = ({
+  onSelect,
+  selectedRole,
+}) => {
+  return (
+    <Container
+      variant="column-centered"
+      style={{ width }}
+      className="flex-1 px-6 justify-center"
+    >
+      <Animated.View
+        entering={FadeInUp.delay(200)}
+        className="items-center mb-12"
+      >
+        <Typography
+          variant="h3"
+          className="text-center mb-4 tracking-tight text-slate-900 font-heading-bold"
         >
-            <Animated.View entering={FadeInUp.delay(200)} className="items-center mb-12">
-                <Typography variant="h3" className="text-center mb-4 tracking-tight text-slate-900 font-heading-bold">
-                    Choose Your Role
-                </Typography>
-                <Typography variant="body" className="text-center px-6 text-slate-600">
-                    Select how you want to use the platform to get started.
-                </Typography>
-            </Animated.View>
+          Choose Your Role
+        </Typography>
+        <Typography variant="body" className="text-center px-6 text-slate-600">
+          Select how you want to use the platform to get started.
+        </Typography>
+      </Animated.View>
 
-            <Container variant="column" className="w-full">
-                {ROLES.map((role, index) => (
-                    <View key={role.id} className={index === 0 ? 'mb-4' : ''}>
-                        <RoleOption
-                            title={role.title}
-                            description={role.description}
-                            icon={role.icon}
-                            isSelected={selectedRole === role.id}
-                            onPress={() => onSelect(role.id)}
-                            delay={role.delay}
-                        />
-                    </View>
-                ))}
-            </Container>
-        </Container>
-    );
+      <Container variant="column" className="w-full">
+        {ROLES.map((role, index) => (
+          <View key={role.id} className={index === 0 ? 'mb-4' : ''}>
+            <RoleOption
+              title={role.title}
+              description={role.description}
+              icon={role.icon}
+              isSelected={selectedRole === role.id}
+              onPress={() => onSelect(role.id)}
+              delay={role.delay}
+            />
+          </View>
+        ))}
+      </Container>
+    </Container>
+  );
 };

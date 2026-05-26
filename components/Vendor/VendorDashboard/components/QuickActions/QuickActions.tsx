@@ -12,7 +12,7 @@ const QUICK_ACTIONS = [
 
 export const QuickActions: React.FC<{ onActionPress: (id: string) => void }> = ({ onActionPress }) => (
     <View className="px-5 mb-8">
-        <Typography className="text-gray-400 font-body-bold text-xs mb-4 tracking-widest uppercase">
+        <Typography className="text-slate-500 font-body-bold text-xs mb-4 tracking-widest uppercase">
             Quick Actions
         </Typography>
         <View className="flex-row justify-between">
@@ -30,7 +30,7 @@ export const QuickActions: React.FC<{ onActionPress: (id: string) => void }> = (
                     >
                         <Icon size={24} color={color} />
                     </View>
-                    <Typography variant="body-sm" className="text-gray-300 font-body-medium text-center">
+                    <Typography variant="body-sm" className="text-slate-800 font-body-medium text-center">
                         {label}
                     </Typography>
                 </TouchableOpacity>
