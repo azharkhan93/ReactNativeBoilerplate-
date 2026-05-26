@@ -28,10 +28,10 @@ export const CustomerProfileDetails: React.FC<CustomerProfileDetailsProps> = ({
   ), [profile.location]);
 
   return (
-    <View className="flex-1 px-8 justify-center bg-gray-950 pb-12">
+    <View className="flex-1 px-8 justify-center bg-notch pb-12">
       {/* Top Actions Header */}
       <View className="flex-row items-center justify-between mb-6">
-        <Typography variant="subheading" className="text-white font-heading-bold text-xl">
+        <Typography variant="subheading" className="text-slate-900 font-heading-bold text-xl">
           Profile Details
         </Typography>
 
@@ -59,68 +59,68 @@ export const CustomerProfileDetails: React.FC<CustomerProfileDetailsProps> = ({
       </View>
 
       {/* Info Card Container */}
-      <View className="bg-gray-900 border border-gray-800 rounded-3xl p-8 mb-4 shadow-2xl">
+      <View className="bg-white border border-slate-200/60 rounded-3xl p-8 mb-4 shadow-sm shadow-slate-100">
         {/* Full Name */}
         <View className="flex-row items-center">
-          <View className="w-10 h-10 rounded-full bg-gray-800/60 items-center justify-center mr-4">
-            <User size={18} color="#60a5fa" />
+          <View className="w-10 h-10 rounded-full bg-slate-100 items-center justify-center mr-4">
+            <User size={18} color="#3b82f6" />
           </View>
           <View className="flex-1">
-            <Typography variant="body-sm" className="text-gray-500 font-body-medium">
+            <Typography variant="body-sm" className="text-slate-500 font-body-medium">
               Full Name
             </Typography>
-            <Typography className="text-white font-body-semibold text-base mt-0.5">
+            <Typography className="text-slate-800 font-body-semibold text-base mt-0.5">
               {profile.name}
             </Typography>
           </View>
         </View>
 
-        <View className="h-[1px] bg-gray-800/60 w-full my-4" />
+        <View className="h-[1px] bg-slate-100 w-full my-4" />
 
         {/* Contact Number */}
         <View className="flex-row items-center">
-          <View className="w-10 h-10 rounded-full bg-gray-800/60 items-center justify-center mr-4">
-            <Phone size={18} color="#34d399" />
+          <View className="w-10 h-10 rounded-full bg-slate-100 items-center justify-center mr-4">
+            <Phone size={18} color="#16a34a" />
           </View>
           <View className="flex-1">
-            <Typography variant="body-sm" className="text-gray-500 font-body-medium">
+            <Typography variant="body-sm" className="text-slate-500 font-body-medium">
               Contact Number
             </Typography>
-            <Typography className="text-white font-body-semibold text-base mt-0.5">
+            <Typography className="text-slate-800 font-body-semibold text-base mt-0.5">
               {profile.phone}
             </Typography>
           </View>
         </View>
 
-        <View className="h-[1px] bg-gray-800/60 w-full my-4" />
+        <View className="h-[1px] bg-slate-100 w-full my-4" />
 
         {/* Email Address */}
         <View className="flex-row items-center">
-          <View className="w-10 h-10 rounded-full bg-gray-800/60 items-center justify-center mr-4">
-            <Mail size={18} color="#a78bfa" />
+          <View className="w-10 h-10 rounded-full bg-slate-100 items-center justify-center mr-4">
+            <Mail size={18} color="#8b5cf6" />
           </View>
           <View className="flex-1">
-            <Typography variant="body-sm" className="text-gray-500 font-body-medium">
+            <Typography variant="body-sm" className="text-slate-500 font-body-medium">
               Email Address
             </Typography>
-            <Typography className="text-white font-body-semibold text-base mt-0.5">
+            <Typography className="text-slate-800 font-body-semibold text-base mt-0.5">
               {profile.email}
             </Typography>
           </View>
         </View>
 
-        <View className="h-[1px] bg-gray-800/60 w-full my-4" />
+        <View className="h-[1px] bg-slate-100 w-full my-4" />
 
         {/* Location */}
         <View className="flex-row items-center">
-          <View className="w-10 h-10 rounded-full bg-gray-800/60 items-center justify-center mr-4">
-            <MapPin size={18} color="#fb7185" />
+          <View className="w-10 h-10 rounded-full bg-slate-100 items-center justify-center mr-4">
+            <MapPin size={18} color="#ec4899" />
           </View>
           <View className="flex-1">
-            <Typography variant="body-sm" className="text-gray-500 font-body-medium">
+            <Typography variant="body-sm" className="text-slate-500 font-body-medium">
               Location Support
             </Typography>
-            <Typography className="text-white font-body-semibold text-base mt-0.5">
+            <Typography className="text-slate-800 font-body-semibold text-base mt-0.5">
               {formattedLocation}
             </Typography>
           </View>

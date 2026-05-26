@@ -9,8 +9,12 @@ export interface CustomerProfileFormProps {
   isEditMode?: boolean;
 }
 
-export const CustomerProfileForm: React.FC<CustomerProfileFormProps> = ({ onClose, isEditMode = false }) => {
-  const { profile, loading, errors, handleChange, handleSave } = useCustomerProfile(onClose);
+export const CustomerProfileForm: React.FC<CustomerProfileFormProps> = ({
+  onClose,
+  isEditMode = false,
+}) => {
+  const { profile, loading, errors, handleChange, handleSave } =
+    useCustomerProfile(onClose);
 
   const isFormValid = !!(
     profile.name.trim() &&
@@ -20,23 +24,33 @@ export const CustomerProfileForm: React.FC<CustomerProfileFormProps> = ({ onClos
   );
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
-      <View className="px-5 pt-2 pb-8 bg-gray-950">
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
+    >
+      <View className="px-5 pt-2 pb-8 bg-notch">
         {/* Centered Profile Header */}
         <View className="items-center mb-6 mt-2">
           <View className="w-12 h-12 bg-primary-500/10 border border-primary-500/25 rounded-full items-center justify-center mb-3">
             <User size={20} color="#3b82f6" />
           </View>
-          <Typography variant="subheading" className="text-white text-center font-body-bold">
+          <Typography
+            variant="subheading"
+            className="text-slate-900 text-center font-body-bold"
+          >
             Personal Information
           </Typography>
-          <Typography variant="body-sm" className="text-gray-400 text-center px-4 mt-1 leading-5">
-            Update your account details to customize your experience and communications.
+          <Typography
+            variant="body-sm"
+            className="text-slate-600 text-center px-4 mt-1 leading-5 font-body-medium"
+          >
+            Update your account details to customize your experience and
+            communications.
           </Typography>
         </View>
 
         {/* Input fields Card Container */}
-        <View className="bg-gray-900 border border-gray-800 rounded-3xl p-5 mb-6 shadow-2xl">
+        <View className="bg-white border border-slate-200/60 rounded-3xl p-5 mb-6 shadow-sm shadow-slate-100">
           <FormInput
             label="Full Name"
             placeholder="Enter your name"
@@ -86,9 +100,9 @@ export const CustomerProfileForm: React.FC<CustomerProfileFormProps> = ({ onClos
           <TouchableOpacity
             onPress={onClose}
             activeOpacity={0.7}
-            className="w-full py-4 mt-3 rounded-2xl items-center justify-center bg-gray-900 border border-gray-800"
+            className="w-full py-4 mt-3 rounded-2xl items-center justify-center bg-white border border-slate-200"
           >
-            <Typography className="text-gray-400 font-body-semibold">
+            <Typography className="text-slate-600 font-body-semibold">
               Cancel
             </Typography>
           </TouchableOpacity>

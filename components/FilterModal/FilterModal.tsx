@@ -78,7 +78,7 @@ export const FilterModal: React.FC<FilterModalProps> = ({
           <View className="mb-6">
             <Typography
               variant="body"
-              className="text-gray-400 font-body-semibold mb-3 ml-1"
+              className="text-slate-600 font-body-semibold mb-3 ml-1"
             >
               Vehicle Category
             </Typography>
@@ -97,16 +97,16 @@ export const FilterModal: React.FC<FilterModalProps> = ({
                     className={`flex-row items-center px-4 py-2.5 rounded-full border ${
                       isSelected
                         ? 'bg-primary-500/10 border-primary-500'
-                        : 'bg-gray-900 border-gray-800'
+                        : 'bg-white border-slate-200/70'
                     }`}
                   >
                     <IconComp
                       size={16}
-                      color={isSelected ? '#3b82f6' : '#9ca3af'}
+                      color={isSelected ? '#3b82f6' : '#64748b'}
                     />
                     <Typography
                       className={`font-body-medium ml-2 ${
-                        isSelected ? 'text-primary-500' : 'text-gray-400'
+                        isSelected ? 'text-primary-500' : 'text-slate-600'
                       }`}
                     >
                       {cat.name}
@@ -121,7 +121,7 @@ export const FilterModal: React.FC<FilterModalProps> = ({
           <View className="mb-6">
             <Typography
               variant="body"
-              className="text-gray-400 font-body-semibold mb-3 ml-1"
+              className="text-slate-600 font-body-semibold mb-3 ml-1"
             >
               Price Range
             </Typography>
@@ -135,13 +135,13 @@ export const FilterModal: React.FC<FilterModalProps> = ({
                     className={`px-4 py-3 rounded-2xl border ${
                       isSelected
                         ? 'bg-primary-500/10 border-primary-500'
-                        : 'bg-gray-900 border-gray-800'
+                        : 'bg-white border-slate-200/70'
                     }`}
                     style={{ width: '47%' }}
                   >
                     <Typography
                       className={`text-center font-body-medium ${
-                        isSelected ? 'text-primary-500' : 'text-gray-400'
+                        isSelected ? 'text-primary-500' : 'text-slate-600'
                       }`}
                     >
                       {range.label}
@@ -156,11 +156,11 @@ export const FilterModal: React.FC<FilterModalProps> = ({
           <View className="mb-8">
             <Typography
               variant="body"
-              className="text-gray-400 font-body-semibold mb-3 ml-1"
+              className="text-slate-600 font-body-semibold mb-3 ml-1"
             >
               Sort Results By
             </Typography>
-            <View className="bg-gray-900 border border-gray-800 rounded-3xl overflow-hidden">
+            <View className="bg-white border border-slate-200/70 rounded-3xl overflow-hidden">
               {SORT_OPTIONS.map((opt, idx) => {
                 const isSelected = filters.sortBy === opt.value;
                 const Icon = opt.icon;
@@ -168,18 +168,18 @@ export const FilterModal: React.FC<FilterModalProps> = ({
                   <TouchableOpacity
                     key={opt.value}
                     onPress={() => toggleFilter('sortBy', opt.value)}
-                    className={`flex-row justify-between items-center px-5 py-4 border-b border-gray-800/50 ${
+                    className={`flex-row justify-between items-center px-5 py-4 border-b border-slate-100 ${
                       isSelected ? 'bg-primary-500/5' : ''
                     } ${idx === SORT_OPTIONS.length - 1 ? 'border-b-0' : ''}`}
                   >
                     <View className="flex-row items-center">
                       <Icon
                         size={18}
-                        color={isSelected ? '#3b82f6' : '#6b7280'}
+                        color={isSelected ? '#3b82f6' : '#64748b'}
                       />
                       <Typography
                         className={`font-body-medium ml-3 ${
-                          isSelected ? 'text-white' : 'text-gray-400'
+                          isSelected ? 'text-slate-900 font-body-bold' : 'text-slate-600'
                         }`}
                       >
                         {opt.label}

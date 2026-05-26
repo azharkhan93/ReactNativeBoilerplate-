@@ -1,6 +1,6 @@
 import { Platform } from 'react-native';
 import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
-import Geolocation from '@react-native-community/geolocation';
+import Geolocation from 'react-native-geolocation-service';
 
 export const LOC_PERMISSION = Platform.select({
     ios: PERMISSIONS.IOS.LOCATION_WHEN_IN_USE,

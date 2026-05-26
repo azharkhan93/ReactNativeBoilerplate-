@@ -20,17 +20,17 @@ const TYPE_COLORS = {
   home: {
     bg: 'bg-blue-500/10',
     border: 'border-blue-500/20',
-    text: 'text-blue-400',
+    text: 'text-blue-700',
   },
   work: {
     bg: 'bg-orange-500/10',
     border: 'border-orange-500/20',
-    text: 'text-orange-400',
+    text: 'text-orange-700',
   },
   office: {
     bg: 'bg-emerald-500/10',
     border: 'border-emerald-500/20',
-    text: 'text-emerald-400',
+    text: 'text-emerald-700',
   },
 };
 
@@ -41,17 +41,17 @@ export const AddressItemCard: React.FC<AddressItemCardProps> = ({
 }) => {
   const colors = TYPE_COLORS[address.type];
   return (
-    <View className="bg-gray-900/60 border border-gray-800 rounded-3xl p-5 mb-4 flex-row items-center justify-between">
+    <View className="bg-white border border-slate-200/60 rounded-3xl p-5 mb-4 flex-row items-center justify-between shadow-sm shadow-slate-100">
       <View className="flex-row items-center flex-1 mr-3">
         {/* Left Icon Container */}
-        <View className="w-12 h-12 bg-gray-800 border border-gray-700/50 rounded-2xl items-center justify-center mr-4">
+        <View className="w-12 h-12 bg-slate-100 border border-slate-200/30 rounded-2xl items-center justify-center mr-4">
           {TYPE_ICONS[address.type]}
         </View>
 
         {/* Address text */}
         <View className="flex-1">
           <View className="flex-row items-center gap-2">
-            <Typography className="text-white font-body-bold text-sm">
+            <Typography className="text-slate-800 font-body-bold text-sm">
               {address.label}
             </Typography>
             <View
@@ -64,7 +64,7 @@ export const AddressItemCard: React.FC<AddressItemCardProps> = ({
               </Typography>
             </View>
           </View>
-          <Typography className="text-gray-400 text-xs mt-1 leading-5">
+          <Typography className="text-slate-600 text-xs mt-1 leading-5 font-body-medium">
             {address.street}, {address.city}, {address.state} {address.zipCode}
           </Typography>
         </View>
@@ -74,7 +74,7 @@ export const AddressItemCard: React.FC<AddressItemCardProps> = ({
       <View className="flex-row items-center gap-2">
         <TouchableOpacity
           onPress={onEdit}
-          className="w-8 h-8 bg-gray-800 rounded-xl items-center justify-center border border-gray-700/50"
+          className="w-8 h-8 bg-white rounded-xl items-center justify-center border border-slate-200 shadow-sm"
           activeOpacity={0.7}
         >
           <Pencil size={13} color="#3b82f6" />

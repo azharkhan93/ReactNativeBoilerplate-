@@ -30,13 +30,13 @@ export const ProfileMenuSection: React.FC<ProfileMenuSectionProps> = ({
       {title && (
         <Typography 
           variant="body-sm" 
-          className="text-gray-500 font-body-bold text-xs mb-3 tracking-widest uppercase px-1"
+          className="text-slate-500 font-body-bold text-xs mb-3 tracking-widest uppercase px-1"
         >
           {title}
         </Typography>
       )}
       <Container 
-        className="bg-gray-900/50 rounded-3xl border border-gray-800/50 overflow-hidden px-4"
+        className="bg-notch border border-blue-200/50 rounded-3xl overflow-hidden px-4"
       >
         {items.map((item, index) => (
           <View key={item.id}>
@@ -48,7 +48,7 @@ export const ProfileMenuSection: React.FC<ProfileMenuSectionProps> = ({
               onPress={() => onItemPress?.(item.id)}
             />
             {index < items.length - 1 && (
-              <View className="h-px bg-gray-800/50 ml-14" />
+              <View className="h-px bg-blue-200/30 ml-14" />
             )}
           </View>
         ))}

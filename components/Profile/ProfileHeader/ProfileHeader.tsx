@@ -23,21 +23,21 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   
   return (
     <View
-      className="bg-gray-950 px-5 pb-4 flex-row items-center justify-between border-b border-white/10 rounded-bl-xl rounded-br-xl shadow-xl shadow-black/10 z-50 mb-6"
+      className="bg-notch px-5 pb-4 flex-row items-center justify-between border-b border-blue-200/50 rounded-b-2xl z-50 mb-6"
       style={{ paddingTop: Math.max(insets.top, 20) + 10 }}
     >
       <View className="w-10">
         {showBackButton && (
           <TouchableOpacity 
             onPress={onBackPress}
-            className="w-10 h-10 items-center justify-center rounded-full bg-gray-900/50"
+            className="w-10 h-10 items-center justify-center rounded-full bg-white border border-slate-200/50"
           >
-            <ChevronLeft size={22} color="white" />
+            <ChevronLeft size={22} color="#475569" />
           </TouchableOpacity>
         )}
       </View>
 
-      <Typography variant="h3" className="text-white text-lg font-heading-semibold">
+      <Typography variant="h3" className="text-slate-900 text-lg font-heading-bold">
         {title}
       </Typography>
 
@@ -45,15 +45,15 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         {onRightActionPress ? (
           <TouchableOpacity 
             onPress={onRightActionPress}
-            className="w-10 h-10 items-center justify-center rounded-full bg-gray-900/50"
+            className="w-10 h-10 items-center justify-center rounded-full bg-white border border-slate-200/50"
             activeOpacity={0.7}
           >
             {rightIcon === 'settings' ? (
-              <Settings size={20} color="white" />
+              <Settings size={20} color="#475569" />
             ) : rightIcon === 'logout' ? (
               <LogOut size={18} color="#ef4444" />
             ) : (
-              <MoreVertical size={20} color="white" />
+              <MoreVertical size={20} color="#475569" />
             )}
           </TouchableOpacity>
         ): null}

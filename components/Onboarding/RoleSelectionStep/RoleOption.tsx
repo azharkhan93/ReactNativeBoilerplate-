@@ -27,29 +27,29 @@ export const RoleOption: React.FC<RoleOptionProps> = ({
       activeOpacity={0.7}
       className={`flex-row items-center p-6 rounded-3xl border-2 transition-all ${
         isSelected
-          ? 'border-primary-500 bg-primary-950/40'
-          : 'border-gray-800 bg-gray-900/50'
+          ? 'border-primary-500 bg-primary-50'
+          : 'border-slate-200 bg-white shadow-sm shadow-slate-100'
       }`}
     >
       <View
         className={`w-14 h-14 rounded-2xl items-center justify-center mr-4  ${
-          isSelected ? 'bg-primary-500' : 'bg-gray-800'
+          isSelected ? 'bg-primary-500' : 'bg-slate-100'
         }`}
       >
-        <Icon size={28} color={isSelected ? 'white' : '#9ca3af'} />
+        <Icon size={28} color={isSelected ? 'white' : '#64748b'} />
       </View>
       <View className="flex-1">
         <Typography
           variant="body-lg"
           className={`font-heading-semibold ${
-            isSelected ? 'text-white' : 'text-gray-200'
+            isSelected ? 'text-slate-900' : 'text-slate-800'
           }`}
         >
           {title}
         </Typography>
         <Typography
           variant="body-sm"
-          className={isSelected ? 'text-primary-300/80' : 'text-gray-400'}
+          className={isSelected ? 'text-primary-700' : 'text-slate-500'}
         >
           {description}
         </Typography>

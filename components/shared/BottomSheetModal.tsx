@@ -23,7 +23,7 @@ export const BottomSheetModal: React.FC<BottomSheetModalProps> = ({
             onRequestClose={onClose}
             height={height}
             scrollable={scrollable}
-            contentClassName="bg-gray-950"
+            contentClassName="bg-notch"
         >
             {children}
         </Modal>

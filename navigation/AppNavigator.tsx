@@ -153,7 +153,7 @@ export const AppNavigator: React.FC = () => {
   const showTabBar = tabs.some(tab => tab.route === activeTab);
 
   return (
-    <View className="flex-1 bg-gray-950">
+    <View className="flex-1 bg-[#F1F6FD]">
       {showTopBar && (
         <TopBar
           placeholder="Search services..."
@@ -171,15 +171,16 @@ export const AppNavigator: React.FC = () => {
       <View className="flex-1">{renderScreen()}</View>
       {/* Vendor Search Results */}
       {((data?.searchVendors) ?? []).length > 0 && (
-        <View className="absolute top-16 left-0 right-0 bg-gray-900 z-10 p-4">
+        <View className="absolute top-36 left-4 right-4 bg-white border border-slate-200/80 shadow-xl z-50 p-4 rounded-2xl">
           {(data?.searchVendors ?? []).map((v: any) => (
             <TouchableOpacity
               key={v.id}
+              className="py-2.5 border-b border-slate-100 last:border-0"
               onPress={() =>
                 handleNavigate('vendorDetails', { vendorId: v.id })
               }
             >
-              <Text className="text-white">{v.businessName}</Text>
+              <Text className="text-slate-900 font-medium">{v.businessName}</Text>
             </TouchableOpacity>
           ))}
         </View>

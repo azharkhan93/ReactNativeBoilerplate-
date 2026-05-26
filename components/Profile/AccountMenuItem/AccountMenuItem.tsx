@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { ChevronRight } from 'lucide-react-native';
@@ -40,7 +41,7 @@ export const AccountMenuItem: React.FC<AccountMenuItemProps> = ({
             <Icon size={20} color={iconColor} />
           </Container>
           <Container variant="column" className="flex-1">
-            <Typography variant="body" className="font-body-semibold text-gray-100">
+            <Typography variant="body" className="font-body-semibold text-slate-800">
               {label}
             </Typography>
             {subtitle ? (

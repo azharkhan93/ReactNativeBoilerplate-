@@ -76,7 +76,7 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
         <View className="items-center justify-center">
           <Icon
             size={22}
-            color={isActive ? '#3b82f6' : '#9ca3af'}
+            color={isActive ? '#3b82f6' : '#64748b'}
             strokeWidth={isActive ? 2.5 : 2}
           />
           {isActive && (
@@ -97,9 +97,9 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
         <Svg width={barWidth} height={barHeight} className="mt-[25px] ">
           <Path
             d={getPath(barWidth, barHeight)}
-            fill="#111827"
-            stroke="rgba(255, 255, 255, 0.08)"
-            strokeWidth={1.2}
+            fill="#D7E4F7"
+            stroke="#c1d2eb"
+            strokeWidth={1.5}
           />
         </Svg>
       </View>

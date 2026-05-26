@@ -59,8 +59,8 @@ const AvatarUploadContent: React.FC<AvatarUploadContentProps> = ({
   });
 
   return (
-    <View className="px-5 pt-2 pb-8 bg-gray-950">
-      <Typography variant="subheading" className="text-white mb-4 text-center">
+    <View className="px-5 pt-2 pb-8 bg-notch">
+      <Typography variant="subheading" className="text-slate-900 font-heading-bold mb-4 text-center">
         Upload Profile Picture
       </Typography>
 
@@ -74,9 +74,9 @@ const AvatarUploadContent: React.FC<AvatarUploadContentProps> = ({
       <View className="flex-row gap-3 mt-4">
         <TouchableOpacity
           onPress={onClose}
-          className="flex-1 py-3.5 rounded-2xl items-center bg-gray-900 border border-gray-800"
+          className="flex-1 py-3.5 rounded-2xl items-center bg-white border border-slate-200"
         >
-          <Typography className="text-gray-400 font-body-semibold">
+          <Typography className="text-slate-600 font-body-semibold">
             Cancel
           </Typography>
         </TouchableOpacity>
@@ -156,8 +156,8 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
         );
       } else if (item.isPlaceholder) {
         content = (
-          <View className="p-10">
-            <Typography className="text-white text-center">
+          <View className="p-10 bg-notch">
+            <Typography className="text-slate-800 text-center font-medium">
               {item.placeholderText}
             </Typography>
           </View>
@@ -183,7 +183,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
   const config = modalType ? MODAL_CONFIG[modalType] : null;
 
   return (
-    <View className="flex-1 bg-gray-950">
+    <View className="flex-1 bg-notchLight">
       <ProfileHeader
         title={isVendor ? 'Provider Profile' : 'My Profile'}
         onRightActionPress={handleLogoutPress}

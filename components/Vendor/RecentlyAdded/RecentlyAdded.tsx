@@ -53,7 +53,7 @@ export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
           return (
             <TouchableOpacity
               key={vendor.id}
-              className="w-44 bg-gray-900 border border-gray-800 rounded-2xl overflow-hidden shadow-sm flex-col"
+              className="w-44 bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm shadow-slate-100 flex-col"
               activeOpacity={0.8}
               onPress={handlePress}
             >
@@ -62,12 +62,12 @@ export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
                   source={{
                     uri: vendor.imageUri || undefined,
                   }}
-                  className="w-full h-28 bg-gray-800"
+                  className="w-full h-28 bg-slate-50"
                   resizeMode="cover"
                 />
 
                 {vendor.serviceRadius && (
-                  <View className="absolute top-2 left-2 bg-gray-950/80 px-2 py-0.5 rounded-md border border-gray-800">
+                  <View className="absolute top-2 left-2 bg-white/90 px-2 py-0.5 rounded-md border border-slate-100">
                     <Typography
                       variant="body-sm"
                       className="text-primary-400 text-[10px] font-body-medium"
@@ -82,7 +82,7 @@ export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
                 <View>
                   <Typography
                     variant="body"
-                    className="text-white font-body-semibold leading-tight mb-1"
+                    className="text-slate-800 font-body-semibold leading-tight mb-1"
                     numberOfLines={1}
                   >
                     {vendor.businessName}
@@ -93,7 +93,7 @@ export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
 
                     <Typography
                       variant="body-sm"
-                      className="text-gray-300 ml-1 font-body-medium text-[11px]"
+                      className="text-slate-500 ml-1 font-body-medium text-[11px]"
                     >
                       {rating.toFixed(1)}
                     </Typography>
@@ -116,7 +116,7 @@ export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
                   </View>
                 </View>
 
-                <View className="flex-row items-center justify-between mt-1 pt-2 border-t border-gray-800/60">
+                <View className="flex-row items-center justify-between mt-1 pt-2 border-t border-slate-100">
                   <View className="flex-col">
                     <Typography
                       variant="body-sm"
@@ -127,7 +127,7 @@ export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
 
                     <Typography
                       variant="body"
-                      className="text-white font-body-bold text-[14px]"
+                      className="text-slate-900 font-body-bold text-[14px]"
                     >
                       ₹{price}
                     </Typography>

@@ -72,7 +72,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) 
     };
 
     return (
-        <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, backgroundColor: '#030712' }}>
+        <SafeAreaView edges={['bottom', 'left', 'right']} style={{ flex: 1, backgroundColor: '#F1F6FD' }}>
             <View style={{ flex: 1 }}>
                 {/* Content */}
                 <FlatList
@@ -98,16 +98,16 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) 
                         <TouchableOpacity
                             onPress={handleSkip}
                             hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
-                            className="px-5 py-2.5 bg-black/40 rounded-full border border-white/20 shadow-md"
+                            className="px-5 py-2.5 bg-white/90 rounded-full border border-slate-200 shadow-md"
                             activeOpacity={0.8}
                         >
-                            <Typography className="text-white font-body-bold tracking-widest">SKIP</Typography>
+                            <Typography className="text-slate-800 font-body-bold tracking-widest">SKIP</Typography>
                         </TouchableOpacity>
                     </View>
                 )}
 
                 {/* Footer Navigation (Solid container with zIndex ensures it stays above overflowing slide content) */}
-                <View style={{ paddingHorizontal: 32, paddingBottom: 40, backgroundColor: '#030712', zIndex: 10 }}>
+                <View style={{ paddingHorizontal: 32, paddingBottom: 40, backgroundColor: '#F1F6FD', zIndex: 10 }}>
                     <View style={{
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -124,7 +124,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) 
                                     style={{ paddingVertical: 8 }}
                                     activeOpacity={0.7}
                                 >
-                                    <Typography className="text-[#A1A1A1] font-body-medium">Back</Typography>
+                                    <Typography className="text-slate-600 font-body-medium">Back</Typography>
                                 </TouchableOpacity>
                             )}
                         </View>
@@ -141,7 +141,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({ onFinish }) 
                                     style={{ paddingVertical: 8 }}
                                     activeOpacity={0.7}
                                 >
-                                    <Typography className="text-[#A1A1A1] font-body-medium text-lg">Next</Typography>
+                                    <Typography className="text-slate-700 font-body-medium text-lg">Next</Typography>
                                 </TouchableOpacity>
                             )}
                         </View>

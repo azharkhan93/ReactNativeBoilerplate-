@@ -20,10 +20,10 @@ export const OnboardingSlide: React.FC<OnboardingSlideProps> = ({
     const parts = title.split('|');
 
     return (
-        <View style={{ width, flex: 1, backgroundColor: '#030712' }}>
+        <View style={{ width, flex: 1, backgroundColor: '#F1F6FD' }}>
             <Animated.View
                 entering={FadeInUp.delay(200).duration(800)}
-                className="w-[90%] h-[54%] self-center mt-6 rounded-[36px] overflow-hidden border border-white/10 shadow-2xl shadow-black/80"
+                className="w-[90%] h-[54%] self-center mt-6 rounded-[36px] overflow-hidden border border-slate-200/60 shadow-2xl shadow-slate-200"
             >
                 <Image
                     source={image}
@@ -38,14 +38,14 @@ export const OnboardingSlide: React.FC<OnboardingSlideProps> = ({
             >
                 <Typography
                     variant="h2"
-                    className="text-center mb-3 text-white font-heading-bold"
-                    style={{ textShadowColor: 'rgba(0,0,0,0.3)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 6 }}
+                    className="text-center mb-3 text-slate-900 font-heading-bold"
+                    style={{ textShadowColor: 'rgba(0,0,0,0.1)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 6 }}
                 >
                     {parts[0]}
                     {parts[1] && (
                         <>
                             {'\n'}
-                            <Typography variant="h2" className="text-primary-500 font-heading-bold">
+                            <Typography variant="h2" className="text-primary-600 font-heading-bold">
                                 {parts[1]}
                             </Typography>
                         </>
@@ -53,7 +53,7 @@ export const OnboardingSlide: React.FC<OnboardingSlideProps> = ({
                 </Typography>
                 <Typography
                     variant="body"
-                    className="text-center text-gray-400 leading-6 font-body-medium px-4"
+                    className="text-center text-slate-600 leading-6 font-body-medium px-4"
                 >
                     {description}
                 </Typography>

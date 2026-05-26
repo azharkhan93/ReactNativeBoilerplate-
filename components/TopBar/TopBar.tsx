@@ -31,19 +31,24 @@ export const TopBar: React.FC<TopBarProps> = ({
 
   return (
     <View
-      className="bg-gray-950 rounded-bl-xl rounded-br-xl shadow-xl shadow-black/10 z-50 border-b border-white/10"
+      className="bg-[#D7E4F7] z-50 border-b border-[#c1d2eb]"
       style={{ paddingTop: insets.top }}
     >
       <View className="px-5 py-2">
-        
         <View className="flex-row justify-between items-center mb-4">
           <View className="flex-row items-center flex-1 mr-4">
-            <View className="bg-white/10 p-2 rounded-full mr-3 border border-white/10">
+            <View className="bg-white/85 p-2 rounded-full mr-3 border border-blue-200/50">
               <MapPin size={18} color="#3b82f6" />
             </View>
             <View>
-              <Typography variant="body-sm" className="text-gray-400">Current Location</Typography>
-              <Typography variant="body" className="font-body-bold text-white" numberOfLines={1}>
+              <Typography variant="body-sm" className="!text-slate-600 font-medium">
+                Current Location
+              </Typography>
+              <Typography
+                variant="body"
+                className="font-body-bold !text-black"
+                numberOfLines={1}
+              >
                 {location}
               </Typography>
             </View>
@@ -52,16 +57,20 @@ export const TopBar: React.FC<TopBarProps> = ({
           <IconButton
             variant="circular"
             onPress={onProfilePress}
-            className="bg-gray-900 border border-gray-800 overflow-hidden w-11 h-11 items-center justify-center rounded-full"
+            className="bg-slate-50 border border-slate-200 overflow-hidden w-11 h-11 items-center justify-center rounded-full"
           >
             {avatarUrl ? (
-              <Image source={{ uri: avatarUrl }} className="w-full h-full" resizeMode="cover" />
+              <Image
+                source={{ uri: avatarUrl }}
+                className="w-full h-full"
+                resizeMode="cover"
+              />
             ) : (
-              <User size={20} color="#9ca3af" />
+              <User size={20} color="#64748b" />
             )}
           </IconButton>
         </View>
-        
+
         <View className="flex-row items-center gap-3 pb-2">
           <View className="flex-1">
             <SearchBar

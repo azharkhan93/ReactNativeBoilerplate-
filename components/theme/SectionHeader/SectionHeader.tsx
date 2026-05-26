@@ -28,11 +28,11 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   return (
     <View className={cn('flex-row items-center justify-between mb-4', className)}>
       <View className="flex-1">
-        <Typography variant="h3" className="text-white font-heading-bold">
+        <Typography variant="h3" className="text-slate-900 font-heading-bold">
           {title}
         </Typography>
         {subtitle && (
-          <Typography variant="body-sm" className="text-gray-400 mt-1">
+          <Typography variant="body-sm" className="text-slate-500 mt-1">
             {subtitle}
           </Typography>
         )}

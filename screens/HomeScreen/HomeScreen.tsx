@@ -29,7 +29,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 }) => {
   const { featuredServices, nearbyServices, recommendedServices } = useHome();
 
-  // Navigation & Action Handlers
+  
   const handleServicePress = (serviceId: string) =>
     console.log('Service:', serviceId);
   const handleViewAllProviders = () => onNavigate?.('nearbyProviders');
@@ -37,7 +37,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     onNavigate?.('vendorDetails', { vendorId });
   };
 
-  // Refactored dynamic visual filtering logic using centralized helper
   const filteredFeatured = React.useMemo(() => {
     return filterAndSortServices(featuredServices, activeFilters);
   }, [featuredServices, activeFilters]);
@@ -51,7 +50,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   }, [recommendedServices, activeFilters]);
 
   return (
-    <View className="flex-1 bg-gray-950">
+    <View className="flex-1 bg-[#F1F6FD]">
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
@@ -61,7 +60,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         <HeroSection />
 
         <View className="px-5 pt-6">
-          <Typography variant="body-lg" className="mb-4 font-bold text-white">
+          <Typography variant="body-lg" className="mb-4 font-bold text-slate-900">
             Service Categories
           </Typography>
           <ScrollView

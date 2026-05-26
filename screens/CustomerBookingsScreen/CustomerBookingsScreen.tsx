@@ -36,12 +36,12 @@ export const CustomerBookingsScreen: React.FC<CustomerBookingsScreenProps> = ({ 
 
 
     return (
-        <View className="flex-1 bg-gray-950">
+        <View className="flex-1 bg-notchLight">
             <View
-                className="bg-gray-950 px-5 pb-4 border-b border-white/10 rounded-bl-xl rounded-br-xl shadow-xl shadow-black/10 z-50 mb-6"
+                className="bg-notch px-5 pb-4 border-b border-blue-200/50 z-50 mb-6"
                 style={{ paddingTop: Math.max(insets.top, 20) + 10 }}
             >
-                <Typography variant="h3" className="text-white text-lg font-heading-semibold">My Bookings</Typography>
+                <Typography variant="h3" className="text-slate-900 text-lg font-heading-bold">My Bookings</Typography>
             </View>
 
             <View className="flex-row px-5 mb-6 space-x-2">
@@ -49,9 +49,9 @@ export const CustomerBookingsScreen: React.FC<CustomerBookingsScreenProps> = ({ 
                     <TouchableOpacity
                         key={tab.id}
                         onPress={() => setActiveTab(tab.id)}
-                        className={`flex-1 items-center py-3 rounded-2xl ${activeTab === tab.id ? `${tab.activeBg} shadow-lg` : 'bg-gray-900 border border-gray-800'}`}
+                        className={`flex-1 items-center py-3 rounded-2xl ${activeTab === tab.id ? `${tab.activeBg} shadow-lg` : 'bg-white border border-slate-200/60'}`}
                     >
-                        <Typography className={`text-[13px] font-body-bold ${activeTab === tab.id ? 'text-white' : 'text-gray-400'}`}>
+                        <Typography className={`text-[13px] font-body-bold ${activeTab === tab.id ? 'text-white' : 'text-slate-600'}`}>
                             {tab.label}
                         </Typography>
                     </TouchableOpacity>

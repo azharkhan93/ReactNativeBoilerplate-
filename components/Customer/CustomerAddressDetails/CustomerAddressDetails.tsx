@@ -49,7 +49,7 @@ export const CustomerAddressDetails: React.FC = () => {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
-      <View className="px-5 pt-2 pb-8 bg-gray-950">
+      <View className="px-5 pt-2 pb-8 bg-notch">
         {/* Header Block */}
         <View className="items-center mb-6 mt-2">
           <View className="w-12 h-12 bg-primary-500/10 border border-primary-500/25 rounded-full items-center justify-center mb-3">
@@ -57,13 +57,13 @@ export const CustomerAddressDetails: React.FC = () => {
           </View>
           <Typography
             variant="subheading"
-            className="text-white text-center font-body-bold"
+            className="text-slate-900 text-center font-body-bold"
           >
             Saved Addresses
           </Typography>
           <Typography
             variant="body-sm"
-            className="text-gray-400 text-center px-4 mt-1 leading-5"
+            className="text-slate-600 text-center px-4 mt-1 leading-5 font-body-medium"
           >
             Manage your delivery and service addresses for faster bookings.
           </Typography>
@@ -76,7 +76,7 @@ export const CustomerAddressDetails: React.FC = () => {
             activeOpacity={0.7}
           >
             <Plus size={16} color="#3b82f6" />
-            <Typography className="text-primary-400 font-body-bold text-sm">
+            <Typography className="text-primary-600 font-body-bold text-sm">
               Add New Address
             </Typography>
           </TouchableOpacity>

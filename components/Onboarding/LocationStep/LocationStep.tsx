@@ -105,7 +105,7 @@ export const LocationStep: React.FC<{ onBack: () => void }> = () => {
       onPress={handleDismissKeyboard}
       accessible={false}
     >
-      <View style={styles.container} className="flex-1 bg-[#030712] px-6 pt-10">
+      <View style={styles.container} className="flex-1 bg-[#F1F6FD] px-6 pt-10">
         <Animated.View entering={FadeIn.duration(500)} className="flex-1">
           <Typography
             variant="body"
@@ -113,17 +113,17 @@ export const LocationStep: React.FC<{ onBack: () => void }> = () => {
           >
             Final Step
           </Typography>
-          <View className="h-1 w-full bg-gray-800/50 rounded-full mb-10 overflow-hidden">
+          <View className="h-1 w-full bg-slate-200 rounded-full mb-10 overflow-hidden">
             <View className="h-full bg-primary-500 rounded-full w-full" />
           </View>
 
           <Typography
             variant="h2"
-            className="text-white mb-3 font-heading-bold"
+            className="text-slate-900 mb-3 font-heading-bold"
           >
             Set Your Location
           </Typography>
-          <Typography variant="body" className="text-gray-400 mb-8 leading-6">
+          <Typography variant="body" className="text-slate-600 mb-8 leading-6">
             We'll use this to find the best car wash service providers near you
             and ensure precise delivery.
           </Typography>
@@ -148,7 +148,7 @@ export const LocationStep: React.FC<{ onBack: () => void }> = () => {
             {buttonText}
           </Button>
 
-          <View className="flex-1 mt-6 rounded-3xl overflow-hidden border border-gray-800 relative shadow-sm bg-gray-900">
+          <View className="flex-1 mt-6 rounded-3xl overflow-hidden border border-slate-200 relative shadow-sm bg-white">
             <MapView
               ref={mapRef}
               className="absolute inset-0"
@@ -163,11 +163,11 @@ export const LocationStep: React.FC<{ onBack: () => void }> = () => {
               {mapMarker}
             </MapView>
 
-            <View className="absolute bottom-4 left-4 right-4 bg-gray-900/90 p-3 rounded-2xl border border-gray-800 flex-row items-center">
+            <View className="absolute bottom-4 left-4 right-4 bg-white/95 p-3 rounded-2xl border border-slate-200 flex-row items-center shadow-lg shadow-slate-100">
               <MapPin size={18} color="#3b82f6" />
               <Typography
                 variant="body"
-                className="text-white ml-2 flex-1"
+                className="text-slate-800 ml-2 flex-1"
                 numberOfLines={1}
               >
                 {addressLabel}

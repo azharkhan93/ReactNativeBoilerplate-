@@ -55,8 +55,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         returnKeyType="search"
         onSubmitEditing={handleSubmit}
         containerClassName="mb-0"
-        inputClassName="h-12 bg-gray-900 border-gray-800 rounded-full pr-12"
-        icon={<Search size={16} color="#9CA3AF" />}
+        inputClassName="h-12 bg-white border-slate-200 rounded-full pr-12 text-slate-900"
+        icon={<Search size={16} color="#64748b" />}
       />
       {value.length > 0 && (
         <View className="absolute right-4 top-1/2 -mt-3.5 z-20">

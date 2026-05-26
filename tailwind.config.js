@@ -10,6 +10,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        notch: '#D7E4F7',
+        notchLight: '#F1F6FD',
         primary: {
           50: '#eff6ff',
           100: '#dbeafe',

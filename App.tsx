@@ -23,7 +23,7 @@ export default function App() {
   return (
     <ApolloProvider client={apolloClient}>
       <SafeAreaProvider>
-        <StatusBar barStyle="light-content" />
+        <StatusBar barStyle="dark-content" />
         <KeyboardDismissView>
           <AppNavigator />
         </KeyboardDismissView>

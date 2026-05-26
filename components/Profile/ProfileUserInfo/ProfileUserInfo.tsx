@@ -30,14 +30,14 @@ export const ProfileUserInfo: React.FC<ProfileUserInfoProps> = ({
       <ProfileAvatar size={100} avatarUrl={avatarUrl} onEditPress={onEditAvatar} />
     </View>
     
-    <Typography variant="h2" className="text-white text-2xl mb-1 text-center">
+    <Typography variant="h2" className="text-slate-900 font-heading-bold text-2xl mb-1 text-center">
       {name}
     </Typography>
     
     {(subtitle || location) && (
       <View className="flex-row items-center mb-2">
-        {location ? <MapPin size={14} color="#94a3b8" /> : <Phone size={14} color="#94a3b8" />}
-        <Typography variant="body-sm" className="text-gray-400 ml-1">
+        {location ? <MapPin size={14} color="#64748b" /> : <Phone size={14} color="#64748b" />}
+        <Typography variant="body-sm" className="text-slate-600 ml-1 font-body-medium">
           {location || subtitle}
         </Typography>
       </View>

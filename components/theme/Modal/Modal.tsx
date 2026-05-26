@@ -37,22 +37,22 @@ export const Modal: React.FC<ModalProps> = ({
       <TouchableWithoutFeedback onPress={onRequestClose}>
         <View className={`flex-1 bg-black/50 justify-end pt-[${insets.top}px] ${className || ''}`}>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View className={`bg-gray-950 rounded-t-3xl w-full ${contentClassName || ''}`} style={contentStyle}>
+            <View className={`bg-notch rounded-t-3xl w-full ${contentClassName || ''}`} style={contentStyle}>
            
               <View className="w-full items-center pt-3 pb-1">
-                <View className="w-10 h-1.5 bg-gray-800 rounded-full" />
+                <View className="w-10 h-1.5 bg-slate-300/80 rounded-full" />
               </View>
 
               {(title || onRequestClose) && (
-                <View className="px-6 pt-2 pb-4 border-b border-gray-800/50 flex-row items-center justify-between">
-                  <Typography variant="h3" className="text-white">{title || ' '}</Typography>
+                <View className="px-6 pt-2 pb-4 border-b border-blue-200/40 flex-row items-center justify-between">
+                  <Typography variant="h3" className="text-slate-900 font-heading-bold">{title || ' '}</Typography>
                   {onRequestClose ? (
                     <TouchableOpacity
                       onPress={onRequestClose}
-                      className="w-8 h-8 bg-gray-800 rounded-full items-center justify-center"
+                      className="w-8 h-8 bg-white/80 rounded-full items-center justify-center border border-slate-200/40"
                       hitSlop={10}
                     >
-                      <X size={16} color="#9CA3AF" strokeWidth={2.5} />
+                      <X size={16} color="#64748b" strokeWidth={2.5} />
                     </TouchableOpacity>
                   ) : null}
                 </View>
