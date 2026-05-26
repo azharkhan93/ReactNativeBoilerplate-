@@ -30,8 +30,8 @@ export const ExceptionFormCard: React.FC<ExceptionFormCardProps> = ({
   onSave,
   isEdit,
 }) => (
-  <View className="bg-gray-900 border border-gray-800 rounded-3xl p-5 mb-5 shadow-2xl">
-    <Typography className="text-white font-body-bold mb-3">
+  <View className="bg-white border border-slate-200 rounded-3xl p-5 mb-5 shadow-sm">
+    <Typography className="text-slate-900 font-body-bold mb-3">
       {isEdit ? 'Edit Exception Date' : 'Add Exception Date'}
     </Typography>
     <FormInput
@@ -61,7 +61,7 @@ export const ExceptionFormCard: React.FC<ExceptionFormCardProps> = ({
         />
       </View>
     </View>
-    <Typography variant="body-sm" className="text-gray-400 mb-2 ml-1">
+    <Typography variant="body-sm" className="text-slate-500 mb-2 ml-1">
       Exception Type
     </Typography>
     <View className="flex-row gap-3 mb-4">
@@ -74,7 +74,7 @@ export const ExceptionFormCard: React.FC<ExceptionFormCardProps> = ({
               ? t === 'blocked'
                 ? 'bg-red-500/10 border-red-500/40'
                 : 'bg-yellow-500/10 border-yellow-500/40'
-              : 'bg-gray-950 border-gray-800'
+              : 'bg-[#F1F6FD] border-slate-200'
           }`}
         >
           <Typography
@@ -83,7 +83,7 @@ export const ExceptionFormCard: React.FC<ExceptionFormCardProps> = ({
                 ? t === 'blocked'
                   ? 'text-red-400 font-body-bold'
                   : 'text-yellow-400 font-body-bold'
-                : 'text-gray-400'
+                : 'text-slate-500'
             }
           >
             {t === 'blocked' ? 'Blocked Out' : 'Shortened'}

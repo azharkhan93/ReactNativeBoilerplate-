@@ -31,19 +31,19 @@ export const HistoryItem: React.FC<HistoryItemProps> = ({ item }) => {
   const paymentIcon = getPaymentIcon(item.paymentMethod);
 
   return (
-    <View className="flex-row items-center justify-between p-4 mb-3 bg-gray-900 border border-gray-800 rounded-2xl">
+    <View className="flex-row items-center justify-between p-4 mb-3 bg-white border border-slate-200 rounded-2xl">
       <View className="flex-row items-center flex-1 mr-3">
-        <View className="w-10 h-10 bg-gray-800/80 rounded-full items-center justify-center mr-3">
+        <View className="w-10 h-10 bg-[#F1F6FD] rounded-full items-center justify-center mr-3">
           {paymentIcon}
         </View>
         <View className="flex-1">
-          <Typography className="text-white font-body-semibold">
+          <Typography className="text-slate-900 font-body-semibold">
             {item.customerName}
           </Typography>
-          <Typography variant="body-sm" className="text-gray-400 mt-0.5">
+          <Typography variant="body-sm" className="text-slate-500 mt-0.5">
             {item.serviceName}
           </Typography>
-          <Typography variant="body" className="text-gray-500 mt-1">
+          <Typography variant="body" className="text-slate-400 mt-1">
             {item.date} • {item.time}
           </Typography>
         </View>
@@ -52,7 +52,7 @@ export const HistoryItem: React.FC<HistoryItemProps> = ({ item }) => {
         <Typography className="text-green-400 font-body-bold">
           +${item.amount.toFixed(2)}
         </Typography>
-        <Typography variant="body" className="text-gray-500 mt-1 font-body-medium">
+        <Typography variant="body" className="text-slate-400 mt-1 font-body-medium">
           {item.paymentMethod}
         </Typography>
       </View>

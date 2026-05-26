@@ -1,23 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ApolloProvider } from '@apollo/client/react';
 import { apolloClient } from '@/utils/apolloClient';
 import { AppNavigator } from '@/navigation/AppNavigator';
 import { KeyboardDismissView } from '@/components/theme';
-// import {
-//   getFCMToken,
-//   listenToForegroundNotifications,
-// } from '@/utils/notificationService';
+import { AnimatedSplashScreen } from '@/components/shared/AnimatedSplashScreen';
 
 export default function App() {
-  useEffect(() => {
-    // Retrieve and log the device FCM token for testing
-    // getFCMToken();
+  const [splashFinished, setSplashFinished] = useState(false);
 
-    // Listen for foreground notifications during active app state
-    // const unsubscribe = listenToForegroundNotifications();
-    // return unsubscribe;
+  useEffect(() => {
+    // Other boot effects can go here
   }, []);
 
   return (
@@ -25,7 +19,11 @@ export default function App() {
       <SafeAreaProvider>
         <StatusBar barStyle="dark-content" />
         <KeyboardDismissView>
-          <AppNavigator />
+          {!splashFinished ? (
+            <AnimatedSplashScreen onFinish={() => setSplashFinished(true)} />
+          ) : (
+            <AppNavigator />
+          )}
         </KeyboardDismissView>
       </SafeAreaProvider>
     </ApolloProvider>

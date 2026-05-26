@@ -81,9 +81,9 @@ export const BankAccountDetails: React.FC = () => {
 
   if (loading && !profile) {
     return (
-      <View className="flex-1 items-center justify-center bg-gray-950 p-10 min-h-[300px]">
+      <View className="flex-1 items-center justify-center bg-[#EEF4FC] p-10 min-h-[300px]">
         <ActivityIndicator size="large" color="#3b82f6" />
-        <Typography className="text-gray-400 mt-4 font-body">Loading Bank Details...</Typography>
+        <Typography className="text-slate-400 mt-4 font-body">Loading Bank Details...</Typography>
       </View>
     );
   }
@@ -91,7 +91,7 @@ export const BankAccountDetails: React.FC = () => {
   return (
     <>
       <ScrollView
-        className="flex-1 bg-gray-950"
+        className="flex-1 bg-[#EEF4FC]"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingBottom: insets.bottom + 40,
@@ -100,7 +100,7 @@ export const BankAccountDetails: React.FC = () => {
       >
         <View className="bg-blue-500/10 border border-blue-500/20 rounded-2xl px-4 py-4 mt-4 mb-6 flex-row items-center">
           <ShieldCheck size={20} color="#3b82f6" />
-          <Typography variant="body" className="ml-3 flex-1 leading-5 text-gray-400">
+          <Typography variant="body" className="ml-3 flex-1 leading-5 text-slate-500">
             Your banking data is encrypted and processed via secure RBI-compliant gateways.
           </Typography>
         </View>
@@ -108,10 +108,10 @@ export const BankAccountDetails: React.FC = () => {
         {!profile ? (
           <View className="py-8 items-center">
             <Landmark size={40} color="#3b82f6" className="opacity-80" />
-            <Typography variant="subheading" className="text-white mt-4 mb-2 text-center">
+            <Typography variant="subheading" className="text-slate-900 mt-4 mb-2 text-center">
               Set Up Your Bank Account
             </Typography>
-            <Typography variant="body-sm" className="text-gray-500 text-center mb-6 leading-5">
+            <Typography variant="body-sm" className="text-slate-500 text-center mb-6 leading-5">
               Configure your bank details to receive secure, direct payouts from completed detailing services.
             </Typography>
             <Button variant="primary" onPress={handleOpenAddModal}>
@@ -122,13 +122,13 @@ export const BankAccountDetails: React.FC = () => {
           <>
             {/* Header row with Edit and Delete actions ABOVE the details view */}
             <View className="flex-row items-center justify-between mb-2">
-              <Typography variant="subheading" className="text-white font-body-bold">
+              <Typography variant="subheading" className="text-slate-900 font-body-bold">
                 Saved Bank Details
               </Typography>
               <View className="flex-row items-center gap-2.5">
                 <TouchableOpacity
                   onPress={handleOpenEditModal}
-                  className="flex-row items-center bg-gray-900 border border-gray-800 rounded-xl px-3.5 py-2"
+                  className="flex-row items-center bg-white border border-slate-200 rounded-xl px-3.5 py-2"
                   activeOpacity={0.7}
                 >
                   <Pencil size={13} color="#3b82f6" />

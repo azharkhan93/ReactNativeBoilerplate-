@@ -21,21 +21,21 @@ export const ManageServices: React.FC = () => {
 
     if (loading && services.length === 0) {
         return (
-            <View className="flex-1 items-center justify-center bg-gray-950 p-10 min-h-[300px]">
+            <View className="flex-1 items-center justify-center bg-[#EEF4FC] p-10 min-h-[300px]">
                 <ActivityIndicator size="large" color="#3b82f6" />
-                <Typography className="text-gray-400 mt-4 font-body">Loading Services...</Typography>
+                <Typography className="text-slate-400 mt-4 font-body">Loading Services...</Typography>
             </View>
         );
     }
 
     return (
-        <View className="flex-1 bg-gray-950">
+        <View className="flex-1 bg-[#EEF4FC]">
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View className="px-5 py-6 pb-12">
                     <View className="flex-row justify-between items-center mb-6">
                         <View>
-                            <Typography variant="h3" className="text-xl mb-1 text-white">Your Services</Typography>
-                            <Typography variant="body" className="text-gray-400">Manage your service offerings</Typography>
+                            <Typography variant="h3" className="text-xl mb-1 text-slate-900">Your Services</Typography>
+                            <Typography variant="body" className="text-slate-500">Manage your service offerings</Typography>
                         </View>
                         <TouchableOpacity
                             onPress={handleOpenAddModal}
@@ -47,18 +47,18 @@ export const ManageServices: React.FC = () => {
                     </View>
 
                     {services.length === 0 ? (
-                        <View className="bg-gray-900 border border-gray-800 rounded-3xl p-8 items-center justify-center mb-6">
-                            <Typography className="text-gray-400 text-center font-body mb-4">No services defined yet.</Typography>
+                        <View className="bg-white border border-slate-200 rounded-3xl p-8 items-center justify-center mb-6">
+                            <Typography className="text-slate-400 text-center font-body mb-4">No services defined yet.</Typography>
                             <Button variant="outlined" size="sm" onPress={handleOpenAddModal}>Create First Service</Button>
                         </View>
                     ) : (
                         services.map((service, index) => {
                             const matchedCategory = SERVICE_CATEGORIES.find(c => c.id === service.categoryId);
                             return (
-                                <View key={service.id || index.toString()} className="bg-gray-900 border border-gray-800 rounded-3xl p-5 mb-5">
+                                <View key={service.id || index.toString()} className="bg-white border border-slate-200 rounded-3xl p-5 mb-5">
                                     <View className="flex-row justify-between items-start mb-3">
                                         <View className="flex-1 mr-4">
-                                            <Typography variant="subheading" className="text-white mb-1">{service.name}</Typography>
+                                            <Typography variant="subheading" className="text-slate-900 mb-1">{service.name}</Typography>
                                             {matchedCategory && (
                                                 <View className="flex-row mt-1">
                                                     <View className="bg-primary-500/10 px-2.5 py-0.5 rounded-full border border-primary-500/20">
@@ -75,20 +75,20 @@ export const ManageServices: React.FC = () => {
                                         </View>
                                     </View>
 
-                                    <Typography variant="body" className="text-gray-400 mb-5 leading-5">{service.description}</Typography>
+                                    <Typography variant="body" className="text-slate-500 mb-5 leading-5">{service.description}</Typography>
 
-                                    <View className="flex-row items-center justify-center mb-5 bg-gray-950/70 py-4 px-4 rounded-2xl border border-gray-800/50 w-full overflow-hidden">
+                                    <View className="flex-row items-center justify-center mb-5 bg-[#F1F6FD] py-4 px-4 rounded-2xl border border-slate-200 w-full overflow-hidden">
                                         <View className="flex-row items-center flex-shrink mr-8">
                                             <View className="w-9 h-9 rounded-full bg-blue-500/10 items-center justify-center mr-3">
                                                 <Clock size={16} color="#3b82f6" />
                                             </View>
-                                            <Typography variant="body" className="text-gray-300 font-body-medium flex-shrink" numberOfLines={1}>{service.duration}</Typography>
+                                            <Typography variant="body" className="text-slate-700 font-body-medium flex-shrink" numberOfLines={1}>{service.duration}</Typography>
                                         </View>
                                         <View className="flex-row items-center flex-shrink">
                                             <View className="w-9 h-9 rounded-full bg-purple-500/10 items-center justify-center mr-3">
                                                 <MapPin size={16} color="#3b82f6" />
                                             </View>
-                                            <Typography variant="body" className="text-gray-300 font-body-medium flex-shrink" numberOfLines={1}>{service.location}</Typography>
+                                            <Typography variant="body" className="text-slate-700 font-body-medium flex-shrink" numberOfLines={1}>{service.location}</Typography>
                                         </View>
                                     </View>
 

@@ -29,8 +29,8 @@ const EMPTY_EXCEPTION: ExceptionForm = {
 };
 
 const EmptyCard: React.FC<{ message: string }> = ({ message }) => (
-  <View className="bg-gray-900/60 border border-gray-800/80 rounded-3xl p-5 items-center justify-center mb-6">
-    <Typography className="text-gray-500 text-[13px] font-body-semibold">{message}</Typography>
+  <View className="bg-white border border-slate-200 rounded-3xl p-5 items-center justify-center mb-6">
+    <Typography className="text-slate-500 text-[13px] font-body-semibold">{message}</Typography>
   </View>
 );
 
@@ -79,9 +79,9 @@ export const AvailabilityContent: React.FC<{ onClose: () => void }> = ({ onClose
 
   if (loading && Object.keys(schedule).length === 0) {
     return (
-      <View className="flex-1 items-center justify-center bg-gray-950 p-10 min-h-[300px]">
+      <View className="flex-1 items-center justify-center bg-[#EEF4FC] p-10 min-h-[300px]">
         <ActivityIndicator size="large" color="#3b82f6" />
-        <Typography className="text-gray-400 mt-4 font-body">Loading Schedule...</Typography>
+        <Typography className="text-slate-400 mt-4 font-body">Loading Schedule...</Typography>
       </View>
     );
   }
@@ -90,13 +90,13 @@ export const AvailabilityContent: React.FC<{ onClose: () => void }> = ({ onClose
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ padding: 20, paddingBottom: 40 }}
-      className="bg-gray-950"
+      className="bg-[#EEF4FC]"
     >
       <WeekStrip />
-      <Typography className="text-white text-base font-heading-semibold mb-1">
+      <Typography className="text-slate-900 text-base font-heading-semibold mb-1">
         Weekly Schedule
       </Typography>
-      <Typography className="text-gray-500 text-[13px] mb-5">
+      <Typography className="text-slate-500 text-[13px] mb-5">
         Set your recurring operating hours
       </Typography>
 

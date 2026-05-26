@@ -17,19 +17,19 @@ export const ExceptionItemCard: React.FC<ExceptionItemCardProps> = ({
   onRemove,
 }) => (
   <View
-    className={`${CARD_STYLE} flex-row items-center justify-between border border-gray-800 rounded-3xl p-4 mb-3 bg-gray-900/60`}
+    className={`${CARD_STYLE} flex-row items-center justify-between border border-slate-200 rounded-3xl p-4 mb-3 bg-white`}
   >
     <View className="flex-row items-center flex-1">
       <View className="bg-primary-500/10 border border-primary-500/25 rounded-2xl px-3 py-2 items-center mr-4 min-w-[52px]">
         <Typography className="text-primary-400 text-[10px] font-body-bold tracking-wider uppercase">
           {exception.month}
         </Typography>
-        <Typography className="text-white text-base font-heading-bold leading-5">
+        <Typography className="text-slate-900 text-base font-heading-bold leading-5">
           {exception.day}
         </Typography>
       </View>
       <View className="flex-1 mr-2">
-        <Typography className="text-white font-body-bold text-sm" numberOfLines={1}>
+        <Typography className="text-slate-900 font-body-bold text-sm" numberOfLines={1}>
           {exception.label}
         </Typography>
         <View
@@ -52,7 +52,7 @@ export const ExceptionItemCard: React.FC<ExceptionItemCardProps> = ({
     <View className="flex-row items-center gap-2">
       <TouchableOpacity
         onPress={onEdit}
-        className="w-8 h-8 bg-gray-800 rounded-xl items-center justify-center border border-gray-700/50"
+        className="w-8 h-8 bg-[#F1F6FD] rounded-xl items-center justify-center border border-slate-200"
         activeOpacity={0.7}
       >
         <Pencil size={13} color="#3b82f6" />

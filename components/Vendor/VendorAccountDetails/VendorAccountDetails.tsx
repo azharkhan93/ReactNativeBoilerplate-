@@ -20,25 +20,25 @@ export const VendorAccountDetails: React.FC = () => {
     };
 
     return (
-        <ScrollView 
-            className="flex-1 bg-gray-950" 
+        <ScrollView
+            className="flex-1 bg-[#EEF4FC]"
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
         >
             <View className="gap-6 pb-6 px-4 pt-4">
-                
+
                 <View>
-                    <Typography variant="body-sm" className="text-gray-400 mb-2.5 px-1 uppercase tracking-wider font-body-bold">Business Info</Typography>
-                    <View className="bg-gray-900 border border-gray-800 rounded-3xl p-5 shadow-2xl">
+                    <Typography variant="body-sm" className="text-slate-500 mb-2.5 px-1 uppercase tracking-wider font-body-bold">Business Info</Typography>
+                    <View className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm">
                         <FormInput
                             label="Business Name"
-                            icon={<Building size={16} color="#94a3b8" />}
+                            icon={<Building size={16} color="#64748b" />}
                             value={formData.businessName}
                             onChangeText={v => handleChange('businessName', v)}
                         />
                         <FormInput
                             label="Owner Name"
-                            icon={<User size={16} color="#94a3b8" />}
+                            icon={<User size={16} color="#64748b" />}
                             value={formData.ownerName}
                             onChangeText={v => handleChange('ownerName', v)}
                             containerClassName="mb-0"
@@ -46,13 +46,12 @@ export const VendorAccountDetails: React.FC = () => {
                     </View>
                 </View>
 
-                {/* Contact Section */}
                 <View>
-                    <Typography variant="body-sm" className="text-gray-400 mb-2.5 px-1 uppercase tracking-wider font-body-bold">Contact & Location</Typography>
-                    <View className="bg-gray-900 border border-gray-800 rounded-3xl p-5 shadow-2xl">
+                    <Typography variant="body-sm" className="text-slate-500 mb-2.5 px-1 uppercase tracking-wider font-body-bold">Contact & Location</Typography>
+                    <View className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm">
                         <FormInput
                             label="Email"
-                            icon={<Mail size={16} color="#94a3b8" />}
+                            icon={<Mail size={16} color="#64748b" />}
                             value={formData.email}
                             onChangeText={v => handleChange('email', v)}
                             keyboardType="email-address"
@@ -60,14 +59,14 @@ export const VendorAccountDetails: React.FC = () => {
                         />
                         <FormInput
                             label="Phone"
-                            icon={<Phone size={16} color="#94a3b8" />}
+                            icon={<Phone size={16} color="#64748b" />}
                             value={formData.phone}
                             onChangeText={v => handleChange('phone', v)}
                             keyboardType="phone-pad"
                         />
                         <FormInput
                             label="Service Location / Address"
-                            icon={<MapPin size={16} color="#94a3b8" />}
+                            icon={<MapPin size={16} color="#64748b" />}
                             value={formData.address}
                             onChangeText={v => handleChange('address', v)}
                             multiline
@@ -76,18 +75,17 @@ export const VendorAccountDetails: React.FC = () => {
                     </View>
                 </View>
 
-                {/* Payment & Payouts */}
                 <View>
-                    <Typography variant="body-sm" className="text-gray-400 mb-2.5 px-1 uppercase tracking-wider font-body-bold">Payment & Payouts</Typography>
-                    <View className="bg-gray-900 border border-gray-800 rounded-3xl p-5 shadow-2xl">
+                    <Typography variant="body-sm" className="text-slate-500 mb-2.5 px-1 uppercase tracking-wider font-body-bold">Payment & Payouts</Typography>
+                    <View className="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm">
                         <FormInput
                             label="Bank Account / UPI ID"
-                            icon={<CreditCard size={16} color="#94a3b8" />}
+                            icon={<CreditCard size={16} color="#64748b" />}
                             value={formData.bankAccount}
                             onChangeText={v => handleChange('bankAccount', v)}
                         />
                         <View className="mt-2">
-                            <Typography variant="body" className="text-gray-300 mb-2 font-body-bold">Accepted Methods</Typography>
+                            <Typography variant="body" className="text-slate-700 mb-2 font-body-bold">Accepted Methods</Typography>
                             <View className="flex-row flex-wrap gap-2">
                                 {formData.paymentMethods.map(method => (
                                     <View key={method} className="bg-primary-500/10 px-3.5 py-1.5 rounded-full border border-primary-500/25">
