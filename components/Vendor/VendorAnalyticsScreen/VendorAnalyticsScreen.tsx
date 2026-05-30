@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { T } from './analytics.theme';
 import { TimeRange } from './analytics.data';
 import { AnalyticsHeader } from './components/AnalyticsHeader';
 import { PerformanceCard } from './components/PerformanceCard';
@@ -17,13 +16,16 @@ export const VendorAnalyticsScreen: React.FC = () => {
   const headerPaddingTop = Math.max(insets.top, 20) + 10;
 
   return (
-    <View style={s.root}>
+    <View className="flex-1 bg-notchLight">
       <AnalyticsHeader
         range={range}
         onRangeChange={setRange}
         paddingTop={headerPaddingTop}
       />
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.scroll}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ padding: 20, paddingBottom: 40 }}
+      >
         <PerformanceCard />
         <EarningsCard />
         <StatsRow />
@@ -33,8 +35,3 @@ export const VendorAnalyticsScreen: React.FC = () => {
     </View>
   );
 };
-
-const s = StyleSheet.create({
-  root:   { flex: 1, backgroundColor: T.bg },
-  scroll: { padding: 20, paddingBottom: 40 },
-});

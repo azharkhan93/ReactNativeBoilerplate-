@@ -4,10 +4,10 @@ import { Calendar, BarChart3, User, Wrench } from 'lucide-react-native';
 import { Typography } from '@/components/theme';
 
 const QUICK_ACTIONS = [
-    { id: '1', label: 'Services', icon: Wrench, color: '#3b82f6', bg: '#1e3a5f' },
-    { id: '2', label: 'Schedule', icon: Calendar, color: '#a855f7', bg: '#3b1f5e' },
-    { id: '3', label: 'Insights', icon: BarChart3, color: '#22c55e', bg: '#1a3d2b' },
-    { id: '4', label: 'Profile', icon: User, color: '#f59e0b', bg: '#3d2e0f' },
+    { id: '1', label: 'Services', icon: Wrench, color: '#3b82f6' },
+    { id: '2', label: 'Schedule', icon: Calendar, color: '#a855f7' },
+    { id: '3', label: 'Insights', icon: BarChart3, color: '#22c55e' },
+    { id: '4', label: 'Profile', icon: User, color: '#f59e0b' },
 ];
 
 export const QuickActions: React.FC<{ onActionPress: (id: string) => void }> = ({ onActionPress }) => (
@@ -16,7 +16,7 @@ export const QuickActions: React.FC<{ onActionPress: (id: string) => void }> = (
             Quick Actions
         </Typography>
         <View className="flex-row justify-between">
-            {QUICK_ACTIONS.map(({ id, label, icon: Icon, color, bg }) => (
+            {QUICK_ACTIONS.map(({ id, label, icon: Icon, color }) => (
                 <TouchableOpacity
                     key={id}
                     onPress={() => onActionPress(id)}
@@ -24,10 +24,7 @@ export const QuickActions: React.FC<{ onActionPress: (id: string) => void }> = (
                     style={{ width: '22%' }}
                     activeOpacity={0.7}
                 >
-                    <View
-                        className="w-16 h-16 rounded-2xl items-center justify-center mb-2 border border-gray-800"
-                        style={{ backgroundColor: bg }}
-                    >
+                    <View className="w-16 h-16 bg-notchLight rounded-2xl items-center justify-center mb-2 border border-blue-200/40 shadow-sm shadow-slate-100">
                         <Icon size={24} color={color} />
                     </View>
                     <Typography variant="body-sm" className="text-slate-800 font-body-medium text-center">

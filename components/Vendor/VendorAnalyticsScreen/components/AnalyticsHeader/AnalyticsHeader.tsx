@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { CalendarDays } from 'lucide-react-native';
 import { Typography } from '@/components/theme';
-import { T } from '../../analytics.theme';
 import { TIME_RANGES, TimeRange } from '../../analytics.data';
 
 interface Props {
@@ -16,13 +15,16 @@ export const AnalyticsHeader: React.FC<Props> = ({
   onRangeChange,
   paddingTop,
 }) => (
-  <View style={[s.container, { paddingTop }]}>
+  <View
+    className="bg-notch border-b border-blue-200/50 rounded-b-2xl px-5 pb-5 z-50 mb-6 shadow-sm shadow-slate-100"
+    style={{ paddingTop }}
+  >
     <View className="flex-row items-center justify-between">
-      <Typography className="text-slate-900 text-xl font-heading-bold">
+      <Typography className="text-slate-900 text-lg font-heading-bold">
         Analytics
       </Typography>
-      <TouchableOpacity style={s.iconBtn}>
-        <CalendarDays size={18} color="#64748b" />
+      <TouchableOpacity className="w-9 h-9 bg-notchLight rounded-xl items-center justify-center border border-blue-200/40 shadow-sm shadow-slate-100">
+        <CalendarDays size={18} color="#3b82f6" />
       </TouchableOpacity>
     </View>
     <View className="flex-row mt-4 gap-2">
@@ -31,7 +33,7 @@ export const AnalyticsHeader: React.FC<Props> = ({
           key={r}
           onPress={() => onRangeChange(r)}
           className={`px-4 py-2 rounded-full ${
-            r === range ? 'bg-primary-500' : 'bg-slate-100'
+            r === range ? 'bg-primary-500 shadow-sm shadow-primary-500/20' : 'bg-white border border-slate-200/60'
           }`}
           activeOpacity={0.8}
         >
@@ -47,28 +49,3 @@ export const AnalyticsHeader: React.FC<Props> = ({
     </View>
   </View>
 );
-
-const s = StyleSheet.create({
-  container: {
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-    backgroundColor: T.card,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f1f5f9',
-    shadowColor: '#0f172a',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 3,
-  },
-  iconBtn: {
-    width: 36,
-    height: 36,
-    backgroundColor: '#f1f5f9',
-    borderRadius: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
