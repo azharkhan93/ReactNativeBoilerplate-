@@ -29,7 +29,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 }) => {
   const { featuredServices, nearbyServices, recommendedServices } = useHome();
 
-  
   const handleServicePress = (serviceId: string) =>
     console.log('Service:', serviceId);
   const handleViewAllProviders = () => onNavigate?.('nearbyProviders');
@@ -60,7 +59,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         <HeroSection />
 
         <View className="px-5 pt-6">
-          <Typography variant="body-lg" className="mb-4 font-bold text-slate-900">
+          <Typography
+            variant="body-lg"
+            className="mb-4 font-bold text-slate-900"
+          >
             Service Categories
           </Typography>
           <ScrollView
@@ -119,8 +121,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             onViewAllPress={handleViewAllProviders}
           />
         </View>
-
-        
       </ScrollView>
     </View>
   );

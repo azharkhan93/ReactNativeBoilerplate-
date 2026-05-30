@@ -31,7 +31,7 @@ export const TopBar: React.FC<TopBarProps> = ({
 
   return (
     <View
-      className="bg-[#D7E4F7] z-50 border-b border-[#c1d2eb]"
+      className="bg-notch z-50 border-b border-blue-200/40 rounded-b-2xl shadow-sm shadow-slate-100/50"
       style={{ paddingTop: insets.top }}
     >
       <View className="px-5 py-2">
