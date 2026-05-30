@@ -45,19 +45,21 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({
 
   return (
     <View className="flex-1 bg-notchLight">
+      <WelcomeHeader
+        topInset={top}
+        userName={userData.name}
+        avatarUrl={userData.avatarUrl}
+      />
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 40 }}
       >
-        <WelcomeHeader
-          topInset={top}
-          userName={userData.name}
-          avatarUrl={userData.avatarUrl}
-        />
-        <EarningsCard />
-        <QuickActions onActionPress={handleQuickActionPress} />
-        <BookingRequests pendingRequests={pendingRequests} />
+        <View className="mt-4">
+          <EarningsCard />
+          <QuickActions onActionPress={handleQuickActionPress} />
+          <BookingRequests pendingRequests={pendingRequests} />
+        </View>
       </ScrollView>
 
       <ServiceManagement

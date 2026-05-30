@@ -15,7 +15,7 @@ export const WelcomeHeader: React.FC<WelcomeHeaderProps> = ({
   avatarUrl,
 }) => (
   <View
-    className="px-5 pb-4"
+    className="bg-notch border-b border-blue-200/50 rounded-b-2xl px-5 pb-4 z-50 shadow-sm shadow-slate-100"
     style={{ paddingTop: Math.max(topInset, 20) + 10 }}
   >
     <View className="flex-row items-center justify-between">
