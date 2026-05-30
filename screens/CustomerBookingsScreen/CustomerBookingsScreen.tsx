@@ -38,7 +38,7 @@ export const CustomerBookingsScreen: React.FC<CustomerBookingsScreenProps> = ({ 
     return (
         <View className="flex-1 bg-notchLight">
             <View
-                className="bg-notch px-5 pb-4 border-b border-blue-200/50 z-50 mb-6"
+                className="bg-notch px-5 pb-4 border-b border-blue-200/50 rounded-b-2xl z-50 mb-6"
                 style={{ paddingTop: Math.max(insets.top, 20) + 10 }}
             >
                 <Typography variant="h3" className="text-slate-900 text-lg font-heading-bold">My Bookings</Typography>

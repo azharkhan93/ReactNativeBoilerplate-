@@ -81,7 +81,7 @@ export const BankAccountDetails: React.FC = () => {
 
   if (loading && !profile) {
     return (
-      <View className="flex-1 items-center justify-center bg-[#EEF4FC] p-10 min-h-[300px]">
+      <View className="flex-1 items-center justify-center bg-notchLight p-10 min-h-[300px]">
         <ActivityIndicator size="large" color="#3b82f6" />
         <Typography className="text-slate-400 mt-4 font-body">Loading Bank Details...</Typography>
       </View>
@@ -91,7 +91,7 @@ export const BankAccountDetails: React.FC = () => {
   return (
     <>
       <ScrollView
-        className="flex-1 bg-[#EEF4FC]"
+        className="flex-1 bg-notchLight"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingBottom: insets.bottom + 40,

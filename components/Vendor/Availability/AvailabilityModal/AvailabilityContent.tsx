@@ -79,7 +79,7 @@ export const AvailabilityContent: React.FC<{ onClose: () => void }> = ({ onClose
 
   if (loading && Object.keys(schedule).length === 0) {
     return (
-      <View className="flex-1 items-center justify-center bg-[#EEF4FC] p-10 min-h-[300px]">
+      <View className="flex-1 items-center justify-center bg-notchLight p-10 min-h-[300px]">
         <ActivityIndicator size="large" color="#3b82f6" />
         <Typography className="text-slate-400 mt-4 font-body">Loading Schedule...</Typography>
       </View>
@@ -90,7 +90,7 @@ export const AvailabilityContent: React.FC<{ onClose: () => void }> = ({ onClose
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ padding: 20, paddingBottom: 40 }}
-      className="bg-[#EEF4FC]"
+      className="bg-notchLight"
     >
       <WeekStrip />
       <Typography className="text-slate-900 text-base font-heading-semibold mb-1">
@@ -109,7 +109,7 @@ export const AvailabilityContent: React.FC<{ onClose: () => void }> = ({ onClose
               enabled: false,
               start: '09:00 AM',
               end: '06:00 PM',
-            }
+              }
           }
           onToggle={() => handleToggleDay(day)}
           onChangeStart={v => handleChangeStart(day, v)}

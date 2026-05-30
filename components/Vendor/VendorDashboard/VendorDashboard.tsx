@@ -44,7 +44,7 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({
   };
 
   return (
-    <View className="flex-1 bg-[#EEF4FC]">
+    <View className="flex-1 bg-notchLight">
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}

@@ -21,7 +21,7 @@ export const VendorAccountDetails: React.FC = () => {
 
     return (
         <ScrollView
-            className="flex-1 bg-[#EEF4FC]"
+            className="flex-1 bg-notchLight"
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
         >

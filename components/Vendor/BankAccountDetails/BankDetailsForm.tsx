@@ -95,16 +95,16 @@ export const BankDetailsForm: React.FC<BankDetailsFormProps> = ({
             <View className="w-12 h-12 bg-blue-500/10 border border-blue-500/20 rounded-full items-center justify-center mb-3">
               <Lock size={20} color="#3b82f6" />
             </View>
-            <Typography variant="subheading" className="text-white text-center font-body-bold">
+            <Typography variant="subheading" className="text-slate-900 text-center font-body-bold">
               {isEditMode ? 'Edit Payout Credentials' : 'Secure Payout Configuration'}
             </Typography>
-            <Typography variant="body-sm" className="text-gray-400 text-center px-4 mt-1 leading-5">
+            <Typography variant="body-sm" className="text-slate-500 text-center px-4 mt-1 leading-5">
               Banking data is protected with end-to-end industry-standard encryption protocols.
             </Typography>
           </View>
 
           {/* Form Input Group Panel */}
-          <View className="bg-gray-900/40 border border-gray-800 rounded-3xl p-5 mb-6">
+          <View className="bg-white border border-blue-200/40 rounded-3xl p-5 mb-6 shadow-sm shadow-slate-100">
             <FormInput
               label="Account Holder Name"
               placeholder="As per bank records"

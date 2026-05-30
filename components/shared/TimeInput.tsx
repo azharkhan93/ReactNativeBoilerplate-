@@ -4,7 +4,6 @@ import { ChevronUp, ChevronDown } from 'lucide-react-native';
 import { Typography } from '@/components/theme';
 import { parseTime, formatTime } from '@/helpers/dateHelpers';
 
-
 const Stepper: React.FC<{
     value: string;
     onInc: () => void;
@@ -12,11 +11,11 @@ const Stepper: React.FC<{
 }> = ({ value, onInc, onDec }) => (
     <View className="items-center mx-1">
         <TouchableOpacity onPress={onInc} className="p-1" activeOpacity={0.7}>
-            <ChevronUp size={16} color="#6b7280" />
+            <ChevronUp size={16} color="#64748b" />
         </TouchableOpacity>
-        <Typography className="text-white font-heading-bold text-base mx-1">{value}</Typography>
+        <Typography className="text-slate-900 font-heading-bold text-base mx-1">{value}</Typography>
         <TouchableOpacity onPress={onDec} className="p-1" activeOpacity={0.7}>
-            <ChevronDown size={16} color="#6b7280" />
+            <ChevronDown size={16} color="#64748b" />
         </TouchableOpacity>
     </View>
 );
@@ -42,10 +41,10 @@ export const TimeInput: React.FC<TimeInputProps> = ({ value, onChange }) => {
 
     if (editing) {
         return (
-            <View className="flex-1 bg-gray-800 border border-primary-500 rounded-xl px-2 py-2 items-center">
+            <View className="flex-1 bg-white border border-primary-500 rounded-xl px-2 py-2 items-center shadow-sm">
                 <View className="flex-row items-center">
                     <Stepper value={String(hours).padStart(2, '0')} onInc={incH} onDec={decH} />
-                    <Typography className="text-gray-400 font-heading-bold text-base">:</Typography>
+                    <Typography className="text-slate-400 font-heading-bold text-base">:</Typography>
                     <Stepper value={String(minutes).padStart(2, '0')} onInc={incM} onDec={decM} />
                     <TouchableOpacity
                         onPress={toggleP}
@@ -65,9 +64,9 @@ export const TimeInput: React.FC<TimeInputProps> = ({ value, onChange }) => {
         <TouchableOpacity
             onPress={() => setEditing(true)}
             activeOpacity={0.8}
-            className="flex-1 bg-gray-900 border border-gray-700 rounded-xl px-3 py-2.5 flex-row items-center justify-between">
-            <Typography className="text-white text-[13px] font-body-medium">{value}</Typography>
-            <View className="w-2 h-2 bg-gray-600 rounded-full" />
+            className="flex-1 bg-white border border-slate-200 rounded-xl px-3 py-2.5 flex-row items-center justify-between shadow-sm shadow-slate-100">
+            <Typography className="text-slate-900 text-[13px] font-body-medium">{value}</Typography>
+            <View className="w-2 h-2 bg-slate-400 rounded-full" />
         </TouchableOpacity>
     );
 };

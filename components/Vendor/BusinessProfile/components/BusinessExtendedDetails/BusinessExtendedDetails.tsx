@@ -41,7 +41,7 @@ export const BusinessExtendedDetails: React.FC<
     <View className="mt-3 mb-6">
       {/* Horizontally scrolling gallery */}
       <View className="flex-row items-center justify-between mb-3 px-0.5">
-        <Typography variant="subheading" className="text-white">
+        <Typography variant="subheading" className="text-slate-900 font-body-bold">
           Business Showcase Gallery
         </Typography>
         <TouchableOpacity
@@ -69,7 +69,7 @@ export const BusinessExtendedDetails: React.FC<
           {images.map((img, idx) => (
             <View
               key={idx}
-              className="w-[140px] h-[95px] rounded-[20px] overflow-hidden border border-slate-800 bg-[#0f1623]"
+              className="w-[140px] h-[95px] rounded-[20px] overflow-hidden border border-slate-200 bg-white shadow-sm"
             >
               <Image
                 source={{ uri: img }}
@@ -82,7 +82,7 @@ export const BusinessExtendedDetails: React.FC<
       ) : (
         <TouchableOpacity
           onPress={onEditPress}
-          className="w-full bg-[#0f1623] rounded-[24px] border border-slate-800 py-6 items-center justify-center mb-5"
+          className="w-full bg-white rounded-[24px] border border-slate-200 py-6 items-center justify-center mb-5 shadow-sm shadow-slate-100"
           style={s.dashedBorder}
           activeOpacity={0.8}
         >
@@ -91,13 +91,13 @@ export const BusinessExtendedDetails: React.FC<
           </View>
           <Typography
             variant="body-sm"
-            className="text-gray-400 font-body-semibold mt-2"
+            className="text-slate-500 font-body-semibold mt-2"
           >
             No portfolio images added yet
           </Typography>
           <Typography
             variant="body"
-            className="text-gray-600 text-center px-4 mt-1"
+            className="text-slate-400 text-center px-4 mt-1"
           >
             Showcase your storefront, workspace, or past detaily works to
             attract more customers.
@@ -106,13 +106,13 @@ export const BusinessExtendedDetails: React.FC<
       )}
 
       {/* Why Choose Us Proposition Section */}
-      <View className="bg-gray-900 border border-gray-800 rounded-3xl p-5 mb-5">
-        <View className="flex-row items-center justify-between mb-4 border-b border-gray-800/60 pb-3">
+      <View className="bg-white border border-blue-200/50 rounded-3xl p-5 mb-5 shadow-sm shadow-slate-100">
+        <View className="flex-row items-center justify-between mb-4 border-b border-slate-100 pb-3">
           <View className="flex-row items-center">
             <Sparkles size={18} color="#f59e0b" />
             <Typography
               variant="body"
-              className="text-white font-body-semibold ml-2"
+              className="text-slate-900 font-body-semibold ml-2"
             >
               Why Choose Me
             </Typography>
@@ -136,7 +136,7 @@ export const BusinessExtendedDetails: React.FC<
                 </View>
                 <Typography
                   variant="body-sm"
-                  className="text-gray-300 leading-5 flex-1"
+                  className="text-slate-600 leading-5 flex-1"
                 >
                   {item}
                 </Typography>
@@ -146,7 +146,7 @@ export const BusinessExtendedDetails: React.FC<
         ) : (
           <Typography
             variant="body-sm"
-            className="text-gray-500 italic leading-5"
+            className="text-slate-400 italic leading-5"
           >
             Add short, punchy value propositions (e.g. Eco-Friendly Products,
             5-Star Rated Service, Certified Detailing Experts) to display on
@@ -156,13 +156,13 @@ export const BusinessExtendedDetails: React.FC<
       </View>
 
       {/* Elaborated Description Section */}
-      <View className="bg-gray-900 border border-gray-800 rounded-3xl p-5">
-        <View className="flex-row items-center justify-between mb-4 border-b border-gray-800/60 pb-3">
+      <View className="bg-white border border-blue-200/50 rounded-3xl p-5 shadow-sm shadow-slate-100">
+        <View className="flex-row items-center justify-between mb-4 border-b border-slate-100 pb-3">
           <View className="flex-row items-center">
             <Info size={18} color="#3b82f6" />
             <Typography
               variant="body"
-              className="text-white font-body-semibold ml-2"
+              className="text-slate-900 font-body-semibold ml-2"
             >
               About Our Business
             </Typography>
@@ -182,14 +182,14 @@ export const BusinessExtendedDetails: React.FC<
         {description ? (
           <Typography
             variant="body-sm"
-            className="text-gray-300 leading-6 font-body"
+            className="text-slate-600 leading-6 font-body"
           >
             {description}
           </Typography>
         ) : (
           <Typography
             variant="body-sm"
-            className="text-gray-500 italic leading-5"
+            className="text-slate-400 italic leading-5"
           >
             Provide a complete story of your business: your services, quality
             standard, operating values, and what sets your experience apart.

@@ -69,10 +69,10 @@ export const BusinessExtendedDetailsForm: React.FC<BusinessExtendedDetailsFormPr
     >
       <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
         <View className="px-5 pt-2 pb-8">
-          <Typography variant="subheading" className="text-white mb-2">
+          <Typography variant="subheading" className="text-slate-900 font-body-bold mb-2">
             Business Gallery (Multiple Images)
           </Typography>
-          <Typography variant="body-sm" className="text-gray-500 mb-4">
+          <Typography variant="body-sm" className="text-slate-500 mb-4">
             Upload premium photos of your tools, storefront, or past works to showcase to customers.
           </Typography>
 
@@ -80,7 +80,7 @@ export const BusinessExtendedDetailsForm: React.FC<BusinessExtendedDetailsFormPr
           <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row mb-6">
             <View className="flex-row items-center gap-3">
               {imagesList.map((img, idx) => (
-                <View key={idx} className="relative w-[90px] h-[90px] rounded-[20px] overflow-hidden border border-slate-800">
+                <View key={idx} className="relative w-[90px] h-[90px] rounded-[20px] overflow-hidden border border-slate-200 bg-white">
                   <Image source={{ uri: img }} className="w-full h-full" resizeMode="cover" />
                   <TouchableOpacity
                     onPress={() => handleRemoveImage(idx)}
@@ -93,7 +93,7 @@ export const BusinessExtendedDetailsForm: React.FC<BusinessExtendedDetailsFormPr
               ))}
 
               {uploading ? (
-                <View className="w-[90px] h-[90px] rounded-[20px] border border-slate-800 bg-[#0f1623] items-center justify-center">
+                <View className="w-[90px] h-[90px] rounded-[20px] border border-slate-200 bg-slate-50 items-center justify-center">
                   <ActivityIndicator size="small" color="#3b82f6" />
                   <Typography variant="body" className="text-primary-400 mt-2 font-body-semibold">
                     Uploading...
@@ -115,7 +115,7 @@ export const BusinessExtendedDetailsForm: React.FC<BusinessExtendedDetailsFormPr
             </View>
           </ScrollView>
 
-          <Typography variant="subheading" className="text-white mb-4 mt-2">
+          <Typography variant="subheading" className="text-slate-900 font-body-bold mb-4 mt-2">
             Elaborated Information
           </Typography>
 
@@ -125,7 +125,7 @@ export const BusinessExtendedDetailsForm: React.FC<BusinessExtendedDetailsFormPr
             value={formData.description ?? ''}
             onChangeText={v => handleChange('description', v)}
             multiline
-            inputClassName="min-h-[140px] text-white"
+            inputClassName="min-h-[140px] text-black"
           />
 
           <View className="mt-4">
@@ -148,4 +148,3 @@ const s = StyleSheet.create({
     borderStyle: 'dashed',
   },
 });
-

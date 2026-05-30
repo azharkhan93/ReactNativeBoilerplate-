@@ -66,10 +66,10 @@ const HighlightItem: React.FC<HighlightItemProps> = ({
   return (
     <View
       className={`flex-row items-center justify-between p-3 ${
-        isLast ? '' : 'border-b border-gray-800/60'
+        isLast ? '' : 'border-b border-slate-100'
       }`}
     >
-      <Typography variant="body-sm" className="text-gray-300 flex-1 mr-4">
+      <Typography variant="body-sm" className="text-slate-700 flex-1 mr-4">
         • {item}
       </Typography>
       <TouchableOpacity
@@ -111,11 +111,11 @@ export const WhyChooseMeForm: React.FC<WhyChooseMeFormProps> = ({
         <View className="px-5 pt-2 pb-8">
           <View className="flex-row items-center mb-2">
             <Sparkles size={18} color="#f59e0b" />
-            <Typography variant="subheading" className="text-white ml-2">
+            <Typography variant="subheading" className="text-slate-900 font-body-bold ml-2">
               Why Choose My Business
             </Typography>
           </View>
-          <Typography variant="body-sm" className="text-gray-500 mb-6">
+          <Typography variant="body-sm" className="text-slate-500 mb-6">
             Add short, punchy reasons that will be displayed on your public
             profile to attract customers.
           </Typography>
@@ -143,13 +143,13 @@ export const WhyChooseMeForm: React.FC<WhyChooseMeFormProps> = ({
 
           <Typography
             variant="body"
-            className="text-white font-body-semibold mb-3"
+            className="text-slate-900 font-body-semibold mb-3"
           >
             Current Highlights ({items.length})
           </Typography>
 
           {items.length > 0 ? (
-            <View className="bg-gray-900 border border-gray-800 rounded-3xl p-2 mb-6">
+            <View className="bg-white border border-slate-200 rounded-3xl p-2 mb-6 shadow-sm">
               {items.map((item, idx) => (
                 <HighlightItem
                   key={idx}
@@ -161,10 +161,10 @@ export const WhyChooseMeForm: React.FC<WhyChooseMeFormProps> = ({
               ))}
             </View>
           ) : (
-            <View className="py-8 bg-gray-900/50 border border-dashed border-gray-800 rounded-3xl items-center justify-center mb-6">
+            <View className="py-8 bg-white border border-dashed border-slate-200 rounded-3xl items-center justify-center mb-6">
               <Typography
                 variant="body-sm"
-                className="text-gray-500 italic text-center px-4"
+                className="text-slate-400 italic text-center px-4"
               >
                 No value propositions added yet.
               </Typography>

@@ -33,11 +33,18 @@ interface DetailRowProps {
 }
 
 const DetailRow: React.FC<DetailRowProps> = ({ label, value, isLast }) => (
-  <View className={`flex-row items-start justify-between py-3 ${isLast ? '' : 'border-b border-gray-800/60'}`}>
-    <Typography variant="body-sm" className="text-gray-500 font-body">
+  <View
+    className={`flex-row items-start justify-between py-3 ${
+      isLast ? '' : 'border-b border-slate-100'
+    }`}
+  >
+    <Typography variant="body-sm" className="text-slate-500 font-body">
       {label}
     </Typography>
-    <Typography variant="body-sm" className="text-white font-body-semibold text-right max-w-[65%] leading-5">
+    <Typography
+      variant="body-sm"
+      className="text-slate-900 font-body-semibold text-right max-w-[65%] leading-5"
+    >
       {value || '—'}
     </Typography>
   </View>
@@ -49,15 +56,18 @@ const BusinessDetails: React.FC<BusinessDetailsProps> = ({
   onDeletePress,
   loading,
 }) => (
-  <View className=" border border-gray-800 rounded-3xl p-4 mb-5">
-    <View className="flex-row items-center justify-between pb-3 border-b border-gray-800/60 mb-4">
-      <Typography variant="subheading" className="text-white font-body-semibold">
+  <View className="bg-white border border-blue-200/50 rounded-3xl p-4 mb-5 shadow-sm shadow-slate-100">
+    <View className="flex-row items-center justify-between pb-3 border-b border-slate-100 mb-4">
+      <Typography
+        variant="subheading"
+        className="text-slate-900 font-body-semibold"
+      >
         Business Details
       </Typography>
       <View className="flex-row items-center gap-2">
         <TouchableOpacity
           onPress={onEditPress}
-          className="w-8 h-8 bg-gray-800 rounded-full items-center justify-center border border-gray-700"
+          className="w-8 h-8 bg-slate-50 rounded-full items-center justify-center border border-slate-200"
           activeOpacity={0.7}
         >
           <Pencil size={13} color="#3b82f6" />
@@ -73,7 +83,7 @@ const BusinessDetails: React.FC<BusinessDetailsProps> = ({
       </View>
     </View>
 
-    <View className="rounded-2xl overflow-hidden border border-gray-800 mb-4 bg-gray-950">
+    <View className="rounded-2xl overflow-hidden border border-slate-100 mb-4 bg-slate-50">
       {profile.imageUri ? (
         <Image
           source={{ uri: profile.imageUri }}
@@ -81,8 +91,8 @@ const BusinessDetails: React.FC<BusinessDetailsProps> = ({
           resizeMode="cover"
         />
       ) : (
-        <View className="w-full h-40 bg-gray-900 items-center justify-center">
-          <Building2 size={32} color="#4B5563" />
+        <View className="w-full h-40 bg-slate-100 items-center justify-center">
+          <Building2 size={32} color="#94a3b8" />
         </View>
       )}
     </View>
@@ -119,31 +129,49 @@ export const BusinessProfile: React.FC = () => {
   const [isExtendedModalOpen, setIsExtendedModalOpen] = useState(false);
   const [isWhyChooseMeModalOpen, setIsWhyChooseMeModalOpen] = useState(false);
 
-  const handleOpenExtended = useCallback(() => setIsExtendedModalOpen(true), []);
-  const handleCloseExtended = useCallback(() => setIsExtendedModalOpen(false), []);
-  const handleOpenWhyChooseMe = useCallback(() => setIsWhyChooseMeModalOpen(true), []);
-  const handleCloseWhyChooseMe = useCallback(() => setIsWhyChooseMeModalOpen(false), []);
+  const handleOpenExtended = useCallback(
+    () => setIsExtendedModalOpen(true),
+    [],
+  );
+  const handleCloseExtended = useCallback(
+    () => setIsExtendedModalOpen(false),
+    [],
+  );
+  const handleOpenWhyChooseMe = useCallback(
+    () => setIsWhyChooseMeModalOpen(true),
+    [],
+  );
+  const handleCloseWhyChooseMe = useCallback(
+    () => setIsWhyChooseMeModalOpen(false),
+    [],
+  );
 
-  const handleSaveExtended = useCallback(async (updatedData: BusinessProfileFormData) => {
-    await handleSaveProfile(updatedData);
-    setIsExtendedModalOpen(false);
-  }, [handleSaveProfile]);
+  const handleSaveExtended = useCallback(
+    async (updatedData: BusinessProfileFormData) => {
+      await handleSaveProfile(updatedData);
+      setIsExtendedModalOpen(false);
+    },
+    [handleSaveProfile],
+  );
 
-  const handleSaveWhyChooseMe = useCallback(async (updatedWhyChooseMe: string) => {
-    if (profile) {
-      await handleSaveProfile({
-        ...profile,
-        whyChooseMe: updatedWhyChooseMe,
-      });
-      setIsWhyChooseMeModalOpen(false);
-    }
-  }, [profile, handleSaveProfile]);
+  const handleSaveWhyChooseMe = useCallback(
+    async (updatedWhyChooseMe: string) => {
+      if (profile) {
+        await handleSaveProfile({
+          ...profile,
+          whyChooseMe: updatedWhyChooseMe,
+        });
+        setIsWhyChooseMeModalOpen(false);
+      }
+    },
+    [profile, handleSaveProfile],
+  );
 
   if (loading && !profile) {
     return (
-      <View className="flex-1 items-center justify-center bg-gray-950 p-10 min-h-[300px]">
+      <View className="flex-1 items-center justify-center bg-notchLight p-10 min-h-[300px]">
         <ActivityIndicator size="large" color="#3b82f6" />
-        <Typography className="text-gray-400 mt-4 font-body">
+        <Typography className="text-slate-400 mt-4 font-body">
           Loading Business Profile...
         </Typography>
       </View>
@@ -180,7 +208,7 @@ export const BusinessProfile: React.FC = () => {
   return (
     <>
       <ScrollView
-        className="flex-1 bg-gray-950"
+        className="flex-1 bg-notchLight"
         showsVerticalScrollIndicator={false}
       >
         <View className="px-5 pt-4 pb-8">

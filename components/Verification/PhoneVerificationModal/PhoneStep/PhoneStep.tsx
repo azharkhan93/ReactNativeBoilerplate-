@@ -1,17 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Phone } from 'lucide-react-native';
+
 import { Typography, Button, FormInput } from '@/components/theme';
 
-interface PhoneStepProps {
-  phoneNumber: string;
-  setPhoneNumber: (text: string) => void;
-  handleRequestOtp: () => void;
-  requestingSms: boolean;
-  phoneError: any;
-  isValid: boolean;
-  isInputLengthValid: boolean;
-}
+import { PhoneStepProps } from './types';
+import { phoneStepStyles } from './styles';
 
 export const PhoneStep: React.FC<PhoneStepProps> = ({
   phoneNumber,
@@ -23,11 +17,11 @@ export const PhoneStep: React.FC<PhoneStepProps> = ({
   isInputLengthValid,
 }) => (
   <>
-    <View className="w-16 h-16 bg-primary-500/10 rounded-full items-center justify-center mb-6 self-center">
+    <View className={phoneStepStyles.iconContainer}>
       <Phone size={32} color="#3b82f6" />
     </View>
 
-    <Typography variant="body" className="mb-6 text-center text-gray-400">
+    <Typography variant="body" className={phoneStepStyles.description}>
       Enter your mobile number to receive a verification code.
     </Typography>
 
@@ -39,8 +33,8 @@ export const PhoneStep: React.FC<PhoneStepProps> = ({
       onChangeText={v => setPhoneNumber(v.replace(/\D/g, '').slice(0, 10))}
       maxLength={10}
       icon={
-        <View className="flex-row items-center border-r border-gray-700 pr-3 mr-1">
-          <Typography variant="body" className="text-white font-body-bold">
+        <View className={phoneStepStyles.prefixContainer}>
+          <Typography variant="body" className={phoneStepStyles.prefixText}>
             +91
           </Typography>
         </View>
@@ -51,7 +45,7 @@ export const PhoneStep: React.FC<PhoneStepProps> = ({
     {phoneError && (
       <Typography
         variant="body"
-        className="text-red-500 text-center mb-4 text-xs font-body-medium"
+        className={phoneStepStyles.errorMessage}
       >
         Failed to send verification code. Please try again.
       </Typography>
@@ -61,7 +55,7 @@ export const PhoneStep: React.FC<PhoneStepProps> = ({
       onPress={handleRequestOtp}
       variant={isValid ? 'primary' : 'disabled'}
       loading={requestingSms}
-      className="w-full shadow-lg shadow-primary-500/30"
+      className={phoneStepStyles.button}
     >
       Get Verification Code
     </Button>
@@ -69,7 +63,7 @@ export const PhoneStep: React.FC<PhoneStepProps> = ({
     {!isValid && isInputLengthValid && (
       <Typography
         variant="body"
-        className="text-amber-500 text-center mt-3 text-xs font-body-medium"
+        className={phoneStepStyles.warningMessage}
       >
         Please enter a valid Indian number starting with 6-9
       </Typography>

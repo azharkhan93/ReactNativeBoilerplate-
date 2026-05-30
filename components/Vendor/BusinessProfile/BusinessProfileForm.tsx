@@ -37,16 +37,21 @@ export const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
   loading = false,
 }) => {
   const [formData, setFormData] = useState<BusinessProfileFormData>(EMPTY_FORM);
-  const [errors, setErrors] = useState<Partial<Record<keyof BusinessProfileFormData, string>>>({});
-  
-  const handleChange = useCallback((field: keyof BusinessProfileFormData, value: string | null) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    setErrors(prev => (prev[field] ? { ...prev, [field]: undefined } : prev));
-  }, []);
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof BusinessProfileFormData, string>>
+  >({});
+
+  const handleChange = useCallback(
+    (field: keyof BusinessProfileFormData, value: string | null) => {
+      setFormData(prev => ({ ...prev, [field]: value }));
+      setErrors(prev => (prev[field] ? { ...prev, [field]: undefined } : prev));
+    },
+    [],
+  );
 
   const { triggerUpload, uploading } = useImageUpload({
     fileName: 'storefront_logo.jpg',
-    onSuccess: (url) => handleChange('imageUri', url),
+    onSuccess: url => handleChange('imageUri', url),
   });
 
   const isEditMode = !!initialProfile?.id;
@@ -58,10 +63,13 @@ export const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
   }, [initialProfile, visible]);
 
   const validate = useCallback(() => {
-    const newErrors: Partial<Record<keyof BusinessProfileFormData, string>> = {};
+    const newErrors: Partial<Record<keyof BusinessProfileFormData, string>> =
+      {};
 
-    if (!formData.businessName.trim()) newErrors.businessName = 'Business name is required';
-    if (!formData.address?.trim()) newErrors.address = 'Business address is required';
+    if (!formData.businessName.trim())
+      newErrors.businessName = 'Business name is required';
+    if (!formData.address?.trim())
+      newErrors.address = 'Business address is required';
 
     if (formData.gstNumber && !GST_REGEX.test(formData.gstNumber)) {
       newErrors.gstNumber = 'Invalid GST format (e.g. 22AAAAA0000A1Z5)';
@@ -90,9 +98,15 @@ export const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
       height="92%"
       scrollable={false}
     >
-      <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+      >
         <View className="px-5 pt-2 pb-8">
-          <Typography variant="subheading" className="text-white mb-4">
+          <Typography
+            variant="subheading"
+            className="text-slate-900 font-body-bold mb-4"
+          >
             Business Information
           </Typography>
 
@@ -128,7 +142,9 @@ export const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
             prefix="+91"
             maxLength={10}
             value={formData.contactNumber ?? undefined}
-            onChangeText={v => handleChange('contactNumber', v.replace(/[^0-9]/g, ''))}
+            onChangeText={v =>
+              handleChange('contactNumber', v.replace(/[^0-9]/g, ''))
+            }
             error={errors.contactNumber}
           />
 
@@ -142,7 +158,10 @@ export const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
             inputClassName="min-h-[120px]"
           />
 
-          <Typography variant="subheading" className="text-white mb-3 mt-2">
+          <Typography
+            variant="subheading"
+            className="text-slate-900 font-body-bold mb-3 mt-2"
+          >
             Service Area
           </Typography>
 
@@ -156,11 +175,15 @@ export const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
                   className={`flex-1 py-3 rounded-2xl items-center border ${
                     selected
                       ? 'bg-primary-600/15 border-primary-500'
-                      : 'bg-gray-900 border-gray-800'
+                      : 'bg-white border-slate-200'
                   }`}
                 >
                   <Typography
-                    className={selected ? 'text-primary-400 font-body-semibold' : 'text-gray-400'}
+                    className={
+                      selected
+                        ? 'text-primary-400 font-body-semibold'
+                        : 'text-slate-500'
+                    }
                   >
                     {val}
                   </Typography>
@@ -169,7 +192,7 @@ export const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
             })}
           </View>
 
-          <View className="relative bg-gray-900 rounded-3xl overflow-hidden border border-gray-800 h-40 mb-6">
+          <View className="relative bg-white rounded-3xl overflow-hidden border border-slate-200 h-40 mb-6">
             <Image
               source={{
                 uri: 'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=800',
@@ -178,9 +201,9 @@ export const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
               resizeMode="cover"
             />
             <View className="absolute inset-0 items-center justify-center">
-              <View className="bg-white/10 px-4 py-2 rounded-full flex-row items-center border border-white/20">
-                <Globe size={14} color="white" />
-                <Typography className="text-white font-body-semibold ml-2 text-xs">
+              <View className="bg-slate-900/10 px-4 py-2 rounded-full flex-row items-center border border-slate-200">
+                <Globe size={14} color="#64748b" />
+                <Typography className="text-slate-600 font-body-semibold ml-2 text-xs">
                   LIVE PREVIEW
                 </Typography>
               </View>
@@ -188,11 +211,19 @@ export const BusinessProfileForm: React.FC<BusinessProfileFormProps> = ({
           </View>
 
           {isEditMode ? (
-            <Button variant="primary" onPress={handleSubmit} loading={loading || uploading}>
+            <Button
+              variant="primary"
+              onPress={handleSubmit}
+              loading={loading || uploading}
+            >
               Update Details →
             </Button>
           ) : (
-            <Button variant="primary" onPress={handleSubmit} loading={loading || uploading}>
+            <Button
+              variant="primary"
+              onPress={handleSubmit}
+              loading={loading || uploading}
+            >
               Add Details →
             </Button>
           )}
