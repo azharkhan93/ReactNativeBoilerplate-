@@ -18,6 +18,7 @@ export const getFeaturedServices = () => {
     discount: 20,
     rating: 4.8,
     category: s.category,
+    imageUrl: s.image,
   }));
 };
 
@@ -32,6 +33,7 @@ export const getNearbyServices = () => {
     rating: 4.9,
     isFavorite: false,
     category: s.category,
+    imageUrl: s.image,
   }));
 };
 
@@ -46,6 +48,7 @@ export const getRecommendedServices = () => {
     rating: 4.7,
     isFavorite: true,
     category: s.category,
+    imageUrl: s.image,
   }));
 };
 

@@ -1,10 +1,12 @@
 import { useQuery } from '@apollo/client/react';
+
+import { useFragment } from '@/__generated__/fragment-masking';
+import type { GetVendorProfilesQuery } from '@/__generated__/graphql';
+
 import {
   GET_VENDOR_PROFILES,
   VENDOR_PROFILE_FIELDS,
 } from '../../vendorQueries';
-import { useFragment } from '@/__generated__/fragment-masking';
-import type { GetVendorProfilesQuery } from '@/__generated__/graphql';
 
 export const useRecentlyAdded = () => {
   const { data, loading, error, refetch } =
@@ -25,9 +27,10 @@ export const useRecentlyAdded = () => {
   });
 
   return {
-    vendors: (unmaskedVendors || []).filter(v => parseFloat(v.serviceRadius ?? '0') <= 4),
+    vendors: unmaskedVendors ?? [],
     loading,
     error,
     refetch,
   };
 };
+
