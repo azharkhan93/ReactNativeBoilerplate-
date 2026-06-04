@@ -75,7 +75,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
 
   return (
     <SafeAreaView
-      edges={['bottom', 'left', 'right']}
+      edges={['top', 'bottom', 'left', 'right']}
       style={{ flex: 1, backgroundColor: '#F1F6FD' }}
     >
       <View style={{ flex: 1 }}>

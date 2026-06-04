@@ -1,5 +1,4 @@
 import { useQuery } from '@apollo/client/react';
-
 import { useFragment } from '@/__generated__/fragment-masking';
 import type { GetVendorProfilesQuery } from '@/__generated__/graphql';
 
