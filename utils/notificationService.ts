@@ -1,5 +1,17 @@
-import messaging from '@react-native-firebase/messaging';
+import { getApp } from '@react-native-firebase/app';
+import {
+  getMessaging,
+  requestPermission,
+  getToken,
+  onMessage,
+  AuthorizationStatus,
+} from '@react-native-firebase/messaging';
 import { Platform, PermissionsAndroid } from 'react-native';
+
+const getMessagingInstance = () => {
+  const app = getApp();
+  return getMessaging(app);
+};
 
 export const requestNotificationPermission = async (): Promise<boolean> => {
   if (Platform.OS === 'android' && Platform.Version >= 33) {
@@ -9,11 +21,17 @@ export const requestNotificationPermission = async (): Promise<boolean> => {
     return granted === PermissionsAndroid.RESULTS.GRANTED;
   }
 
-  const authStatus = await messaging().requestPermission();
-  return (
-    authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-    authStatus === messaging.AuthorizationStatus.PROVISIONAL
-  );
+  try {
+    const messaging = getMessagingInstance();
+    const authStatus = await requestPermission(messaging);
+    return (
+      authStatus === AuthorizationStatus.AUTHORIZED ||
+      authStatus === AuthorizationStatus.PROVISIONAL
+    );
+  } catch (error) {
+    console.error('[FCM] Permission request failed:', error);
+    return false;
+  }
 };
 
 export const getFCMToken = async (): Promise<string | null> => {
@@ -24,7 +42,8 @@ export const getFCMToken = async (): Promise<string | null> => {
       return null;
     }
 
-    const token = await messaging().getToken();
+    const messaging = getMessagingInstance();
+    const token = await getToken(messaging);
     console.log('[FCM] Device Token:', token);
     return token;
   } catch (error) {
@@ -34,10 +53,16 @@ export const getFCMToken = async (): Promise<string | null> => {
 };
 
 export const listenToForegroundNotifications = () => {
-  return messaging().onMessage(async remoteMessage => {
-    console.log(
-      '[FCM] Foreground message received:',
-      JSON.stringify(remoteMessage, null, 2),
-    );
-  });
+  try {
+    const messaging = getMessagingInstance();
+    return onMessage(messaging, async remoteMessage => {
+      console.log(
+        '[FCM] Foreground message received:',
+        JSON.stringify(remoteMessage, null, 2),
+      );
+    });
+  } catch (error) {
+    console.error('[FCM] Failed to register foreground listener:', error);
+    return () => {};
+  }
 };

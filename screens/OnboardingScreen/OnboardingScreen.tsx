@@ -16,10 +16,15 @@ const { width } = Dimensions.get('window');
 
 interface OnboardingScreenProps {
   onFinish: (role: UserRole) => void;
+  onLocationSelect?: (data: {
+    address: string;
+    coords: { latitude: number; longitude: number };
+  }) => void;
 }
 
 export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
   onFinish,
+  onLocationSelect,
 }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
@@ -68,7 +73,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
 
     return (
       <View style={{ width, flex: 1 }}>
-        <LocationStep onBack={handleBack} />
+        <LocationStep onLocationSelect={onLocationSelect} />
       </View>
     );
   };

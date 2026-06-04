@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useQuery, useSubscription } from '@apollo/client/react';
 import { gql } from '@/__generated__';
-import { Location } from '@/data/mockTracking';
+import { Location } from './types';
 
 const GET_DRIVER_LOCATION = gql(`
   query GetDriverLocation($bookingId: ID!) {

@@ -40,7 +40,7 @@ export const TopBar: React.FC<TopBarProps> = ({
             <View className="bg-white/85 p-2 rounded-full mr-3 border border-blue-200/50">
               <MapPin size={18} color="#3b82f6" />
             </View>
-            <View>
+            <View className="flex-1">
               <Typography variant="body-sm" className="!text-slate-600 font-medium">
                 Current Location
               </Typography>
@@ -48,6 +48,7 @@ export const TopBar: React.FC<TopBarProps> = ({
                 variant="body"
                 className="font-body-bold !text-black"
                 numberOfLines={1}
+                ellipsizeMode="tail"
               >
                 {location}
               </Typography>

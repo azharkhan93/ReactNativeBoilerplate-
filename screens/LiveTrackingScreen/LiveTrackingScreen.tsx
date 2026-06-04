@@ -10,66 +10,82 @@ import {
 } from '@/components/theme';
 import { MOCK_TRACKING_SESSION } from '@/data/mockTracking';
 import { useLiveTracking } from './useLiveTracking';
-
-export interface LiveTrackingScreenProps {
-  onNavigate?: (route: string) => void;
-}
+import { useTrackingSimulation } from './useTrackingSimulation';
+import { LiveTrackingScreenProps } from './types';
+import { liveTrackingStyles } from './styles';
 
 export const LiveTrackingScreen: React.FC<LiveTrackingScreenProps> = ({
   onNavigate,
+  bookingId = 'bk_1',
+  initialLocation = MOCK_TRACKING_SESSION.currentLocation,
+  initialEta = MOCK_TRACKING_SESSION.estimatedArrivalMinutes,
+  destination = MOCK_TRACKING_SESSION.destination,
 }) => {
   const insets = useSafeAreaInsets();
-  const { currentLocation, eta, status } = useLiveTracking(
-    MOCK_TRACKING_SESSION.id,
-    MOCK_TRACKING_SESSION.currentLocation,
-    MOCK_TRACKING_SESSION.estimatedArrivalMinutes,
+
+  // 1. Run simulator to push location updates to backend in dev mode
+  useTrackingSimulation(
+    bookingId,
+    initialLocation,
+    destination,
+    initialEta,
+    __DEV__,
   );
 
+  // 2. Fetch driver location and subscribe to real-time updates from backend
+  const { currentLocation, eta, status } = useLiveTracking(
+    bookingId,
+    initialLocation,
+    initialEta,
+  );
+
+  const displayEta = typeof eta === 'number' ? eta : 0;
+
   return (
-    <View className="flex-1 bg-white">
+    <View className={liveTrackingStyles.container}>
       <TrackingMap
         driverLocation={currentLocation}
-        destination={MOCK_TRACKING_SESSION.destination}
+        destination={destination}
         driverPhotoUrl={MOCK_TRACKING_SESSION.driver.photoUrl}
       />
 
       <View
-        className="absolute top-0 left-0 right-0 px-5 flex-row items-center justify-between z-20"
+        className={liveTrackingStyles.topBarContainer}
         style={{ paddingTop: Math.max(insets.top, 20) }}
       >
         <TouchableOpacity
           onPress={() => onNavigate?.('home')}
-          className="bg-white p-3 rounded-2xl shadow-xl border border-gray-100"
+          className={liveTrackingStyles.iconButton}
         >
           <ChevronLeft size={24} color="black" />
         </TouchableOpacity>
 
-        <View className="bg-white px-5 py-3 rounded-2xl shadow-xl border border-gray-100 items-center">
+        <View className={liveTrackingStyles.etaCard}>
           <Typography
             variant="body-sm"
-            className="text-gray-400 font-bold uppercase tracking-wider text-[10px]"
+            className={liveTrackingStyles.etaLabel}
           >
             ESTIMATED ARRIVAL
           </Typography>
-          <Typography variant="h3" className="text-primary-600 font-black">
-            {eta} MINS
+          <Typography variant="h3" className={liveTrackingStyles.etaValue}>
+            {displayEta} MINS
           </Typography>
         </View>
 
-        <TouchableOpacity className="bg-white p-3 rounded-2xl shadow-xl border border-gray-100">
+        <TouchableOpacity className={liveTrackingStyles.iconButton}>
           <MoreVertical size={24} color="black" />
         </TouchableOpacity>
       </View>
 
-      <View className="absolute bottom-6 left-5 right-5 z-20">
-        <View className="mb-4 flex-row items-center justify-center">
-          <View className="bg-black/80 px-4 py-2 rounded-full flex-row items-center">
+      <View className={liveTrackingStyles.bottomContainer}>
+        <View className={liveTrackingStyles.statusWrapper}>
+          <View className={liveTrackingStyles.statusBadge}>
             <Info size={14} color="white" />
             <Typography
               variant="body-sm"
-              className="ml-2 text-white font-medium text-center"
+              className={liveTrackingStyles.statusText}
             >
-              {status === 'completed' || eta === 0
+              {status === 'completed' || displayEta === 0
                 ? 'Wash service completed successfully!'
                 : status === 'arrived'
                 ? 'Driver has arrived at your location'
@@ -82,10 +98,10 @@ export const LiveTrackingScreen: React.FC<LiveTrackingScreenProps> = ({
 
         <Button
           variant="primary"
-          className="mt-4 shadow-lg"
+          className={liveTrackingStyles.button}
           onPress={() => onNavigate?.('ratingReview')}
         >
-          {eta === 0
+          {displayEta === 0
             ? 'Complete & Rate Wash →'
             : 'Proceed to Rating & Review →'}
         </Button>

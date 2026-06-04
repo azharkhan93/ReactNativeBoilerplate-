@@ -48,6 +48,15 @@ export const AppNavigator: React.FC = () => {
   const [showPhoneModal, setShowPhoneModal] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
 
+  const [userLocation, setUserLocation] = useState<{
+    address: string;
+    coords: { latitude: number; longitude: number };
+  }>({
+    address: 'Dubai, UAE',
+    coords: { latitude: 25.2048, longitude: 55.2708 },
+  });
+  const [trackingParams, setTrackingParams] = useState<any>(null);
+
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<FilterValues>({
     categoryId: null,
@@ -80,6 +89,9 @@ export const AppNavigator: React.FC = () => {
     if (route === 'vendorDetails' && params?.vendorId) {
       setSelectedVendorId(params.vendorId);
     }
+    if (route === 'liveTracking' && params) {
+      setTrackingParams(params);
+    }
     setActiveTab(route);
   };
 
@@ -92,7 +104,12 @@ export const AppNavigator: React.FC = () => {
   };
 
   if (showOnboarding) {
-    return <OnboardingScreen onFinish={handleOnboardingFinish} />;
+    return (
+      <OnboardingScreen
+        onFinish={handleOnboardingFinish}
+        onLocationSelect={setUserLocation}
+      />
+    );
   }
 
   const renderScreen = () => {
@@ -124,6 +141,16 @@ export const AppNavigator: React.FC = () => {
         <VendorDetailScreen
           vendorId={selectedVendorId}
           onNavigate={handleNavigate}
+        />
+      );
+    }
+
+    if (activeTab === 'liveTracking') {
+      return (
+        <LiveTrackingScreen
+          onNavigate={handleNavigate}
+          destination={userLocation.coords}
+          {...trackingParams}
         />
       );
     }
@@ -165,6 +192,7 @@ export const AppNavigator: React.FC = () => {
             setSearchValue(q);
             setSearchTerm(q);
           }}
+          location={userLocation.address}
         />
       )}
 

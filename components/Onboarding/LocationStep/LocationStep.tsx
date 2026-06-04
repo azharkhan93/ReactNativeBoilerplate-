@@ -30,7 +30,16 @@ const { width } = Dimensions.get('window');
 const DEFAULT_LOC = { latitude: 25.2048, longitude: 55.2708 };
 const DELTAS = { latitudeDelta: 0.0122, longitudeDelta: 0.0121 };
 
-export const LocationStep: React.FC<{ onBack: () => void }> = () => {
+export interface LocationStepProps {
+  onLocationSelect?: (data: {
+    address: string;
+    coords: { latitude: number; longitude: number };
+  }) => void;
+}
+
+export const LocationStep: React.FC<LocationStepProps> = ({
+  onLocationSelect,
+}) => {
   const mapRef = useRef<MapView>(null);
   const [pos, setPos] = useState<{
     latitude: number;
@@ -55,13 +64,17 @@ export const LocationStep: React.FC<{ onBack: () => void }> = () => {
       if (geoData) {
         setAddress(geoData.address);
         setQuery(geoData.full);
+        onLocationSelect?.({
+          address: geoData.address,
+          coords: { latitude, longitude },
+        });
       }
     } catch (e) {
       console.error('Location Error:', e);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [onLocationSelect]);
 
   const handleDismissKeyboard = useCallback(() => {
     Keyboard.dismiss();
@@ -69,7 +82,11 @@ export const LocationStep: React.FC<{ onBack: () => void }> = () => {
 
   const handleQueryChange = useCallback((text: string) => {
     setQuery(text);
-  }, []);
+    onLocationSelect?.({
+      address: text,
+      coords: pos || DEFAULT_LOC,
+    });
+  }, [onLocationSelect, pos]);
 
   useEffect(() => {
     check(LOC_PERMISSION).then(s => {

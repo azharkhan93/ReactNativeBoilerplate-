@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { View, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Typography, BookingCard } from '@/components/theme';
 import { MOCK_BOOKINGS} from '@/data/mockBookings';
 
 export interface CustomerBookingsScreenProps {
-    onNavigate?: (route: string) => void;
+    onNavigate?: (route: string, params?: any) => void;
 }
 
 type BookingTab = 'active' | 'past' | 'cancelled';
@@ -59,14 +59,18 @@ export const CustomerBookingsScreen: React.FC<CustomerBookingsScreenProps> = ({ 
             </View>
 
 
-            <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120 }}>
+            <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
                 {bookings.length > 0 ? (
                     bookings.map(b => (
                         <BookingCard 
                             key={b.id} 
                             booking={b} 
-                            onTrackPress={() => onNavigate?.('liveTracking')} 
-                            onReviewPress={() => onNavigate?.('ratingReview')}
+                            onTrackPress={(booking) => onNavigate?.('liveTracking', {
+                                bookingId: booking.id,
+                                initialLocation: { latitude: booking.provider.latitude, longitude: booking.provider.longitude },
+                                initialEta: booking.status === 'on_the_way' ? 8 : 12,
+                            })} 
+                            onReviewPress={(booking) => onNavigate?.('ratingReview', { bookingId: booking.id })}
                         />
                     ))
                 ) : (
@@ -79,4 +83,10 @@ export const CustomerBookingsScreen: React.FC<CustomerBookingsScreenProps> = ({ 
         </View>
     );
 };
+
+const styles = StyleSheet.create({
+    scrollContent: {
+        paddingBottom: 120,
+    },
+});
 
