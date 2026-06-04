@@ -11,6 +11,7 @@ import {
 import { MOCK_TRACKING_SESSION } from '@/data/mockTracking';
 import { useLiveTracking } from './useLiveTracking';
 import { useTrackingSimulation } from './useTrackingSimulation';
+import { useTrackingNotifications } from './hooks';
 import { LiveTrackingScreenProps } from './types';
 import { liveTrackingStyles } from './styles';
 
@@ -20,6 +21,7 @@ export const LiveTrackingScreen: React.FC<LiveTrackingScreenProps> = ({
   initialLocation = MOCK_TRACKING_SESSION.currentLocation,
   initialEta = MOCK_TRACKING_SESSION.estimatedArrivalMinutes,
   destination = MOCK_TRACKING_SESSION.destination,
+  vendorName = 'Elite Car Wash',
 }) => {
   const insets = useSafeAreaInsets();
 
@@ -37,6 +39,14 @@ export const LiveTrackingScreen: React.FC<LiveTrackingScreenProps> = ({
     bookingId,
     initialLocation,
     initialEta,
+  );
+
+  // 3. Monitor driver progress and trigger in-app notifications
+  useTrackingNotifications(
+    bookingId,
+    vendorName,
+    currentLocation,
+    destination,
   );
 
   const displayEta = typeof eta === 'number' ? eta : 0;

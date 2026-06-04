@@ -78,9 +78,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                   key={category.id}
                   name={category.name}
                   icon={category.icon}
-                  className={
-                    isSelected ? 'bg-primary-500/20 border-primary-500' : ''
-                  }
+                  variant={isSelected ? 'primary' : 'default'}
                   onPress={() => onSelectCategory?.(category.id)}
                 />
               );
@@ -92,6 +90,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <RecentlyAdded
             title="Latest Added Providers"
             onVendorPress={handleVendorPress}
+            activeCategoryId={activeFilters?.categoryId}
           />
         </View>
 

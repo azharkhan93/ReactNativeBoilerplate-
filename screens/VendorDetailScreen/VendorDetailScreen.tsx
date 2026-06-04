@@ -182,6 +182,7 @@ export const VendorDetailScreen: React.FC<VendorDetailScreenProps> = ({
               location: selectedLocation,
               price: resolvedPrice,
               bookingDate: selectedDate?.toISOString(),
+              vendorName: vendor.businessName,
             });
           }
         }}

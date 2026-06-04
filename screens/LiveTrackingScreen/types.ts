@@ -9,4 +9,5 @@ export interface LiveTrackingScreenProps {
   initialLocation?: Location;
   initialEta?: number;
   destination?: Location;
+  vendorName?: string;
 }

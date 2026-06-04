@@ -7,6 +7,18 @@ import {
   AuthorizationStatus,
 } from '@react-native-firebase/messaging';
 import { Platform, PermissionsAndroid } from 'react-native';
+import { Subject } from 'rxjs';
+
+export interface InAppNotification {
+  title: string;
+  body: string;
+}
+
+export const notificationSubject = new Subject<InAppNotification>();
+
+export const showLocalNotification = (title: string, body: string) => {
+  notificationSubject.next({ title, body });
+};
 
 const getMessagingInstance = () => {
   const app = getApp();
@@ -60,6 +72,12 @@ export const listenToForegroundNotifications = () => {
         '[FCM] Foreground message received:',
         JSON.stringify(remoteMessage, null, 2),
       );
+      if (remoteMessage.notification) {
+        showLocalNotification(
+          remoteMessage.notification.title ?? 'Notification',
+          remoteMessage.notification.body ?? '',
+        );
+      }
     });
   } catch (error) {
     console.error('[FCM] Failed to register foreground listener:', error);

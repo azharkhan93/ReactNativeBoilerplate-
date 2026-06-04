@@ -15,13 +15,25 @@ import { useRecentlyAdded } from './hooks/useRecentlyAdded';
 export interface RecentlyAddedProps {
   title?: string;
   onVendorPress?: (vendorId: string) => void;
+  activeCategoryId?: string | null;
 }
 
 export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
   title = 'Recently Added',
   onVendorPress,
+  activeCategoryId,
 }) => {
   const { vendors: gqlVendors, loading } = useRecentlyAdded();
+
+  const vendors = React.useMemo(() => {
+    const rawList = gqlVendors || [];
+    if (!activeCategoryId) {
+      return rawList;
+    }
+    return rawList.filter((vendor: any) =>
+      vendor.categories?.some((cat: any) => cat.id === activeCategoryId),
+    );
+  }, [gqlVendors, activeCategoryId]);
 
   if (loading) {
     return (
@@ -30,8 +42,6 @@ export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
       </View>
     );
   }
-
-  const vendors = gqlVendors || [];
 
   return (
     <View className="px-4 py-4">

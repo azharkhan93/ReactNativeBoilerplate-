@@ -15,6 +15,11 @@ export const VENDOR_PROFILE_FIELDS = gql(`
     whyChooseMe
     description
     images
+    categories {
+      id
+      name
+      icon
+    }
   }
 `);
 

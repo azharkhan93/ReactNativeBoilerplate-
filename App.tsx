@@ -7,25 +7,13 @@ import { apolloClient } from '@/utils/apolloClient';
 import { AppNavigator } from '@/navigation/AppNavigator';
 import { KeyboardDismissView } from '@/components/theme';
 import { AnimatedSplashScreen } from '@/components/shared/AnimatedSplashScreen';
-import { getFCMToken, listenToForegroundNotifications } from '@/utils/notificationService';
+import { listenToForegroundNotifications } from '@/utils/notificationService';
+import { NotificationBanner } from '@/components/NotificationBanner';
 
 export default function App() {
   const [splashFinished, setSplashFinished] = useState(false);
 
   useEffect(() => {
-    // Register FCM for push notifications
-    const setupFCM = async () => {
-      try {
-        const token = await getFCMToken();
-        if (token) {
-          console.log('[FCM] Registered token successfully:', token);
-        }
-      } catch (err) {
-        console.error('[FCM] Setup failed:', err);
-      }
-    };
-    setupFCM();
-
     // Subscribe to foreground messaging listener
     const unsubscribe = listenToForegroundNotifications();
 
@@ -45,6 +33,7 @@ export default function App() {
             <AppNavigator />
           )}
         </KeyboardDismissView>
+        <NotificationBanner />
       </SafeAreaProvider>
     </ApolloProvider>
   );

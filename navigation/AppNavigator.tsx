@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client/react';
 import { TopBar } from '@/components/TopBar';
 import { useVendorSearch } from '@/hooks/useVendorSearch';
 import { BottomTabNavigator } from '@/components/BottomTabNavigator';
+import { useRegisterDeviceToken } from '@/hooks/useRegisterDeviceToken';
 import { FilterModal, FilterValues } from '@/components/FilterModal';
 import {
   HomeScreen,
@@ -44,6 +45,7 @@ export const AppNavigator: React.FC = () => {
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [searchValue, setSearchValue] = useState<string>('');
   const { data, setSearchTerm } = useVendorSearch();
+  const { registerToken } = useRegisterDeviceToken();
   const [showOnboarding, setShowOnboarding] = useState(true);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
@@ -71,6 +73,12 @@ export const AppNavigator: React.FC = () => {
     };
     fetchUserId();
   }, [showOnboarding, activeTab]);
+
+  useEffect(() => {
+    if (userId) {
+      registerToken(userId);
+    }
+  }, [userId, registerToken]);
 
   const { data: avatarData } = useQuery(GET_USER_AVATAR, {
     variables: { id: userId ?? '' },

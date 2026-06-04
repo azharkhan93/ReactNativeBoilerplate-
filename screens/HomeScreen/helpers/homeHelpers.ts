@@ -6,9 +6,7 @@ export interface FilterValues {
   sortBy: string | null;
 }
 
-/**
- * Maps MOCK_SERVICES to the format expected by the FlashSale (Special Offers) component.
- */
+
 export const getFeaturedServices = () => {
   return MOCK_SERVICES.map(s => ({
     id: s.id,
