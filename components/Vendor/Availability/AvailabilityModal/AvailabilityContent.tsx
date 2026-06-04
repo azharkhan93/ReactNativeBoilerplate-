@@ -158,7 +158,7 @@ export const AvailabilityContent: React.FC<{ onClose: () => void }> = ({ onClose
             key={b.id}
             breakItem={b}
             onEdit={() => {
-              const parts = b.time.split(' - ');
+              const parts = (b.time ?? '').split(' - ');
               setBreakForm({
                 name: b.label,
                 start: parts[0] || '12:00 PM',

@@ -1,56 +1,29 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/client/react';
+
+import { ExceptionType } from '@/__generated__/graphql';
+import { useFragment } from '@/__generated__/fragment-masking';
+import { getUserId } from '@/utils/store/authStore';
+
+import { DaySchedule, BreakTime, AvailabilityException } from '../types/types';
+import { DAYS, DAY_TO_NUMBER, MONTH_NAMES } from '../constants';
 import {
   GET_VENDOR_PROFILE,
   GET_VENDOR_AVAILABILITY,
   SAVE_FULL_AVAILABILITY,
   VENDOR_PROFILE_FIELDS,
 } from '../../vendorQueries';
-import { DaySchedule, BreakTime, AvailabilityException } from '../types/types';
-import { DAYS } from '../constants';
-import { getUserId } from '@/utils/store/authStore';
-import { ExceptionType } from '@/__generated__/graphql';
-import { useFragment } from '@/__generated__/fragment-masking';
-
-const DAY_TO_NUMBER: Record<string, number> = {
-  Monday: 1,
-  Tuesday: 2,
-  Wednesday: 3,
-  Thursday: 4,
-  Friday: 5,
-  Saturday: 6,
-  Sunday: 7,
-};
-
-const MONTH_NAMES = [
-  'JAN',
-  'FEB',
-  'MAR',
-  'APR',
-  'MAY',
-  'JUN',
-  'JUL',
-  'AUG',
-  'SEP',
-  'OCT',
-  'NOV',
-  'DEC',
-];
 
 export const useVendorAvailability = () => {
   const [userId, setUserId] = useState<string | null>(null);
-
-  useEffect(() => {
-    getUserId().then(id => {
-      if (id) setUserId(id);
-    });
-  }, []);
-
   const [schedule, setSchedule] = useState<Record<string, DaySchedule>>({});
   const [breaks, setBreaks] = useState<BreakTime[]>([]);
   const [exceptions, setExceptions] = useState<AvailabilityException[]>([]);
 
-  // 1. Fetch Vendor Profile to get vendorProfileId
+  useEffect(() => {
+    getUserId().then(id => id && setUserId(id));
+  }, []);
+
   const { data: profileData, loading: loadingProfile } = useQuery(
     GET_VENDOR_PROFILE,
     {
@@ -59,10 +32,12 @@ export const useVendorAvailability = () => {
     },
   );
 
-  const profile = useFragment(VENDOR_PROFILE_FIELDS, profileData?.getVendorProfile);
+  const profile = useFragment(
+    VENDOR_PROFILE_FIELDS,
+    profileData?.getVendorProfile,
+  );
   const vendorProfileId = profile?.id;
 
-  // 2. Fetch Availability once vendorProfileId is loaded
   const {
     data: availData,
     loading: loadingAvail,
@@ -76,25 +51,26 @@ export const useVendorAvailability = () => {
     SAVE_FULL_AVAILABILITY,
   );
 
-  // Sync GQL availability payload with local React state
   useEffect(() => {
     if (availData?.getVendorAvailability) {
       const avail = availData.getVendorAvailability;
-
-     
-      const newSchedule: Record<string, DaySchedule> = {};
-      DAYS.forEach(day => {
-        const num = DAY_TO_NUMBER[day];
-        const match = avail.schedule.find(s => s.dayOfWeek === num);
-        newSchedule[day] = {
-          enabled: match ? match.isActive : false,
-          start: match ? match.startTime : '09:00 AM',
-          end: match ? match.endTime : '06:00 PM',
-        };
-      });
+      const newSchedule = Object.fromEntries(
+        DAYS.map(day => {
+          const match = avail.schedule.find(
+            s => s.dayOfWeek === DAY_TO_NUMBER[day],
+          );
+          return [
+            day,
+            {
+              enabled: match?.isActive ?? false,
+              start: match?.startTime ?? '09:00 AM',
+              end: match?.endTime ?? '06:00 PM',
+            },
+          ];
+        }),
+      );
       setSchedule(newSchedule);
 
-     
       setBreaks(
         avail.breaks.map(b => ({
           id: b.id,
@@ -104,7 +80,6 @@ export const useVendorAvailability = () => {
         })),
       );
 
-      // 3. Map exceptions
       setExceptions(
         avail.exceptions.map(ex => {
           const dateObj = new Date(ex.date);
@@ -113,7 +88,8 @@ export const useVendorAvailability = () => {
             month: MONTH_NAMES[dateObj.getMonth()] || 'MAY',
             day: dateObj.getDate() || 1,
             label: ex.description || 'Custom Exception',
-            type: ex.type === ExceptionType.BlockedOut ? 'blocked' : 'shortened',
+            type:
+              ex.type === ExceptionType.BlockedOut ? 'blocked' : 'shortened',
           };
         }),
       );
@@ -124,31 +100,36 @@ export const useVendorAvailability = () => {
     setSchedule(prev => ({
       ...prev,
       [day]: {
-        ...prev[day],
         enabled: !prev[day]?.enabled,
+        start: prev[day]?.start ?? '09:00 AM',
+        end: prev[day]?.end ?? '06:00 PM',
       },
     }));
   }, []);
 
-  const handleChangeStart = useCallback((day: string, value: string) => {
-    setSchedule(prev => ({
-      ...prev,
-      [day]: {
-        ...prev[day],
-        start: value,
-      },
-    }));
-  }, []);
+  const handleChangeTime = useCallback(
+    (day: string, field: 'start' | 'end', value: string) => {
+      setSchedule(prev => ({
+        ...prev,
+        [day]: {
+          enabled: prev[day]?.enabled ?? false,
+          start: prev[day]?.start ?? '09:00 AM',
+          end: prev[day]?.end ?? '06:00 PM',
+          [field]: value,
+        },
+      }));
+    },
+    [],
+  );
 
-  const handleChangeEnd = useCallback((day: string, value: string) => {
-    setSchedule(prev => ({
-      ...prev,
-      [day]: {
-        ...prev[day],
-        end: value,
-      },
-    }));
-  }, []);
+  const handleChangeStart = useCallback(
+    (day: string, value: string) => handleChangeTime(day, 'start', value),
+    [handleChangeTime],
+  );
+  const handleChangeEnd = useCallback(
+    (day: string, value: string) => handleChangeTime(day, 'end', value),
+    [handleChangeTime],
+  );
 
   const handleRemoveBreak = useCallback((id: string) => {
     setBreaks(prev => prev.filter(b => b.id !== id));
@@ -169,22 +150,20 @@ export const useVendorAvailability = () => {
     [],
   );
 
-  const handleRemoveException = useCallback((id: string) => {
-    setExceptions(prev => prev.filter(ex => ex.id !== id));
-  }, []);
-
   const handleUpdateBreak = useCallback(
     (id: string, label: string, startTime: string, endTime: string) => {
       setBreaks(prev =>
         prev.map(b =>
-          b.id === id
-            ? { ...b, label, time: `${startTime} - ${endTime}` }
-            : b
-        )
+          b.id === id ? { ...b, label, time: `${startTime} - ${endTime}` } : b,
+        ),
       );
     },
-    []
+    [],
   );
+
+  const handleRemoveException = useCallback((id: string) => {
+    setExceptions(prev => prev.filter(ex => ex.id !== id));
+  }, []);
 
   const handleAddException = useCallback(
     (
@@ -195,13 +174,7 @@ export const useVendorAvailability = () => {
     ) => {
       setExceptions(prev => [
         ...prev,
-        {
-          id: `temp-${Date.now()}`,
-          month,
-          day,
-          label,
-          type,
-        },
+        { id: `temp-${Date.now()}`, month, day, label, type },
       ]);
     },
     [],
@@ -217,13 +190,11 @@ export const useVendorAvailability = () => {
     ) => {
       setExceptions(prev =>
         prev.map(ex =>
-          ex.id === id
-            ? { ...ex, label, month, day, type }
-            : ex
-        )
+          ex.id === id ? { ...ex, label, month, day, type } : ex,
+        ),
       );
     },
-    []
+    [],
   );
 
   const handleSave = useCallback(async () => {
@@ -237,7 +208,7 @@ export const useVendorAvailability = () => {
     }));
 
     const mappedBreaksInput = breaks.map(b => {
-      const parts = b.time.split(' - ');
+      const parts = (b.time ?? '').split(' - ');
       return {
         name: b.label,
         startTime: parts[0] || '12:00 PM',
@@ -246,22 +217,19 @@ export const useVendorAvailability = () => {
     });
 
     const mappedExceptionsInput = exceptions.map(ex => {
-      // Form date string safely for current year using UTC to prevent timezone shifts
       const currentYear = new Date().getFullYear();
       const monthIdx = MONTH_NAMES.indexOf(ex.month);
-      const dateVal = new Date(Date.UTC(
-        currentYear,
-        monthIdx !== -1 ? monthIdx : 4,
-        ex.day,
-        12, // Set to noon UTC to prevent any boundary date shifts
-        0,
-        0
-      ));
+      const dateVal = new Date(
+        Date.UTC(currentYear, monthIdx !== -1 ? monthIdx : 4, ex.day, 12, 0, 0),
+      );
 
       return {
         date: dateVal.toISOString(),
         description: ex.label,
-        type: ex.type === 'blocked' ? ExceptionType.BlockedOut : ExceptionType.ShortenedHours,
+        type:
+          ex.type === 'blocked'
+            ? ExceptionType.BlockedOut
+            : ExceptionType.ShortenedHours,
         startTime: '10:00 AM',
         endTime: '02:00 PM',
       };
