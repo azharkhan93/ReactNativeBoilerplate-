@@ -45,7 +45,7 @@ export const useTrackingNotifications = (
         didSendOnTheWay.current = true;
       }
     } else {
-      // 2. Trigger "Halfway" when current distance <= 50% of the initial distance
+    
       const halfDist = initialDistance.current * 0.5;
       if (dist <= halfDist && !didSendHalfway.current && dist > 0.01) {
         sendBookingNotification(bookingId, 'JOURNEY_HALFWAY');
