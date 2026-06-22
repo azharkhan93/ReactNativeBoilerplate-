@@ -1,5 +1,6 @@
 import React, { ComponentType, useEffect, useState } from 'react';
-import { View, Keyboard, TouchableOpacity, Text } from 'react-native';
+import { View, Keyboard, TouchableOpacity, Text, Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useQuery } from '@apollo/client/react';
 import { TopBar } from '@/components/TopBar';
 import { useVendorSearch } from '@/hooks/useVendorSearch';
@@ -40,6 +41,7 @@ const SCREENS: Record<string, ComponentType<any>> = {
 };
 
 export const AppNavigator: React.FC = () => {
+  const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState('home');
   const [selectedVendorId, setSelectedVendorId] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<UserRole | null>(null);
@@ -186,6 +188,8 @@ export const AppNavigator: React.FC = () => {
   const tabs = userRole === UserRole.Provider ? VENDOR_TABS : CUSTOMER_TABS;
   const showTopBar = !HIDDEN_TOPBAR_ROUTES.includes(activeTab);
   const showTabBar = tabs.some(tab => tab.route === activeTab);
+  
+  const bottomTabBarHeight = 97 + (Platform.OS === 'ios' ? Math.max(insets.bottom, 12) : 16);
 
   return (
     <View className="flex-1 bg-[#F1F6FD]">
@@ -204,7 +208,12 @@ export const AppNavigator: React.FC = () => {
         />
       )}
 
-      <View className="flex-1">{renderScreen()}</View>
+      <View 
+        className="flex-1"
+        style={{ paddingBottom: showTabBar ? bottomTabBarHeight : 0 }}
+      >
+        {renderScreen()}
+      </View>
       {/* Vendor Search Results */}
       {(data?.searchVendors ?? []).length > 0 && (
         <View className="absolute top-36 left-4 right-4 bg-white border border-slate-200/80 shadow-xl z-50 p-4 rounded-2xl">

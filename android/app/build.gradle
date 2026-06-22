@@ -1,5 +1,28 @@
 apply plugin: "com.android.application"
 apply plugin: "org.jetbrains.kotlin.android"
+
+def versionPropsFile = file('version.properties')
+def versionProps = new Properties()
+if (versionPropsFile.canRead()) {
+    versionProps.load(new FileInputStream(versionPropsFile))
+} else {
+    versionProps['VERSION_CODE'] = '1'
+    versionProps['VERSION_NAME'] = '0.01'
+}
+
+task incrementVersion {
+    doLast {
+        def code = versionProps['VERSION_CODE'].toInteger() + 1
+        versionProps['VERSION_CODE'] = code.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+    }
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'bundleRelease' || task.name == 'assembleRelease') {
+        task.dependsOn incrementVersion
+    }
+}
 apply plugin: "com.facebook.react"
 apply plugin: "com.google.gms.google-services"
 
@@ -91,8 +114,8 @@ android {
         applicationId "com.tab2wash.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode versionProps['VERSION_CODE'].toInteger()
+        versionName versionProps['VERSION_NAME']
         ndk {
     abiFilters "arm64-v8a"
 }
@@ -107,6 +130,14 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('TAB2WASH_UPLOAD_STORE_FILE')) {
+                storeFile file(TAB2WASH_UPLOAD_STORE_FILE)
+                storePassword TAB2WASH_UPLOAD_STORE_PASSWORD
+                keyAlias TAB2WASH_UPLOAD_KEY_ALIAS
+                keyPassword TAB2WASH_UPLOAD_KEY_PASSWORD
+            }
+        }
     }
     buildTypes {
         debug {
@@ -115,7 +146,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }

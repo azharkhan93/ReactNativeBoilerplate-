@@ -25,7 +25,7 @@ export default function App() {
   return (
     <ApolloProvider client={apolloClient}>
       <SafeAreaProvider>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
         <KeyboardDismissView>
           {!splashFinished ? (
             <AnimatedSplashScreen onFinish={() => setSplashFinished(true)} />
