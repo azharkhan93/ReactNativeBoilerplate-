@@ -18,7 +18,7 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
-target 'NativeApp' do
+target 'Tab2wash' do
   config = use_native_modules!
 
   # Firebase requires these two pods to expose module maps so that

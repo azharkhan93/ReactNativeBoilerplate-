@@ -1,4 +1,4 @@
-package com.nativeapp
+package com.tab2wash.app
 
 import android.app.Application
 import com.facebook.react.PackageList

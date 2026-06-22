@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "NativeApp.app"
-               BlueprintName = "NativeApp"
-               ReferencedContainer = "container:NativeApp.xcodeproj">
+               BuildableName = "Tab2wash.app"
+               BlueprintName = "Tab2wash"
+               ReferencedContainer = "container:Tab2wash.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "NativeAppTests.xctest"
-               BlueprintName = "NativeAppTests"
-               ReferencedContainer = "container:NativeApp.xcodeproj">
+               BuildableName = "Tab2washTests.xctest"
+               BlueprintName = "Tab2washTests"
+               ReferencedContainer = "container:Tab2wash.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "NativeApp.app"
-            BlueprintName = "NativeApp"
-            ReferencedContainer = "container:NativeApp.xcodeproj">
+            BuildableName = "Tab2wash.app"
+            BlueprintName = "Tab2wash"
+            ReferencedContainer = "container:Tab2wash.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "NativeApp.app"
-            BlueprintName = "NativeApp"
-            ReferencedContainer = "container:NativeApp.xcodeproj">
+            BuildableName = "Tab2wash.app"
+            BlueprintName = "Tab2wash"
+            ReferencedContainer = "container:Tab2wash.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
