@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "43404720647",
+    "project_id": "tab2wash-15605",
+    "storage_bucket": "tab2wash-15605.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:43404720647:android:d8ad515e9656993d13c8a2",
+        "android_client_info": {
+          "package_name": "com.tab2wash.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3Sb7PBu1cRMffeE-0-2wL-c5e5Ynmtzs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

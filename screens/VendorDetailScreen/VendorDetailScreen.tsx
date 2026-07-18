@@ -14,6 +14,7 @@ import { VendorAbout } from './components/VendorAbout';
 import { VendorBookingOptions } from './components/VendorBookingOptions';
 import { VendorContact } from './components/VendorContact';
 import { VendorBookingBar } from './components/VendorBookingBar';
+import { PaymentModal } from '@/components/Customer';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -53,6 +54,7 @@ export const VendorDetailScreen: React.FC<VendorDetailScreenProps> = ({
   const [selectedWashType, setSelectedWashType] = useState<string | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<'doorstep' | 'workshop' | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   const imageList = useMemo(() => {
     if (!vendor) return [];
@@ -176,6 +178,22 @@ export const VendorDetailScreen: React.FC<VendorDetailScreenProps> = ({
         insets={insets}
         onBookNow={() => {
           if (isSelectionComplete) {
+            setShowPaymentModal(true);
+          }
+        }}
+      />
+
+      {isSelectionComplete && (
+        <PaymentModal
+          visible={showPaymentModal}
+          onClose={() => setShowPaymentModal(false)}
+          amount={resolvedPrice}
+          vendorName={vendor.businessName}
+          washType={WASH_TYPES.find(w => w.id === selectedWashType)?.name || ''}
+          vehicleCategory={selectedCategory || ''}
+          bookingDate={selectedDate?.toISOString() || ''}
+          onPaymentSuccess={() => {
+            setShowPaymentModal(false);
             onNavigate('liveTracking', {
               category: selectedCategory,
               washType: selectedWashType,
@@ -184,9 +202,9 @@ export const VendorDetailScreen: React.FC<VendorDetailScreenProps> = ({
               bookingDate: selectedDate?.toISOString(),
               vendorName: vendor.businessName,
             });
-          }
-        }}
-      />
+          }}
+        />
+      )}
     </View>
   );
 };

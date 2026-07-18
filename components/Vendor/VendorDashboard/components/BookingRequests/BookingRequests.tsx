@@ -5,9 +5,10 @@ import { Typography } from '@/components/theme';
 
 export interface BookingRequestProps {
     pendingRequests: any[];
+    onAccept?: (bookingId: string) => void;
 }
 
-export const BookingRequests: React.FC<BookingRequestProps> = ({ pendingRequests }) => (
+export const BookingRequests: React.FC<BookingRequestProps> = ({ pendingRequests, onAccept }) => (
     <View className="px-5 mb-6">
         <View className="flex-row justify-between items-center mb-4">
             <Typography className="text-slate-900 text-lg font-heading-semibold">
@@ -61,7 +62,11 @@ export const BookingRequests: React.FC<BookingRequestProps> = ({ pendingRequests
                     </View>
 
                     <View className="flex-row gap-3">
-                        <TouchableOpacity className="flex-1 bg-primary-500 py-3 rounded-2xl flex-row justify-center items-center" activeOpacity={0.7}>
+                        <TouchableOpacity
+                            className="flex-1 bg-primary-500 py-3 rounded-2xl flex-row justify-center items-center"
+                            activeOpacity={0.7}
+                            onPress={() => onAccept?.(booking.id)}
+                        >
                             <Check size={16} color="white" />
                             <Typography variant='body' className="ml-1.5 text-white font-body-bold">Accept</Typography>
                         </TouchableOpacity>

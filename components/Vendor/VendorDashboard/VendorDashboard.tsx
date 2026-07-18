@@ -8,6 +8,7 @@ import { useProfile } from '@/screens/ProfileScreen/hooks/useProfile';
 import { UserRole } from '@/__generated__/graphql';
 import { BottomSheetModal } from '@/components/shared/BottomSheetModal';
 import { AvailabilityContent } from '../Availability';
+import { useDriverLocationPublisher } from '@/hooks/useDriverLocationPublisher';
 
 import {
   WelcomeHeader,
@@ -29,9 +30,21 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({
 
   const { userData } = useProfile(UserRole.Provider);
 
-  const pendingRequests = MOCK_BOOKINGS.filter(
-    b => b.status === BOOKING_STATUS.PENDING,
+  const [pendingRequests, setPendingRequests] = useState(
+    MOCK_BOOKINGS.filter(b => b.status === BOOKING_STATUS.PENDING),
   );
+  const [activeBookingId, setActiveBookingId] = useState<string | null>(null);
+
+  // Activate live real-time GPS tracking when a booking is accepted
+  useDriverLocationPublisher({
+    bookingId: activeBookingId,
+    isTrackingEnabled: activeBookingId !== null,
+  });
+
+  const handleAcceptBooking = (bookingId: string) => {
+    setPendingRequests(prev => prev.filter(b => b.id !== bookingId));
+    setActiveBookingId(bookingId);
+  };
 
   const handleQuickActionPress = (id: string) => {
     const actionMap: Record<string, () => void> = {
@@ -58,7 +71,10 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({
         <View className="mt-4">
           <EarningsCard />
           <QuickActions onActionPress={handleQuickActionPress} />
-          <BookingRequests pendingRequests={pendingRequests} />
+          <BookingRequests
+            pendingRequests={pendingRequests}
+            onAccept={handleAcceptBooking}
+          />
         </View>
       </ScrollView>
 

@@ -23,6 +23,9 @@ type Documents = {
     "\n  query GetUserAvatar($id: ID!) {\n    user(id: $id) {\n      id\n      avatarUrl\n    }\n  }\n": typeof types.GetUserAvatarDocument,
     "\n  mutation DeleteCustomerProfile($id: ID!) {\n    deleteCustomerProfile(id: $id)\n  }\n": typeof types.DeleteCustomerProfileDocument,
     "\n  mutation UpdateUserAvatar($id: ID!, $avatarUrl: String!) {\n    updateUserAvatar(id: $id, avatarUrl: $avatarUrl) {\n      id\n      avatarUrl\n    }\n  }\n": typeof types.UpdateUserAvatarDocument,
+    "\n  mutation CreatePayment($input: CreatePaymentInput!) {\n    createPayment(input: $input) {\n      id\n      customerProfileId\n      razorpayOrderId\n      amount\n      currency\n      status\n    }\n  }\n": typeof types.CreatePaymentDocument,
+    "\n  mutation VerifyPaymentSuccess($input: VerifyPaymentInput!) {\n    verifyPaymentSuccess(input: $input) {\n      id\n      status\n      razorpayOrderId\n      razorpayPaymentId\n      razorpaySignature\n    }\n  }\n": typeof types.VerifyPaymentSuccessDocument,
+    "\n  query GetPaymentByOrderId($orderId: String!) {\n    getPaymentByOrderId(orderId: $orderId) {\n      id\n      status\n      amount\n      currency\n    }\n  }\n": typeof types.GetPaymentByOrderIdDocument,
     "\n  mutation CreateNewRole($roleName: UserRole!) {\n    createRole(name: $roleName) {\n      id\n      name\n      createdAt\n    }\n  }\n": typeof types.CreateNewRoleDocument,
     "\n  query GetRoles {\n    roles {\n      id\n      name\n    }\n  }\n": typeof types.GetRolesDocument,
     "\n  fragment VendorProfileFields on VendorProfileType {\n    id\n    userId\n    businessName\n    imageUri\n    gstNumber\n    contactNumber\n    address\n    serviceRadius\n    operatingHours\n    whyChooseMe\n    description\n    images\n    categories {\n      id\n      name\n      icon\n    }\n  }\n": typeof types.VendorProfileFieldsFragmentDoc,
@@ -45,11 +48,11 @@ type Documents = {
     "\n  mutation LoginByPhone($phone: String!, $code: String!, $role: UserRole!) {\n    loginByPhone(phoneNumber: $phone, code: $code, role: $role) {\n      token\n      user {\n        id\n        phoneNumber\n        role {\n          id\n          name\n        }\n      }\n    }\n  }\n": typeof types.LoginByPhoneDocument,
     "\n  mutation RequestOtp($phone: String!) {\n    requestOtp(phoneNumber: $phone) {\n      success\n      message\n      sid\n    }\n  }\n": typeof types.RequestOtpDocument,
     "\n  mutation LogoutUser {\n    logout\n  }\n": typeof types.LogoutUserDocument,
-    "\n  query SearchVendors($query: String!) {\n    searchVendors(query: $query) {\n      id\n      businessName\n      description\n    }\n  }\n": typeof types.SearchVendorsDocument,
     "\n  mutation RegisterDeviceToken($input: RegisterDeviceTokenInput!) {\n    registerDeviceToken(input: $input) {\n      id\n      fcmToken\n    }\n  }\n": typeof types.RegisterDeviceTokenDocument,
-    "\n  mutation SendBookingNotification($bookingId: ID!, $type: String!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n": typeof types.SendBookingNotificationDocument,
+    "\n  query SearchVendors($query: String!) {\n    searchVendors(query: $query) {\n      id\n      businessName\n      description\n    }\n  }\n": typeof types.SearchVendorsDocument,
     "\n  query GetDriverLocation($bookingId: ID!) {\n    driverLocation(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": typeof types.GetDriverLocationDocument,
     "\n  subscription OnDriverLocationUpdated($bookingId: ID!) {\n    driverLocationUpdated(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": typeof types.OnDriverLocationUpdatedDocument,
+    "\n  mutation SendBookingNotification($bookingId: ID!, $type: String!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n": typeof types.SendBookingNotificationDocument,
     "\n  mutation UpdateDriverLocation($bookingId: ID!, $latitude: Float!, $longitude: Float!, $status: String!, $eta: Int!) {\n    updateDriverLocation(bookingId: $bookingId, latitude: $latitude, longitude: $longitude, status: $status, eta: $eta) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n    }\n  }\n": typeof types.UpdateDriverLocationDocument,
 };
 const documents: Documents = {
@@ -62,6 +65,9 @@ const documents: Documents = {
     "\n  query GetUserAvatar($id: ID!) {\n    user(id: $id) {\n      id\n      avatarUrl\n    }\n  }\n": types.GetUserAvatarDocument,
     "\n  mutation DeleteCustomerProfile($id: ID!) {\n    deleteCustomerProfile(id: $id)\n  }\n": types.DeleteCustomerProfileDocument,
     "\n  mutation UpdateUserAvatar($id: ID!, $avatarUrl: String!) {\n    updateUserAvatar(id: $id, avatarUrl: $avatarUrl) {\n      id\n      avatarUrl\n    }\n  }\n": types.UpdateUserAvatarDocument,
+    "\n  mutation CreatePayment($input: CreatePaymentInput!) {\n    createPayment(input: $input) {\n      id\n      customerProfileId\n      razorpayOrderId\n      amount\n      currency\n      status\n    }\n  }\n": types.CreatePaymentDocument,
+    "\n  mutation VerifyPaymentSuccess($input: VerifyPaymentInput!) {\n    verifyPaymentSuccess(input: $input) {\n      id\n      status\n      razorpayOrderId\n      razorpayPaymentId\n      razorpaySignature\n    }\n  }\n": types.VerifyPaymentSuccessDocument,
+    "\n  query GetPaymentByOrderId($orderId: String!) {\n    getPaymentByOrderId(orderId: $orderId) {\n      id\n      status\n      amount\n      currency\n    }\n  }\n": types.GetPaymentByOrderIdDocument,
     "\n  mutation CreateNewRole($roleName: UserRole!) {\n    createRole(name: $roleName) {\n      id\n      name\n      createdAt\n    }\n  }\n": types.CreateNewRoleDocument,
     "\n  query GetRoles {\n    roles {\n      id\n      name\n    }\n  }\n": types.GetRolesDocument,
     "\n  fragment VendorProfileFields on VendorProfileType {\n    id\n    userId\n    businessName\n    imageUri\n    gstNumber\n    contactNumber\n    address\n    serviceRadius\n    operatingHours\n    whyChooseMe\n    description\n    images\n    categories {\n      id\n      name\n      icon\n    }\n  }\n": types.VendorProfileFieldsFragmentDoc,
@@ -84,11 +90,11 @@ const documents: Documents = {
     "\n  mutation LoginByPhone($phone: String!, $code: String!, $role: UserRole!) {\n    loginByPhone(phoneNumber: $phone, code: $code, role: $role) {\n      token\n      user {\n        id\n        phoneNumber\n        role {\n          id\n          name\n        }\n      }\n    }\n  }\n": types.LoginByPhoneDocument,
     "\n  mutation RequestOtp($phone: String!) {\n    requestOtp(phoneNumber: $phone) {\n      success\n      message\n      sid\n    }\n  }\n": types.RequestOtpDocument,
     "\n  mutation LogoutUser {\n    logout\n  }\n": types.LogoutUserDocument,
-    "\n  query SearchVendors($query: String!) {\n    searchVendors(query: $query) {\n      id\n      businessName\n      description\n    }\n  }\n": types.SearchVendorsDocument,
     "\n  mutation RegisterDeviceToken($input: RegisterDeviceTokenInput!) {\n    registerDeviceToken(input: $input) {\n      id\n      fcmToken\n    }\n  }\n": types.RegisterDeviceTokenDocument,
-    "\n  mutation SendBookingNotification($bookingId: ID!, $type: String!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n": types.SendBookingNotificationDocument,
+    "\n  query SearchVendors($query: String!) {\n    searchVendors(query: $query) {\n      id\n      businessName\n      description\n    }\n  }\n": types.SearchVendorsDocument,
     "\n  query GetDriverLocation($bookingId: ID!) {\n    driverLocation(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": types.GetDriverLocationDocument,
     "\n  subscription OnDriverLocationUpdated($bookingId: ID!) {\n    driverLocationUpdated(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": types.OnDriverLocationUpdatedDocument,
+    "\n  mutation SendBookingNotification($bookingId: ID!, $type: String!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n": types.SendBookingNotificationDocument,
     "\n  mutation UpdateDriverLocation($bookingId: ID!, $latitude: Float!, $longitude: Float!, $status: String!, $eta: Int!) {\n    updateDriverLocation(bookingId: $bookingId, latitude: $latitude, longitude: $longitude, status: $status, eta: $eta) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n    }\n  }\n": types.UpdateDriverLocationDocument,
 };
 
@@ -142,6 +148,18 @@ export function gql(source: "\n  mutation DeleteCustomerProfile($id: ID!) {\n   
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation UpdateUserAvatar($id: ID!, $avatarUrl: String!) {\n    updateUserAvatar(id: $id, avatarUrl: $avatarUrl) {\n      id\n      avatarUrl\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateUserAvatar($id: ID!, $avatarUrl: String!) {\n    updateUserAvatar(id: $id, avatarUrl: $avatarUrl) {\n      id\n      avatarUrl\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreatePayment($input: CreatePaymentInput!) {\n    createPayment(input: $input) {\n      id\n      customerProfileId\n      razorpayOrderId\n      amount\n      currency\n      status\n    }\n  }\n"): (typeof documents)["\n  mutation CreatePayment($input: CreatePaymentInput!) {\n    createPayment(input: $input) {\n      id\n      customerProfileId\n      razorpayOrderId\n      amount\n      currency\n      status\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation VerifyPaymentSuccess($input: VerifyPaymentInput!) {\n    verifyPaymentSuccess(input: $input) {\n      id\n      status\n      razorpayOrderId\n      razorpayPaymentId\n      razorpaySignature\n    }\n  }\n"): (typeof documents)["\n  mutation VerifyPaymentSuccess($input: VerifyPaymentInput!) {\n    verifyPaymentSuccess(input: $input) {\n      id\n      status\n      razorpayOrderId\n      razorpayPaymentId\n      razorpaySignature\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetPaymentByOrderId($orderId: String!) {\n    getPaymentByOrderId(orderId: $orderId) {\n      id\n      status\n      amount\n      currency\n    }\n  }\n"): (typeof documents)["\n  query GetPaymentByOrderId($orderId: String!) {\n    getPaymentByOrderId(orderId: $orderId) {\n      id\n      status\n      amount\n      currency\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -233,15 +251,11 @@ export function gql(source: "\n  mutation LogoutUser {\n    logout\n  }\n"): (ty
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  query SearchVendors($query: String!) {\n    searchVendors(query: $query) {\n      id\n      businessName\n      description\n    }\n  }\n"): (typeof documents)["\n  query SearchVendors($query: String!) {\n    searchVendors(query: $query) {\n      id\n      businessName\n      description\n    }\n  }\n"];
-/**
- * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
 export function gql(source: "\n  mutation RegisterDeviceToken($input: RegisterDeviceTokenInput!) {\n    registerDeviceToken(input: $input) {\n      id\n      fcmToken\n    }\n  }\n"): (typeof documents)["\n  mutation RegisterDeviceToken($input: RegisterDeviceTokenInput!) {\n    registerDeviceToken(input: $input) {\n      id\n      fcmToken\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation SendBookingNotification($bookingId: ID!, $type: String!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n"): (typeof documents)["\n  mutation SendBookingNotification($bookingId: ID!, $type: String!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n"];
+export function gql(source: "\n  query SearchVendors($query: String!) {\n    searchVendors(query: $query) {\n      id\n      businessName\n      description\n    }\n  }\n"): (typeof documents)["\n  query SearchVendors($query: String!) {\n    searchVendors(query: $query) {\n      id\n      businessName\n      description\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -250,6 +264,10 @@ export function gql(source: "\n  query GetDriverLocation($bookingId: ID!) {\n   
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  subscription OnDriverLocationUpdated($bookingId: ID!) {\n    driverLocationUpdated(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n"): (typeof documents)["\n  subscription OnDriverLocationUpdated($bookingId: ID!) {\n    driverLocationUpdated(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation SendBookingNotification($bookingId: ID!, $type: String!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n"): (typeof documents)["\n  mutation SendBookingNotification($bookingId: ID!, $type: String!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
