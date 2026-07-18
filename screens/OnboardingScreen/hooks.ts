@@ -1,14 +1,14 @@
 import { useState, useCallback, useRef } from 'react';
-import { FlatList, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { FlatList, NativeSyntheticEvent, NativeScrollEvent, Dimensions } from 'react-native';
 import { UseOnboardingSwipeParams, UseOnboardingSwipeResult } from './types';
 
 export const useOnboardingSwipe = ({
   totalSteps,
   totalSlides,
   selectedRole,
-  width,
   onFinish,
 }: UseOnboardingSwipeParams): UseOnboardingSwipeResult => {
+  const { width } = Dimensions.get('window');
   const [currentStep, setCurrentStep] = useState<number>(0);
   const flatListRef = useRef<FlatList>(null);
 
