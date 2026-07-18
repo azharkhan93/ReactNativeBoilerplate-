@@ -6,7 +6,7 @@ import { CREATE_PAYMENT, VERIFY_PAYMENT_SUCCESS } from '../paymentQueries';
 import { getUserId } from '@/utils/store/authStore';
 import { hmacSha256 } from '@/utils/cryptoHelper';
 
-// Modular Checkout Step Components
+
 import { FeedbackStep } from './components/FeedbackStep';
 import { ProfileSetupStep } from './components/ProfileSetupStep';
 import { SummaryStep } from './components/SummaryStep';
@@ -16,7 +16,7 @@ let RazorpayCheckout: any = null;
 try {
   RazorpayCheckout = require('react-native-razorpay').default;
 } catch (e) {
-  // Safe mock fallback for non-native development configurations
+  
 }
 
 export interface PaymentModalProps {

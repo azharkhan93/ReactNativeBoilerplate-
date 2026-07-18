@@ -43,7 +43,9 @@ export const SwipeIndicator: React.FC<SwipeIndicatorProps> = ({ visible }) => {
     transform: [{ translateX: translateX.value }],
   }));
 
-  const containerAnimatedStyle = useAnimatedStyle(() => ({
+  // Opacity lives on a separate inner wrapper — Reanimated forbids combining
+  // useAnimatedStyle(opacity) with exiting on the same node
+  const fadeStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
   }));
 
@@ -52,19 +54,22 @@ export const SwipeIndicator: React.FC<SwipeIndicatorProps> = ({ visible }) => {
   }
 
   return (
+    // Outer: owns the layout exit animation only
     <Animated.View
       className={swipeIndicatorStyles.container}
-      style={containerAnimatedStyle}
       exiting={FadeOut.duration(300)}
     >
-      <View className={swipeIndicatorStyles.pill}>
-        <Animated.View style={iconAnimatedStyle}>
-          <ChevronsLeft size={18} color="#64748b" strokeWidth={2} />
-        </Animated.View>
-        <Typography className={swipeIndicatorStyles.label}>
-          Swipe to explore
-        </Typography>
-      </View>
+      {/* Inner: owns the opacity shared value — kept separate to avoid Reanimated conflict */}
+      <Animated.View style={fadeStyle}>
+        <View className={swipeIndicatorStyles.pill}>
+          <Animated.View style={iconAnimatedStyle}>
+            <ChevronsLeft size={18} color="#64748b" strokeWidth={2} />
+          </Animated.View>
+          <Typography className={swipeIndicatorStyles.label}>
+            Swipe to explore
+          </Typography>
+        </View>
+      </Animated.View>
     </Animated.View>
   );
 };
