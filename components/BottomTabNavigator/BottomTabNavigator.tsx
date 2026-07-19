@@ -126,7 +126,7 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
           {leftTabs.map(renderTabItem)}
         </View>
 
-        <View className="w-14" />
+        <View style={{ width: 110 }} />
 
         <View className="flex-row flex-1 h-full items-center">
           {rightTabs.map(renderTabItem)}
