@@ -51,6 +51,7 @@ module.exports = {
         'body-regular': 'Varta-Regular',
         'body-medium': 'Varta-Medium',
         'body-semibold': 'Varta-SemiBold',
+        'body-bold': 'Varta-SemiBold',
       },
       fontSize: {
         h1: '48px',

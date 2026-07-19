@@ -1,4 +1,4 @@
-import { Wrench, CreditCard, Calendar, BarChart3, Briefcase } from 'lucide-react-native';
+import { Wrench, CreditCard, Calendar, BarChart3, Briefcase, Headphones } from 'lucide-react-native';
 
 export const VENDOR_STATS = [
     { label: 'RATING', value: '4.9' },
@@ -61,4 +61,12 @@ export const MANAGEMENT_LINKS = [
         icon: BarChart3,
         iconColor: '#f59e0b',
     },
+    {
+        id: 'support',
+        label: 'Help & Support',
+        subtitle: 'Customer support & assistance',
+        icon: Headphones,
+        iconColor: '#3b82f6',
+    },
 ];
+

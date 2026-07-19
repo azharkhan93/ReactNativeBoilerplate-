@@ -36,7 +36,6 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
     loadingProfile,
     savingProfile,
     creatingPayment,
-    customerProfile,
     handleCreateProfile,
     handleInitiatePayment,
     handleSimulatePaymentSuccess,

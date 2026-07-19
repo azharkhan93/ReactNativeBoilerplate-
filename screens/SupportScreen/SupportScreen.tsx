@@ -21,7 +21,7 @@ export const SupportScreen: React.FC<SupportScreenProps> = ({ onNavigate }) => {
     }, [messages, showChat]);
 
     return (
-        <View className="flex-1 bg-notchLight" style={{ paddingTop: insets.top }}>
+        <View className="flex-1 bg-[#F1F6FD]" style={{ paddingTop: insets.top }}>
             {!showChat ? (
                 <SupportHome
                     search={search}

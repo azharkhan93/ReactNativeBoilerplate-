@@ -15,39 +15,52 @@ export const SupportHeader: React.FC<SupportHeaderProps> = ({
   isOnline = true,
 }) => {
   return (
-    <View className="flex-row items-center justify-between px-4 pb-4 border-b border-slate-100 bg-white">
+    <View className="flex-row items-center justify-between px-5 py-4 border-b border-blue-200/50 bg-[#F1F6FD] rounded-b-2xl shadow-sm shadow-blue-100/30 z-10">
       <View className="flex-row items-center">
-        <TouchableOpacity onPress={onBack} className="p-1">
-          <ChevronLeft size={24} color="#0f172a" />
+        <TouchableOpacity
+          onPress={onBack}
+          className="w-10 h-10 items-center justify-center rounded-full bg-white border border-slate-200/60 shadow-sm shadow-slate-100"
+          activeOpacity={0.7}
+        >
+          <ChevronLeft size={22} color="#0f172a" />
         </TouchableOpacity>
-        <View className="ml-2">
-          <Typography variant="body" className="font-body-bold text-slate-900">
+
+        <View className="ml-3">
+          <Typography variant="subheading" className="font-semibold text-slate-900 text-base">
             {agentName}
           </Typography>
-          <View className="flex-row items-center">
+          <View className="flex-row items-center mt-0.5">
             <View
-              className={`w-2 h-2 rounded-full ${
-                isOnline ? 'bg-green-500' : 'bg-slate-300'
+              className={`w-2 h-2 rounded-full mr-1.5 ${
+                isOnline ? 'bg-emerald-500' : 'bg-slate-300'
               }`}
             />
             <Typography
               variant="body-sm"
-              className="ml-1 text-slate-500 font-body"
+              className="text-slate-500 text-xs font-medium"
             >
-              {isOnline ? 'Online' : 'Offline'}
+              {isOnline ? 'Online 24/7' : 'Offline'}
             </Typography>
           </View>
         </View>
       </View>
 
-      <View className="flex-row space-x-4 gap-2">
-        <TouchableOpacity className="p-2 bg-slate-50 border border-slate-200 rounded-full">
-          <Phone size={20} color="#64748b" />
+      <View className="flex-row items-center space-x-2 gap-2">
+        <TouchableOpacity
+          className="w-10 h-10 items-center justify-center rounded-full bg-white border border-slate-200/60 shadow-sm shadow-slate-100"
+          activeOpacity={0.7}
+        >
+          <Phone size={18} color="#3b82f6" />
         </TouchableOpacity>
-        <TouchableOpacity className="p-2 bg-slate-50 border border-slate-200 rounded-full">
-          <Info size={20} color="#64748b" />
+        <TouchableOpacity
+          className="w-10 h-10 items-center justify-center rounded-full bg-white border border-slate-200/60 shadow-sm shadow-slate-100"
+          activeOpacity={0.7}
+        >
+          <Info size={18} color="#64748b" />
         </TouchableOpacity>
       </View>
     </View>
   );
 };
+
+

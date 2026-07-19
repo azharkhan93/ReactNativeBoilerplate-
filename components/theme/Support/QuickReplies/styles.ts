@@ -1,6 +1,6 @@
 export const quickRepliesStyles = {
-  scrollView: 'w-full py-2 bg-white',
-  container: 'flex-row items-center px-4 space-x-2 pr-10',
-  badge: 'flex-row items-center justify-center px-4 py-2.5 bg-slate-50 border border-slate-200/60 rounded-full shadow-sm shadow-slate-100',
-  badgeText: 'text-[13px] font-body-semibold text-primary-600',
+  scrollView: 'w-full py-2 bg-transparent',
+  container: 'flex-row items-center px-4 space-x-2 gap-2 pr-10',
+  badge: 'flex-row items-center justify-center px-4 py-2 bg-white border border-blue-200/80 rounded-full shadow-sm shadow-blue-100/40',
+  badgeText: 'text-[13px] font-semibold text-primary-600',
 };

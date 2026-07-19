@@ -17,32 +17,34 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
     };
 
     return (
-        <View className="flex-row items-center p-4 bg-white border-t border-slate-100">
-            <TouchableOpacity className="p-2 bg-slate-50 border border-slate-200 rounded-full mr-2">
+        <View className="flex-row items-center px-4 py-3 bg-[#F1F6FD] border-t border-blue-200/50">
+            <TouchableOpacity className="w-10 h-10 bg-white border border-slate-200/80 rounded-full items-center justify-center mr-2 shadow-sm shadow-slate-100" activeOpacity={0.7}>
                 <Plus size={20} color="#64748b" />
             </TouchableOpacity>
 
-            <View className="flex-1 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2 flex-row items-center">
+            <View className="flex-1 bg-white border border-slate-200/80 rounded-full px-4 py-1.5 flex-row items-center shadow-sm shadow-slate-100">
                 <TextInput
-                    className="flex-1 text-slate-900 py-1 font-body"
+                    className="flex-1 text-slate-900 py-1 font-body text-sm"
                     placeholder="Type a message..."
                     placeholderTextColor="#94a3b8"
                     value={text}
                     onChangeText={setText}
                     multiline
                 />
-                <TouchableOpacity className="ml-2">
-                    <Paperclip size={20} color="#64748b" />
+                <TouchableOpacity className="ml-2" activeOpacity={0.7}>
+                    <Paperclip size={18} color="#64748b" />
                 </TouchableOpacity>
             </View>
 
             <TouchableOpacity
                 onPress={handleSend}
                 disabled={!text.trim()}
-                className={`ml-3 p-3 rounded-full ${text.trim() ? 'bg-primary-500' : 'bg-slate-200'}`}
+                activeOpacity={0.7}
+                className={`ml-2 w-10 h-10 rounded-full items-center justify-center ${text.trim() ? 'bg-primary-500 shadow-md shadow-primary-500/30' : 'bg-slate-200'}`}
             >
                 <Send size={18} color="white" />
             </TouchableOpacity>
         </View>
     );
 };
+

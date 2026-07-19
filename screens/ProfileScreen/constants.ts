@@ -6,6 +6,7 @@ import {
   RefreshCw,
   Lock,
   MapPin,
+  Headphones,
 } from 'lucide-react-native';
 
 export interface AccountMenuItemData {
@@ -31,7 +32,14 @@ export const ACCOUNT_MENU_ITEMS: AccountMenuItemData[] = [
     iconColor: '#fb923c',
   },
   { id: 'addresses', label: 'Addresses', icon: MapPin, iconColor: '#ec4899' },
+  {
+    id: 'support',
+    label: 'Help & Support Center',
+    icon: Headphones,
+    iconColor: '#3b82f6',
+  },
 ];
+
 
 export interface ModalConfigItem {
   id: string;

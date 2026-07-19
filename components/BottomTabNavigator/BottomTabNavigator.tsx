@@ -8,24 +8,13 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { LucideIcon } from 'lucide-react-native';
 import Svg, { Path } from 'react-native-svg';
 import {
   TAB_BAR_ANDROID_BOTTOM_OFFSET,
   TAB_BAR_IOS_MIN_BOTTOM_OFFSET,
 } from '@/utils/tabBar.constants';
-
-export interface TabItem {
-  label: string;
-  icon: LucideIcon;
-  route: string;
-}
-
-export interface BottomTabNavigatorProps {
-  tabs: TabItem[];
-  activeTab: string;
-  onTabPress: (route: string) => void;
-}
+import { TabItem, BottomTabNavigatorProps } from './types';
+import { bottomTabNavigatorStyles, nativeStyles } from './styles';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const barWidth = SCREEN_WIDTH - 24;
@@ -41,8 +30,8 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
   const centerTab =
     tabs.find(t => t.route === 'nearbyProviders' || t.route === 'analytics') ||
     tabs[Math.floor(tabs.length / 2)];
-  const remainingTabs = tabs.filter(t => t.route !== centerTab?.route);
 
+  const remainingTabs = tabs.filter(t => t.route !== centerTab?.route);
   const midPoint = Math.floor(remainingTabs.length / 2);
   const leftTabs = remainingTabs.slice(0, midPoint);
   const rightTabs = remainingTabs.slice(midPoint);
@@ -52,9 +41,9 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
     return `
       M 0 32
       A 32 32 0 0 1 32 0
-      L ${center - 55} 0
-      C ${center - 35} 0, ${center - 35} 32, ${center} 32
-      C ${center + 35} 32, ${center + 35} 0, ${center + 55} 0
+      L ${center - 42} 0
+      C ${center - 26} 0, ${center - 26} 28, ${center} 28
+      C ${center + 26} 28, ${center + 26} 0, ${center + 42} 0
       L ${w - 32} 0
       A 32 32 0 0 1 ${w} 32
       L ${w} ${h - 24}
@@ -73,18 +62,18 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
     return (
       <TouchableOpacity
         key={route}
-        className="flex-1 items-center justify-center h-full relative"
+        className={bottomTabNavigatorStyles.tabItem}
         onPress={() => onTabPress(route)}
         activeOpacity={0.7}
       >
-        <View className="items-center justify-center">
+        <View className={bottomTabNavigatorStyles.iconWrapper}>
           <Icon
-            size={22}
+            size={25}
             color={isActive ? '#3b82f6' : '#64748b'}
             strokeWidth={isActive ? 2.5 : 2}
           />
           {isActive && (
-            <View className="w-5 h-1 rounded-full bg-primary-500 mt-2 shadow shadow-primary-400" />
+            <View className={bottomTabNavigatorStyles.indicator} />
           )}
         </View>
       </TouchableOpacity>
@@ -93,11 +82,11 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
 
   return (
     <View
-      className="absolute left-3 right-3 z-50 flex-row items-end h-[97px]"
+      className={bottomTabNavigatorStyles.container}
       style={{ bottom: Platform.OS === 'ios' ? Math.max(bottom, TAB_BAR_IOS_MIN_BOTTOM_OFFSET) : TAB_BAR_ANDROID_BOTTOM_OFFSET }}
     >
       <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
-        <Svg width={barWidth} height={barHeight} className="mt-[25px]">
+        <Svg width={barWidth} height={barHeight} className={bottomTabNavigatorStyles.svgBg}>
           <Path
             d={getPath(barWidth, barHeight)}
             fill="#D7E4F7"
@@ -111,24 +100,24 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
         <TouchableOpacity
           onPress={() => onTabPress(centerTab.route)}
           activeOpacity={0.8}
-          style={styles.centerButton}
-          className="w-14 h-14 rounded-full items-center justify-center bg-primary-500 border border-primary-400/20"
+          style={nativeStyles.centerButton}
+          className={bottomTabNavigatorStyles.centerButton}
         >
-          <centerTab.icon size={24} color="white" strokeWidth={2.5} />
+          <centerTab.icon size={28} color="white" strokeWidth={2.5} />
         </TouchableOpacity>
       ) : null}
 
       <View
-        className="flex-row items-center justify-between px-4 h-[72px]"
+        className={bottomTabNavigatorStyles.row}
         style={{ width: barWidth }}
       >
-        <View className="flex-row flex-1 h-full items-center">
+        <View className={bottomTabNavigatorStyles.sideContainer}>
           {leftTabs.map(renderTabItem)}
         </View>
 
-        <View style={{ width: 110 }} />
+        <View className="w-[72px]" />
 
-        <View className="flex-row flex-1 h-full items-center">
+        <View className={bottomTabNavigatorStyles.sideContainer}>
           {rightTabs.map(renderTabItem)}
         </View>
       </View>
@@ -136,23 +125,5 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
   );
 };
 
-const styles = StyleSheet.create({
-  centerButton: {
-    position: 'absolute',
-    left: '50%',
-    marginLeft: -28,
-    top: 0,
-    zIndex: 60,
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000000',
-        shadowOffset: { width: 0, height: 12 },
-        shadowOpacity: 0.45,
-        shadowRadius: 18,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-  },
-});
+
+

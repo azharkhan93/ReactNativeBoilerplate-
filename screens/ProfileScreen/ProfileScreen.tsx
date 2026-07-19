@@ -1,5 +1,6 @@
 import React, { ReactNode, useCallback, useMemo, useState } from 'react';
-import { Alert, View, DimensionValue } from 'react-native';
+import { Alert, View, DimensionValue, TouchableOpacity } from 'react-native';
+import { MessageCircle, ChevronRight } from 'lucide-react-native';
 import {
   ProfileHeader,
   ProfileMenuSection,
@@ -142,6 +143,27 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
             items={menuItems}
             onItemPress={handleMenuPress}
           />
+
+          <TouchableOpacity
+            onPress={() => onNavigate?.('support')}
+            className="mt-6 mb-8 p-4 bg-blue-50/80 border border-blue-200/80 rounded-2xl flex-row items-center justify-between shadow-sm"
+            activeOpacity={0.7}
+          >
+            <View className="flex-row items-center flex-1 pr-3">
+              <View className="w-11 h-11 rounded-full bg-primary-500 items-center justify-center mr-3 shadow shadow-primary-400/40">
+                <MessageCircle size={22} color="white" />
+              </View>
+              <View className="flex-1">
+                <Typography variant="subheading" className="text-slate-900 font-bold text-base">
+                  Help & Support Center
+                </Typography>
+                <Typography variant="body-sm" className="text-slate-500 text-xs">
+                  Have questions? Chat with customer support 24/7
+                </Typography>
+              </View>
+            </View>
+            <ChevronRight size={20} color="#3b82f6" />
+          </TouchableOpacity>
         </View>
       </ScreenScrollView>
       <BottomSheetModal
@@ -156,4 +178,5 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
     </View>
   );
 };
+
 
