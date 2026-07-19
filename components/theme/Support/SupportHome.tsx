@@ -1,6 +1,6 @@
-/* eslint-disable react-native/no-inline-styles */
+ 
 import React from 'react';
-import { View, ScrollView, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import {
   CircleHelp,
   Search,
@@ -10,6 +10,7 @@ import {
 import { Typography } from '../Typography';
 import { FormInput } from '../FormInput';
 import { FAQSection } from './FAQSection';
+import { ScreenScrollView } from '../ScreenScrollView';
 
 export interface SupportHomeProps {
   search: string;
@@ -26,10 +27,8 @@ export const SupportHome: React.FC<SupportHomeProps> = ({
   onNavigate,
   onReportIssue,
 }) => (
-  <ScrollView
+  <ScreenScrollView
     className="flex-1 bg-notchLight"
-    showsVerticalScrollIndicator={false}
-    contentContainerStyle={{ paddingBottom: 125 }}
   >
     <View className="px-5 pt-2">
       <View className="flex-row items-center justify-between mb-4">
@@ -118,5 +117,5 @@ export const SupportHome: React.FC<SupportHomeProps> = ({
         </View>
       </TouchableOpacity>
     </View>
-  </ScrollView>
+  </ScreenScrollView>
 );

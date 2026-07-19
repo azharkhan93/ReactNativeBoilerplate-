@@ -1,4 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
+ 
 import React from 'react';
 import {
   TouchableOpacity,
@@ -10,6 +10,10 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LucideIcon } from 'lucide-react-native';
 import Svg, { Path } from 'react-native-svg';
+import {
+  TAB_BAR_ANDROID_BOTTOM_OFFSET,
+  TAB_BAR_IOS_MIN_BOTTOM_OFFSET,
+} from '@/utils/tabBar.constants';
 
 export interface TabItem {
   label: string;
@@ -90,11 +94,10 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
   return (
     <View
       className="absolute left-3 right-3 z-50 flex-row items-end h-[97px]"
-      style={{ bottom: Platform.OS === 'ios' ? Math.max(bottom, 12) : 16 }}
+      style={{ bottom: Platform.OS === 'ios' ? Math.max(bottom, TAB_BAR_IOS_MIN_BOTTOM_OFFSET) : TAB_BAR_ANDROID_BOTTOM_OFFSET }}
     >
-     
       <View style={StyleSheet.absoluteFillObject} pointerEvents="none">
-        <Svg width={barWidth} height={barHeight} className="mt-[25px] ">
+        <Svg width={barWidth} height={barHeight} className="mt-[25px]">
           <Path
             d={getPath(barWidth, barHeight)}
             fill="#D7E4F7"
@@ -104,32 +107,27 @@ export const BottomTabNavigator: React.FC<BottomTabNavigatorProps> = ({
         </Svg>
       </View>
 
-     
       {centerTab ? (
         <TouchableOpacity
           onPress={() => onTabPress(centerTab.route)}
           activeOpacity={0.8}
           style={styles.centerButton}
-          className=" w-14 h-14 rounded-full items-center justify-center bg-primary-500 border border-primary-400/20"
+          className="w-14 h-14 rounded-full items-center justify-center bg-primary-500 border border-primary-400/20"
         >
-          <centerTab.icon size={24} color="white" strokeWidth={2.5}  />
+          <centerTab.icon size={24} color="white" strokeWidth={2.5} />
         </TouchableOpacity>
-      ): null}
+      ) : null}
 
-      
       <View
-        className="flex-row items-center justify-between px-2 h-[72px]"
+        className="flex-row items-center justify-between px-4 h-[72px]"
         style={{ width: barWidth }}
       >
-        
         <View className="flex-row flex-1 h-full items-center">
           {leftTabs.map(renderTabItem)}
         </View>
 
-     
-        <View className="w-1" />
+        <View className="w-14" />
 
-     
         <View className="flex-row flex-1 h-full items-center">
           {rightTabs.map(renderTabItem)}
         </View>

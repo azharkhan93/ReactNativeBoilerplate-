@@ -1,5 +1,4 @@
-/* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, View } from 'react-native';
 import {
   Category,
@@ -9,6 +8,7 @@ import {
   NewArrivals,
   Typography,
   RecentlyAdded,
+  ScreenScrollView,
 } from '@/components';
 import { SERVICE_CATEGORIES } from '@/utils/constants';
 import { UserRole } from '../../__generated__/graphql';
@@ -29,40 +29,30 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 }) => {
   const { featuredServices, nearbyServices, recommendedServices } = useHome();
 
-  const handleServicePress = (serviceId: string) =>
-    console.log('Service:', serviceId);
   const handleViewAllProviders = () => onNavigate?.('nearbyProviders');
-  const handleVendorPress = (vendorId: string) => {
+  const handleVendorPress = (vendorId: string) =>
     onNavigate?.('vendorDetails', { vendorId });
-  };
 
-  const filteredFeatured = React.useMemo(() => {
-    return filterAndSortServices(featuredServices, activeFilters);
-  }, [featuredServices, activeFilters]);
-
-  const filteredNearby = React.useMemo(() => {
-    return filterAndSortServices(nearbyServices, activeFilters);
-  }, [nearbyServices, activeFilters]);
-
-  const filteredRecommended = React.useMemo(() => {
-    return filterAndSortServices(recommendedServices, activeFilters);
-  }, [recommendedServices, activeFilters]);
+  const filteredFeatured = useMemo(
+    () => filterAndSortServices(featuredServices, activeFilters),
+    [featuredServices, activeFilters],
+  );
+  const filteredNearby = useMemo(
+    () => filterAndSortServices(nearbyServices, activeFilters),
+    [nearbyServices, activeFilters],
+  );
+  const filteredRecommended = useMemo(
+    () => filterAndSortServices(recommendedServices, activeFilters),
+    [recommendedServices, activeFilters],
+  );
 
   return (
     <View className="flex-1 bg-[#F1F6FD]">
-      <ScrollView
-        className="flex-1"
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingBottom: 110 }}
-      >
+      <ScreenScrollView className="flex-1">
         <HeroSection />
 
         <View className="px-5 pt-6">
-          <Typography
-            variant="body-lg"
-            className="mb-4 font-bold text-slate-900"
-          >
+          <Typography variant="body-lg" className="mb-4 font-bold text-slate-900">
             Service Categories
           </Typography>
           <ScrollView
@@ -98,8 +88,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <NewArrivals
             title="Recommended for You"
             products={filteredRecommended}
-            onProductPress={handleServicePress}
-            onViewAllPress={() => console.log('View all recommendations')}
+            onProductPress={() => {}}
+            onViewAllPress={() => {}}
           />
         </View>
 
@@ -107,8 +97,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <FlashSale
             title="Special Offers"
             products={filteredFeatured}
-            onProductPress={handleServicePress}
-            onViewAllPress={() => console.log('View all offers')}
+            onProductPress={() => {}}
+            onViewAllPress={() => {}}
           />
         </View>
 
@@ -116,11 +106,11 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <BestSellers
             title="Nearby Car Washers"
             products={filteredNearby}
-            onProductPress={handleServicePress}
+            onProductPress={() => {}}
             onViewAllPress={handleViewAllProviders}
           />
         </View>
-      </ScrollView>
+      </ScreenScrollView>
     </View>
   );
 };

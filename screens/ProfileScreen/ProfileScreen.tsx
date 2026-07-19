@@ -1,11 +1,5 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { ReactNode, useState } from 'react';
-import {
-  ScrollView,
-  View,
-  DimensionValue,
-  TouchableOpacity,
-} from 'react-native';
+import { View, DimensionValue, TouchableOpacity } from 'react-native';
 import {
   ProfileHeader,
   ProfileMenuSection,
@@ -29,7 +23,7 @@ import {
   MANAGEMENT_LINKS,
 } from '@/components/Vendor/vendorProfileConstants';
 import { useProfile } from './hooks/useProfile';
-import { Typography } from '@/components/theme';
+import { Typography, ScreenScrollView } from '@/components/theme';
 import { Dropzone } from '@/components/shared/Dropzone';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { useLogout } from '@/hooks/useLogout';
@@ -76,17 +70,13 @@ const AvatarUploadContent: React.FC<AvatarUploadContentProps> = ({
           onPress={onClose}
           className="flex-1 py-3.5 rounded-2xl items-center bg-white border border-slate-200"
         >
-          <Typography className="text-slate-600 font-body-semibold">
-            Cancel
-          </Typography>
+          <Typography className="text-slate-600 font-body-semibold">Cancel</Typography>
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => onSave(currentUri)}
           disabled={uploading}
-          className={`flex-1 py-3.5 rounded-2xl items-center bg-primary-600 ${
-            uploading ? 'opacity-55' : ''
-          }`}
+          className={`flex-1 py-3.5 rounded-2xl items-center bg-primary-600 ${uploading ? 'opacity-55' : ''}`}
         >
           <Typography className="text-white font-body-semibold">
             {uploading ? 'Uploading...' : 'Save Image'}
@@ -104,12 +94,12 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
 }) => {
   const { userData, isVendor, handleSaveAvatar } = useProfile(userRole);
   const { logout } = useLogout();
+  const [modalType, setModalType] = useState<string | null>(null);
 
   const handleLogoutPress = async () => {
     await logout();
     onLogout?.();
   };
-  const [modalType, setModalType] = useState<string | null>(null);
 
   const MODAL_CONFIG = [
     ...MODAL_ITEMS,
@@ -134,7 +124,6 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
     ) => {
       let content: ReactNode = null;
 
-      // Assign specific components based on ID
       if (item.id === 'availability')
         content = <AvailabilityContent onClose={() => setModalType(null)} />;
       else if (item.id === 'bank') content = <BankAccountDetails />;
@@ -189,12 +178,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
         onRightActionPress={handleLogoutPress}
         rightIcon="logout"
       />
-      <ScrollView
-        className="flex-1"
-        showsVerticalScrollIndicator={false}
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingBottom: 110 }}
-      >
+      <ScreenScrollView className="flex-1">
         <ProfileUserInfo
           name={userData.name}
           avatarUrl={userData.avatarUrl ?? undefined}
@@ -216,7 +200,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
             onItemPress={handleMenuPress}
           />
         </View>
-      </ScrollView>
+      </ScreenScrollView>
       <BottomSheetModal
         visible={!!modalType}
         onClose={() => setModalType(null)}
@@ -229,3 +213,4 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
     </View>
   );
 };
+

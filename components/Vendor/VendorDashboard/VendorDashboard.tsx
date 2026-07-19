@@ -1,6 +1,5 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MOCK_BOOKINGS, BOOKING_STATUS } from '@/utils/constants';
 import { ServiceManagement } from '../ServiceManagement';
@@ -9,13 +8,8 @@ import { UserRole } from '@/__generated__/graphql';
 import { BottomSheetModal } from '@/components/shared/BottomSheetModal';
 import { AvailabilityContent } from '../Availability';
 import { useDriverLocationPublisher } from '@/hooks/useDriverLocationPublisher';
-
-import {
-  WelcomeHeader,
-  EarningsCard,
-  QuickActions,
-  BookingRequests,
-} from './components';
+import { ScreenScrollView } from '@/components/theme';
+import { WelcomeHeader, EarningsCard, QuickActions, BookingRequests } from './components';
 
 export interface VendorDashboardProps {
   onNavigate?: (route: string) => void;
@@ -63,11 +57,7 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({
         userName={userData.name}
         avatarUrl={userData.avatarUrl}
       />
-      <ScrollView
-        className="flex-1"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 40 }}
-      >
+      <ScreenScrollView className="flex-1">
         <View className="mt-4">
           <EarningsCard />
           <QuickActions onActionPress={handleQuickActionPress} />
@@ -76,7 +66,7 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({
             onAccept={handleAcceptBooking}
           />
         </View>
-      </ScrollView>
+      </ScreenScrollView>
 
       <ServiceManagement
         visible={isAddServiceVisible}

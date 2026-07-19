@@ -28,6 +28,12 @@ import { ReviewSuccessScreen } from '@/screens/ReviewSuccessScreen';
 import { UserRole } from '../__generated__/graphql';
 import { setAuthData, getUserId } from '@/utils/store/authStore';
 import { GET_USER_AVATAR } from '@/components/Customer/customerQueries';
+import {
+  TabBarHeightContext,
+  TAB_BAR_TOTAL_HEIGHT,
+  TAB_BAR_ANDROID_BOTTOM_OFFSET,
+  TAB_BAR_IOS_MIN_BOTTOM_OFFSET,
+} from '@/utils/tabBar.constants';
 
 const SCREENS: Record<string, ComponentType<any>> = {
   dashboard: VendorDashboard,
@@ -41,17 +47,13 @@ const SCREENS: Record<string, ComponentType<any>> = {
 };
 
 export const AppNavigator: React.FC = () => {
-  const insets = useSafeAreaInsets();
   const [activeTab, setActiveTab] = useState('home');
   const [selectedVendorId, setSelectedVendorId] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [searchValue, setSearchValue] = useState<string>('');
-  const { data, setSearchTerm } = useVendorSearch();
-  const { registerToken } = useRegisterDeviceToken();
   const [showOnboarding, setShowOnboarding] = useState(true);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
-
   const [userLocation, setUserLocation] = useState<{
     address: string;
     coords: { latitude: number; longitude: number };
@@ -60,13 +62,21 @@ export const AppNavigator: React.FC = () => {
     coords: { latitude: 25.2048, longitude: 55.2708 },
   });
   const [trackingParams, setTrackingParams] = useState<any>(null);
-
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [activeFilters, setActiveFilters] = useState<FilterValues>({
     categoryId: null,
     priceRange: null,
     sortBy: null,
   });
+
+  // Computed once at layout level — consumed via TabBarHeightContext in ScreenScrollView
+  const { bottom } = useSafeAreaInsets();
+  const { data, setSearchTerm } = useVendorSearch();
+  const { registerToken } = useRegisterDeviceToken();
+  const tabBarHeight =
+    Platform.OS === 'ios'
+      ? TAB_BAR_TOTAL_HEIGHT + Math.max(bottom, TAB_BAR_IOS_MIN_BOTTOM_OFFSET)
+      : TAB_BAR_TOTAL_HEIGHT + TAB_BAR_ANDROID_BOTTOM_OFFSET;
 
   useEffect(() => {
     const fetchUserId = async () => {
@@ -188,11 +198,10 @@ export const AppNavigator: React.FC = () => {
   const tabs = userRole === UserRole.Provider ? VENDOR_TABS : CUSTOMER_TABS;
   const showTopBar = !HIDDEN_TOPBAR_ROUTES.includes(activeTab);
   const showTabBar = tabs.some(tab => tab.route === activeTab);
-  
-  const bottomTabBarHeight = 97 + (Platform.OS === 'ios' ? Math.max(insets.bottom, 12) : 16);
 
   return (
-    <View className="flex-1 bg-[#F1F6FD]">
+    <TabBarHeightContext.Provider value={tabBarHeight}>
+      <View className="flex-1 bg-[#F1F6FD]">
       {showTopBar && (
         <TopBar
           placeholder="Search services..."
@@ -208,10 +217,7 @@ export const AppNavigator: React.FC = () => {
         />
       )}
 
-      <View 
-        className="flex-1"
-        style={{ paddingBottom: showTabBar ? bottomTabBarHeight : 0 }}
-      >
+      <View className="flex-1">
         {renderScreen()}
       </View>
       {/* Vendor Search Results */}
@@ -261,6 +267,7 @@ export const AppNavigator: React.FC = () => {
           }
         }}
       />
-    </View>
+      </View>
+    </TabBarHeightContext.Provider>
   );
 };

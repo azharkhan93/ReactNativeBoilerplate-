@@ -1,6 +1,5 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { TimeRange } from './analytics.data';
 import { AnalyticsHeader } from './components/AnalyticsHeader';
@@ -9,30 +8,26 @@ import { EarningsCard } from './components/EarningsCard';
 import { StatsRow } from './components/StatsRow';
 import { SatisfactionCard } from './components/SatisfactionCard';
 import { InsightsCard } from './components/InsightsCard';
+import { ScreenScrollView } from '@/components/theme';
 
 export const VendorAnalyticsScreen: React.FC = () => {
-  const insets = useSafeAreaInsets();
+  const { top } = useSafeAreaInsets();
   const [range, setRange] = useState<TimeRange>('Last 7 Days');
-
-  const headerPaddingTop = Math.max(insets.top, 20) + 10;
 
   return (
     <View className="flex-1 bg-notchLight">
       <AnalyticsHeader
         range={range}
         onRangeChange={setRange}
-        paddingTop={headerPaddingTop}
+        paddingTop={Math.max(top, 20) + 10}
       />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ padding: 20, paddingBottom: 40 }}
-      >
+      <ScreenScrollView contentContainerStyle={{ padding: 20 }}>
         <PerformanceCard />
         <EarningsCard />
         <StatsRow />
         <SatisfactionCard />
         <InsightsCard />
-      </ScrollView>
+      </ScreenScrollView>
     </View>
   );
 };

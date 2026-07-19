@@ -1,8 +1,7 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Typography } from '@/components/theme';
+import { Typography, ScreenScrollView } from '@/components/theme';
 import { BookingTabs } from '@/components/Vendor/BookingTabs';
 
 export const BookingsScreen: React.FC = () => {
@@ -22,13 +21,9 @@ export const BookingsScreen: React.FC = () => {
         </Typography>
       </View>
 
-      <ScrollView
-        className="flex-1 px-5"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 40 }}
-      >
+      <ScreenScrollView className="flex-1 px-5">
         <BookingTabs />
-      </ScrollView>
+      </ScreenScrollView>
     </View>
   );
 };

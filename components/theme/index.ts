@@ -16,3 +16,4 @@ export * from './DriverCard';
 export * from './BookingCard';
 export * from './Support';
 export * from './KeyboardDismissView';
+export * from './ScreenScrollView';

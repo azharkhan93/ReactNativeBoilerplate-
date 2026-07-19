@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Typography, BookingCard } from '@/components/theme';
+import { Typography, BookingCard, ScreenScrollView } from '@/components/theme';
 import { MOCK_BOOKINGS } from '@/data/mockBookings';
 
 export interface CustomerBookingsScreenProps {
@@ -85,10 +85,8 @@ export const CustomerBookingsScreen: React.FC<CustomerBookingsScreenProps> = ({
         ))}
       </View>
 
-      <ScrollView
+      <ScreenScrollView
         className="flex-1 px-5"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
       >
         {bookings.length > 0 ? (
           bookings.map(b => (
@@ -118,13 +116,8 @@ export const CustomerBookingsScreen: React.FC<CustomerBookingsScreenProps> = ({
             </Typography>
           </View>
         )}
-      </ScrollView>
+      </ScreenScrollView>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  scrollContent: {
-    paddingBottom: 120,
-  },
-});
