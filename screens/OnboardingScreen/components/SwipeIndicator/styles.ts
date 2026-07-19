@@ -15,4 +15,13 @@ export const swipeIndicatorPosition = StyleSheet.create({
   anchor: {
     top: '42%',
   },
+  arrow: {
+    position: 'absolute',
+    top: 10,
+    opacity: 0.5,
+  },
+  handContainer: {
+    position: 'absolute',
+    bottom: 8,
+  },
 });

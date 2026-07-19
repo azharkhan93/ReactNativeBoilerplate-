@@ -7,41 +7,51 @@ import Animated, {
   withSequence,
   withTiming,
   withDelay,
-  withSpring,
   FadeInRight,
   FadeOutRight,
 } from 'react-native-reanimated';
-import { ChevronsLeft } from 'lucide-react-native';
+import { Pointer, MoveHorizontal } from 'lucide-react-native';
 
 import { Typography } from '@/components/theme';
 import { SwipeIndicatorProps } from './types';
 import { swipeIndicatorStyles, swipeIndicatorPosition } from './styles';
 
 export const SwipeIndicator: React.FC<SwipeIndicatorProps> = ({ visible }) => {
-  const translateX = useSharedValue<number>(0);
+  const translateX = useSharedValue<number>(12);
+  const handOpacity = useSharedValue<number>(0);
   const ringScale = useSharedValue<number>(1);
   const ringOpacity = useSharedValue<number>(0.6);
-  const iconScale = useSharedValue<number>(1);
 
-  // Bouncing icon: nudges left sharply then springs back, looping
+  // Swipe gesture animation: slides hand left and fades in/out in a loop
   useEffect(() => {
     translateX.value = withRepeat(
       withSequence(
-        withTiming(0, { duration: 0 }),
-        withDelay(600, withSpring(-14, { damping: 6, stiffness: 180 })),
-        withDelay(100, withSpring(0, { damping: 10, stiffness: 160 })),
+        withTiming(12, { duration: 0 }),
+        withTiming(-12, { duration: 1000 }),
+        withDelay(200, withTiming(-12, { duration: 0 })),
       ),
       -1,
       false,
     );
-  }, [translateX]);
 
-  // Pulsing outer ring: expands and fades on each pulse cycle
+    handOpacity.value = withRepeat(
+      withSequence(
+        withTiming(0, { duration: 0 }),
+        withTiming(1, { duration: 200 }),
+        withDelay(600, withTiming(1, { duration: 0 })),
+        withTiming(0, { duration: 200 }),
+      ),
+      -1,
+      false,
+    );
+  }, [translateX, handOpacity]);
+
+  // Pulsing outer ring to simulate concentric touch waves (as seen in references)
   useEffect(() => {
     ringScale.value = withRepeat(
       withSequence(
         withTiming(1, { duration: 0 }),
-        withDelay(500, withTiming(1.6, { duration: 800 })),
+        withDelay(400, withTiming(1.5, { duration: 800 })),
         withTiming(1, { duration: 0 }),
       ),
       -1,
@@ -49,33 +59,21 @@ export const SwipeIndicator: React.FC<SwipeIndicatorProps> = ({ visible }) => {
     );
     ringOpacity.value = withRepeat(
       withSequence(
-        withTiming(0.5, { duration: 0 }),
-        withDelay(500, withTiming(0, { duration: 800 })),
-        withTiming(0.5, { duration: 0 }),
+        withTiming(0.6, { duration: 0 }),
+        withDelay(400, withTiming(0, { duration: 800 })),
+        withTiming(0.6, { duration: 0 }),
       ),
       -1,
       false,
     );
   }, [ringScale, ringOpacity]);
 
-  // Subtle icon breathe effect — micro scale pulse
-  useEffect(() => {
-    iconScale.value = withRepeat(
-      withSequence(
-        withTiming(1, { duration: 400 }),
-        withTiming(1.15, { duration: 400 }),
-        withTiming(1, { duration: 400 }),
-      ),
-      -1,
-      false,
-    );
-  }, [iconScale]);
-
-  const iconAnimatedStyle = useAnimatedStyle(() => ({
+  const handAnimatedStyle = useAnimatedStyle(() => ({
     transform: [
       { translateX: translateX.value },
-      { scale: iconScale.value },
+      { rotate: '-12deg' }, // Natural pointing hand angle
     ],
+    opacity: handOpacity.value,
   }));
 
   const pulseRingStyle = useAnimatedStyle(() => ({
@@ -83,25 +81,35 @@ export const SwipeIndicator: React.FC<SwipeIndicatorProps> = ({ visible }) => {
     opacity: ringOpacity.value,
   }));
 
-  if (!visible) {
-    return null;
-  }
+  if (!visible) return null;
 
   return (
-    // Outer: owns layout entering/exiting — separate node from any animated style
     <Animated.View
       className={swipeIndicatorStyles.outerWrapper}
       style={swipeIndicatorPosition.anchor}
       entering={FadeInRight.duration(500).delay(800).springify()}
       exiting={FadeOutRight.duration(300)}
     >
-      {/* Pulsing ring — separate node from the circle to avoid style conflicts */}
-      <Animated.View className={swipeIndicatorStyles.pulseRing} style={pulseRingStyle} />
+      {/* Pulsing concentric ring */}
+      <Animated.View
+        className={swipeIndicatorStyles.pulseRing}
+        style={pulseRingStyle}
+      />
 
-      {/* Main circular button */}
+      {/* Main interaction circle */}
       <View className={swipeIndicatorStyles.circle}>
-        <Animated.View style={iconAnimatedStyle}>
-          <ChevronsLeft size={24} color="white" strokeWidth={2.5} />
+        {/* Double-headed horizontal arrow */}
+        <MoveHorizontal
+          size={18}
+          color="white"
+          style={swipeIndicatorPosition.arrow}
+        />
+
+        {/* Pointing hand gesture */}
+        <Animated.View
+          style={[handAnimatedStyle, swipeIndicatorPosition.handContainer]}
+        >
+          <Pointer size={22} color="white" />
         </Animated.View>
       </View>
 
