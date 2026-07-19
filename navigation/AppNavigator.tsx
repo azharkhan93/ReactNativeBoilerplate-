@@ -217,7 +217,7 @@ export const AppNavigator: React.FC = () => {
         />
       )}
 
-      <View className="flex-1">
+      <View className="flex-1 bg-[#F1F6FD]">
         {renderScreen()}
       </View>
       {/* Vendor Search Results */}
