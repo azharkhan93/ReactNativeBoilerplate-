@@ -59,6 +59,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             horizontal
             showsHorizontalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
+            // eslint-disable-next-line react-native/no-inline-styles
             contentContainerStyle={{ gap: 16, paddingRight: 20 }}
           >
             {SERVICE_CATEGORIES.map(category => {

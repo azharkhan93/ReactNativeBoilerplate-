@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { View, DimensionValue, TouchableOpacity } from 'react-native';
 import {
   ProfileHeader,
@@ -101,73 +101,59 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
     onLogout?.();
   };
 
-  const MODAL_CONFIG = [
-    ...MODAL_ITEMS,
-    {
-      id: 'avatar_upload',
-      title: 'Upload Profile Picture',
-      height: '60%',
-      scrollable: false,
-    } as ModalConfigItem,
-  ].reduce(
-    (
-      acc: Record<
-        string,
+  const closeModal = useCallback(() => setModalType(null), []);
+
+  const MODAL_CONFIG = useMemo(() => {
+    const contentMap: Record<string, ReactNode> = {
+      availability: <AvailabilityContent onClose={closeModal} />,
+      bank: <BankAccountDetails />,
+      business: <BusinessProfile />,
+      services: <ManageServices />,
+      profile: <CustomerProfileModalContent onClose={closeModal} />,
+      addresses: <CustomerAddressDetails />,
+      avatar_upload: (
+        <AvatarUploadContent
+          avatarUrl={userData.avatarUrl ?? null}
+          onSave={async (url: string | null) => {
+            await handleSaveAvatar(url);
+            closeModal();
+          }}
+          onClose={closeModal}
+        />
+      ),
+    };
+
+    const allItems: ModalConfigItem[] = [
+      ...MODAL_ITEMS,
+      { id: 'avatar_upload', title: 'Upload Profile Picture', height: '60%', scrollable: false },
+    ];
+
+    return Object.fromEntries(
+      allItems.map((item) => [
+        item.id,
         {
-          title: string;
-          content: React.ReactNode;
-          height?: DimensionValue;
-          scrollable?: boolean;
-        }
-      >,
-      item: ModalConfigItem,
-    ) => {
-      let content: ReactNode = null;
+          title: item.title,
+          content: contentMap[item.id] ?? (item.isPlaceholder ? (
+            <View className="p-10 bg-notch">
+              <Typography className="text-slate-800 text-center font-medium">
+                {item.placeholderText}
+              </Typography>
+            </View>
+          ) : null),
+          height: item.height,
+          scrollable: item.scrollable,
+        },
+      ])
+    ) as Record<string, { title: string; content: ReactNode; height?: DimensionValue; scrollable?: boolean }>;
+  }, [closeModal, userData.avatarUrl, handleSaveAvatar]);
 
-      if (item.id === 'availability')
-        content = <AvailabilityContent onClose={() => setModalType(null)} />;
-      else if (item.id === 'bank') content = <BankAccountDetails />;
-      else if (item.id === 'business') content = <BusinessProfile />;
-      else if (item.id === 'services') content = <ManageServices />;
-      else if (item.id === 'profile')
-        content = <CustomerProfileModalContent onClose={() => setModalType(null)} />;
-      else if (item.id === 'addresses') content = <CustomerAddressDetails />;
-      else if (item.id === 'avatar_upload') {
-        content = (
-          <AvatarUploadContent
-            avatarUrl={userData.avatarUrl ?? null}
-            onSave={async (url: string | null) => {
-              await handleSaveAvatar(url);
-              setModalType(null);
-            }}
-            onClose={() => setModalType(null)}
-          />
-        );
-      } else if (item.isPlaceholder) {
-        content = (
-          <View className="p-10 bg-notch">
-            <Typography className="text-slate-800 text-center font-medium">
-              {item.placeholderText}
-            </Typography>
-          </View>
-        );
-      }
-
-      acc[item.id] = {
-        title: item.title,
-        content,
-        height: item.height,
-        scrollable: item.scrollable,
-      };
-      return acc;
+  const handleMenuPress = useCallback(
+    (id: string) => {
+      if (MODAL_CONFIG[id]) return setModalType(id);
+      onNavigate?.(id);
     },
-    {},
+    [MODAL_CONFIG, onNavigate],
   );
-
-  const handleMenuPress = (id: string) => {
-    if (MODAL_CONFIG[id]) return setModalType(id);
-    onNavigate?.(id);
-  };
 
   const config = modalType ? MODAL_CONFIG[modalType] : null;
 
