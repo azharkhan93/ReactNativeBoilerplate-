@@ -1,5 +1,5 @@
 import React, { ReactNode, useCallback, useMemo, useState } from 'react';
-import { View, DimensionValue, TouchableOpacity } from 'react-native';
+import { Alert, View, DimensionValue } from 'react-native';
 import {
   ProfileHeader,
   ProfileMenuSection,
@@ -24,9 +24,8 @@ import {
 } from '@/components/Vendor/vendorProfileConstants';
 import { useProfile } from './hooks/useProfile';
 import { Typography, ScreenScrollView } from '@/components/theme';
-import { Dropzone } from '@/components/shared/Dropzone';
-import { useImageUpload } from '@/hooks/useImageUpload';
 import { useLogout } from '@/hooks/useLogout';
+import { AvatarUploadContent } from './components/AvatarUploadContent';
 
 export interface ProfileScreenProps {
   userRole?: UserRole | null;
@@ -34,58 +33,6 @@ export interface ProfileScreenProps {
   onLogout?: () => void;
 }
 
-interface AvatarUploadContentProps {
-  avatarUrl: string | null;
-  onSave: (url: string | null) => Promise<void>;
-  onClose: () => void;
-}
-
-const AvatarUploadContent: React.FC<AvatarUploadContentProps> = ({
-  avatarUrl,
-  onSave,
-  onClose,
-}) => {
-  const [currentUri, setCurrentUri] = useState<string | null>(avatarUrl);
-
-  const { triggerUpload, uploading } = useImageUpload({
-    fileName: 'profile_avatar.jpg',
-    onSuccess: setCurrentUri,
-  });
-
-  return (
-    <View className="px-5 pt-2 pb-8 bg-notch">
-      <Typography variant="subheading" className="text-slate-900 font-heading-bold mb-4 text-center">
-        Upload Profile Picture
-      </Typography>
-
-      <Dropzone
-        label="Avatar Image"
-        onUpload={triggerUpload}
-        onRemove={() => setCurrentUri(null)}
-        imageUri={currentUri}
-      />
-
-      <View className="flex-row gap-3 mt-4">
-        <TouchableOpacity
-          onPress={onClose}
-          className="flex-1 py-3.5 rounded-2xl items-center bg-white border border-slate-200"
-        >
-          <Typography className="text-slate-600 font-body-semibold">Cancel</Typography>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => onSave(currentUri)}
-          disabled={uploading}
-          className={`flex-1 py-3.5 rounded-2xl items-center bg-primary-600 ${uploading ? 'opacity-55' : ''}`}
-        >
-          <Typography className="text-white font-body-semibold">
-            {uploading ? 'Uploading...' : 'Save Image'}
-          </Typography>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
 
 export const ProfileScreen: React.FC<ProfileScreenProps> = ({
   userRole,
@@ -96,14 +43,26 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
   const { logout } = useLogout();
   const [modalType, setModalType] = useState<string | null>(null);
 
-  const handleLogoutPress = async () => {
-    await logout();
-    onLogout?.();
-  };
-
   const closeModal = useCallback(() => setModalType(null), []);
 
+  const handleLogoutPress = useCallback(async (): Promise<void> => {
+    try {
+      await logout();
+      onLogout?.();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Something went wrong';
+      Alert.alert('Logout Failed', message);
+    }
+  }, [logout, onLogout]);
+
+  const handleAvatarEditPress = useCallback(() => setModalType('avatar_upload'), []);
+
   const MODAL_CONFIG = useMemo(() => {
+    const handleAvatarSave = async (url: string | null): Promise<void> => {
+      await handleSaveAvatar(url);
+      closeModal();
+    };
+
     const contentMap: Record<string, ReactNode> = {
       availability: <AvailabilityContent onClose={closeModal} />,
       bank: <BankAccountDetails />,
@@ -114,10 +73,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
       avatar_upload: (
         <AvatarUploadContent
           avatarUrl={userData.avatarUrl ?? null}
-          onSave={async (url: string | null) => {
-            await handleSaveAvatar(url);
-            closeModal();
-          }}
+          onSave={handleAvatarSave}
           onClose={closeModal}
         />
       ),
@@ -156,11 +112,16 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
   );
 
   const config = modalType ? MODAL_CONFIG[modalType] : null;
+  const headerTitle = isVendor ? 'Provider Profile' : 'My Profile';
+  const sectionTitle = isVendor ? 'Business Management' : 'Account Settings';
+  const menuItems = (isVendor ? MANAGEMENT_LINKS : ACCOUNT_MENU_ITEMS) as ProfileMenuItemData[];
+  const modalTitle = config?.title ?? '';
+  const modalHeight = config?.height ?? '100%';
 
   return (
     <View className="flex-1 bg-notchLight">
       <ProfileHeader
-        title={isVendor ? 'Provider Profile' : 'My Profile'}
+        title={headerTitle}
         onRightActionPress={handleLogoutPress}
         rightIcon="logout"
       />
@@ -172,26 +133,22 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
           location={userData.location}
           isVerified={userData.isVerified}
           showEditButton={false}
-          onEditAvatar={() => setModalType('avatar_upload')}
+          onEditAvatar={handleAvatarEditPress}
         />
         {isVendor && <ProfileStats stats={VENDOR_STATS} />}
         <View className="px-5">
           <ProfileMenuSection
-            title={isVendor ? 'Business Management' : 'Account Settings'}
-            items={
-              (isVendor
-                ? MANAGEMENT_LINKS
-                : ACCOUNT_MENU_ITEMS) as ProfileMenuItemData[]
-            }
+            title={sectionTitle}
+            items={menuItems}
             onItemPress={handleMenuPress}
           />
         </View>
       </ScreenScrollView>
       <BottomSheetModal
         visible={!!modalType}
-        onClose={() => setModalType(null)}
-        title={config?.title || ''}
-        height={config?.height || '100%'}
+        onClose={closeModal}
+        title={modalTitle}
+        height={modalHeight}
         scrollable={config?.scrollable}
       >
         {config?.content}
