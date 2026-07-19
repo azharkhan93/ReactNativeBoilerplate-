@@ -145,6 +145,7 @@ export const AppNavigator: React.FC = () => {
       return (
         <ProfileScreen
           userRole={userRole}
+          userLocation={userLocation.address}
           onNavigate={handleNavigate}
           onLogout={() => {
             setUserRole(null);

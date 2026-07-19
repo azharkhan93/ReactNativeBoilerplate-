@@ -30,6 +30,7 @@ import { AvatarUploadContent } from './components/AvatarUploadContent';
 
 export interface ProfileScreenProps {
   userRole?: UserRole | null;
+  userLocation?: string;
   onNavigate?: (route: string) => void;
   onLogout?: () => void;
 }
@@ -37,12 +38,20 @@ export interface ProfileScreenProps {
 
 export const ProfileScreen: React.FC<ProfileScreenProps> = ({
   userRole,
+  userLocation,
   onNavigate,
   onLogout,
 }) => {
   const { userData, isVendor, handleSaveAvatar } = useProfile(userRole);
   const { logout } = useLogout();
   const [modalType, setModalType] = useState<string | null>(null);
+
+  const displayLocation = useMemo(() => {
+    if (userData.location && userData.location !== 'Location not configured') {
+      return userData.location;
+    }
+    return userLocation || 'Dubai, UAE';
+  }, [userData.location, userLocation]);
 
   const closeModal = useCallback(() => setModalType(null), []);
 
@@ -131,7 +140,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
           name={userData.name}
           avatarUrl={userData.avatarUrl ?? undefined}
           subtitle={userData.phone}
-          location={userData.location}
+          location={displayLocation}
           isVerified={userData.isVerified}
           showEditButton={false}
           onEditAvatar={handleAvatarEditPress}
