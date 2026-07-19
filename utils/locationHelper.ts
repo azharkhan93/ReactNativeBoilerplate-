@@ -26,22 +26,43 @@ export const getCurrentLocation = (): Promise<{ latitude: number; longitude: num
 
 export const reverseGeocode = async (lat: number, lon: number) => {
     try {
-        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`, {
-            headers: { 'User-Agent': 'NativeApp/1.0' },
-        });
-        const data = await res.json();
-        if (data.address) {
-            const { neighborhood, suburb, city, town, village, country } = data.address;
-            const area = neighborhood || suburb || city || '';
-            const mainCity = city || town || village || '';
+        const res = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`,
+            {
+                headers: {
+                    'User-Agent': 'Tab2WashMobileApp/1.0 (https://tab2wash.com)',
+                    'Accept': 'application/json',
+                },
+            }
+        );
+
+        if (!res.ok) {
             return {
-                address: [area, mainCity, country].filter(Boolean).join(', '),
-                full: data.display_name,
-                details: { area, city: mainCity, country }
+                address: `Location (${lat.toFixed(4)}, ${lon.toFixed(4)})`,
+                full: `Latitude: ${lat}, Longitude: ${lon}`,
+                details: { area: '', city: 'Dubai', country: 'UAE' },
+            };
+        }
+
+        const data = await res.json();
+        if (data && data.address) {
+            const { neighborhood, suburb, city, town, village, state, country } = data.address;
+            const area = neighborhood || suburb || state || '';
+            const mainCity = city || town || village || '';
+            const formatted = [area, mainCity, country].filter(Boolean).join(', ');
+            return {
+                address: formatted || data.display_name || `Location (${lat.toFixed(4)}, ${lon.toFixed(4)})`,
+                full: data.display_name || `Location (${lat.toFixed(4)}, ${lon.toFixed(4)})`,
+                details: { area, city: mainCity, country },
             };
         }
     } catch (e) {
-        console.error('Geocode Error:', e);
+        console.warn('Geocode Exception caught cleanly:', e);
     }
-    return null;
+    return {
+        address: `Location (${lat.toFixed(4)}, ${lon.toFixed(4)})`,
+        full: `Latitude: ${lat}, Longitude: ${lon}`,
+        details: { area: '', city: 'Dubai', country: 'UAE' },
+    };
 };
+

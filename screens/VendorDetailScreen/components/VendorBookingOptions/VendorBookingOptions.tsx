@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
-import { Car, Shield, Home, Wrench } from 'lucide-react-native';
+import { Home, Wrench } from 'lucide-react-native';
+
+
 import { Typography } from '@/components/theme/Typography';
 import { VendorCalendar } from '@/components/Vendor/Calendar';
 

@@ -12,12 +12,16 @@ import {
 import { MOCK_PROVIDERS } from '@/data/mockProviders';
 
 export interface NearbyProvidersScreenProps {
-  onNavigate?: (route: string) => void;
+  onNavigate?: (route: string, params?: any) => void;
 }
 
-export const NearbyProvidersScreen: React.FC<NearbyProvidersScreenProps> = () => {
+export const NearbyProvidersScreen: React.FC<NearbyProvidersScreenProps> = ({ onNavigate }) => {
   const insets = useSafeAreaInsets();
   const [searchQuery, setSearchQuery] = useState('');
+
+  const handleProviderPress = (id: string) => {
+    onNavigate?.('vendorDetails', { vendorId: id });
+  };
 
   const filteredProviders = useMemo(() => {
     return MOCK_PROVIDERS.filter(
@@ -38,7 +42,7 @@ export const NearbyProvidersScreen: React.FC<NearbyProvidersScreenProps> = () =>
         <ProviderMap
           fullScreen
           providers={filteredProviders}
-          onProviderPress={id => console.log('Provider selected:', id)}
+          onProviderPress={handleProviderPress}
         />
       </View>
 
@@ -93,7 +97,7 @@ export const NearbyProvidersScreen: React.FC<NearbyProvidersScreenProps> = () =>
         <View className="flex-1">
           <ProviderList
             providers={filteredProviders}
-            onProviderPress={id => console.log('Provider selected:', id)}
+            onProviderPress={handleProviderPress}
             contentContainerStyle={{
               paddingHorizontal: 20,
               paddingBottom: 40,

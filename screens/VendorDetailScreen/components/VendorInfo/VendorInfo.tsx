@@ -24,44 +24,19 @@ export const VendorInfo: React.FC<VendorInfoProps> = ({
     <View className="flex-col">
       <View className="flex-row items-start justify-between">
         <View className="flex-1 mr-4">
-          <Typography
-            variant="h2"
-            className="text-slate-900 font-heading-bold leading-tight"
-          >
-            {businessName}
-          </Typography>
+          <Typography variant="h3">{businessName}</Typography>
         </View>
         <View className="items-end">
-          <Typography
-            variant="body-sm"
-            className="text-slate-500 uppercase tracking-widest font-body-semibold text-[10px]"
-          >
-            Starting from
-          </Typography>
-          <Typography
-            variant="h3"
-            className="text-primary-600 font-heading-bold"
-          >
-            ₹{startingPrice}
-          </Typography>
+          <Typography variant="body-sm">Starting from</Typography>
+          <Typography variant="h3">₹{startingPrice}</Typography>
         </View>
       </View>
 
       <View className="flex-row items-center flex-wrap gap-x-4 gap-y-2 mt-4 py-3 border-y border-blue-200/30">
         <View className="flex-row items-center">
           <Star size={14} color="#FBBF24" fill="#FBBF24" />
-          <Typography
-            variant="body-sm"
-            className="text-slate-900 ml-1 font-body-semibold"
-          >
-            {rating.toFixed(1)}
-          </Typography>
-          <Typography
-            variant="body-sm"
-            className="text-slate-500 ml-1 font-body"
-          >
-            ({reviewCount} reviews)
-          </Typography>
+          <Typography variant="body-sm">{rating.toFixed(1)}</Typography>
+          <Typography variant="body-sm">({reviewCount} reviews)</Typography>
         </View>
         <View className="w-1.5 h-1.5 rounded-full bg-slate-300" />
         {serviceRadius && (
@@ -75,21 +50,17 @@ export const VendorInfo: React.FC<VendorInfoProps> = ({
             </Typography>
           </View>
         )}
-        {operatingHours && (
+        {operatingHours ? (
           <View className="flex-row items-center">
             <View className="w-1.5 h-1.5 rounded-full bg-slate-300 mx-2" />
             <View className="flex-row items-center">
               <Clock size={13} color="#16a34a" />
-              <Typography
-                variant="body-sm"
-                className="text-slate-700 ml-1 font-body-medium"
-                numberOfLines={1}
-              >
+              <Typography variant="body-sm" numberOfLines={1}>
                 {operatingHours}
               </Typography>
             </View>
           </View>
-        )}
+        ): null}
       </View>
     </View>
   );

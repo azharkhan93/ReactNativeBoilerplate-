@@ -89,8 +89,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <NewArrivals
             title="Recommended for You"
             products={filteredRecommended}
-            onProductPress={() => {}}
-            onViewAllPress={() => {}}
+            onProductPress={handleVendorPress}
+            onViewAllPress={handleViewAllProviders}
           />
         </View>
 
@@ -98,8 +98,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <FlashSale
             title="Special Offers"
             products={filteredFeatured}
-            onProductPress={() => {}}
-            onViewAllPress={() => {}}
+            onProductPress={handleVendorPress}
+            onViewAllPress={handleViewAllProviders}
           />
         </View>
 
@@ -107,7 +107,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <BestSellers
             title="Nearby Car Washers"
             products={filteredNearby}
-            onProductPress={() => {}}
+            onProductPress={handleVendorPress}
             onViewAllPress={handleViewAllProviders}
           />
         </View>
