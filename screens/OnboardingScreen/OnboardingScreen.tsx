@@ -24,6 +24,17 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
   onLocationSelect,
 }) => {
   const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
+  const [hasLocationSelected, setHasLocationSelected] = useState(false);
+
+  const handleLocationSelectInternal = (data: {
+    address: string;
+    coords: { latitude: number; longitude: number };
+  }) => {
+    if (data?.address?.trim()) {
+      setHasLocationSelected(true);
+    }
+    onLocationSelect?.(data);
+  };
 
   const {
     currentStep,
@@ -57,7 +68,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
     }
     return (
       <View style={slideItemStyle.slide}>
-        <LocationStep onLocationSelect={onLocationSelect} />
+        <LocationStep onLocationSelect={handleLocationSelectInternal} />
       </View>
     );
   };
@@ -67,6 +78,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
   const isOnLastStep = currentStep === TOTAL_STEPS - 1;
   const canShowNextLink = currentStep < TOTAL_STEPS - 1 && (!isOnRoleStep || selectedRole !== null);
   const canShowCta = isOnRoleStep || isOnLastStep;
+  const isCtaDisabled = (isOnRoleStep && !selectedRole) || (isOnLastStep && !hasLocationSelected);
 
   return (
     <SafeAreaView edges={['top', 'bottom', 'left', 'right']} className={onboardingStyles.safeArea}>
@@ -139,8 +151,9 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
             <Animated.View entering={FadeIn.duration(400)}>
               <Button
                 onPress={handleNext}
-                size="md"
-                variant={isOnRoleStep && !selectedRole ? 'disabled' : 'primary'}
+                size="sm"
+                variant={isCtaDisabled ? 'disabled' : 'primary'}
+                disabled={isCtaDisabled}
                 className="w-full shadow-lg shadow-primary-200"
               >
                 <View className={onboardingStyles.submitButtonInner}>

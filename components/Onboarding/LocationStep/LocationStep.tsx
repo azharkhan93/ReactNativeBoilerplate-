@@ -11,8 +11,9 @@ import {
   StyleSheet,
   Keyboard,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
-import { MapPin } from 'lucide-react-native';
+import { MapPin, LocateFixed, Check, Search } from 'lucide-react-native';
 import MapView, { Marker } from 'react-native-maps';
 import {
   checkLocationPermission,
@@ -22,7 +23,6 @@ import {
 } from '../../../utils/locationHelper';
 import { RESULTS, check } from 'react-native-permissions';
 import { Typography } from '../../theme/Typography';
-import { Button } from '../../theme/Button';
 import { FormInput } from '../../theme/FormInput';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
@@ -82,10 +82,12 @@ export const LocationStep: React.FC<LocationStepProps> = ({
 
   const handleQueryChange = useCallback((text: string) => {
     setQuery(text);
-    onLocationSelect?.({
-      address: text,
-      coords: pos || DEFAULT_LOC,
-    });
+    if (text.trim()) {
+      onLocationSelect?.({
+        address: text,
+        coords: pos || DEFAULT_LOC,
+      });
+    }
   }, [onLocationSelect, pos]);
 
   useEffect(() => {
@@ -94,16 +96,10 @@ export const LocationStep: React.FC<LocationStepProps> = ({
     });
   }, [handleLocation]);
 
-  // Memoized values and sub-renders to avoid inline JSX/Ternaries
-  const buttonText = useMemo(
-    () => (loading ? 'Locating...' : 'Use Current Location'),
-    [loading],
-  );
-
   const addressLabel = useMemo(
     () =>
-      address || (loading ? 'Locating...' : 'Search or use current location'),
-    [address, loading],
+      address || query || (loading ? 'Detecting your location...' : 'Search address or tap Use My Current Location'),
+    [address, query, loading],
   );
 
   const mapMarker = useMemo(() => {
@@ -124,20 +120,14 @@ export const LocationStep: React.FC<LocationStepProps> = ({
     >
       <View style={styles.container} className="flex-1 bg-[#F1F6FD] px-6 pt-10">
         <Animated.View entering={FadeIn.duration(500)} className="flex-1">
-         
-          {/* <View className="h-1 w-full bg-slate-200 rounded-full mb-10 overflow-hidden">
-            <View className="h-full bg-primary-500 rounded-full w-full" />
-          </View> */}
-
           <Typography
             variant="h2"
-            className="text-slate-900 mb-3 font-heading-bold"
+            className="text-slate-900 mb-2 font-heading-bold"
           >
             Set Your Location
           </Typography>
-          <Typography variant="body" className="text-slate-600 mb-8 leading-6">
-            We'll use this to find the best car wash service providers near you
-            and ensure precise delivery.
+          <Typography variant="body" className="text-slate-600 mb-6 leading-6 font-body-medium">
+            Find the best car wash service providers near you and ensure precise delivery.
           </Typography>
 
           <FormInput
@@ -147,20 +137,23 @@ export const LocationStep: React.FC<LocationStepProps> = ({
             blurOnSubmit={true}
             returnKeyType="search"
             onSubmitEditing={handleDismissKeyboard}
-            containerClassName="mb-4"
-            multiline={true}
+            containerClassName="mb-3"
+            icon={<Search size={18} color="#64748b" />}
           />
 
-          <Button
-            variant="outlined"
-            size="sm"
+          <TouchableOpacity
             onPress={handleLocation}
-            loading={loading}
+            disabled={loading}
+            className="mb-4 p-3.5 bg-blue-50/90 border border-blue-200/80 rounded-2xl flex-row items-center justify-center shadow-sm shadow-blue-100/40"
+            activeOpacity={0.7}
           >
-            {buttonText}
-          </Button>
+            <LocateFixed size={20} color="#3b82f6" />
+            <Typography variant="body" className="font-heading-semibold text-primary-600 ml-2.5 text-sm">
+              {loading ? 'Detecting location...' : 'Use My Current Location'}
+            </Typography>
+          </TouchableOpacity>
 
-          <View className="flex-1 mt-6 rounded-3xl overflow-hidden border border-slate-200 relative shadow-sm bg-white">
+          <View className="flex-1 mt-2 rounded-3xl overflow-hidden border border-slate-200/80 relative shadow-sm bg-white">
             <MapView
               ref={mapRef}
               className="absolute inset-0"
@@ -175,15 +168,27 @@ export const LocationStep: React.FC<LocationStepProps> = ({
               {mapMarker}
             </MapView>
 
-            <View className="absolute bottom-4 left-4 right-4 bg-white/95 p-3 rounded-2xl border border-slate-200 flex-row items-center shadow-lg shadow-slate-100">
-              <MapPin size={18} color="#3b82f6" />
-              <Typography
-                variant="body"
-                className="text-slate-800 ml-2 flex-1"
-                numberOfLines={1}
-              >
-                {addressLabel}
-              </Typography>
+            <View className="absolute bottom-4 left-4 right-4 bg-white/95 p-3.5 rounded-2xl border border-slate-200/80 flex-row items-center shadow-lg shadow-slate-100">
+              <View className={`w-8 h-8 rounded-full items-center justify-center ${pos || query ? 'bg-emerald-100' : 'bg-blue-100'}`}>
+                <MapPin size={18} color={pos || query ? '#16a34a' : '#3b82f6'} />
+              </View>
+              <View className="ml-3 flex-1">
+                <Typography variant="body-sm" className="text-slate-400 text-[10px] uppercase tracking-wider font-body-bold">
+                  Selected Location
+                </Typography>
+                <Typography
+                  variant="body"
+                  className="text-slate-900 font-body-bold text-sm"
+                  numberOfLines={1}
+                >
+                  {addressLabel}
+                </Typography>
+              </View>
+              {(pos || query.trim()) && (
+                <View className="w-6 h-6 rounded-full bg-emerald-500 items-center justify-center ml-2 shadow-sm shadow-emerald-200">
+                  <Check size={14} color="white" />
+                </View>
+              )}
             </View>
           </View>
         </Animated.View>
