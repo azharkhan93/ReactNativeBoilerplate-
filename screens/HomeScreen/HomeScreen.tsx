@@ -16,6 +16,8 @@ import { useHome } from './hooks/useHome';
 import { filterAndSortServices, FilterValues } from './helpers/homeHelpers';
 import { NavigationCallback } from '@/navigation/navigation.types';
 
+import { homeStyles } from './styles';
+
 export interface HomeScreenProps {
   userRole?: UserRole | null;
   onNavigate?: NavigationCallback;
@@ -55,19 +57,19 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   );
 
   return (
-    <View className="flex-1 bg-[#F1F6FD]">
-      <ScreenScrollView className="flex-1">
+    <View className={homeStyles.container}>
+      <ScreenScrollView className={homeStyles.scrollContainer}>
         <HeroSection />
 
-        <View className="px-5 pt-6">
-          <Typography variant="body-lg" className="mb-4 font-bold text-slate-900">
+        <View className={homeStyles.categorySection}>
+          <Typography variant="body-lg" className={homeStyles.categoryHeader}>
             Service Categories
           </Typography>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ gap: 16, paddingRight: 20 }}
+            contentContainerStyle={homeStyles.categoryListContent}
           >
             {SERVICE_CATEGORIES.map(category => {
               const isSelected = activeFilters?.categoryId === category.id;
@@ -85,7 +87,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           </ScrollView>
         </View>
 
-        <View className="mt-4">
+        <View className={homeStyles.recentlyAddedSection}>
           <RecentlyAdded
             title="Latest Added Providers"
             onVendorPress={handleVendorPress}
@@ -93,7 +95,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           />
         </View>
 
-        <View className="mt-4">
+        <View className={homeStyles.newArrivalsSection}>
           <NewArrivals
             title="Recommended for You"
             products={filteredRecommended}
@@ -102,7 +104,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           />
         </View>
 
-        <View className="mt-8">
+        <View className={homeStyles.flashSaleSection}>
           <FlashSale
             title="Special Offers"
             products={filteredFeatured}
@@ -111,7 +113,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           />
         </View>
 
-        <View className="mt-4">
+        <View className={homeStyles.bestSellersSection}>
           <BestSellers
             title="Nearby Car Washers"
             products={filteredNearby}
