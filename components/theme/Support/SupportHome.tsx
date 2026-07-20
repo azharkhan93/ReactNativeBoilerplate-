@@ -1,4 +1,3 @@
- 
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import {
@@ -16,7 +15,7 @@ export interface SupportHomeProps {
   search: string;
   onSearchChange: (text: string) => void;
   onStartChat: () => void;
-  onNavigate: (screen: string) => void;
+  onNavigate?: (screen: string) => void;
   onReportIssue?: () => void;
 }
 
@@ -27,9 +26,7 @@ export const SupportHome: React.FC<SupportHomeProps> = ({
   onNavigate,
   onReportIssue,
 }) => (
-  <ScreenScrollView
-    className="flex-1 bg-[#F1F6FD]"
-  >
+  <ScreenScrollView className="flex-1 bg-[#F1F6FD]">
     <View className="px-5 pt-3">
       <View className="flex-row items-center justify-between mb-4">
         <View className="flex-row items-center">
@@ -37,10 +34,16 @@ export const SupportHome: React.FC<SupportHomeProps> = ({
             <CircleHelp size={22} color="#3b82f6" />
           </View>
           <View>
-            <Typography variant="subheading" className="font-heading-semibold text-slate-900 text-base">
+            <Typography
+              variant="subheading"
+              className="font-heading-semibold text-slate-900 text-base"
+            >
               Help Center
             </Typography>
-            <Typography variant="body-sm" className="text-slate-500 text-xs font-body-medium mt-0.5">
+            <Typography
+              variant="body-sm"
+              className="text-slate-500 text-xs font-body-medium mt-0.5"
+            >
               24/7 Support Assistance
             </Typography>
           </View>
@@ -73,7 +76,7 @@ export const SupportHome: React.FC<SupportHomeProps> = ({
     <View className="px-5 mt-4 mb-4">
       <TouchableOpacity
         onPress={() =>
-          onReportIssue ? onReportIssue() : onNavigate('serviceDispute')
+          onReportIssue ? onReportIssue() : onNavigate?.('serviceDispute')
         }
         className="bg-red-500/10 p-5 rounded-2xl border border-red-200/80 flex-row items-center shadow-sm shadow-red-100"
         activeOpacity={0.7}
@@ -82,7 +85,10 @@ export const SupportHome: React.FC<SupportHomeProps> = ({
           <AlertCircle size={22} color="white" />
         </View>
         <View className="flex-1">
-          <Typography variant="body" className="font-body-semibold text-red-700 text-base">
+          <Typography
+            variant="body"
+            className="font-body-semibold text-red-700 text-base"
+          >
             Report a problem
           </Typography>
           <Typography
@@ -122,4 +128,3 @@ export const SupportHome: React.FC<SupportHomeProps> = ({
     </View>
   </ScreenScrollView>
 );
-

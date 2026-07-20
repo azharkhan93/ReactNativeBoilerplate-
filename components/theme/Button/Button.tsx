@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, TouchableOpacityProps, ActivityIndicator, View, LayoutChangeEvent } from 'react-native';
+import { TouchableOpacity, TouchableOpacityProps, ActivityIndicator, LayoutChangeEvent } from 'react-native';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { Typography } from '../Typography';

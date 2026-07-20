@@ -1,33 +1,10 @@
-import React from 'react';
-import { View, ScrollView } from 'react-native';
+import React, { useCallback } from 'react';
+import { View, FlatList, ListRenderItemInfo } from 'react-native';
 import { SectionHeader } from '../theme/SectionHeader';
 import { ProductCard } from '../theme/ProductCard';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-const cn = (...inputs: (string | undefined | null | boolean)[]) => {
-  return twMerge(clsx(inputs));
-};
-
-export interface BestSellerProduct {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  imageUrl?: string;
-  discount?: number;
-  rating: number;
-  isFavorite?: boolean;
-}
-
-export interface BestSellersProps {
-  title?: string;
-  products?: BestSellerProduct[];
-  onViewAllPress?: () => void;
-  onProductPress?: (productId: string) => void;
-  onFavoritePress?: (productId: string) => void;
-  className?: string;
-}
+import { cn } from '@/utils/cn';
+import { BestSellerProduct, BestSellersProps } from './types';
+import { bestSellersStyles } from './styles';
 
 export const BestSellers: React.FC<BestSellersProps> = ({
   title = 'Best Sellers',
@@ -37,8 +14,34 @@ export const BestSellers: React.FC<BestSellersProps> = ({
   onFavoritePress,
   className,
 }) => {
+  const keyExtractor = useCallback((item: BestSellerProduct) => item.id, []);
+
+  const renderItem = useCallback(
+    ({ item }: ListRenderItemInfo<BestSellerProduct>) => {
+      const handlePress = () => onProductPress?.(item.id);
+      const handleFavoritePress = () => onFavoritePress?.(item.id);
+
+      return (
+        <ProductCard
+          id={item.id}
+          name={item.name}
+          price={item.price}
+          originalPrice={item.originalPrice}
+          imageUrl={item.imageUrl}
+          discount={item.discount}
+          rating={item.rating}
+          isFavorite={item.isFavorite}
+          onFavoritePress={handleFavoritePress}
+          className={bestSellersStyles.cardWidth}
+          onPress={handlePress}
+        />
+      );
+    },
+    [onFavoritePress, onProductPress],
+  );
+
   return (
-    <View className={cn('px-4 py-4', className)}>
+    <View className={cn(bestSellersStyles.container, className)}>
       <SectionHeader
         title={title}
         subtitle="Top rated products"
@@ -46,29 +49,14 @@ export const BestSellers: React.FC<BestSellersProps> = ({
         onViewAllPress={onViewAllPress}
       />
 
-      <ScrollView
+      <FlatList
+        data={products}
         horizontal
         showsHorizontalScrollIndicator={false}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
         contentContainerStyle={{ gap: 12 }}
-      >
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            id={product.id}
-            name={product.name}
-            price={product.price}
-            originalPrice={product.originalPrice}
-            imageUrl={product.imageUrl}
-            discount={product.discount}
-            rating={product.rating}
-            isFavorite={product.isFavorite}
-            onFavoritePress={() => onFavoritePress?.(product.id)}
-            className="w-40"
-            onPress={() => onProductPress?.(product.id)}
-          />
-        ))}
-      </ScrollView>
+      />
     </View>
   );
 };
-

@@ -37,7 +37,6 @@ export const useRegisterDeviceToken = (): UseRegisterDeviceTokenResult => {
             },
           },
         });
-        console.log('[FCM] Token registered to backend successfully');
       }
     } catch (err) {
       console.error('[FCM] Failed to register token to backend:', err);

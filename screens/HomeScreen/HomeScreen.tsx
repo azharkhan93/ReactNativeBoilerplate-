@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { ScrollView, View } from 'react-native';
 import {
   Category,
@@ -14,10 +14,11 @@ import { SERVICE_CATEGORIES } from '@/utils/constants';
 import { UserRole } from '../../__generated__/graphql';
 import { useHome } from './hooks/useHome';
 import { filterAndSortServices, FilterValues } from './helpers/homeHelpers';
+import { NavigationCallback } from '@/navigation/navigation.types';
 
 export interface HomeScreenProps {
   userRole?: UserRole | null;
-  onNavigate?: (route: string, params?: any) => void;
+  onNavigate?: NavigationCallback;
   activeFilters?: FilterValues | null;
   onSelectCategory?: (categoryId: string) => void;
 }
@@ -29,9 +30,16 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 }) => {
   const { featuredServices, nearbyServices, recommendedServices } = useHome();
 
-  const handleViewAllProviders = () => onNavigate?.('nearbyProviders');
-  const handleVendorPress = (vendorId: string) =>
-    onNavigate?.('vendorDetails', { vendorId });
+  const handleViewAllProviders = useCallback(() => {
+    onNavigate?.('nearbyProviders');
+  }, [onNavigate]);
+
+  const handleVendorPress = useCallback(
+    (vendorId: string) => {
+      onNavigate?.('vendorDetails', { vendorId });
+    },
+    [onNavigate],
+  );
 
   const filteredFeatured = useMemo(
     () => filterAndSortServices(featuredServices, activeFilters),
@@ -59,18 +67,18 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             horizontal
             showsHorizontalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
-            // eslint-disable-next-line react-native/no-inline-styles
             contentContainerStyle={{ gap: 16, paddingRight: 20 }}
           >
             {SERVICE_CATEGORIES.map(category => {
               const isSelected = activeFilters?.categoryId === category.id;
+              const handleCategoryPress = () => onSelectCategory?.(category.id);
               return (
                 <Category
                   key={category.id}
                   name={category.name}
                   icon={category.icon}
                   variant={isSelected ? 'primary' : 'default'}
-                  onPress={() => onSelectCategory?.(category.id)}
+                  onPress={handleCategoryPress}
                 />
               );
             })}

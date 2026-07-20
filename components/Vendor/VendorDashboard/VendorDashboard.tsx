@@ -71,7 +71,7 @@ export const VendorDashboard: React.FC<VendorDashboardProps> = ({
       <ServiceManagement
         visible={isAddServiceVisible}
         onClose={() => setIsAddServiceVisible(false)}
-        onSave={(service: any) => console.log('Saved service:', service)}
+        onSave={() => setIsAddServiceVisible(false)}
       />
 
       <BottomSheetModal

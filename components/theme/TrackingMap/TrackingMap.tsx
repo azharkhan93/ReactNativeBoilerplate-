@@ -12,7 +12,7 @@ export interface TrackingMapProps {
 export const TrackingMap: React.FC<TrackingMapProps> = ({
     driverLocation,
     destination,
-    driverPhotoUrl,
+    driverPhotoUrl: _driverPhotoUrl,
 }) => {
     const initialRegion = {
         latitude: (driverLocation.latitude + destination.latitude) / 2,

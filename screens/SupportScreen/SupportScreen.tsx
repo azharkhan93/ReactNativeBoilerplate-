@@ -5,7 +5,7 @@ import { SupportHome, SupportChatView } from '@/components/theme';
 import { useSupportChat } from '@/hooks/useSupportChat';
 
 export interface SupportScreenProps {
-    onNavigate: (screen: string) => void;
+    onNavigate?: (screen: string, params?: Record<string, unknown>) => void;
 }
 
 export const SupportScreen: React.FC<SupportScreenProps> = ({ onNavigate }) => {
@@ -28,7 +28,7 @@ export const SupportScreen: React.FC<SupportScreenProps> = ({ onNavigate }) => {
                     onSearchChange={setSearch}
                     onStartChat={() => setShowChat(true)}
                     onNavigate={onNavigate}
-                    onReportIssue={() => onNavigate('serviceDispute')}
+                    onReportIssue={() => onNavigate?.('serviceDispute')}
                 />
             ) : (
                 <SupportChatView

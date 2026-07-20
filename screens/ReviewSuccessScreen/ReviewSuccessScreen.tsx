@@ -1,12 +1,11 @@
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { View } from 'react-native';
 import { CheckCircle2 } from 'lucide-react-native';
 import { Typography, Button, Container } from '../../components/theme';
 import Animated, { FadeInUp, FadeInDown } from 'react-native-reanimated';
 
 export interface ReviewSuccessScreenProps {
-  onNavigate: (screen: string) => void;
+  onNavigate?: (screen: string, params?: Record<string, unknown>) => void;
 }
 
 export const ReviewSuccessScreen: React.FC<ReviewSuccessScreenProps> = ({ onNavigate }) => {
@@ -31,7 +30,7 @@ export const ReviewSuccessScreen: React.FC<ReviewSuccessScreenProps> = ({ onNavi
 
         <Animated.View entering={FadeInDown.delay(400).duration(600)} className="w-full">
           <Button 
-            onPress={() => onNavigate('home')}
+            onPress={() => onNavigate?.('home')}
             className="w-full"
             variant="primary"
           >

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
-import { Star, MapPin, Clock, ChevronRight } from 'lucide-react-native';
+import { Star, MapPin, ChevronRight } from 'lucide-react-native';
 import { Typography } from '../Typography';
 import { Provider } from '@/data/mockProviders';
 

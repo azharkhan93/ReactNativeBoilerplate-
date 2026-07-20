@@ -1,33 +1,10 @@
-import React from 'react';
-import { View, ScrollView } from 'react-native';
+import React, { useCallback } from 'react';
+import { View, FlatList, ListRenderItemInfo } from 'react-native';
 import { SectionHeader } from '../theme/SectionHeader';
 import { ProductCard } from '../theme/ProductCard';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-const cn = (...inputs: (string | undefined | null | boolean)[]) => {
-  return twMerge(clsx(inputs));
-};
-
-export interface NewArrivalProduct {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  imageUrl?: string;
-  discount?: number;
-  rating?: number;
-  isFavorite?: boolean;
-}
-
-export interface NewArrivalsProps {
-  title?: string;
-  products?: NewArrivalProduct[];
-  onViewAllPress?: () => void;
-  onProductPress?: (productId: string) => void;
-  onFavoritePress?: (productId: string) => void;
-  className?: string;
-}
+import { cn } from '@/utils/cn';
+import { NewArrivalProduct, NewArrivalsProps } from './types';
+import { newArrivalsStyles } from './styles';
 
 export const NewArrivals: React.FC<NewArrivalsProps> = ({
   title = 'New Arrivals',
@@ -37,8 +14,34 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({
   onFavoritePress,
   className,
 }) => {
+  const keyExtractor = useCallback((item: NewArrivalProduct) => item.id, []);
+
+  const renderItem = useCallback(
+    ({ item }: ListRenderItemInfo<NewArrivalProduct>) => {
+      const handlePress = () => onProductPress?.(item.id);
+      const handleFavoritePress = () => onFavoritePress?.(item.id);
+
+      return (
+        <ProductCard
+          id={item.id}
+          name={item.name}
+          price={item.price}
+          originalPrice={item.originalPrice}
+          imageUrl={item.imageUrl}
+          discount={item.discount}
+          rating={item.rating}
+          isFavorite={item.isFavorite}
+          onFavoritePress={handleFavoritePress}
+          className={newArrivalsStyles.cardWidth}
+          onPress={handlePress}
+        />
+      );
+    },
+    [onFavoritePress, onProductPress],
+  );
+
   return (
-    <View className={cn('px-4 py-4', className)}>
+    <View className={cn(newArrivalsStyles.container, className)}>
       <SectionHeader
         title={title}
         subtitle="Latest products just for you"
@@ -46,29 +49,14 @@ export const NewArrivals: React.FC<NewArrivalsProps> = ({
         onViewAllPress={onViewAllPress}
       />
 
-      <ScrollView
+      <FlatList
+        data={products}
         horizontal
         showsHorizontalScrollIndicator={false}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
         contentContainerStyle={{ gap: 12 }}
-      >
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            id={product.id}
-            name={product.name}
-            price={product.price}
-            originalPrice={product.originalPrice}
-            imageUrl={product.imageUrl}
-            discount={product.discount}
-            rating={product.rating}
-            isFavorite={product.isFavorite}
-            onFavoritePress={() => onFavoritePress?.(product.id)}
-            className="w-40"
-            onPress={() => onProductPress?.(product.id)}
-          />
-        ))}
-      </ScrollView>
+      />
     </View>
   );
 };
-

@@ -6,6 +6,15 @@ export interface FilterValues {
   sortBy: string | null;
 }
 
+export interface BaseServiceItem {
+  id: string;
+  name: string;
+  price: number;
+  rating?: number;
+  category?: string;
+  imageUrl?: string;
+  [key: string]: unknown;
+}
 
 export const getFeaturedServices = () => {
   return MOCK_SERVICES.map(s => ({
@@ -53,11 +62,11 @@ export const getRecommendedServices = () => {
 /**
  * Helper to filter and sort services based on category, price range, and sorting.
  */
-export const filterAndSortServices = (
-  services: any[],
+export const filterAndSortServices = <T extends BaseServiceItem>(
+  services: readonly T[],
   activeFilters: FilterValues | null | undefined,
-) => {
-  if (!activeFilters) return services;
+): T[] => {
+  if (!activeFilters) return [...services];
   let list = [...services];
 
   // Category Filter
@@ -88,7 +97,7 @@ export const filterAndSortServices = (
     } else if (activeFilters.sortBy === 'price-desc') {
       list.sort((a, b) => b.price - a.price);
     } else if (activeFilters.sortBy === 'rating-desc') {
-      list.sort((a, b) => b.rating - a.rating);
+      list.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
     }
   }
 

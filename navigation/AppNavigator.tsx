@@ -35,7 +35,7 @@ import {
   TAB_BAR_IOS_MIN_BOTTOM_OFFSET,
 } from '@/utils/tabBar.constants';
 
-const SCREENS: Record<string, ComponentType<any>> = {
+const SCREENS: Record<string, ComponentType<{ onNavigate?: (route: string, params?: Record<string, unknown>) => void }>> = {
   dashboard: VendorDashboard,
   analytics: VendorAnalyticsScreen,
   nearbyProviders: NearbyProvidersScreen,
@@ -104,10 +104,10 @@ export const AppNavigator: React.FC = () => {
     }
   }, [userRole, activeTab]);
 
-  const handleNavigate = (route: string, params?: any) => {
+  const handleNavigate = (route: string, params?: Record<string, unknown>) => {
     Keyboard.dismiss();
     if (route === 'vendorDetails' && params?.vendorId) {
-      setSelectedVendorId(params.vendorId);
+      setSelectedVendorId(params.vendorId as string);
     }
     if (route === 'liveTracking' && params) {
       setTrackingParams(params);
@@ -224,7 +224,7 @@ export const AppNavigator: React.FC = () => {
       {/* Vendor Search Results */}
       {(data?.searchVendors ?? []).length > 0 && (
         <View className="absolute top-36 left-4 right-4 bg-white border border-slate-200/80 shadow-xl z-50 p-4 rounded-2xl">
-          {(data?.searchVendors ?? []).map((v: any) => (
+          {(data?.searchVendors ?? []).map(v => (
             <TouchableOpacity
               key={v.id}
               className="py-2.5 border-b border-slate-100 last:border-0"

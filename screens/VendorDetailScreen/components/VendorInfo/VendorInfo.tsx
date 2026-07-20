@@ -39,17 +39,17 @@ export const VendorInfo: React.FC<VendorInfoProps> = ({
           <Typography variant="body-sm">({reviewCount} reviews)</Typography>
         </View>
         <View className="w-1.5 h-1.5 rounded-full bg-slate-300" />
-        {serviceRadius && (
+        {serviceRadius ? (
           <View className="flex-row items-center">
             <MapPin size={13} color="#3b82f6" />
             <Typography
               variant="body-sm"
-              className="text-slate-700 ml-1 font-body-medium"
+              className=" ml-1 font-body-medium"
             >
               {serviceRadius} radius
             </Typography>
           </View>
-        )}
+        ): null}
         {operatingHours ? (
           <View className="flex-row items-center">
             <View className="w-1.5 h-1.5 rounded-full bg-slate-300 mx-2" />

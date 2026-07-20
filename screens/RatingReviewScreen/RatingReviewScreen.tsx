@@ -1,30 +1,37 @@
-import { RatingReview } from '@/components/Customer/RatingReview/RatingReview';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import { RatingReview } from '@/components/Customer/RatingReview/RatingReview/RatingReview';
+import { ReviewData } from '@/components/Customer/RatingReview/useRatingReview';
 
 export interface RatingReviewScreenProps {
-    onNavigate: (screen: string) => void;
-    route?: { params?: { providerName?: string } };
+  onNavigate?: (screen: string, params?: Record<string, unknown>) => void;
+  route?: { params?: { providerName?: string } };
 }
 
-export const RatingReviewScreen: React.FC<RatingReviewScreenProps> = ({ onNavigate, route }) => {
-    // Provider name and other data would normally come from route.params or a state manager
-    const providerName = route?.params?.providerName || 'Car Detailing Pros';
+export const RatingReviewScreen: React.FC<RatingReviewScreenProps> = ({
+  onNavigate,
+  route,
+}) => {
+  const providerName = route?.params?.providerName || 'Car Detailing Pros';
 
-    const handleSubmit = (data: any) => {
-        console.log('Submitted Rating:', data);
-        // Integrate with API here
-        onNavigate('reviewSuccess');
-    };
+  const handleSubmit = useCallback(
+    (_data: ReviewData) => {
+      onNavigate?.('reviewSuccess');
+    },
+    [onNavigate],
+  );
 
-    return (
-        <SafeAreaView className="flex-1 bg-white" edges={['top']}>
-            <RatingReview
-                providerName={providerName}
-                onSubmit={handleSubmit}
-                onClose={() => onNavigate('support')}
-            />
-        </SafeAreaView>
-    );
+  const handleClose = useCallback(() => {
+    onNavigate?.('support');
+  }, [onNavigate]);
+
+  return (
+    <SafeAreaView className="flex-1 bg-white" edges={['top']}>
+      <RatingReview
+        providerName={providerName}
+        onSubmit={handleSubmit}
+        onClose={handleClose}
+      />
+    </SafeAreaView>
+  );
 };

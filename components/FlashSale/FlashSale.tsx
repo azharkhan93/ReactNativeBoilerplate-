@@ -1,33 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View, ScrollView } from 'react-native';
+import React, { useCallback } from 'react';
+import { View, FlatList, ListRenderItemInfo } from 'react-native';
 import { Typography } from '../theme/Typography';
 import { SectionHeader } from '../theme/SectionHeader';
 import { ProductCard } from '../theme/ProductCard';
-import { clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-
-const cn = (...inputs: (string | undefined | null | boolean)[]) => {
-  return twMerge(clsx(inputs));
-};
-
-export interface FlashSaleProduct {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice: number;
-  imageUrl?: string;
-  discount: number;
-  rating?: number;
-}
-
-export interface FlashSaleProps {
-  title?: string;
-  products?: FlashSaleProduct[];
-  endTime?: Date;
-  onViewAllPress?: () => void;
-  onProductPress?: (productId: string) => void;
-  className?: string;
-}
+import { cn } from '@/utils/cn';
+import { FlashSaleProduct, FlashSaleProps } from './types';
+import { flashSaleStyles } from './styles';
+import { useCountdown } from './hooks/useCountdown';
 
 export const FlashSale: React.FC<FlashSaleProps> = ({
   title = 'Flash Sale',
@@ -37,43 +16,64 @@ export const FlashSale: React.FC<FlashSaleProps> = ({
   onProductPress,
   className,
 }) => {
-  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
+  const timeLeft = useCountdown(endTime);
 
-  // ... (useEffect remains same)
+  const formatTime = (value: number): string => String(value).padStart(2, '0');
 
-  const formatTime = (value: number) => String(value).padStart(2, '0');
+  const keyExtractor = useCallback((item: FlashSaleProduct) => item.id, []);
+
+  const renderItem = useCallback(
+    ({ item }: ListRenderItemInfo<FlashSaleProduct>) => {
+      const handlePress = () => onProductPress?.(item.id);
+
+      return (
+        <ProductCard
+          id={item.id}
+          name={item.name}
+          price={item.price}
+          originalPrice={item.originalPrice}
+          imageUrl={item.imageUrl}
+          discount={item.discount}
+          rating={item.rating}
+          className={flashSaleStyles.cardWidth}
+          onPress={handlePress}
+        />
+      );
+    },
+    [onProductPress],
+  );
 
   return (
-    <View className={cn('px-4 py-4', className)}>
-      <View className="flex-row items-center justify-between mb-4">
-        <View className="flex-1">
-          <Typography variant="h3" className="text-white font-heading-bold mb-1">
+    <View className={cn(flashSaleStyles.container, className)}>
+      <View className={flashSaleStyles.headerRow}>
+        <View className={flashSaleStyles.headerContent}>
+          <Typography variant="h3" className={flashSaleStyles.title}>
             {title}
           </Typography>
           {endTime && (
-            <View className="flex-row items-center mt-1">
-              <Typography variant="body-sm" className="text-gray-400 mr-2">
+            <View className={flashSaleStyles.timerRow}>
+              <Typography variant="body-sm" className={flashSaleStyles.timerLabel}>
                 Ends in:
               </Typography>
-              <View className="flex-row items-center gap-1">
-                <View className="bg-red-600 px-2 py-1 rounded">
-                  <Typography variant="body-sm" className="text-white font-body-semibold">
+              <View className={flashSaleStyles.timerDigitsRow}>
+                <View className={flashSaleStyles.timerBox}>
+                  <Typography variant="body-sm" className={flashSaleStyles.timerText}>
                     {formatTime(timeLeft.hours)}
                   </Typography>
                 </View>
-                <Typography variant="body-sm" className="text-red-600 font-body-semibold">
+                <Typography variant="body-sm" className={flashSaleStyles.timerColon}>
                   :
                 </Typography>
-                <View className="bg-red-600 px-2 py-1 rounded">
-                  <Typography variant="body-sm" className="text-white font-body-semibold">
+                <View className={flashSaleStyles.timerBox}>
+                  <Typography variant="body-sm" className={flashSaleStyles.timerText}>
                     {formatTime(timeLeft.minutes)}
                   </Typography>
                 </View>
-                <Typography variant="body-sm" className="text-red-600 font-body-semibold">
+                <Typography variant="body-sm" className={flashSaleStyles.timerColon}>
                   :
                 </Typography>
-                <View className="bg-red-600 px-2 py-1 rounded">
-                  <Typography variant="body-sm" className="text-white font-body-semibold">
+                <View className={flashSaleStyles.timerBox}>
+                  <Typography variant="body-sm" className={flashSaleStyles.timerText}>
                     {formatTime(timeLeft.seconds)}
                   </Typography>
                 </View>
@@ -83,36 +83,19 @@ export const FlashSale: React.FC<FlashSaleProps> = ({
         </View>
         {onViewAllPress && (
           <View className="ml-4">
-            <SectionHeader
-              title=""
-              showViewAll
-              onViewAllPress={onViewAllPress}
-            />
+            <SectionHeader title="" showViewAll onViewAllPress={onViewAllPress} />
           </View>
         )}
       </View>
 
-      <ScrollView
+      <FlatList
+        data={products}
         horizontal
         showsHorizontalScrollIndicator={false}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
         contentContainerStyle={{ gap: 12 }}
-      >
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            id={product.id}
-            name={product.name}
-            price={product.price}
-            originalPrice={product.originalPrice}
-            imageUrl={product.imageUrl}
-            discount={product.discount}
-            rating={product.rating}
-            className="w-40"
-            onPress={() => onProductPress?.(product.id)}
-          />
-        ))}
-      </ScrollView>
+      />
     </View>
   );
 };
-
