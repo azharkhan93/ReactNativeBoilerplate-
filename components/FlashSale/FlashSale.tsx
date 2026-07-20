@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useCallback } from 'react';
 import { View, FlatList, ListRenderItemInfo } from 'react-native';
 import { Typography } from '../theme/Typography';

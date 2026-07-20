@@ -16,7 +16,7 @@ export const useTrackingNotifications = (
   const didSendHalfway = useRef(false);
 
   useEffect(() => {
-    // Reset notification flags when bookingId changes
+    
     initialDistance.current = null;
     didSendOnTheWay.current = false;
     didSendHalfway.current = false;

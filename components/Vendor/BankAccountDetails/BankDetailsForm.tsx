@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { View, ScrollView } from 'react-native';
-import { Typography, Button, FormInput } from '../../theme';
-import { BottomSheetModal } from '@/components/shared/BottomSheetModal';
 import { Lock } from 'lucide-react-native';
+import { Typography, Button, FormInput } from '@/components/theme';
+import { BottomSheetModal } from '@/components/shared/BottomSheetModal';
 import { BankFormData } from './hooks/useBankAccountDetails';
-
-const IFSC_REGEX = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+import { validateBankForm, checkIsFormValid, BankFormErrors } from './utils';
+import { bankDetailsFormStyles as s } from './styles';
 
 export interface BankDetailsFormProps {
   visible: boolean;
@@ -30,55 +30,38 @@ export const BankDetailsForm: React.FC<BankDetailsFormProps> = ({
   loading = false,
 }) => {
   const [formData, setFormData] = useState<BankFormData>(EMPTY_FORM);
-  const [errors, setErrors] = useState<Partial<Record<keyof Omit<BankFormData, 'id'>, string>>>({});
+  const [errors, setErrors] = useState<BankFormErrors>({});
+  const prevRef = useRef({ visible, initialProfile });
 
   const isEditMode = !!initialProfile?.id;
 
-  useEffect(() => {
-    if (!visible) return;
+  if (
+    prevRef.current.initialProfile !== initialProfile ||
+    (visible && !prevRef.current.visible)
+  ) {
+    prevRef.current = { visible, initialProfile };
     setFormData(initialProfile ? { ...initialProfile } : { ...EMPTY_FORM });
     setErrors({});
-  }, [initialProfile, visible]);
+  }
 
-  const handleChange = useCallback((field: keyof Omit<BankFormData, 'id'>, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    setErrors(prev => (prev[field] ? { ...prev, [field]: undefined } : prev));
-  }, []);
-
-  const validate = useCallback(() => {
-    const newErrors: Partial<Record<keyof Omit<BankFormData, 'id'>, string>> = {};
-
-    if (!formData.accountHolder.trim()) {
-      newErrors.accountHolder = 'Account holder name is required';
-    }
-    if (!formData.bankName.trim()) {
-      newErrors.bankName = 'Bank name is required';
-    }
-    if (!formData.accountNumber.trim()) {
-      newErrors.accountNumber = 'Account number is required';
-    }
-
-    if (!formData.ifscCode.trim()) {
-      newErrors.ifscCode = 'IFSC code is required';
-    } else if (!IFSC_REGEX.test(formData.ifscCode)) {
-      newErrors.ifscCode = 'Invalid IFSC format (e.g. SBIN0001234)';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  }, [formData]);
-
-  const handleSubmit = () => {
-    if (!validate()) return;
-    onSave(formData);
-  };
-
-  const isFormValid = !!(
-    formData.accountHolder.trim() &&
-    formData.bankName.trim() &&
-    IFSC_REGEX.test(formData.ifscCode) &&
-    formData.accountNumber.trim()
+  const handleChange = useCallback(
+    (field: keyof Omit<BankFormData, 'id'>, value: string) => {
+      setFormData(prev => ({ ...prev, [field]: value }));
+      setErrors(prev => (prev[field] ? { ...prev, [field]: undefined } : prev));
+    },
+    [],
   );
+
+  const handleSubmit = useCallback(() => {
+    const { isValid, errors: validationErrors } = validateBankForm(formData);
+    if (!isValid) {
+      setErrors(validationErrors);
+      return;
+    }
+    onSave(formData);
+  }, [formData, onSave]);
+
+  const isFormValid = checkIsFormValid(formData);
 
   return (
     <BottomSheetModal
@@ -88,23 +71,29 @@ export const BankDetailsForm: React.FC<BankDetailsFormProps> = ({
       height="88%"
       scrollable={false}
     >
-      <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
-        <View className="px-5 pt-2 pb-8">
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View className={s.container}>
           {/* Centered Secure Header */}
-          <View className="items-center mb-6 mt-2">
-            <View className="w-12 h-12 bg-blue-500/10 border border-blue-500/20 rounded-full items-center justify-center mb-3">
+          <View className={s.headerContainer}>
+            <View className={s.lockIconBox}>
               <Lock size={20} color="#3b82f6" />
             </View>
-            <Typography variant="subheading" className="text-slate-900 text-center font-body-bold">
-              {isEditMode ? 'Edit Payout Credentials' : 'Secure Payout Configuration'}
+            <Typography variant="subheading" className={s.headerTitle}>
+              {isEditMode
+                ? 'Edit Payout Credentials'
+                : 'Secure Payout Configuration'}
             </Typography>
-            <Typography variant="body-sm" className="text-slate-500 text-center px-4 mt-1 leading-5">
-              Banking data is protected with end-to-end industry-standard encryption protocols.
+            <Typography variant="body-sm" className={s.headerSubtext}>
+              Banking data is protected with end-to-end industry-standard
+              encryption protocols.
             </Typography>
           </View>
 
           {/* Form Input Group Panel */}
-          <View className="bg-white border border-blue-200/40 rounded-3xl p-5 mb-6 shadow-sm shadow-slate-100">
+          <View className={s.formCard}>
             <FormInput
               label="Account Holder Name"
               placeholder="As per bank records"
@@ -146,7 +135,7 @@ export const BankDetailsForm: React.FC<BankDetailsFormProps> = ({
             onPress={handleSubmit}
             variant={isFormValid ? 'primary' : 'disabled'}
             loading={loading}
-            className="w-full shadow-lg shadow-primary-500/20"
+            className={s.submitButton}
           >
             {isEditMode ? 'Update Bank Details →' : 'Save & Finish Setup →'}
           </Button>
