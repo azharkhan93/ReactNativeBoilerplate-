@@ -1,0 +1,15 @@
+export const topBarStyles = {
+  root: 'bg-notch z-50 border-b border-blue-200/40 rounded-b-2xl shadow-sm shadow-slate-100/50',
+  innerContainer: 'px-5 py-2',
+  headerRow: 'flex-row justify-between items-center mb-4',
+  locationWrapper: 'flex-row items-center flex-1 mr-4',
+  pinIconBox: 'bg-white/85 p-2 rounded-full mr-3 border border-blue-200/50',
+  locationTextContainer: 'flex-1',
+  locationLabel: '!text-slate-600 font-medium',
+  locationTitle: 'font-body-bold !text-black',
+  profileButton: 'bg-slate-50 border border-slate-200 overflow-hidden w-11 h-11 items-center justify-center rounded-full',
+  avatarImage: 'w-full h-full',
+  searchRow: 'flex-row items-center gap-3 pb-2',
+  searchWrapper: 'flex-1',
+  filterButton: 'bg-primary-500 w-12 h-12 rounded-2xl border border-primary-400/30',
+};

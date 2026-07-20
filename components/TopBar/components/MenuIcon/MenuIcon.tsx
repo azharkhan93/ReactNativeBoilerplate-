@@ -1,23 +1,20 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
-
-interface MenuIconProps {
-  onPress?: () => void;
-}
+import { MenuIconProps } from './types';
+import { menuIconStyles } from './styles';
 
 export const MenuIcon: React.FC<MenuIconProps> = ({ onPress }) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      className="w-10 h-10 items-center justify-center mr-2"
+      className={menuIconStyles.button}
       activeOpacity={0.7}
     >
-      <View className="w-6 h-5 justify-between">
+      <View className={menuIconStyles.barsContainer}>
         {[...Array(3)].map((_, i) => (
-          <View key={i} className="w-full h-0.5 bg-gray-800 rounded" />
+          <View key={i} className={menuIconStyles.bar} />
         ))}
       </View>
     </TouchableOpacity>
   );
 };
-

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -21,13 +21,16 @@ import Svg, {
   RadialGradient,
 } from 'react-native-svg';
 
+import { AnimatedSplashScreenProps } from './types';
+import { animatedSplashScreenStyles as styles } from './styles';
+
 const { width: SW } = Dimensions.get('window');
 
 // ─── Easing presets ─────────────────────────────────────────────────────────
 const EASE_OUT = Easing.out(Easing.cubic);
 const EASE_IN = Easing.in(Easing.cubic);
 
-// ─── Car SVG (static, no Animated inside SVG) ───────────────────────────────
+// ─── Car SVG ─────────────────────────────────────────────────────────────────
 const CarSvg: React.FC<{ size: number }> = ({ size }) => (
   <Svg width={size} height={size * 0.5} viewBox="0 0 200 96">
     <Defs>
@@ -54,7 +57,6 @@ const CarSvg: React.FC<{ size: number }> = ({ size }) => (
       </LinearGradient>
     </Defs>
 
-   
     <Ellipse cx="100" cy="91" rx="82" ry="5" fill="url(#shadow)" />
 
     {/* Chassis */}
@@ -270,11 +272,8 @@ const SprayDot: React.FC<SprayProps> = ({ delay, x, y }) => {
 };
 
 // ─── Main component ──────────────────────────────────────────────────────────
-export interface AnimatedSplashScreenProps {
-  onFinish: () => void;
-}
-
 export const AnimatedSplashScreen: React.FC<AnimatedSplashScreenProps> = ({
+  onAnimationFinish,
   onFinish,
 }) => {
   const carX = useSharedValue(-240);
@@ -285,7 +284,6 @@ export const AnimatedSplashScreen: React.FC<AnimatedSplashScreenProps> = ({
   const shudder = useSharedValue(0);
 
   useEffect(() => {
-    // ── Ignition micro-shudder ──
     shudder.value = withSequence(
       withTiming(-2, { duration: 70 }),
       withTiming(2, { duration: 70 }),
@@ -294,22 +292,16 @@ export const AnimatedSplashScreen: React.FC<AnimatedSplashScreenProps> = ({
       withTiming(0, { duration: 60 }),
     );
 
-    // ── Slow cinematic roll-in → pause → gentle exit ──
     carX.value = withSequence(
-      // Entry: slow drift in from left
       withDelay(
         350,
         withTiming(SW * 0.1, { duration: 2000, easing: EASE_OUT }),
       ),
-      // Settle with spring (suspension rebound)
       withSpring(SW * 0.13, { damping: 14, stiffness: 120, mass: 1.2 }),
-      // Pause: being "washed" (1 second dwell)
       withDelay(1000, withTiming(SW * 0.13, { duration: 50 })),
-      // Clean exit sweep
       withTiming(SW + 260, { duration: 1400, easing: EASE_IN }),
     );
 
-    // ── Chassis tilt: accel lean-back → decel nose-dip → exit snap ──
     carTilt.value = withSequence(
       withDelay(350, withTiming(-3.5, { duration: 1000, easing: EASE_OUT })),
       withSpring(2, { damping: 10, stiffness: 180 }),
@@ -317,7 +309,6 @@ export const AnimatedSplashScreen: React.FC<AnimatedSplashScreenProps> = ({
       withTiming(0, { duration: 300 }),
     );
 
-    // ── Soap suds bloom while car is "parked" ──
     sudsOpacity.value = withDelay(
       2500,
       withSequence(
@@ -330,11 +321,13 @@ export const AnimatedSplashScreen: React.FC<AnimatedSplashScreenProps> = ({
       withTiming(1.6, { duration: 1000, easing: EASE_OUT }),
     );
 
-    // ── Fade screen out ──
     screenOpacity.value = withDelay(
       4600,
       withTiming(0, { duration: 400 }, done => {
-        if (done) runOnJS(onFinish)();
+        if (done) {
+          const cb = onAnimationFinish ?? onFinish;
+          if (cb) runOnJS(cb)();
+        }
       }),
     );
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -357,7 +350,6 @@ export const AnimatedSplashScreen: React.FC<AnimatedSplashScreenProps> = ({
     transform: [{ scale: sudsScale.value }],
   }));
 
-  // Static bubble/spray layout data
   const BUBBLES: BubbleProps[] = [
     { delay: 2400, x: SW * 0.22, size: 10 },
     { delay: 2600, x: SW * 0.35, size: 14 },
@@ -375,30 +367,22 @@ export const AnimatedSplashScreen: React.FC<AnimatedSplashScreenProps> = ({
 
   return (
     <Animated.View style={[styles.root, containerStyle]}>
-      {/* Background glow */}
       <View style={styles.glow} />
-
-      {/* Road line */}
       <View style={styles.roadLine} />
-
-      {/* Soap suds blob (appears during dwell) */}
       <Animated.View style={[styles.suds, sudsStyle]} />
 
-      {/* Bubbles rising off car roof */}
       <View style={styles.bubblesLayer}>
         {BUBBLES.map((b, i) => (
           <Bubble key={i} {...b} />
         ))}
       </View>
 
-      {/* Water spray particles */}
       <View style={styles.sprayLayer}>
         {SPRAYS.map((s, i) => (
           <SprayDot key={i} {...s} />
         ))}
       </View>
 
-      {/* Car */}
       <View style={styles.track}>
         <Animated.View style={carStyle}>
           <CarSvg size={220} />
@@ -407,72 +391,3 @@ export const AnimatedSplashScreen: React.FC<AnimatedSplashScreenProps> = ({
     </Animated.View>
   );
 };
-
-// ─── Styles ──────────────────────────────────────────────────────────────────
-const styles = StyleSheet.create({
-  root: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#EEF4FC',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 9999,
-  },
-  glow: {
-    position: 'absolute',
-    width: SW * 0.85,
-    height: 260,
-    borderRadius: 160,
-    backgroundColor: 'rgba(96, 165, 250, 0.07)',
-    top: '28%',
-    alignSelf: 'center',
-  },
-  roadLine: {
-    position: 'absolute',
-    bottom: '37%',
-    left: 0,
-    right: 0,
-    height: 1.5,
-    backgroundColor: 'rgba(37, 99, 235, 0.1)',
-  },
-  track: {
-    width: '100%',
-    height: 140,
-    justifyContent: 'center',
-  },
-  suds: {
-    position: 'absolute',
-    bottom: '38%',
-    alignSelf: 'center',
-    width: 220,
-    height: 22,
-    borderRadius: 20,
-    backgroundColor: 'rgba(219, 234, 254, 0.8)',
-  },
-  bubblesLayer: {
-    position: 'absolute',
-    bottom: '42%',
-    left: 0,
-    right: 0,
-    height: 80,
-  },
-  bubble: {
-    position: 'absolute',
-    backgroundColor: 'rgba(147, 197, 253, 0.45)',
-    borderWidth: 1,
-    borderColor: 'rgba(96, 165, 250, 0.4)',
-  },
-  sprayLayer: {
-    position: 'absolute',
-    bottom: '44%',
-    left: 0,
-    right: 0,
-    height: 40,
-  },
-  sprayDot: {
-    position: 'absolute',
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: 'rgba(59, 130, 246, 0.6)',
-  },
-});

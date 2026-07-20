@@ -6,18 +6,8 @@ import { BottomSheetModal } from '../shared/BottomSheetModal';
 import { SERVICE_CATEGORIES } from '@/utils/constants';
 import { Check, Star, ArrowUpDown } from 'lucide-react-native';
 
-export interface FilterValues {
-  categoryId: string | null;
-  priceRange: string | null;
-  sortBy: string | null;
-}
+import { FilterValues, FilterModalProps } from './types';
 
-export interface FilterModalProps {
-  visible: boolean;
-  onClose: () => void;
-  onApply: (filters: FilterValues) => void;
-  currentFilters: FilterValues;
-}
 
 const PRICE_RANGES = [
   { label: 'Under ₹500', value: 'under-500' },

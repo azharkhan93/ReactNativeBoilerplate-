@@ -1,21 +1,12 @@
 import React from 'react';
 import { View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SearchBar } from './SearchBar';
-import { Typography, IconButton } from '../theme';
 import { MapPin, Filter, User } from 'lucide-react-native';
+import { Typography, IconButton } from '@/components/theme';
 import { MOCK_USER } from '@/utils/constants';
-
-export interface TopBarProps {
-  onSearch?: (query: string) => void;
-  onSearchFocus?: () => void;
-  onProfilePress?: () => void;
-  onFilterPress?: () => void;
-  placeholder?: string;
-  searchValue?: string;
-  location?: string;
-  avatarUrl?: string | null;
-}
+import { SearchBar } from './components/SearchBar';
+import { TopBarProps } from './types';
+import { topBarStyles } from './styles';
 
 export const TopBar: React.FC<TopBarProps> = ({
   onSearch,
@@ -31,22 +22,22 @@ export const TopBar: React.FC<TopBarProps> = ({
 
   return (
     <View
-      className="bg-notch z-50 border-b border-blue-200/40 rounded-b-2xl shadow-sm shadow-slate-100/50"
+      className={topBarStyles.root}
       style={{ paddingTop: insets.top }}
     >
-      <View className="px-5 py-2">
-        <View className="flex-row justify-between items-center mb-4">
-          <View className="flex-row items-center flex-1 mr-4">
-            <View className="bg-white/85 p-2 rounded-full mr-3 border border-blue-200/50">
+      <View className={topBarStyles.innerContainer}>
+        <View className={topBarStyles.headerRow}>
+          <View className={topBarStyles.locationWrapper}>
+            <View className={topBarStyles.pinIconBox}>
               <MapPin size={18} color="#3b82f6" />
             </View>
-            <View className="flex-1">
-              <Typography variant="body-sm" className="!text-slate-600 font-medium">
+            <View className={topBarStyles.locationTextContainer}>
+              <Typography variant="body-sm" className={topBarStyles.locationLabel}>
                 Current Location
               </Typography>
               <Typography
                 variant="body"
-                className="font-body-bold !text-black"
+                className={topBarStyles.locationTitle}
                 numberOfLines={1}
                 ellipsizeMode="tail"
               >
@@ -58,12 +49,12 @@ export const TopBar: React.FC<TopBarProps> = ({
           <IconButton
             variant="circular"
             onPress={onProfilePress}
-            className="bg-slate-50 border border-slate-200 overflow-hidden w-11 h-11 items-center justify-center rounded-full"
+            className={topBarStyles.profileButton}
           >
             {avatarUrl ? (
               <Image
                 source={{ uri: avatarUrl }}
-                className="w-full h-full"
+                className={topBarStyles.avatarImage}
                 resizeMode="cover"
               />
             ) : (
@@ -72,8 +63,8 @@ export const TopBar: React.FC<TopBarProps> = ({
           </IconButton>
         </View>
 
-        <View className="flex-row items-center gap-3 pb-2">
-          <View className="flex-1">
+        <View className={topBarStyles.searchRow}>
+          <View className={topBarStyles.searchWrapper}>
             <SearchBar
               placeholder={placeholder}
               value={searchValue}
@@ -83,7 +74,7 @@ export const TopBar: React.FC<TopBarProps> = ({
           </View>
           <IconButton
             onPress={onFilterPress}
-            className="bg-primary-500 w-12 h-12 rounded-2xl border border-primary-400/30"
+            className={topBarStyles.filterButton}
           >
             <Filter size={20} color="white" />
           </IconButton>

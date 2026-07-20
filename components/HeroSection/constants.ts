@@ -1,4 +1,4 @@
-import { SlideData } from './Slide/Slide';
+import { SlideData } from './components/Slide';
 
 export const HERO_SLIDES: SlideData[] = [
   {

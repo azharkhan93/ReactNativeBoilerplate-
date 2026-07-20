@@ -1,15 +1,12 @@
 import React from 'react';
 import { View, FlatList, Dimensions } from 'react-native';
-import { twMerge } from 'tailwind-merge';
-
-export interface HeroSectionProps {
-  className?: string;
-}
+import { cn } from '@/utils/cn';
 import { HERO_SLIDES } from './constants';
-import { Slide } from './Slide';
-import { PaginationDots } from './PaginationDots';
-
+import { Slide } from './components/Slide';
+import { PaginationDots } from './components/PaginationDots';
 import { useHeroCarousel } from './hooks/useHeroCarousel';
+import { HeroSectionProps } from './types';
+import { heroSectionStyles } from './styles';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CAROUSEL_WIDTH = SCREEN_WIDTH - 40;
@@ -21,8 +18,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ className }) => {
   );
 
   return (
-    <View className={twMerge('py-4 px-5', className)}>
-      <View className="h-[200px] rounded-2xl overflow-hidden shadow-lg shadow-black/10 bg-black">
+    <View className={cn(heroSectionStyles.container, className)}>
+      <View className={heroSectionStyles.carouselWrapper}>
         <FlatList
           ref={flatListRef}
           data={HERO_SLIDES}
@@ -44,7 +41,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ className }) => {
       <PaginationDots
         total={HERO_SLIDES.length}
         activeIndex={activeIndex}
-        className="mt-4"
+        className={heroSectionStyles.dotsMargin}
       />
     </View>
   );
