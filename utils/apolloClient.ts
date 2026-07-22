@@ -1,45 +1,59 @@
 import {
-  split,
-  HttpLink,
   ApolloClient,
+  HttpLink,
   InMemoryCache,
-  Operation,
+  split,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
-import { createClient } from 'graphql-ws';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { getAuthToken } from './store/authStore';
+import { createClient } from 'graphql-ws';
 import { GRAPHQL_API_URL } from './api';
+import { getAuthToken } from './store/authStore';
 
-const authBearer = async () => {
-  const token = await getAuthToken();
-  return token ? `Bearer ${token}` : '';
+const GRAPHQL_WS_URL = GRAPHQL_API_URL.replace(/^http/, 'ws');
+
+const getAuthHeader = async (): Promise<string> => {
+  try {
+    const token = await getAuthToken();
+    return token ? `Bearer ${token}` : '';
+  } catch {
+    return '';
+  }
 };
 
 const authLink = setContext(async (_, { headers }) => ({
-  headers: { ...headers, authorization: await authBearer() },
+  headers: {
+    ...headers,
+    authorization: await getAuthHeader(),
+  },
 }));
+
+const httpLink = authLink.concat(new HttpLink({ uri: GRAPHQL_API_URL }));
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: GRAPHQL_API_URL.replace(/^http/, 'ws'),
+    url: GRAPHQL_WS_URL,
+    webSocketImpl: WebSocket,
     connectionParams: async () => ({
-      headers: { authorization: await authBearer() },
+      headers: { authorization: await getAuthHeader() },
     }),
   }),
 );
 
-const isSubscription = ({ query }: Operation) => {
-  const def = getMainDefinition(query);
-  return def.kind === 'OperationDefinition' && def.operation === 'subscription';
-};
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  httpLink,
+);
 
 export const apolloClient = new ApolloClient({
-  link: split(
-    isSubscription,
-    wsLink,
-    authLink.concat(new HttpLink({ uri: GRAPHQL_API_URL })),
-  ),
+  link: splitLink,
   cache: new InMemoryCache(),
 });
