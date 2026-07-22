@@ -3,7 +3,6 @@ import {
   HttpLink,
   InMemoryCache,
   split,
-  
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
@@ -35,7 +34,7 @@ const httpLink = authLink.concat(new HttpLink({ uri: GRAPHQL_API_URL }));
 const wsLink = new GraphQLWsLink(
   createClient({
     url: GRAPHQL_WS_URL,
-    webSocketImpl: WebSocket,
+    webSocketImpl: typeof WebSocket !== 'undefined' ? WebSocket : undefined,
     connectionParams: async () => ({
       headers: { authorization: await getAuthHeader() },
     }),
