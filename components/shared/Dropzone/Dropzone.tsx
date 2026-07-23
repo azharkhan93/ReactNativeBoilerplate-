@@ -22,7 +22,11 @@ export const Dropzone: React.FC<DropzoneProps> = ({
 
       {imageUri ? (
         <View className={dropzoneStyles.previewContainer}>
-          <Image source={{ uri: imageUri }} className={dropzoneStyles.image} resizeMode="cover" />
+          <Image
+            source={{ uri: imageUri }}
+            className={dropzoneStyles.image}
+            resizeMode="cover"
+          />
           <TouchableOpacity
             onPress={onRemove}
             className={dropzoneStyles.removeButton}
@@ -38,8 +42,12 @@ export const Dropzone: React.FC<DropzoneProps> = ({
           <View className={dropzoneStyles.iconWrapper}>
             <Upload size={24} color="#3b82f6" />
           </View>
-          <Typography className={dropzoneStyles.titleText}>Tap to upload business documents</Typography>
-          <Typography variant="body-sm" className={dropzoneStyles.subText}>PNG, JPG up to 10MB</Typography>
+          <Typography className={dropzoneStyles.titleText}>
+            Tap to upload business documents
+          </Typography>
+          <Typography variant="body-sm" className={dropzoneStyles.subText}>
+            PNG, JPG up to 10MB
+          </Typography>
         </TouchableOpacity>
       )}
     </View>

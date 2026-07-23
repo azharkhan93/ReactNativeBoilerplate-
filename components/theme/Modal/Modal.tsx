@@ -36,7 +36,7 @@ export const Modal: React.FC<ModalProps> = ({
     <RNModal visible={visible} animationType={animationType} transparent={transparent} onRequestClose={onRequestClose} statusBarTranslucent {...props}>
       <TouchableWithoutFeedback onPress={onRequestClose}>
         <View className={`flex-1 bg-black/50 justify-end pt-[${insets.top}px] ${className || ''}`}>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <TouchableWithoutFeedback>
             <View className={`bg-notch rounded-t-3xl w-full ${contentClassName || ''}`} style={contentStyle}>
            
               <View className="w-full items-center pt-3 pb-1">

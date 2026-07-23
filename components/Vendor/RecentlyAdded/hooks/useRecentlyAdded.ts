@@ -9,21 +9,15 @@ import {
 
 export const useRecentlyAdded = () => {
   const { data, loading, error, refetch } =
-    useQuery<GetVendorProfilesQuery>(GET_VENDOR_PROFILES);
+    useQuery<GetVendorProfilesQuery>(GET_VENDOR_PROFILES, {
+      fetchPolicy: 'cache-and-network',
+      errorPolicy: 'all',
+    });
 
   const unmaskedVendors = useFragment(
     VENDOR_PROFILE_FIELDS,
     data?.getVendorProfiles,
   );
-
-  console.log('[GraphQL] useRecentlyAdded Query Status:', {
-    loading,
-    hasError: !!error,
-    errorMessage: error?.message,
-    hasRawData: !!data?.getVendorProfiles,
-    unmaskedCount: unmaskedVendors?.length || 0,
-    unmaskedData: unmaskedVendors || null,
-  });
 
   return {
     vendors: unmaskedVendors ?? [],
@@ -32,4 +26,3 @@ export const useRecentlyAdded = () => {
     refetch,
   };
 };
-
