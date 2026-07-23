@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useQuery, useMutation } from '@apollo/client/react';
 import { GET_CUSTOMER_PROFILE, UPSERT_CUSTOMER_PROFILE } from '../customerQueries';
 import { CREATE_PAYMENT, VERIFY_PAYMENT_SUCCESS } from '../paymentQueries';
-import { getUserId } from '@/utils/store/authStore';
+import { getUserId, getAuthPhone } from '@/utils/store/authStore';
 import { hmacSha256 } from '@/utils/cryptoHelper';
 
 import { MOCK_PAYMENT_SECRET, RAZORPAY_CONFIG, DEFAULT_PROFILE_DEFAULTS } from './constants';
@@ -59,6 +59,12 @@ export const usePayment = ({
   // Verify session credentials
   useEffect(() => {
     if (!visible) return;
+
+    getAuthPhone().then(phone => {
+      if (phone) {
+        setProfilePhone(phone);
+      }
+    });
 
     setStep('loading');
     getUserId()

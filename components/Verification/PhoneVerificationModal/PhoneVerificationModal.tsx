@@ -13,7 +13,7 @@ type PhoneVerificationModalProps = {
     visible: boolean;
     role?: UserRole | null;
     onClose: () => void;
-    onSuccess?: (status: string, token?: string, userId?: string) => void;
+    onSuccess?: (status: string, token?: string, userId?: string, phone?: string) => void;
 }
 
 export const PhoneVerificationModal: React.FC<PhoneVerificationModalProps> = ({ visible, role, onClose, onSuccess }) => {
@@ -29,7 +29,7 @@ export const PhoneVerificationModal: React.FC<PhoneVerificationModalProps> = ({ 
         phone: `+91${phoneNumber}`,
         role,
         onSuccess: (token, userId) => {
-            onSuccess?.('verified', token, userId);
+            onSuccess?.('verified', token, userId, `+91${phoneNumber}`);
             onClose();
         }
     });

@@ -15,7 +15,7 @@ export const useRatingReview = (onSubmit: (data: ReviewData) => void) => {
 
     const toggleTag = (tag: string) => {
         setSelectedTags(prev => 
-            prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+            prev.includes(tag) ? prev.filter(item => item !== tag) : [...prev, tag]
         );
     };
 

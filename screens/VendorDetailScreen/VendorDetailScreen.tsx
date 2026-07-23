@@ -14,6 +14,7 @@ import { VendorAbout } from './components/VendorAbout';
 import { VendorBookingOptions } from './components/VendorBookingOptions';
 import { VendorContact } from './components/VendorContact';
 import { VendorBookingBar } from './components/VendorBookingBar';
+import { getUserId } from '@/utils/store/authStore';
 import { PaymentModal } from '@/components/Customer';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -41,11 +42,13 @@ const WASH_TYPES = [
 export interface VendorDetailScreenProps {
   vendorId: string | null;
   onNavigate: (route: string, params?: any) => void;
+  onRequestAuth?: (onSuccessCallback?: () => void) => void;
 }
 
 export const VendorDetailScreen: React.FC<VendorDetailScreenProps> = ({
   vendorId,
   onNavigate,
+  onRequestAuth,
 }) => {
   const insets = useSafeAreaInsets();
   const { vendor, loading, error } = useVendorDetail(vendorId);
@@ -176,9 +179,18 @@ export const VendorDetailScreen: React.FC<VendorDetailScreenProps> = ({
         resolvedPrice={resolvedPrice}
         isSelectionComplete={isSelectionComplete}
         insets={insets}
-        onBookNow={() => {
+        onBookNow={async () => {
           if (isSelectionComplete) {
-            setShowPaymentModal(true);
+            const currentUserId = await getUserId();
+            if (currentUserId) {
+              setShowPaymentModal(true);
+            } else if (onRequestAuth) {
+              onRequestAuth(() => {
+                setShowPaymentModal(true);
+              });
+            } else {
+              setShowPaymentModal(true);
+            }
           }
         }}
       />

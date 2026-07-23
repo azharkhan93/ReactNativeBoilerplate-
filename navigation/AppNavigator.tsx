@@ -53,6 +53,7 @@ export const AppNavigator: React.FC = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [showOnboarding, setShowOnboarding] = useState(true);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
+  const [pendingAuthCallback, setPendingAuthCallback] = useState<(() => void) | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<{
     address: string;
@@ -103,6 +104,13 @@ export const AppNavigator: React.FC = () => {
       setActiveTab('dashboard');
     }
   }, [userRole, activeTab]);
+
+  const handleRequestAuth = (onSuccessCallback?: () => void) => {
+    if (onSuccessCallback) {
+      setPendingAuthCallback(() => onSuccessCallback);
+    }
+    setShowPhoneModal(true);
+  };
 
   const handleNavigate = (route: string, params?: Record<string, unknown>) => {
     Keyboard.dismiss();
@@ -162,6 +170,7 @@ export const AppNavigator: React.FC = () => {
         <VendorDetailScreen
           vendorId={selectedVendorId}
           onNavigate={handleNavigate}
+          onRequestAuth={handleRequestAuth}
         />
       );
     }
@@ -261,10 +270,19 @@ export const AppNavigator: React.FC = () => {
       <PhoneVerificationModal
         visible={showPhoneModal}
         role={userRole}
-        onClose={() => setShowPhoneModal(false)}
-        onSuccess={(status, token, uid) => {
+        onClose={() => {
+          setShowPhoneModal(false);
+          setPendingAuthCallback(null);
+        }}
+        onSuccess={(status, token, uid, phone) => {
           if (token && uid) {
-            setAuthData(token, uid);
+            setAuthData(token, uid, phone);
+            setUserId(uid);
+          }
+          setShowPhoneModal(false);
+          if (pendingAuthCallback) {
+            pendingAuthCallback();
+            setPendingAuthCallback(null);
           }
         }}
       />

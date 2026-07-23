@@ -114,12 +114,12 @@ export const FilterModal: React.FC<FilterModalProps> = ({
           {/* Footer Actions */}
           <View className={s.footerRow}>
             <View className={s.flexOne}>
-              <Button variant="outlined" onPress={handleClearAll}>
+              <Button variant="outlined" size="md" onPress={handleClearAll}>
                 Clear All
               </Button>
             </View>
             <View className={s.flexOne}>
-              <Button variant="primary" onPress={handleApply}>
+              <Button variant="primary" size="md" onPress={handleApply}>
                 Apply Filters
               </Button>
             </View>

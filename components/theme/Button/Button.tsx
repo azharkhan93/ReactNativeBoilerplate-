@@ -37,9 +37,9 @@ export const Button: React.FC<ButtonProps> = ({
 
   // Size styles
   const sizeStyles = {
-    sm: 'py-2 px-6 min-w-[100px]',
-    md: 'py-3.5 px-8 min-w-[140px]',
-    lg: 'py-5 px-10 min-w-[180px]',
+    sm: 'py-1.5 px-4 min-w-[80px]',
+    md: 'py-2.5 px-6 min-w-[120px]',
+    lg: 'py-4 px-8 min-w-[160px]',
   };
 
   const variantTextStyles = {
@@ -89,7 +89,7 @@ export const Button: React.FC<ButtonProps> = ({
         />
       ) : (
         <Typography
-          variant={size === 'lg' ? 'body' : size === 'sm' ? 'body-sm' : 'body'}
+          variant={size === 'lg' ? 'body' : 'body-sm'}
           className={cn(
             variantTextStyles[variant],
             'font-body-semibold uppercase tracking-wider'
