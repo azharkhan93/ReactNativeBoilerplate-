@@ -18,14 +18,18 @@ export const filterModalStyles = {
   categoryTextSelected: 'text-primary-500',
   categoryTextDefault: 'text-slate-600',
   gridContainer: 'flex-row flex-wrap justify-between gap-y-2.5',
-  priceItem: 'w-[48%] px-3 py-2.5 rounded-xl border flex-row items-center justify-center',
-  priceSelected: 'bg-primary-500/10 border-primary-500 shadow-sm shadow-primary-500/10',
+  priceItem:
+    'w-[48%] px-3 py-2.5 rounded-xl border flex-row items-center justify-center',
+  priceSelected:
+    'bg-primary-500/10 border-primary-500 shadow-sm shadow-primary-500/10',
   priceDefault: 'bg-white border-slate-200/70',
   priceText: 'text-center font-body-medium text-xs',
   priceTextSelected: 'text-primary-500 font-body-bold',
   priceTextDefault: 'text-slate-600',
-  sortContainer: 'bg-white border border-slate-200/70 rounded-3xl overflow-hidden',
-  sortItem: 'flex-row justify-between items-center px-5 py-4 border-b border-slate-100',
+  sortContainer:
+    'bg-white border border-slate-200/70 rounded-3xl overflow-hidden',
+  sortItem:
+    'flex-row justify-between items-center px-5 py-4 border-b border-slate-100',
   sortSelected: 'bg-primary-500/5',
   noBorderBottom: 'border-b-0',
   sortLeft: 'flex-row items-center',

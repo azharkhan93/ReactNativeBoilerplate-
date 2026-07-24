@@ -10,7 +10,6 @@ export const useFilterModal = (
   const [filters, setFilters] = useState<FilterValues>(currentFilters);
   const prevRef = useRef({ visible, currentFilters });
 
-  // Sync state during render pass without extra useState variables or useEffect double-render pass
   if (
     prevRef.current.currentFilters !== currentFilters ||
     (visible && !prevRef.current.visible)
