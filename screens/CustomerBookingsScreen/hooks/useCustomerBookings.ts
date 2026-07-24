@@ -41,14 +41,19 @@ export const useCustomerBookings = () => {
         provider: {
           id: b.vendorProfile?.id ?? 'v1',
           name: b.vendorProfile?.businessName ?? 'Car Wash Center',
-          imageUrl: b.vendorProfile?.imageUri ?? 'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f',
+          imageUrl:
+            b.vendorProfile?.imageUri ??
+            'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f',
           rating: 4.9,
           latitude: 28.6139,
           longitude: 77.209,
         },
         serviceName: b.service?.name ?? 'Car Wash Service',
         date: scheduledDate.toLocaleDateString(),
-        time: scheduledDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        time: scheduledDate.toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        }),
         status: statusLower,
         price: b.totalPrice ?? b.service?.price ?? 0,
         hasTracking: statusLower === 'on_the_way',
@@ -57,7 +62,9 @@ export const useCustomerBookings = () => {
   }, [data]);
 
   const filteredBookings = useMemo(() => {
-    return formattedBookings.filter(b => STATUS_MAP[activeTab].includes(b.status));
+    return formattedBookings.filter(b =>
+      STATUS_MAP[activeTab].includes(b.status),
+    );
   }, [formattedBookings, activeTab]);
 
   return {
