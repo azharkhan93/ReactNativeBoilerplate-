@@ -7,14 +7,6 @@ export const LOC_PERMISSION = Platform.select({
   android: PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
 })!;
 
-export const checkLocationPermission = async (): Promise<boolean> => {
-  const status = await check(LOC_PERMISSION);
-  return (
-    status === RESULTS.GRANTED ||
-    (await request(LOC_PERMISSION)) === RESULTS.GRANTED
-  );
-};
-
 export interface LocationCoords {
   latitude: number;
   longitude: number;
@@ -26,10 +18,24 @@ export interface GeocodeResult {
   details: { area: string; city: string; country: string };
 }
 
+const DEFAULT_GEOCODE: GeocodeResult = {
+  address: 'Downtown, Dubai, UAE',
+  full: 'Downtown, Dubai, UAE',
+  details: { area: 'Downtown', city: 'Dubai', country: 'UAE' },
+};
+
+export const checkLocationPermission = async (): Promise<boolean> => {
+  const status = await check(LOC_PERMISSION);
+  return (
+    status === RESULTS.GRANTED ||
+    (await request(LOC_PERMISSION)) === RESULTS.GRANTED
+  );
+};
+
 export const getCurrentLocation = (
   options?: Geolocation.GeoOptions,
-): Promise<LocationCoords> => {
-  return new Promise((resolve, reject) => {
+): Promise<LocationCoords> =>
+  new Promise((resolve, reject) => {
     Geolocation.getCurrentPosition(
       ({ coords }) =>
         resolve({ latitude: coords.latitude, longitude: coords.longitude }),
@@ -44,7 +50,6 @@ export const getCurrentLocation = (
       },
     );
   });
-};
 
 export const reverseGeocode = async (
   lat: number,
@@ -65,35 +70,31 @@ export const reverseGeocode = async (
     const data = await res.json();
 
     if (googleApiKey && data.results?.[0]) {
-      const full = data.results[0].formatted_address;
-      return {
-        address: full,
-        full,
-        details: { area: 'Downtown', city: 'Dubai', country: 'UAE' },
-      };
+      const full = data.results[0].formatted_address ?? DEFAULT_GEOCODE.full;
+      return { ...DEFAULT_GEOCODE, address: full, full };
     }
 
     if (data?.address) {
       const { neighborhood, suburb, city, town, village, country } =
         data.address;
-      const area = neighborhood || suburb || 'Downtown';
-      const mainCity = city || town || village || 'Dubai';
-      const formatted = [area, mainCity, country || 'UAE']
+      const area = neighborhood ?? suburb ?? 'Downtown';
+      const mainCity = city ?? town ?? village ?? 'Dubai';
+      const countryName = country ?? 'UAE';
+      const formatted = [area, mainCity, countryName]
         .filter(Boolean)
         .join(', ');
+      const display =
+        formatted || data.display_name || DEFAULT_GEOCODE.address;
+
       return {
-        address: formatted || data.display_name,
-        full: data.display_name || formatted,
-        details: { area, city: mainCity, country: country || 'UAE' },
+        address: display,
+        full: data.display_name ?? display,
+        details: { area, city: mainCity, country: countryName },
       };
     }
   } catch (e) {
     console.warn('Geocode error:', e);
   }
 
-  return {
-    address: 'Downtown, Dubai, UAE',
-    full: 'Downtown, Dubai, UAE',
-    details: { area: 'Downtown', city: 'Dubai', country: 'UAE' },
-  };
+  return DEFAULT_GEOCODE;
 };
