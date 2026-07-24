@@ -15,7 +15,6 @@ import { UserRole } from '../../__generated__/graphql';
 import { useHome } from './hooks/useHome';
 import { filterAndSortServices, FilterValues } from './helpers/homeHelpers';
 import { NavigationCallback } from '@/navigation/navigation.types';
-
 import { homeStyles } from './styles';
 
 export interface HomeScreenProps {
@@ -23,14 +22,16 @@ export interface HomeScreenProps {
   onNavigate?: NavigationCallback;
   activeFilters?: FilterValues | null;
   onSelectCategory?: (categoryId: string) => void;
+  searchQuery?: string;
 }
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({
   onNavigate,
   activeFilters,
   onSelectCategory,
+  searchQuery,
 }) => {
-  const { featuredServices, nearbyServices, recommendedServices } = useHome();
+  const { featuredServices, nearbyServices, recommendedServices } = useHome(searchQuery);
 
   const handleViewAllProviders = useCallback(() => {
     onNavigate?.('nearbyProviders');

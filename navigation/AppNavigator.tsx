@@ -195,6 +195,7 @@ export const AppNavigator: React.FC = () => {
         userRole={userRole}
         onNavigate={handleNavigate}
         activeFilters={activeFilters}
+        searchQuery={searchValue}
         onSelectCategory={catId => {
           setActiveFilters(prev => ({
             ...prev,

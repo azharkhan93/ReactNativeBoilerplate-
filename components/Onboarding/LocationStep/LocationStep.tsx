@@ -49,6 +49,13 @@ export const LocationStep: React.FC<LocationStepProps> = ({
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const onLocationSelectRef = useRef(onLocationSelect);
+  useEffect(() => {
+    onLocationSelectRef.current = onLocationSelect;
+  }, [onLocationSelect]);
+
+  const didAutoFetchRef = useRef(false);
+
   // Handlers defined at the top
   const handleLocation = useCallback(async () => {
     setLoading(true);
@@ -64,7 +71,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
       if (geoData) {
         setAddress(geoData.address);
         setQuery(geoData.full);
-        onLocationSelect?.({
+        onLocationSelectRef.current?.({
           address: geoData.address,
           coords: { latitude, longitude },
         });
@@ -74,7 +81,7 @@ export const LocationStep: React.FC<LocationStepProps> = ({
     } finally {
       setLoading(false);
     }
-  }, [onLocationSelect]);
+  }, []);
 
   const handleDismissKeyboard = useCallback(() => {
     Keyboard.dismiss();
@@ -83,16 +90,20 @@ export const LocationStep: React.FC<LocationStepProps> = ({
   const handleQueryChange = useCallback((text: string) => {
     setQuery(text);
     if (text.trim()) {
-      onLocationSelect?.({
+      onLocationSelectRef.current?.({
         address: text,
         coords: pos || DEFAULT_LOC,
       });
     }
-  }, [onLocationSelect, pos]);
+  }, [pos]);
 
   useEffect(() => {
+    if (didAutoFetchRef.current) return;
     check(LOC_PERMISSION).then(s => {
-      if (s === RESULTS.GRANTED) handleLocation();
+      if (s === RESULTS.GRANTED && !didAutoFetchRef.current) {
+        didAutoFetchRef.current = true;
+        handleLocation();
+      }
     });
   }, [handleLocation]);
 

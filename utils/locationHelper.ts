@@ -38,31 +38,31 @@ export const reverseGeocode = async (lat: number, lon: number) => {
 
         if (!res.ok) {
             return {
-                address: `Location (${lat.toFixed(4)}, ${lon.toFixed(4)})`,
-                full: `Latitude: ${lat}, Longitude: ${lon}`,
-                details: { area: '', city: 'Dubai', country: 'UAE' },
+                address: `Downtown, Dubai, UAE`,
+                full: `Downtown, Dubai, UAE`,
+                details: { area: 'Downtown', city: 'Dubai', country: 'UAE' },
             };
         }
 
         const data = await res.json();
         if (data && data.address) {
             const { neighborhood, suburb, city, town, village, state, country } = data.address;
-            const area = neighborhood || suburb || state || '';
-            const mainCity = city || town || village || '';
+            const area = neighborhood || suburb || state || 'Downtown';
+            const mainCity = city || town || village || 'Dubai';
             const formatted = [area, mainCity, country].filter(Boolean).join(', ');
             return {
-                address: formatted || data.display_name || `Location (${lat.toFixed(4)}, ${lon.toFixed(4)})`,
-                full: data.display_name || `Location (${lat.toFixed(4)}, ${lon.toFixed(4)})`,
-                details: { area, city: mainCity, country },
+                address: formatted || data.display_name || `Downtown, ${mainCity}`,
+                full: data.display_name || `Downtown, ${mainCity}, UAE`,
+                details: { area, city: mainCity, country: country || 'UAE' },
             };
         }
     } catch (e) {
         console.warn('Geocode Exception caught cleanly:', e);
     }
     return {
-        address: `Location (${lat.toFixed(4)}, ${lon.toFixed(4)})`,
-        full: `Latitude: ${lat}, Longitude: ${lon}`,
-        details: { area: '', city: 'Dubai', country: 'UAE' },
+        address: `Downtown, Dubai, UAE`,
+        full: `Downtown, Dubai, UAE`,
+        details: { area: 'Downtown', city: 'Dubai', country: 'UAE' },
     };
 };
 

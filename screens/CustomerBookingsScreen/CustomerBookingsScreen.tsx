@@ -1,14 +1,12 @@
 import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Typography, BookingCard, ScreenScrollView } from '@/components/theme';
-import { MOCK_BOOKINGS } from '@/data/mockBookings';
+import { useCustomerBookings, BookingTab } from './hooks/useCustomerBookings';
 
 export interface CustomerBookingsScreenProps {
   onNavigate?: (route: string, params?: any) => void;
 }
-
-type BookingTab = 'active' | 'past' | 'cancelled';
 
 const TABS: { id: BookingTab; label: string; activeBg: string }[] = [
   {
@@ -28,26 +26,11 @@ const TABS: { id: BookingTab; label: string; activeBg: string }[] = [
   },
 ];
 
-const STATUS_MAP: Record<BookingTab, string[]> = {
-  active: ['pending', 'confirmed', 'on_the_way'],
-  past: ['completed'],
-  cancelled: ['cancelled'],
-};
-
-const useBookingsFilter = () => {
-  const [activeTab, setActiveTab] = React.useState<BookingTab>('active');
-  const bookings = React.useMemo(
-    () => MOCK_BOOKINGS.filter(b => STATUS_MAP[activeTab].includes(b.status)),
-    [activeTab],
-  );
-  return { activeTab, setActiveTab, bookings };
-};
-
 export const CustomerBookingsScreen: React.FC<CustomerBookingsScreenProps> = ({
   onNavigate,
 }) => {
   const insets = useSafeAreaInsets();
-  const { activeTab, setActiveTab, bookings } = useBookingsFilter();
+  const { activeTab, setActiveTab, bookings, loading } = useCustomerBookings();
 
   return (
     <View className="flex-1 bg-notchLight">
@@ -85,10 +68,12 @@ export const CustomerBookingsScreen: React.FC<CustomerBookingsScreenProps> = ({
         ))}
       </View>
 
-      <ScreenScrollView
-        className="flex-1 px-5"
-      >
-        {bookings.length > 0 ? (
+      <ScreenScrollView className="flex-1 px-5">
+        {loading ? (
+          <View className="py-10 items-center justify-center">
+            <ActivityIndicator size="large" color="#0284c7" />
+          </View>
+        ) : bookings.length > 0 ? (
           bookings.map(b => (
             <BookingCard
               key={b.id}
@@ -120,4 +105,3 @@ export const CustomerBookingsScreen: React.FC<CustomerBookingsScreenProps> = ({
     </View>
   );
 };
-

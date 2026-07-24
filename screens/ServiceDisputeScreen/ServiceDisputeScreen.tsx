@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useMutation } from '@apollo/client/react';
 import { ServiceDispute } from '../../components/Customer/ServiceDispute';
+import { CREATE_DISPUTE } from '@/components/Customer/bookingQueries';
 
 export interface ServiceDisputeScreenProps {
   onNavigate?: (screen: string, params?: Record<string, unknown>) => void;
@@ -14,11 +16,27 @@ export const ServiceDisputeScreen: React.FC<ServiceDisputeScreenProps> = ({
   const bookingId = route?.params?.bookingId || 'BK-88291';
   const providerName = route?.params?.providerName || 'Car Detailing Pros';
 
+  const [createDispute] = useMutation(CREATE_DISPUTE);
+
   const handleSubmit = useCallback(
-    (_data: Record<string, unknown>) => {
-      onNavigate?.('support');
+    async (data: Record<string, unknown>) => {
+      const reasonText = (data?.reason as string) || (data?.description as string) || 'Service Dispute';
+      try {
+        await createDispute({
+          variables: {
+            input: {
+              bookingId,
+              reason: reasonText,
+            },
+          },
+        });
+      } catch (err) {
+        console.error('Error submitting dispute:', err);
+      } finally {
+        onNavigate?.('support');
+      }
     },
-    [onNavigate],
+    [bookingId, createDispute, onNavigate],
   );
 
   return (

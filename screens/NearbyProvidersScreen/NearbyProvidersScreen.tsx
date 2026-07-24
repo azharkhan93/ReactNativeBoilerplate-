@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState, useMemo } from 'react';
-import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SlidersHorizontal, Navigation } from 'lucide-react-native';
 import {
@@ -9,7 +9,7 @@ import {
   ProviderList,
   ProviderMap,
 } from '@/components/theme';
-import { MOCK_PROVIDERS } from '@/data/mockProviders';
+import { useNearbyVendors } from './hooks/useNearbyVendors';
 
 export interface NearbyProvidersScreenProps {
   onNavigate?: (route: string, params?: any) => void;
@@ -18,22 +18,11 @@ export interface NearbyProvidersScreenProps {
 export const NearbyProvidersScreen: React.FC<NearbyProvidersScreenProps> = ({ onNavigate }) => {
   const insets = useSafeAreaInsets();
   const [searchQuery, setSearchQuery] = useState('');
+  const { providers, loading } = useNearbyVendors(searchQuery);
 
   const handleProviderPress = (id: string) => {
     onNavigate?.('vendorDetails', { vendorId: id });
   };
-
-  const filteredProviders = useMemo(() => {
-    return MOCK_PROVIDERS.filter(
-      p =>
-        p.distanceKm !== undefined &&
-        p.distanceKm <= 4.0 &&
-        (p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.services?.some(s =>
-            s.toLowerCase().includes(searchQuery.toLowerCase()),
-          )),
-    );
-  }, [searchQuery]);
 
   return (
     <View className="flex-1">
@@ -41,7 +30,7 @@ export const NearbyProvidersScreen: React.FC<NearbyProvidersScreenProps> = ({ on
       <View style={StyleSheet.absoluteFillObject}>
         <ProviderMap
           fullScreen
-          providers={filteredProviders}
+          providers={providers}
           onProviderPress={handleProviderPress}
         />
       </View>
@@ -95,14 +84,20 @@ export const NearbyProvidersScreen: React.FC<NearbyProvidersScreenProps> = ({ on
         </View>
 
         <View className="flex-1">
-          <ProviderList
-            providers={filteredProviders}
-            onProviderPress={handleProviderPress}
-            contentContainerStyle={{
-              paddingHorizontal: 20,
-              paddingBottom: 40,
-            }}
-          />
+          {loading ? (
+            <View className="py-10 items-center justify-center">
+              <ActivityIndicator size="large" color="#0284c7" />
+            </View>
+          ) : (
+            <ProviderList
+              providers={providers}
+              onProviderPress={handleProviderPress}
+              contentContainerStyle={{
+                paddingHorizontal: 20,
+                paddingBottom: 40,
+              }}
+            />
+          )}
         </View>
       </View>
     </View>

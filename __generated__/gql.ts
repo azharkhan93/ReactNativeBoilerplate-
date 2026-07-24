@@ -14,6 +14,12 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
+    "\n  query GetCustomerBookings($userId: ID!, $status: BookingStatus) {\n    customerBookings(userId: $userId, status: $status) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n      createdAt\n      service {\n        id\n        name\n        price\n      }\n      vendorProfile {\n        id\n        businessName\n        imageUri\n      }\n    }\n  }\n": typeof types.GetCustomerBookingsDocument,
+    "\n  query GetVendorBookings($vendorProfileId: ID!, $status: BookingStatus) {\n    vendorBookings(vendorProfileId: $vendorProfileId, status: $status) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n      createdAt\n      user {\n        id\n        name\n        phoneNumber\n        avatarUrl\n      }\n      service {\n        id\n        name\n        price\n      }\n    }\n  }\n": typeof types.GetVendorBookingsDocument,
+    "\n  mutation CreateBooking($input: CreateBookingInput!) {\n    createBooking(input: $input) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n    }\n  }\n": typeof types.CreateBookingDocument,
+    "\n  mutation UpdateBookingStatus($id: ID!, $status: BookingStatus!) {\n    updateBookingStatus(id: $id, status: $status) {\n      id\n      status\n    }\n  }\n": typeof types.UpdateBookingStatusDocument,
+    "\n  mutation CreateReview($input: CreateReviewInput!) {\n    createReview(input: $input) {\n      id\n      bookingId\n      rating\n      comment\n      createdAt\n    }\n  }\n": typeof types.CreateReviewDocument,
+    "\n  mutation CreateDispute($input: CreateDisputeInput!) {\n    createDispute(input: $input) {\n      id\n      bookingId\n      reason\n      status\n      createdAt\n    }\n  }\n": typeof types.CreateDisputeDocument,
     "\n  query GetCustomerProfile($userId: String!) {\n    getCustomerProfile(userId: $userId) {\n      id\n      userId\n      name\n      phone\n      email\n      location\n    }\n  }\n": typeof types.GetCustomerProfileDocument,
     "\n  mutation UpsertCustomerProfile($input: UpsertCustomerProfileInput!) {\n    upsertCustomerProfile(input: $input) {\n      id\n      userId\n      name\n      phone\n      email\n      location\n    }\n  }\n": typeof types.UpsertCustomerProfileDocument,
     "\n  query GetCustomerAddresses($customerProfileId: ID!) {\n    getCustomerAddresses(customerProfileId: $customerProfileId) {\n      id\n      customerProfileId\n      label\n      street\n      city\n      state\n      zipCode\n      type\n    }\n  }\n": typeof types.GetCustomerAddressesDocument,
@@ -47,15 +53,21 @@ type Documents = {
     "\n  mutation VerifyOtp($phone: String!, $code: String!) {\n    verifyOtp(phoneNumber: $phone, code: $code) {\n      success\n      message\n    }\n  }\n": typeof types.VerifyOtpDocument,
     "\n  mutation LoginByPhone($phone: String!, $code: String!, $role: UserRole!) {\n    loginByPhone(phoneNumber: $phone, code: $code, role: $role) {\n      token\n      user {\n        id\n        phoneNumber\n        role {\n          id\n          name\n        }\n      }\n    }\n  }\n": typeof types.LoginByPhoneDocument,
     "\n  mutation RequestOtp($phone: String!) {\n    requestOtp(phoneNumber: $phone) {\n      success\n      message\n      sid\n    }\n  }\n": typeof types.RequestOtpDocument,
+    "\n  mutation UpdateDriverLocation($bookingId: ID!, $latitude: Float!, $longitude: Float!, $status: String!, $eta: Int!) {\n    updateDriverLocation(bookingId: $bookingId, latitude: $latitude, longitude: $longitude, status: $status, eta: $eta) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n    }\n  }\n": typeof types.UpdateDriverLocationDocument,
     "\n  mutation LogoutUser {\n    logout\n  }\n": typeof types.LogoutUserDocument,
     "\n  mutation RegisterDeviceToken($input: RegisterDeviceTokenInput!) {\n    registerDeviceToken(input: $input) {\n      id\n      fcmToken\n    }\n  }\n": typeof types.RegisterDeviceTokenDocument,
     "\n  query SearchVendors($query: String!) {\n    searchVendors(query: $query) {\n      id\n      businessName\n      description\n    }\n  }\n": typeof types.SearchVendorsDocument,
     "\n  query GetDriverLocation($bookingId: ID!) {\n    driverLocation(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": typeof types.GetDriverLocationDocument,
     "\n  subscription OnDriverLocationUpdated($bookingId: ID!) {\n    driverLocationUpdated(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": typeof types.OnDriverLocationUpdatedDocument,
     "\n  mutation SendBookingNotification($bookingId: ID!, $type: String!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n": typeof types.SendBookingNotificationDocument,
-    "\n  mutation UpdateDriverLocation($bookingId: ID!, $latitude: Float!, $longitude: Float!, $status: String!, $eta: Int!) {\n    updateDriverLocation(bookingId: $bookingId, latitude: $latitude, longitude: $longitude, status: $status, eta: $eta) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n    }\n  }\n": typeof types.UpdateDriverLocationDocument,
 };
 const documents: Documents = {
+    "\n  query GetCustomerBookings($userId: ID!, $status: BookingStatus) {\n    customerBookings(userId: $userId, status: $status) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n      createdAt\n      service {\n        id\n        name\n        price\n      }\n      vendorProfile {\n        id\n        businessName\n        imageUri\n      }\n    }\n  }\n": types.GetCustomerBookingsDocument,
+    "\n  query GetVendorBookings($vendorProfileId: ID!, $status: BookingStatus) {\n    vendorBookings(vendorProfileId: $vendorProfileId, status: $status) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n      createdAt\n      user {\n        id\n        name\n        phoneNumber\n        avatarUrl\n      }\n      service {\n        id\n        name\n        price\n      }\n    }\n  }\n": types.GetVendorBookingsDocument,
+    "\n  mutation CreateBooking($input: CreateBookingInput!) {\n    createBooking(input: $input) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n    }\n  }\n": types.CreateBookingDocument,
+    "\n  mutation UpdateBookingStatus($id: ID!, $status: BookingStatus!) {\n    updateBookingStatus(id: $id, status: $status) {\n      id\n      status\n    }\n  }\n": types.UpdateBookingStatusDocument,
+    "\n  mutation CreateReview($input: CreateReviewInput!) {\n    createReview(input: $input) {\n      id\n      bookingId\n      rating\n      comment\n      createdAt\n    }\n  }\n": types.CreateReviewDocument,
+    "\n  mutation CreateDispute($input: CreateDisputeInput!) {\n    createDispute(input: $input) {\n      id\n      bookingId\n      reason\n      status\n      createdAt\n    }\n  }\n": types.CreateDisputeDocument,
     "\n  query GetCustomerProfile($userId: String!) {\n    getCustomerProfile(userId: $userId) {\n      id\n      userId\n      name\n      phone\n      email\n      location\n    }\n  }\n": types.GetCustomerProfileDocument,
     "\n  mutation UpsertCustomerProfile($input: UpsertCustomerProfileInput!) {\n    upsertCustomerProfile(input: $input) {\n      id\n      userId\n      name\n      phone\n      email\n      location\n    }\n  }\n": types.UpsertCustomerProfileDocument,
     "\n  query GetCustomerAddresses($customerProfileId: ID!) {\n    getCustomerAddresses(customerProfileId: $customerProfileId) {\n      id\n      customerProfileId\n      label\n      street\n      city\n      state\n      zipCode\n      type\n    }\n  }\n": types.GetCustomerAddressesDocument,
@@ -89,13 +101,13 @@ const documents: Documents = {
     "\n  mutation VerifyOtp($phone: String!, $code: String!) {\n    verifyOtp(phoneNumber: $phone, code: $code) {\n      success\n      message\n    }\n  }\n": types.VerifyOtpDocument,
     "\n  mutation LoginByPhone($phone: String!, $code: String!, $role: UserRole!) {\n    loginByPhone(phoneNumber: $phone, code: $code, role: $role) {\n      token\n      user {\n        id\n        phoneNumber\n        role {\n          id\n          name\n        }\n      }\n    }\n  }\n": types.LoginByPhoneDocument,
     "\n  mutation RequestOtp($phone: String!) {\n    requestOtp(phoneNumber: $phone) {\n      success\n      message\n      sid\n    }\n  }\n": types.RequestOtpDocument,
+    "\n  mutation UpdateDriverLocation($bookingId: ID!, $latitude: Float!, $longitude: Float!, $status: String!, $eta: Int!) {\n    updateDriverLocation(bookingId: $bookingId, latitude: $latitude, longitude: $longitude, status: $status, eta: $eta) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n    }\n  }\n": types.UpdateDriverLocationDocument,
     "\n  mutation LogoutUser {\n    logout\n  }\n": types.LogoutUserDocument,
     "\n  mutation RegisterDeviceToken($input: RegisterDeviceTokenInput!) {\n    registerDeviceToken(input: $input) {\n      id\n      fcmToken\n    }\n  }\n": types.RegisterDeviceTokenDocument,
     "\n  query SearchVendors($query: String!) {\n    searchVendors(query: $query) {\n      id\n      businessName\n      description\n    }\n  }\n": types.SearchVendorsDocument,
     "\n  query GetDriverLocation($bookingId: ID!) {\n    driverLocation(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": types.GetDriverLocationDocument,
     "\n  subscription OnDriverLocationUpdated($bookingId: ID!) {\n    driverLocationUpdated(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": types.OnDriverLocationUpdatedDocument,
     "\n  mutation SendBookingNotification($bookingId: ID!, $type: String!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n": types.SendBookingNotificationDocument,
-    "\n  mutation UpdateDriverLocation($bookingId: ID!, $latitude: Float!, $longitude: Float!, $status: String!, $eta: Int!) {\n    updateDriverLocation(bookingId: $bookingId, latitude: $latitude, longitude: $longitude, status: $status, eta: $eta) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n    }\n  }\n": types.UpdateDriverLocationDocument,
 };
 
 /**
@@ -112,6 +124,30 @@ const documents: Documents = {
  */
 export function gql(source: string): unknown;
 
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetCustomerBookings($userId: ID!, $status: BookingStatus) {\n    customerBookings(userId: $userId, status: $status) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n      createdAt\n      service {\n        id\n        name\n        price\n      }\n      vendorProfile {\n        id\n        businessName\n        imageUri\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetCustomerBookings($userId: ID!, $status: BookingStatus) {\n    customerBookings(userId: $userId, status: $status) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n      createdAt\n      service {\n        id\n        name\n        price\n      }\n      vendorProfile {\n        id\n        businessName\n        imageUri\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetVendorBookings($vendorProfileId: ID!, $status: BookingStatus) {\n    vendorBookings(vendorProfileId: $vendorProfileId, status: $status) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n      createdAt\n      user {\n        id\n        name\n        phoneNumber\n        avatarUrl\n      }\n      service {\n        id\n        name\n        price\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetVendorBookings($vendorProfileId: ID!, $status: BookingStatus) {\n    vendorBookings(vendorProfileId: $vendorProfileId, status: $status) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n      createdAt\n      user {\n        id\n        name\n        phoneNumber\n        avatarUrl\n      }\n      service {\n        id\n        name\n        price\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreateBooking($input: CreateBookingInput!) {\n    createBooking(input: $input) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n    }\n  }\n"): (typeof documents)["\n  mutation CreateBooking($input: CreateBookingInput!) {\n    createBooking(input: $input) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation UpdateBookingStatus($id: ID!, $status: BookingStatus!) {\n    updateBookingStatus(id: $id, status: $status) {\n      id\n      status\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateBookingStatus($id: ID!, $status: BookingStatus!) {\n    updateBookingStatus(id: $id, status: $status) {\n      id\n      status\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreateReview($input: CreateReviewInput!) {\n    createReview(input: $input) {\n      id\n      bookingId\n      rating\n      comment\n      createdAt\n    }\n  }\n"): (typeof documents)["\n  mutation CreateReview($input: CreateReviewInput!) {\n    createReview(input: $input) {\n      id\n      bookingId\n      rating\n      comment\n      createdAt\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation CreateDispute($input: CreateDisputeInput!) {\n    createDispute(input: $input) {\n      id\n      bookingId\n      reason\n      status\n      createdAt\n    }\n  }\n"): (typeof documents)["\n  mutation CreateDispute($input: CreateDisputeInput!) {\n    createDispute(input: $input) {\n      id\n      bookingId\n      reason\n      status\n      createdAt\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -247,6 +283,10 @@ export function gql(source: "\n  mutation RequestOtp($phone: String!) {\n    req
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function gql(source: "\n  mutation UpdateDriverLocation($bookingId: ID!, $latitude: Float!, $longitude: Float!, $status: String!, $eta: Int!) {\n    updateDriverLocation(bookingId: $bookingId, latitude: $latitude, longitude: $longitude, status: $status, eta: $eta) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateDriverLocation($bookingId: ID!, $latitude: Float!, $longitude: Float!, $status: String!, $eta: Int!) {\n    updateDriverLocation(bookingId: $bookingId, latitude: $latitude, longitude: $longitude, status: $status, eta: $eta) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function gql(source: "\n  mutation LogoutUser {\n    logout\n  }\n"): (typeof documents)["\n  mutation LogoutUser {\n    logout\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -268,10 +308,6 @@ export function gql(source: "\n  subscription OnDriverLocationUpdated($bookingId
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation SendBookingNotification($bookingId: ID!, $type: String!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n"): (typeof documents)["\n  mutation SendBookingNotification($bookingId: ID!, $type: String!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n"];
-/**
- * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function gql(source: "\n  mutation UpdateDriverLocation($bookingId: ID!, $latitude: Float!, $longitude: Float!, $status: String!, $eta: Int!) {\n    updateDriverLocation(bookingId: $bookingId, latitude: $latitude, longitude: $longitude, status: $status, eta: $eta) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n    }\n  }\n"): (typeof documents)["\n  mutation UpdateDriverLocation($bookingId: ID!, $latitude: Float!, $longitude: Float!, $status: String!, $eta: Int!) {\n    updateDriverLocation(bookingId: $bookingId, latitude: $latitude, longitude: $longitude, status: $status, eta: $eta) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n    }\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};
