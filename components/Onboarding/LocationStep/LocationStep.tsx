@@ -61,11 +61,21 @@ export const LocationStep: React.FC<LocationStepProps> = ({
     setLoading(true);
     try {
       const hasPermission = await checkLocationPermission();
-      if (!hasPermission) return setLoading(false);
+      if (!hasPermission) {
+        setLoading(false);
+        return;
+      }
 
       const { latitude, longitude } = await getCurrentLocation();
       setPos({ latitude, longitude });
-      mapRef.current?.animateToRegion({ latitude, longitude, ...DELTAS }, 1000);
+      mapRef.current?.animateToRegion({ latitude, longitude, ...DELTAS }, 800);
+      setLoading(false);
+
+      // Instantly provide coordinate feedback to parent while reverse geocoding resolves
+      onLocationSelectRef.current?.({
+        address: address || query || 'Locating address...',
+        coords: { latitude, longitude },
+      });
 
       const geoData = await reverseGeocode(latitude, longitude);
       if (geoData) {
@@ -77,11 +87,10 @@ export const LocationStep: React.FC<LocationStepProps> = ({
         });
       }
     } catch (e) {
-      console.error('Location Error:', e);
-    } finally {
+      console.warn('Location detection failed, fallback cleanly:', e);
       setLoading(false);
     }
-  }, []);
+  }, [address, query]);
 
   const handleDismissKeyboard = useCallback(() => {
     Keyboard.dismiss();
