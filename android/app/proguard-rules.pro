@@ -17,3 +17,12 @@
 
 # Preserve annotations and signatures
 -keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
+
+# MMKV JSI Native Protection
+-keep class com.mrousavy.mmkv.** { *; }
+-keep interface com.mrousavy.mmkv.** { *; }
+-dontwarn com.mrousavy.mmkv.**
+
+# Firebase Messaging Protection
+-keep class com.google.firebase.messaging.** { *; }
+-dontwarn com.google.firebase.messaging.**

@@ -5,7 +5,7 @@ import { InteractionManager } from 'react-native';
 export const appStorage = new MMKV({ id: 'tab2wash-app' });
 export const apolloStorage = new MMKV({ id: 'tab2wash-apollo' });
 
-/** High-Performance Type-Safe Local Cache Engine */
+
 export const Storage = {
   set: <T>(key: string, val: T): void =>
     appStorage.set(
