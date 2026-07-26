@@ -1,37 +1,54 @@
 import { useState, useCallback, useRef } from 'react';
-import { FlatList, NativeSyntheticEvent, NativeScrollEvent, Dimensions } from 'react-native';
+import {
+  FlatList,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  Dimensions,
+} from 'react-native';
 import { UseOnboardingSwipeParams, UseOnboardingSwipeResult } from './types';
 
 export const useOnboardingSwipe = ({
   totalSteps,
   totalSlides,
   selectedRole,
+  hasLocationSelected,
   onFinish,
 }: UseOnboardingSwipeParams): UseOnboardingSwipeResult => {
   const { width } = Dimensions.get('window');
   const [currentStep, setCurrentStep] = useState<number>(0);
   const flatListRef = useRef<FlatList>(null);
 
-  
   const isScrollEnabled =
     currentStep < totalSlides ||
     (currentStep === totalSlides && selectedRole !== null);
 
-  const navigateToStep = useCallback((step: number): void => {
-    setCurrentStep(step);
-    flatListRef.current?.scrollToOffset({
-      offset: step * width,
-      animated: true,
-    });
-  }, [width]);
+  const navigateToStep = useCallback(
+    (step: number): void => {
+      setCurrentStep(step);
+      flatListRef.current?.scrollToOffset({
+        offset: step * width,
+        animated: true,
+      });
+    },
+    [width],
+  );
 
   const handleNext = useCallback((): void => {
     if (currentStep < totalSteps - 1) {
+      if (currentStep === totalSlides && !selectedRole) return;
       navigateToStep(currentStep + 1);
-    } else if (selectedRole) {
+    } else if (selectedRole && hasLocationSelected) {
       onFinish(selectedRole);
     }
-  }, [currentStep, totalSteps, selectedRole, onFinish, navigateToStep]);
+  }, [
+    currentStep,
+    totalSteps,
+    totalSlides,
+    selectedRole,
+    hasLocationSelected,
+    onFinish,
+    navigateToStep,
+  ]);
 
   const handleSkip = useCallback((): void => {
     navigateToStep(totalSlides);
@@ -48,14 +65,20 @@ export const useOnboardingSwipe = ({
       try {
         const contentOffsetX = event.nativeEvent.contentOffset.x ?? 0;
         const newStep = Math.round(contentOffsetX / width);
+
+        if (newStep === totalSteps - 1 && !selectedRole) {
+          navigateToStep(totalSlides);
+          return;
+        }
+
         if (newStep !== currentStep && newStep >= 0 && newStep < totalSteps) {
           setCurrentStep(newStep);
         }
       } catch {
-       
+        // Fallback safely
       }
     },
-    [currentStep, width, totalSteps],
+    [currentStep, width, totalSteps, selectedRole, totalSlides, navigateToStep],
   );
 
   return {

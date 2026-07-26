@@ -35,6 +35,8 @@ import {
   TAB_BAR_IOS_MIN_BOTTOM_OFFSET,
 } from '@/utils/tabBar.constants';
 
+import { appStorage, STORAGE_KEYS } from '@/utils/cache';
+
 const SCREENS: Record<string, ComponentType<{ onNavigate?: (route: string, params?: Record<string, unknown>) => void }>> = {
   dashboard: VendorDashboard,
   analytics: VendorAnalyticsScreen,
@@ -49,9 +51,18 @@ const SCREENS: Record<string, ComponentType<{ onNavigate?: (route: string, param
 export const AppNavigator: React.FC = () => {
   const [activeTab, setActiveTab] = useState('home');
   const [selectedVendorId, setSelectedVendorId] = useState<string | null>(null);
-  const [userRole, setUserRole] = useState<UserRole | null>(null);
+  const [userRole, setUserRole] = useState<UserRole | null>(() => {
+    const storedRole = appStorage.getString(STORAGE_KEYS.USER_ROLE);
+    if (storedRole === UserRole.Customer || storedRole === UserRole.Provider) {
+      return storedRole as UserRole;
+    }
+    return null;
+  });
   const [searchValue, setSearchValue] = useState<string>('');
-  const [showOnboarding, setShowOnboarding] = useState(true);
+  const [showOnboarding, setShowOnboarding] = useState<boolean>(() => {
+    const completed = appStorage.getBoolean(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING);
+    return !completed;
+  });
   const [showPhoneModal, setShowPhoneModal] = useState(false);
   const [pendingAuthCallback, setPendingAuthCallback] = useState<(() => void) | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
@@ -70,7 +81,7 @@ export const AppNavigator: React.FC = () => {
     sortBy: null,
   });
 
-  // Computed once at layout level — consumed via TabBarHeightContext in ScreenScrollView
+
   const { bottom } = useSafeAreaInsets();
   const { data, setSearchTerm } = useVendorSearch();
   const { registerToken } = useRegisterDeviceToken();

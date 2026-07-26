@@ -14,6 +14,7 @@ export interface UseOnboardingSwipeParams {
   readonly totalSteps: number;
   readonly totalSlides: number;
   readonly selectedRole: UserRole | null;
+  readonly hasLocationSelected?: boolean;
   readonly onFinish: (role: UserRole) => void;
 }
 

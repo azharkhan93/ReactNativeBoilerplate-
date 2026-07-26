@@ -12,6 +12,8 @@ export const STORAGE_KEYS = {
   BOOKING_DRAFT: 'booking_draft',
   LAST_LOCATION: 'last_known_location',
   NOTIFICATION_SETTINGS: 'notification_settings',
+  HAS_COMPLETED_ONBOARDING: 'has_completed_onboarding',
+  USER_ROLE: 'user_role',
 } as const;
 
 export type StorageKey = (typeof STORAGE_KEYS)[keyof typeof STORAGE_KEYS];

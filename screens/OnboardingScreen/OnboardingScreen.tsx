@@ -48,6 +48,7 @@ export const OnboardingScreen: React.FC<OnboardingScreenProps> = ({
     totalSteps: TOTAL_STEPS,
     totalSlides: TOTAL_SLIDES,
     selectedRole,
+    hasLocationSelected,
     onFinish,
   });
 
