@@ -19,9 +19,12 @@
 -keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
 
 # MMKV JSI Native Protection
--keep class com.mrousavy.mmkv.** { *; }
--keep interface com.mrousavy.mmkv.** { *; }
--dontwarn com.mrousavy.mmkv.**
+-keep class com.reactnativemmkv.** { *; }
+-keep interface com.reactnativemmkv.** { *; }
+-dontwarn com.reactnativemmkv.**
+-keep class com.tencent.mmkv.** { *; }
+-keep interface com.tencent.mmkv.** { *; }
+-dontwarn com.tencent.mmkv.**
 
 # Firebase Messaging Protection
 -keep class com.google.firebase.messaging.** { *; }
