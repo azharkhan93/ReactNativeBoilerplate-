@@ -4,7 +4,6 @@ import { useLazyQuery } from '@apollo/client/react';
 import { useDebounce } from './useDebounce';
 import { QuerySearchVendorsArgs, VendorProfileType } from '../__generated__/graphql';
 
-
 // GraphQL query for searching vendors
 export const SEARCH_VENDORS = gql`
   query SearchVendors($query: String!) {
@@ -20,11 +19,11 @@ export function useVendorSearch() {
   const [searchTerm, setSearchTerm] = useState('');
   const debouncedTerm = useDebounce<string>(searchTerm, 300);
 
-  // Typed lazy query using generated types
+  // Uses global Apollo Client defaultOptions (cache-first & MMKV persistence)
   const [executeSearch, { data, loading, error }] = useLazyQuery<
     { searchVendors: VendorProfileType[] },
     QuerySearchVendorsArgs
-  >(SEARCH_VENDORS, { fetchPolicy: 'no-cache' });
+  >(SEARCH_VENDORS);
 
   useEffect(() => {
     if (debouncedTerm) {

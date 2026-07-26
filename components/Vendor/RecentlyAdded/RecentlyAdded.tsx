@@ -36,7 +36,10 @@ export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
     );
   }, [gqlVendors, activeCategoryId]);
 
-  const keyExtractor = useCallback((item: (typeof vendors)[number]) => item.id, []);
+  const keyExtractor = useCallback(
+    (item: (typeof vendors)[number]) => item.id,
+    [],
+  );
 
   const renderItem = useCallback(
     ({ item: vendor }: ListRenderItemInfo<(typeof vendors)[number]>) => {

@@ -3,9 +3,7 @@ import { ScrollView, View } from 'react-native';
 import {
   Category,
   HeroSection,
-  FlashSale,
-  BestSellers,
-  NewArrivals,
+  ProductSection,
   Typography,
   RecentlyAdded,
   ScreenScrollView,
@@ -31,7 +29,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   onSelectCategory,
   searchQuery,
 }) => {
-  const { featuredServices, nearbyServices, recommendedServices } = useHome(searchQuery);
+  const { featuredServices, nearbyServices, recommendedServices } =
+    useHome(searchQuery);
 
   const handleViewAllProviders = useCallback(() => {
     onNavigate?.('nearbyProviders');
@@ -72,19 +71,15 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={homeStyles.categoryListContent}
           >
-            {SERVICE_CATEGORIES.map(category => {
-              const isSelected = activeFilters?.categoryId === category.id;
-              const handleCategoryPress = () => onSelectCategory?.(category.id);
-              return (
-                <Category
-                  key={category.id}
-                  name={category.name}
-                  icon={category.icon}
-                  variant={isSelected ? 'primary' : 'default'}
-                  onPress={handleCategoryPress}
-                />
-              );
-            })}
+            {SERVICE_CATEGORIES.map(category => (
+              <Category
+                key={category.id}
+                name={category.name}
+                icon={category.icon}
+                variant={activeFilters?.categoryId === category.id ? 'primary' : 'default'}
+                onPress={() => onSelectCategory?.(category.id)}
+              />
+            ))}
           </ScrollView>
         </View>
 
@@ -96,32 +91,29 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           />
         </View>
 
-        <View className={homeStyles.newArrivalsSection}>
-          <NewArrivals
-            title="Recommended for You"
-            products={filteredRecommended}
-            onProductPress={handleVendorPress}
-            onViewAllPress={handleViewAllProviders}
-          />
-        </View>
+        <ProductSection
+          title="Recommended for You"
+          subtitle="Top rated packages for your car"
+          data={filteredRecommended}
+          onProductPress={handleVendorPress}
+          onViewAllPress={handleViewAllProviders}
+        />
 
-        <View className={homeStyles.flashSaleSection}>
-          <FlashSale
-            title="Special Offers"
-            products={filteredFeatured}
-            onProductPress={handleVendorPress}
-            onViewAllPress={handleViewAllProviders}
-          />
-        </View>
+        <ProductSection
+          title="Special Offers"
+          subtitle="Discounted car detailing deals"
+          data={filteredFeatured}
+          onProductPress={handleVendorPress}
+          onViewAllPress={handleViewAllProviders}
+        />
 
-        <View className={homeStyles.bestSellersSection}>
-          <BestSellers
-            title="Nearby Car Washers"
-            products={filteredNearby}
-            onProductPress={handleVendorPress}
-            onViewAllPress={handleViewAllProviders}
-          />
-        </View>
+        <ProductSection
+          title="Nearby Car Washers"
+          subtitle="Washers available near your location"
+          data={filteredNearby}
+          onProductPress={handleVendorPress}
+          onViewAllPress={handleViewAllProviders}
+        />
       </ScreenScrollView>
     </View>
   );

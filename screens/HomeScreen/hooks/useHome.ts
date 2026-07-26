@@ -1,9 +1,17 @@
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { GET_VENDOR_PROFILES, VENDOR_PROFILE_FIELDS } from '@/components/Vendor/vendorQueries';
 import { useFragment } from '@/__generated__/fragment-masking';
+import { filterAndSortServices, FilterValues } from '../helpers/homeHelpers';
+import { NavigationCallback } from '@/navigation/navigation.types';
 
-export const useHome = (searchQuery?: string) => {
+export interface UseHomeOptions {
+  searchQuery?: string;
+  activeFilters?: FilterValues | null;
+  onNavigate?: NavigationCallback;
+}
+
+export const useHome = ({ searchQuery, activeFilters, onNavigate }: UseHomeOptions = {}) => {
   const { data, loading, error } = useQuery(GET_VENDOR_PROFILES);
 
   const rawVendors = data?.getVendorProfiles ?? [];
@@ -61,7 +69,7 @@ export const useHome = (searchQuery?: string) => {
       return { featuredServices, nearbyServices, recommendedServices };
     }
     const q = searchQuery.toLowerCase();
-    const filterFn = (items: any[]) =>
+    const filterFn = (items: typeof featuredServices) =>
       items.filter(
         item =>
           item.name.toLowerCase().includes(q) ||
@@ -75,8 +83,38 @@ export const useHome = (searchQuery?: string) => {
     };
   }, [searchQuery, featuredServices, nearbyServices, recommendedServices]);
 
+  const filteredFeatured = useMemo(
+    () => filterAndSortServices(filteredBySearch.featuredServices, activeFilters),
+    [filteredBySearch.featuredServices, activeFilters],
+  );
+
+  const filteredNearby = useMemo(
+    () => filterAndSortServices(filteredBySearch.nearbyServices, activeFilters),
+    [filteredBySearch.nearbyServices, activeFilters],
+  );
+
+  const filteredRecommended = useMemo(
+    () => filterAndSortServices(filteredBySearch.recommendedServices, activeFilters),
+    [filteredBySearch.recommendedServices, activeFilters],
+  );
+
+  const handleViewAllProviders = useCallback(() => {
+    onNavigate?.('nearbyProviders');
+  }, [onNavigate]);
+
+  const handleVendorPress = useCallback(
+    (vendorId: string) => {
+      onNavigate?.('vendorDetails', { vendorId });
+    },
+    [onNavigate],
+  );
+
   return {
-    ...filteredBySearch,
+    featuredServices: filteredFeatured,
+    nearbyServices: filteredNearby,
+    recommendedServices: filteredRecommended,
+    handleViewAllProviders,
+    handleVendorPress,
     loading,
     error,
   };
