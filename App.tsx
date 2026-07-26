@@ -30,7 +30,8 @@ export default function App() {
           initApolloCachePersistence(),
         ]);
 
-        const hasSeenSplash = appStorage.getBoolean(STORAGE_KEYS.HAS_SEEN_SPLASH) ?? false;
+        const hasSeenSplash =
+          appStorage.getBoolean(STORAGE_KEYS.HAS_SEEN_SPLASH) ?? false;
         if (hasSeenSplash && isMounted) {
           setSplashFinished(true);
         }
@@ -63,7 +64,11 @@ export default function App() {
   return (
     <ApolloProvider client={apolloClient}>
       <SafeAreaProvider>
-        <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle="dark-content"
+        />
         <KeyboardDismissView>
           {!splashFinished || !isAppReady ? (
             <AnimatedSplashScreen onFinish={handleSplashFinish} />
