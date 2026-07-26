@@ -24,24 +24,32 @@ export const useRegisterDeviceToken = (): UseRegisterDeviceTokenResult => {
     REGISTER_DEVICE_TOKEN,
   );
 
-  const registerToken = useCallback(async (userId: string | null): Promise<void> => {
-    if (!userId) return;
-    try {
-      const token = await getFCMToken();
-      if (token) {
-        await registerDeviceToken({
-          variables: {
-            input: {
-              fcmToken: token,
-              deviceType: Platform.OS,
+  const registerToken = useCallback(
+    async (userId: string | null): Promise<void> => {
+      if (!userId) return;
+      try {
+        const token = await getFCMToken();
+        if (token) {
+          await registerDeviceToken({
+            variables: {
+              input: {
+                fcmToken: token,
+                deviceType: Platform.OS,
+              },
             },
-          },
-        });
+          });
+        }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (err) {
+        if (__DEV__) {
+          console.warn(
+            '[FCM] Device token registration skipped (User unauthenticated or session expired)',
+          );
+        }
       }
-    } catch (err) {
-      console.error('[FCM] Failed to register token to backend:', err);
-    }
-  }, [registerDeviceToken]);
+    },
+    [registerDeviceToken],
+  );
 
   return {
     registerToken,

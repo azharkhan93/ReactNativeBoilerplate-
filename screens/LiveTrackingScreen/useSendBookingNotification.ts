@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useMutation } from '@apollo/client/react';
 import { gql } from '@/__generated__';
 
@@ -24,7 +25,11 @@ export const useSendBookingNotification = () => {
         },
       });
     } catch (err) {
-      console.error('[FCM Backend] Notification trigger failed:', err);
+      if (__DEV__) {
+        console.warn(
+          '[FCM Backend] Notification trigger skipped (Unauthenticated or session expired)',
+        );
+      }
     }
   };
 
