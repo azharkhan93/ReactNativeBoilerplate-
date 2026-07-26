@@ -119,6 +119,16 @@ android {
         ndk {
             abiFilters(project.findProperty('reactNativeArchitectures')?.split(',') ?: ["arm64-v8a"])
         }
+        externalNativeBuild {
+            cmake {
+                arguments "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
+                cFlags "-Wl,-z,max-page-size=16384"
+                cppFlags "-Wl,-z,max-page-size=16384"
+            }
+            ndkBuild {
+                arguments "APP_LDFLAGS+=-Wl,-z,max-page-size=16384"
+            }
+        }
         manifestPlaceholders = [
             GOOGLE_MAPS_API_KEY: envProperties.getProperty("GOOGLE_MAPS_API_KEY") ?: ""
         ]

@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { Modal as RNModal, ModalProps as RNModalProps, Platform, Dimensions, ScrollView, TouchableWithoutFeedback, View, DimensionValue, TouchableOpacity, Keyboard } from 'react-native';
+import { Modal as RNModal, ModalProps as RNModalProps, Platform, Dimensions, ScrollView, TouchableWithoutFeedback, View, DimensionValue, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { X } from 'lucide-react-native';
 import { Typography } from '../Typography';
