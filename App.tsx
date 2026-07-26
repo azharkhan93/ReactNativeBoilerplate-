@@ -9,29 +9,32 @@ import { KeyboardDismissView } from '@/components/theme';
 import { AnimatedSplashScreen } from '@/components/shared/AnimatedSplashScreen';
 import { listenToForegroundNotifications } from '@/utils/notificationService';
 import { NotificationBanner } from '@/components/NotificationBanner';
-import { appStorage, STORAGE_KEYS } from '@/utils/cache';
+import {
+  STORAGE_KEYS,
+  hydrateStorageFromAsyncStorage,
+  persistCriticalKey,
+} from '@/utils/cache';
 
 export default function App() {
-  const [hasSeenSplash] = useState<boolean>(() => {
-    return appStorage.getBoolean(STORAGE_KEYS.HAS_SEEN_SPLASH) ?? false;
-  });
-
-  const [splashFinished, setSplashFinished] = useState<boolean>(hasSeenSplash);
-  const [isCacheRestored, setIsCacheRestored] = useState<boolean>(false);
+  const [splashFinished, setSplashFinished] = useState<boolean>(false);
+  const [isAppReady, setIsAppReady] = useState<boolean>(false);
 
   useEffect(() => {
     let isMounted = true;
 
     const prepareApp = async (): Promise<void> => {
       try {
-        await initApolloCachePersistence();
+        await Promise.all([
+          hydrateStorageFromAsyncStorage(),
+          initApolloCachePersistence(),
+        ]);
       } catch (error) {
         if (__DEV__) {
-          console.warn('[App] Cache persistence initialization error:', error);
+          console.warn('[App] App initialization error:', error);
         }
       } finally {
         if (isMounted) {
-          setIsCacheRestored(true);
+          setIsAppReady(true);
         }
       }
     };
@@ -46,21 +49,17 @@ export default function App() {
     };
   }, []);
 
-  const handleSplashFinish = useCallback(() => {
-    appStorage.set(STORAGE_KEYS.HAS_SEEN_SPLASH, true);
+  const handleSplashFinish = useCallback(async () => {
+    await persistCriticalKey(STORAGE_KEYS.HAS_SEEN_SPLASH, true);
     setSplashFinished(true);
   }, []);
 
   return (
     <ApolloProvider client={apolloClient}>
       <SafeAreaProvider>
-        <StatusBar
-          translucent
-          backgroundColor="transparent"
-          barStyle="dark-content"
-        />
+        <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
         <KeyboardDismissView>
-          {!splashFinished || !isCacheRestored ? (
+          {!splashFinished || !isAppReady ? (
             <AnimatedSplashScreen onFinish={handleSplashFinish} />
           ) : (
             <AppNavigator />

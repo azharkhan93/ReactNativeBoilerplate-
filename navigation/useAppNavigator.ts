@@ -8,7 +8,7 @@ import { useRegisterDeviceToken } from '@/hooks/useRegisterDeviceToken';
 import { FilterValues } from '@/components/FilterModal';
 import { setAuthData, getUserId } from '@/utils/store/authStore';
 import { GET_USER_AVATAR } from '@/components/Customer/customerQueries';
-import { appStorage, STORAGE_KEYS } from '@/utils/cache';
+import { appStorage, STORAGE_KEYS, persistCriticalKey, removeCriticalKey } from '@/utils/cache';
 import { VENDOR_TABS, CUSTOMER_TABS, HIDDEN_TOPBAR_ROUTES } from './tabs';
 import {
   TAB_BAR_TOTAL_HEIGHT,
@@ -34,13 +34,17 @@ export const useAppNavigator = () => {
   });
 
   const [showOnboarding, setShowOnboarding] = useState<boolean>(() => {
-    const completed = appStorage.getBoolean(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING);
+    const completed = appStorage.getBoolean(
+      STORAGE_KEYS.HAS_COMPLETED_ONBOARDING,
+    );
     return !completed;
   });
 
   const [searchValue, setSearchValue] = useState<string>('');
   const [showPhoneModal, setShowPhoneModal] = useState<boolean>(false);
-  const [pendingAuthCallback, setPendingAuthCallback] = useState<(() => void) | null>(null);
+  const [pendingAuthCallback, setPendingAuthCallback] = useState<
+    (() => void) | null
+  >(null);
   const [userId, setUserId] = useState<string | null>(null);
 
   const [userLocation, setUserLocation] = useState<LocationData>({
@@ -48,7 +52,10 @@ export const useAppNavigator = () => {
     coords: { latitude: 25.2048, longitude: 55.2708 },
   });
 
-  const [trackingParams, setTrackingParams] = useState<Record<string, unknown> | null>(null);
+  const [trackingParams, setTrackingParams] = useState<Record<
+    string,
+    unknown
+  > | null>(null);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState<boolean>(false);
   const [activeFilters, setActiveFilters] = useState<FilterValues>({
     categoryId: null,
@@ -93,38 +100,47 @@ export const useAppNavigator = () => {
     }
   }, [userRole, activeTab]);
 
-  const handleRequestAuth = useCallback((onSuccessCallback?: () => void): void => {
-    if (onSuccessCallback) {
-      setPendingAuthCallback(() => onSuccessCallback);
-    }
-    setShowPhoneModal(true);
-  }, []);
+  const handleRequestAuth = useCallback(
+    (onSuccessCallback?: () => void): void => {
+      if (onSuccessCallback) {
+        setPendingAuthCallback(() => onSuccessCallback);
+      }
+      setShowPhoneModal(true);
+    },
+    [],
+  );
 
-  const handleNavigate = useCallback((route: string, params?: Record<string, unknown>): void => {
-    Keyboard.dismiss();
-    if (route === 'vendorDetails' && params?.vendorId) {
-      setSelectedVendorId(params.vendorId as string);
-    }
-    if (route === 'liveTracking' && params) {
-      setTrackingParams(params);
-    }
-    setActiveTab(route);
-  }, []);
+  const handleNavigate = useCallback(
+    (route: string, params?: Record<string, unknown>): void => {
+      Keyboard.dismiss();
+      if (route === 'vendorDetails' && params?.vendorId) {
+        setSelectedVendorId(params.vendorId as string);
+      }
+      if (route === 'liveTracking' && params) {
+        setTrackingParams(params);
+      }
+      setActiveTab(route);
+    },
+    [],
+  );
 
-  const handleOnboardingFinish = useCallback((role: UserRole): void => {
-    appStorage.set(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING, true);
-    appStorage.set(STORAGE_KEYS.USER_ROLE, role);
-    setUserRole(role);
-    setShowOnboarding(false);
-    const dest = role === UserRole.Customer ? 'home' : 'dashboard';
-    setActiveTab(dest);
-    setTimeout(() => setShowPhoneModal(true), 500);
-  }, []);
+  const handleOnboardingFinish = useCallback(
+    async (role: UserRole): Promise<void> => {
+      await persistCriticalKey(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING, true);
+      await persistCriticalKey(STORAGE_KEYS.USER_ROLE, role);
+      setUserRole(role);
+      setShowOnboarding(false);
+      const dest = role === UserRole.Customer ? 'home' : 'dashboard';
+      setActiveTab(dest);
+      setTimeout(() => setShowPhoneModal(true), 500);
+    },
+    [],
+  );
 
-  const handleLogout = useCallback((): void => {
+  const handleLogout = useCallback(async (): Promise<void> => {
     setUserRole(null);
     setUserId(null);
-    appStorage.delete(STORAGE_KEYS.USER_ROLE);
+    await removeCriticalKey(STORAGE_KEYS.USER_ROLE);
     setActiveTab('home');
     setShowPhoneModal(true);
   }, []);
@@ -144,10 +160,13 @@ export const useAppNavigator = () => {
     [pendingAuthCallback],
   );
 
-  const handleSearch = useCallback((query: string): void => {
-    setSearchValue(query);
-    setSearchTerm(query);
-  }, [setSearchTerm]);
+  const handleSearch = useCallback(
+    (query: string): void => {
+      setSearchValue(query);
+      setSearchTerm(query);
+    },
+    [setSearchTerm],
+  );
 
   const tabs = userRole === UserRole.Provider ? VENDOR_TABS : CUSTOMER_TABS;
   const showTopBar = !HIDDEN_TOPBAR_ROUTES.includes(activeTab);

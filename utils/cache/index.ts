@@ -12,3 +12,4 @@ export * from './instances/BaseStorage';
 export * from './instances/InMemoryStorage';
 export * from './instances/MMKVStorage';
 export * from './hooks/useStorage';
+export * from './asyncStorageBackup';
