@@ -5,6 +5,8 @@ import {
   getToken,
   onMessage,
   AuthorizationStatus,
+  setBackgroundMessageHandler,
+  FirebaseMessagingTypes,
 } from '@react-native-firebase/messaging';
 import { Platform, PermissionsAndroid } from 'react-native';
 import { Subject } from 'rxjs';
@@ -82,5 +84,21 @@ export const listenToForegroundNotifications = () => {
   } catch (error) {
     console.error('[FCM] Failed to register foreground listener:', error);
     return () => {};
+  }
+};
+
+export const registerBackgroundNotificationHandler = () => {
+  try {
+    const app = getApp();
+    const messaging = getMessaging(app);
+    setBackgroundMessageHandler(messaging, async (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
+      if (__DEV__) {
+        console.log('[FCM] Background message received:', remoteMessage);
+      }
+    });
+  } catch (error) {
+    if (__DEV__) {
+      console.warn('[FCM] Background handler registration skipped:', error);
+    }
   }
 };
