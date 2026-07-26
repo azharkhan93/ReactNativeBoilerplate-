@@ -10,6 +10,7 @@ import { AnimatedSplashScreen } from '@/components/shared/AnimatedSplashScreen';
 import { listenToForegroundNotifications } from '@/utils/notificationService';
 import { NotificationBanner } from '@/components/NotificationBanner';
 import {
+  appStorage,
   STORAGE_KEYS,
   hydrateStorageFromAsyncStorage,
   persistCriticalKey,
@@ -28,6 +29,11 @@ export default function App() {
           hydrateStorageFromAsyncStorage(),
           initApolloCachePersistence(),
         ]);
+
+        const hasSeenSplash = appStorage.getBoolean(STORAGE_KEYS.HAS_SEEN_SPLASH) ?? false;
+        if (hasSeenSplash && isMounted) {
+          setSplashFinished(true);
+        }
       } catch (error) {
         if (__DEV__) {
           console.warn('[App] App initialization error:', error);
