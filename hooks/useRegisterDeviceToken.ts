@@ -41,11 +41,7 @@ export const useRegisterDeviceToken = (): UseRegisterDeviceTokenResult => {
         }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       } catch (err) {
-        if (__DEV__) {
-          console.warn(
-            '[FCM] Device token registration skipped (User unauthenticated or session expired)',
-          );
-        }
+        // Silently skip token registration when unauthenticated or session is pending
       }
     },
     [registerDeviceToken],
