@@ -11,7 +11,7 @@ import { createClient } from 'graphql-ws';
 import { persistCache } from 'apollo3-cache-persist';
 import { GRAPHQL_API_URL } from './api';
 import { getAuthToken } from './store/authStore';
-import { MMKVApolloAdapter } from './cache/globalStorage';
+import { MMKVApolloAdapter } from './cache';
 
 const GRAPHQL_WS_URL = GRAPHQL_API_URL.replace(/^http/, 'ws');
 
@@ -62,8 +62,8 @@ export const initApolloCachePersistence = async (): Promise<void> => {
     await persistCache({
       cache,
       storage: MMKVApolloAdapter,
-      maxSize: 3 * 1024 * 1024, // 3MB threshold cap
-      debounce: 1000,            // 1s write debouncing
+      maxSize: 3 * 1024 * 1024, 
+      debounce: 1000,           
     });
   } catch (error) {
     if (__DEV__) {
@@ -75,5 +75,13 @@ export const initApolloCachePersistence = async (): Promise<void> => {
 export const apolloClient = new ApolloClient({
   link: splitLink,
   cache,
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'cache-first',
+    },
+    query: {
+      fetchPolicy: 'cache-first',
+    },
+  },
 });
 

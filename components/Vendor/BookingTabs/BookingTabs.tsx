@@ -31,7 +31,6 @@ export const BookingTabs: React.FC = () => {
     const { data: bookingsData, loading } = useQuery(GET_VENDOR_BOOKINGS, {
         variables: { vendorProfileId: vendorProfileId ?? '' },
         skip: !vendorProfileId,
-        fetchPolicy: 'cache-and-network',
     });
 
     const allBookings = useMemo(() => {

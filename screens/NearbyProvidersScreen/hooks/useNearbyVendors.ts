@@ -5,9 +5,7 @@ import { useFragment } from '@/__generated__/fragment-masking';
 import { Provider } from '@/data/mockProviders';
 
 export const useNearbyVendors = (searchQuery: string) => {
-  const { data, loading, refetch } = useQuery(GET_VENDOR_PROFILES, {
-    fetchPolicy: 'cache-and-network',
-  });
+  const { data, loading, refetch } = useQuery(GET_VENDOR_PROFILES);
 
   const rawVendors = data?.getVendorProfiles ?? [];
   const vendorProfiles = useFragment(VENDOR_PROFILE_FIELDS, rawVendors);

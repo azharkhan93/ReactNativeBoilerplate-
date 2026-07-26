@@ -10,7 +10,6 @@ import {
 export const useRecentlyAdded = () => {
   const { data, loading, error, refetch } =
     useQuery<GetVendorProfilesQuery>(GET_VENDOR_PROFILES, {
-      fetchPolicy: 'cache-and-network',
       errorPolicy: 'all',
     });
 

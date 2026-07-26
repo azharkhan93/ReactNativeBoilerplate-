@@ -25,7 +25,6 @@ export const useCustomerBookings = () => {
   const { data, loading, refetch } = useQuery(GET_CUSTOMER_BOOKINGS, {
     variables: { userId: userId ?? '' },
     skip: !userId,
-    fetchPolicy: 'cache-and-network',
   });
 
   const formattedBookings: Booking[] = useMemo(() => {

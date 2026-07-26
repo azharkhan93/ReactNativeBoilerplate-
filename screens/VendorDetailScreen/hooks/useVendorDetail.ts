@@ -48,7 +48,6 @@ export const useVendorDetail = (vendorId: string | null) => {
   const { data, loading, error, refetch } = useQuery<GetVendorProfileByIdQuery>(GET_VENDOR_PROFILE_BY_ID, {
     variables: { id: vendorId ?? '' },
     skip: !vendorId || isTest,
-    fetchPolicy: 'cache-and-network',
   });
 
   // Unmask single vendor profile fields safely

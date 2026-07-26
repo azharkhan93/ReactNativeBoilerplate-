@@ -4,9 +4,7 @@ import { GET_VENDOR_PROFILES, VENDOR_PROFILE_FIELDS } from '@/components/Vendor/
 import { useFragment } from '@/__generated__/fragment-masking';
 
 export const useHome = (searchQuery?: string) => {
-  const { data, loading, error } = useQuery(GET_VENDOR_PROFILES, {
-    fetchPolicy: 'cache-and-network',
-  });
+  const { data, loading, error } = useQuery(GET_VENDOR_PROFILES);
 
   const rawVendors = data?.getVendorProfiles ?? [];
   const vendorProfiles = useFragment(VENDOR_PROFILE_FIELDS, rawVendors);

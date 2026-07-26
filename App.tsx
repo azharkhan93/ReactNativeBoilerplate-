@@ -12,15 +12,32 @@ import { NotificationBanner } from '@/components/NotificationBanner';
 
 export default function App() {
   const [splashFinished, setSplashFinished] = useState(false);
+  const [isCacheRestored, setIsCacheRestored] = useState(false);
 
   useEffect(() => {
-    
-    initApolloCachePersistence();
+    let isMounted = true;
+
+    const prepareApp = async (): Promise<void> => {
+      try {
+        await initApolloCachePersistence();
+      } catch (error) {
+        if (__DEV__) {
+          console.warn('[App] Cache persistence initialization error:', error);
+        }
+      } finally {
+        if (isMounted) {
+          setIsCacheRestored(true);
+        }
+      }
+    };
+
+    prepareApp();
 
     // Subscribe to foreground messaging listener
     const unsubscribe = listenToForegroundNotifications();
 
     return () => {
+      isMounted = false;
       if (unsubscribe) unsubscribe();
     };
   }, []);
@@ -30,7 +47,7 @@ export default function App() {
       <SafeAreaProvider>
         <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
         <KeyboardDismissView>
-          {!splashFinished ? (
+          {!splashFinished || !isCacheRestored ? (
             <AnimatedSplashScreen onFinish={() => setSplashFinished(true)} />
           ) : (
             <AppNavigator />
