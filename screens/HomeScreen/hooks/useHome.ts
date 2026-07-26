@@ -11,6 +11,18 @@ export interface UseHomeOptions {
   onNavigate?: NavigationCallback;
 }
 
+export interface ServiceProductItem {
+  id: string;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  discount?: number;
+  rating?: number;
+  isFavorite?: boolean;
+  category?: string;
+  imageUrl?: string;
+}
+
 export const useHome = ({ searchQuery, activeFilters, onNavigate }: UseHomeOptions = {}) => {
   const { data, loading, error } = useQuery(GET_VENDOR_PROFILES);
 
@@ -20,13 +32,13 @@ export const useHome = ({ searchQuery, activeFilters, onNavigate }: UseHomeOptio
   const { featuredServices, nearbyServices, recommendedServices } = useMemo(() => {
     if (!vendorProfiles || vendorProfiles.length === 0) {
       return {
-        featuredServices: [],
-        nearbyServices: [],
-        recommendedServices: [],
+        featuredServices: [] as ServiceProductItem[],
+        nearbyServices: [] as ServiceProductItem[],
+        recommendedServices: [] as ServiceProductItem[],
       };
     }
 
-    const liveNearby = vendorProfiles.map((v, idx) => ({
+    const liveNearby: ServiceProductItem[] = vendorProfiles.map((v, idx) => ({
       id: v.id,
       name: v.businessName || 'Car Detailing Provider',
       price: 30 + idx * 10,
@@ -36,7 +48,7 @@ export const useHome = ({ searchQuery, activeFilters, onNavigate }: UseHomeOptio
       imageUrl: v.imageUri || 'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f',
     }));
 
-    const liveFeatured = vendorProfiles.map((v, idx) => ({
+    const liveFeatured: ServiceProductItem[] = vendorProfiles.map((v, idx) => ({
       id: v.id,
       name: v.businessName || 'Special Wash Package',
       price: 25 + idx * 5,
@@ -47,7 +59,7 @@ export const useHome = ({ searchQuery, activeFilters, onNavigate }: UseHomeOptio
       imageUrl: v.imageUri || 'https://images.unsplash.com/photo-1605610816744-13c4752fea01',
     }));
 
-    const liveRecommended = vendorProfiles.slice(0, 3).map((v, idx) => ({
+    const liveRecommended: ServiceProductItem[] = vendorProfiles.slice(0, 3).map((v, idx) => ({
       id: v.id,
       name: v.businessName || 'Premium Detailing',
       price: 45 + idx * 15,
@@ -69,7 +81,7 @@ export const useHome = ({ searchQuery, activeFilters, onNavigate }: UseHomeOptio
       return { featuredServices, nearbyServices, recommendedServices };
     }
     const q = searchQuery.toLowerCase();
-    const filterFn = (items: typeof featuredServices) =>
+    const filterFn = (items: ServiceProductItem[]) =>
       items.filter(
         item =>
           item.name.toLowerCase().includes(q) ||

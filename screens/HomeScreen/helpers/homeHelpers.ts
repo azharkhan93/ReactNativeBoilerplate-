@@ -13,7 +13,6 @@ export interface BaseServiceItem {
   rating?: number;
   category?: string;
   imageUrl?: string;
-  [key: string]: unknown;
 }
 
 export const getFeaturedServices = () => {

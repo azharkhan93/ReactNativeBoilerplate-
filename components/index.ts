@@ -16,3 +16,4 @@ export * from './Vendor/VendorAccountDetails';
 export * from './Vendor/Availability';
 export * from './Verification';
 export * from './FilterModal';
+export * from './ServiceCategories';
