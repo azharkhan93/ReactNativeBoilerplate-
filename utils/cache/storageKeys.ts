@@ -13,6 +13,7 @@ export const STORAGE_KEYS = {
   LAST_LOCATION: 'last_known_location',
   NOTIFICATION_SETTINGS: 'notification_settings',
   HAS_COMPLETED_ONBOARDING: 'has_completed_onboarding',
+  HAS_SEEN_SPLASH: 'has_seen_splash',
   USER_ROLE: 'user_role',
 } as const;
 

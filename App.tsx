@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ApolloProvider } from '@apollo/client/react';
@@ -9,10 +9,15 @@ import { KeyboardDismissView } from '@/components/theme';
 import { AnimatedSplashScreen } from '@/components/shared/AnimatedSplashScreen';
 import { listenToForegroundNotifications } from '@/utils/notificationService';
 import { NotificationBanner } from '@/components/NotificationBanner';
+import { appStorage, STORAGE_KEYS } from '@/utils/cache';
 
 export default function App() {
-  const [splashFinished, setSplashFinished] = useState(false);
-  const [isCacheRestored, setIsCacheRestored] = useState(false);
+  const [hasSeenSplash] = useState<boolean>(() => {
+    return appStorage.getBoolean(STORAGE_KEYS.HAS_SEEN_SPLASH) ?? false;
+  });
+
+  const [splashFinished, setSplashFinished] = useState<boolean>(hasSeenSplash);
+  const [isCacheRestored, setIsCacheRestored] = useState<boolean>(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -33,7 +38,6 @@ export default function App() {
 
     prepareApp();
 
-    // Subscribe to foreground messaging listener
     const unsubscribe = listenToForegroundNotifications();
 
     return () => {
@@ -42,13 +46,22 @@ export default function App() {
     };
   }, []);
 
+  const handleSplashFinish = useCallback(() => {
+    appStorage.set(STORAGE_KEYS.HAS_SEEN_SPLASH, true);
+    setSplashFinished(true);
+  }, []);
+
   return (
     <ApolloProvider client={apolloClient}>
       <SafeAreaProvider>
-        <StatusBar translucent backgroundColor="transparent" barStyle="dark-content" />
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle="dark-content"
+        />
         <KeyboardDismissView>
           {!splashFinished || !isCacheRestored ? (
-            <AnimatedSplashScreen onFinish={() => setSplashFinished(true)} />
+            <AnimatedSplashScreen onFinish={handleSplashFinish} />
           ) : (
             <AppNavigator />
           )}
@@ -58,4 +71,3 @@ export default function App() {
     </ApolloProvider>
   );
 }
-
