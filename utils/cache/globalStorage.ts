@@ -54,7 +54,7 @@ export const MMKVApolloAdapter: IApolloStorageAdapter = {
 
   setItem: (key: string, value: string): Promise<void> => {
     return new Promise(resolve => {
-      // Prevents Main-Thread Blocking during heavy UI touch/animations
+      
       InteractionManager.runAfterInteractions(() => {
         try {
           apolloStorage.set(key, value);
