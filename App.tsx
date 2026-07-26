@@ -3,7 +3,7 @@ import { StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ApolloProvider } from '@apollo/client/react';
 
-import { apolloClient } from '@/utils/apolloClient';
+import { apolloClient, initApolloCachePersistence } from '@/utils/apolloClient';
 import { AppNavigator } from '@/navigation/AppNavigator';
 import { KeyboardDismissView } from '@/components/theme';
 import { AnimatedSplashScreen } from '@/components/shared/AnimatedSplashScreen';
@@ -14,6 +14,9 @@ export default function App() {
   const [splashFinished, setSplashFinished] = useState(false);
 
   useEffect(() => {
+    
+    initApolloCachePersistence();
+
     // Subscribe to foreground messaging listener
     const unsubscribe = listenToForegroundNotifications();
 
@@ -38,3 +41,4 @@ export default function App() {
     </ApolloProvider>
   );
 }
+

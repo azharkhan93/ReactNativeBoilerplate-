@@ -8,8 +8,10 @@ import { setContext } from '@apollo/client/link/context';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
+import { persistCache } from 'apollo3-cache-persist';
 import { GRAPHQL_API_URL } from './api';
 import { getAuthToken } from './store/authStore';
+import { MMKVApolloAdapter } from './cache/globalStorage';
 
 const GRAPHQL_WS_URL = GRAPHQL_API_URL.replace(/^http/, 'ws');
 
@@ -53,7 +55,25 @@ const splitLink = split(
   httpLink,
 );
 
+export const cache = new InMemoryCache();
+
+export const initApolloCachePersistence = async (): Promise<void> => {
+  try {
+    await persistCache({
+      cache,
+      storage: MMKVApolloAdapter,
+      maxSize: 3 * 1024 * 1024, // 3MB threshold cap
+      debounce: 1000,            // 1s write debouncing
+    });
+  } catch (error) {
+    if (__DEV__) {
+      console.warn('[ApolloCachePersist] Initialization warning:', error);
+    }
+  }
+};
+
 export const apolloClient = new ApolloClient({
   link: splitLink,
-  cache: new InMemoryCache(),
+  cache,
 });
+
