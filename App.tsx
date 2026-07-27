@@ -5,26 +5,9 @@ import { ApolloProvider } from '@apollo/client/react';
 import { apolloClient } from '@/utils/apolloClient';
 import { AppNavigator } from '@/navigation/AppNavigator';
 import { KeyboardDismissView } from '@/components/theme';
-import { AppSkeletonLoader } from '@/components/shared';
 import { NotificationBanner } from '@/components/NotificationBanner';
-import { useAppInit } from '@/hooks/useAppInit';
 
 export default function App() {
-  const { isAppReady } = useAppInit();
-
-  const renderContent = () => {
-    // Splash screen disabled for testing per user request
-    // if (showSplash) {
-    //   return <AnimatedSplashScreen onFinish={handleSplashFinish} />;
-    // }
-
-    if (!isAppReady) {
-      return <AppSkeletonLoader />;
-    }
-
-    return <AppNavigator />;
-  };
-
   return (
     <ApolloProvider client={apolloClient}>
       <SafeAreaProvider>
@@ -33,7 +16,9 @@ export default function App() {
           backgroundColor="transparent"
           barStyle="dark-content"
         />
-        <KeyboardDismissView>{renderContent()}</KeyboardDismissView>
+        <KeyboardDismissView>
+          <AppNavigator />
+        </KeyboardDismissView>
         <NotificationBanner />
       </SafeAreaProvider>
     </ApolloProvider>
