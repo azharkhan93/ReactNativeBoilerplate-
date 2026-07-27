@@ -14,11 +14,7 @@ export interface UseAppInitResult {
   readonly handleSplashFinish: () => Promise<void>;
 }
 
-/**
- * Synchronously reads MMKV (zero-cost, no async) to determine
- * whether this is a returning user who has already seen the splash screen.
- * MMKV reads are synchronous in-process operations — no I/O involved.
- */
+
 const isReturningUser = (): boolean => {
   try {
     return (
@@ -33,12 +29,7 @@ const isReturningUser = (): boolean => {
 };
 
 export const useAppInit = (): UseAppInitResult => {
-  /**
-   * Evaluate ONCE at module-call time before React renders any frame.
-   * Because MMKV is synchronous, this is safe and zero-latency.
-   * For returning users this will be `true` on Frame 0, so `showSplash`
-   * initialises to `false` and AnimatedSplashScreen NEVER mounts.
-   */
+ 
   const returning = useRef<boolean>(isReturningUser());
 
   const [showSplash, setShowSplash] = useState<boolean>(!returning.current);
@@ -49,13 +40,9 @@ export const useAppInit = (): UseAppInitResult => {
 
     const prepareApp = async (): Promise<void> => {
       try {
-        // Hydrate AsyncStorage → MMKV bridge for keys that were written before
-        // MMKV was the primary store (backward compatibility).
+       
         await hydrateStorageFromAsyncStorage();
 
-        // Re-evaluate after hydration in case AsyncStorage had the flag but
-        // MMKV didn't (first boot after migration). Only flip showSplash to
-        // `false` — never flip it to `true` once it has been `false` already.
         if (!returning.current && isReturningUser() && isMounted) {
           returning.current = true;
           setShowSplash(false);
