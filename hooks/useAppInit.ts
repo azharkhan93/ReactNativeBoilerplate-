@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { initApolloCachePersistence } from '@/utils/apolloClient';
 import { listenToForegroundNotifications } from '@/utils/notificationService';
 import {
@@ -9,31 +9,39 @@ import {
 } from '@/utils/cache';
 
 export interface UseAppInitResult {
-  readonly splashFinished: boolean;
   readonly showSplash: boolean;
   readonly isAppReady: boolean;
   readonly handleSplashFinish: () => Promise<void>;
 }
 
-const checkHasSeenSplashSync = (): boolean => {
+/**
+ * Synchronously reads MMKV (zero-cost, no async) to determine
+ * whether this is a returning user who has already seen the splash screen.
+ * MMKV reads are synchronous in-process operations — no I/O involved.
+ */
+const isReturningUser = (): boolean => {
   try {
-    const hasSeenSplash =
-      appStorage.getBoolean(STORAGE_KEYS.HAS_SEEN_SPLASH) ?? false;
-    const hasCompletedOnboarding =
-      appStorage.getBoolean(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING) ?? false;
-    const hasRole = Boolean(appStorage.getString(STORAGE_KEYS.USER_ROLE));
-    const hasToken = Boolean(appStorage.getString(STORAGE_KEYS.AUTH_TOKEN));
-    return hasSeenSplash || hasCompletedOnboarding || hasRole || hasToken;
+    return (
+      (appStorage.getBoolean(STORAGE_KEYS.HAS_SEEN_SPLASH) === true) ||
+      (appStorage.getBoolean(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING) === true) ||
+      Boolean(appStorage.getString(STORAGE_KEYS.USER_ROLE)) ||
+      Boolean(appStorage.getString(STORAGE_KEYS.AUTH_TOKEN))
+    );
   } catch {
     return false;
   }
 };
 
 export const useAppInit = (): UseAppInitResult => {
-  const initialSyncSeen = checkHasSeenSplashSync();
+  /**
+   * Evaluate ONCE at module-call time before React renders any frame.
+   * Because MMKV is synchronous, this is safe and zero-latency.
+   * For returning users this will be `true` on Frame 0, so `showSplash`
+   * initialises to `false` and AnimatedSplashScreen NEVER mounts.
+   */
+  const returning = useRef<boolean>(isReturningUser());
 
-  const [splashFinished, setSplashFinished] = useState<boolean>(initialSyncSeen);
-  const [showSplash, setShowSplash] = useState<boolean>(!initialSyncSeen);
+  const [showSplash, setShowSplash] = useState<boolean>(!returning.current);
   const [isAppReady, setIsAppReady] = useState<boolean>(false);
 
   useEffect(() => {
@@ -41,20 +49,16 @@ export const useAppInit = (): UseAppInitResult => {
 
     const prepareApp = async (): Promise<void> => {
       try {
+        // Hydrate AsyncStorage → MMKV bridge for keys that were written before
+        // MMKV was the primary store (backward compatibility).
         await hydrateStorageFromAsyncStorage();
 
-        const postHydrateSeen = checkHasSeenSplashSync();
-
-        if (postHydrateSeen) {
-          if (isMounted) {
-            setSplashFinished(true);
-            setShowSplash(false);
-          }
-        } else {
-          if (isMounted) {
-            setShowSplash(true);
-            setSplashFinished(false);
-          }
+        // Re-evaluate after hydration in case AsyncStorage had the flag but
+        // MMKV didn't (first boot after migration). Only flip showSplash to
+        // `false` — never flip it to `true` once it has been `false` already.
+        if (!returning.current && isReturningUser() && isMounted) {
+          returning.current = true;
+          setShowSplash(false);
         }
 
         await initApolloCachePersistence();
@@ -80,13 +84,12 @@ export const useAppInit = (): UseAppInitResult => {
   }, []);
 
   const handleSplashFinish = useCallback(async (): Promise<void> => {
+    returning.current = true;
     await persistCriticalKey(STORAGE_KEYS.HAS_SEEN_SPLASH, true);
-    setSplashFinished(true);
     setShowSplash(false);
   }, []);
 
   return {
-    splashFinished: splashFinished || !showSplash,
     showSplash,
     isAppReady,
     handleSplashFinish,
