@@ -1,117 +1,20 @@
 import React, { useCallback, useState } from 'react';
-import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import { View, ScrollView } from 'react-native';
+import { Building2 } from 'lucide-react-native';
 import { Typography, Button } from '../../theme';
 import { AppSkeletonLoader } from '@/components/shared';
-import { Pencil, Trash2, Building2 } from 'lucide-react-native';
 import {
   useBusinessProfile,
   BusinessProfileFormData,
 } from './hooks/useBusinessProfile';
 import { BusinessProfileForm } from './BusinessProfileForm';
 import {
+  BusinessDetails,
   BusinessExtendedDetails,
   BusinessExtendedDetailsForm,
   WhyChooseMeForm,
 } from './components';
-
-interface BusinessDetailsProps {
-  profile: BusinessProfileFormData;
-  onEditPress: () => void;
-  onDeletePress: () => void;
-  loading: boolean;
-}
-
-interface DetailRowProps {
-  label: string;
-  value: string;
-  isLast?: boolean;
-}
-
-const DetailRow: React.FC<DetailRowProps> = ({ label, value, isLast }) => (
-  <View
-    className={`flex-row items-start justify-between py-3 ${
-      isLast ? '' : 'border-b border-slate-100'
-    }`}
-  >
-    <Typography variant="body-sm" className="text-slate-500 font-body">
-      {label}
-    </Typography>
-    <Typography
-      variant="body-sm"
-      className="text-slate-900 font-body-semibold text-right max-w-[65%] leading-5"
-    >
-      {value || '—'}
-    </Typography>
-  </View>
-);
-
-const BusinessDetails: React.FC<BusinessDetailsProps> = ({
-  profile,
-  onEditPress,
-  onDeletePress,
-  loading,
-}) => (
-  <View className="bg-white border border-blue-200/50 rounded-3xl p-4 mb-5 shadow-sm shadow-slate-100">
-    <View className="flex-row items-center justify-between pb-3 border-b border-slate-100 mb-4">
-      <Typography
-        variant="subheading"
-        className="text-slate-900 font-body-semibold"
-      >
-        Business Details
-      </Typography>
-      <View className="flex-row items-center gap-2">
-        <TouchableOpacity
-          onPress={onEditPress}
-          className="w-8 h-8 bg-slate-50 rounded-full items-center justify-center border border-slate-200"
-          activeOpacity={0.7}
-        >
-          <Pencil size={13} color="#3b82f6" />
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={onDeletePress}
-          disabled={loading}
-          className="w-8 h-8 bg-red-500/10 rounded-full items-center justify-center border border-red-500/10"
-          activeOpacity={0.7}
-        >
-          <Trash2 size={13} color="#ef4444" />
-        </TouchableOpacity>
-      </View>
-    </View>
-
-    <View className="rounded-2xl overflow-hidden border border-slate-100 mb-4 bg-slate-50">
-      {profile.imageUri ? (
-        <Image
-          source={{ uri: profile.imageUri }}
-          className="w-full h-40"
-          resizeMode="cover"
-        />
-      ) : (
-        <View className="w-full h-40 bg-slate-100 items-center justify-center">
-          <Building2 size={32} color="#94a3b8" />
-        </View>
-      )}
-    </View>
-
-    <DetailRow label="Business Name" value={profile.businessName || ''} />
-    <DetailRow label="GST Number" value={profile.gstNumber || ''} />
-    <DetailRow
-      label="Contact Number"
-      value={profile.contactNumber ? `+91 ${profile.contactNumber}` : ''}
-    />
-    <DetailRow label="Business Address" value={profile.address || ''} />
-    <DetailRow label="Service Radius" value={profile.serviceRadius || ''} />
-    <DetailRow
-      label="Operating Hours"
-      value={profile.operatingHours || ''}
-      isLast
-    />
-  </View>
-);
+import { businessProfileStyles } from './styles';
 
 export const BusinessProfile: React.FC = () => {
   const {
@@ -126,28 +29,28 @@ export const BusinessProfile: React.FC = () => {
     handleDeleteProfile,
   } = useBusinessProfile();
 
-  const [isExtendedModalOpen, setIsExtendedModalOpen] = useState(false);
-  const [isWhyChooseMeModalOpen, setIsWhyChooseMeModalOpen] = useState(false);
+  const [isExtendedModalOpen, setIsExtendedModalOpen] = useState<boolean>(false);
+  const [isWhyChooseMeModalOpen, setIsWhyChooseMeModalOpen] = useState<boolean>(false);
 
   const handleOpenExtended = useCallback(
-    () => setIsExtendedModalOpen(true),
+    (): void => setIsExtendedModalOpen(true),
     [],
   );
   const handleCloseExtended = useCallback(
-    () => setIsExtendedModalOpen(false),
+    (): void => setIsExtendedModalOpen(false),
     [],
   );
   const handleOpenWhyChooseMe = useCallback(
-    () => setIsWhyChooseMeModalOpen(true),
+    (): void => setIsWhyChooseMeModalOpen(true),
     [],
   );
   const handleCloseWhyChooseMe = useCallback(
-    () => setIsWhyChooseMeModalOpen(false),
+    (): void => setIsWhyChooseMeModalOpen(false),
     [],
   );
 
   const handleSaveExtended = useCallback(
-    async (updatedData: BusinessProfileFormData) => {
+    async (updatedData: BusinessProfileFormData): Promise<void> => {
       await handleSaveProfile(updatedData);
       setIsExtendedModalOpen(false);
     },
@@ -155,7 +58,7 @@ export const BusinessProfile: React.FC = () => {
   );
 
   const handleSaveWhyChooseMe = useCallback(
-    async (updatedWhyChooseMe: string) => {
+    async (updatedWhyChooseMe: string): Promise<void> => {
       if (profile) {
         await handleSaveProfile({
           ...profile,
@@ -173,12 +76,12 @@ export const BusinessProfile: React.FC = () => {
 
   if (!profile) {
     return (
-      <View className="flex-1">
-        <View className="px-5 py-8 items-center">
+      <View className={businessProfileStyles.emptyRoot}>
+        <View className={businessProfileStyles.emptyContainer}>
           <Building2 size={40} color="#3b82f6" />
           <Typography
             variant="subheading"
-            className="!text-black mt-4 mb-6 text-center"
+            className={businessProfileStyles.emptyTitle}
           >
             Set Up Your Business
           </Typography>
@@ -201,10 +104,10 @@ export const BusinessProfile: React.FC = () => {
   return (
     <>
       <ScrollView
-        className="flex-1 bg-notchLight"
+        className={businessProfileStyles.root}
         showsVerticalScrollIndicator={false}
       >
-        <View className="px-5 pt-4 pb-8">
+        <View className={businessProfileStyles.container}>
           <BusinessDetails
             profile={profile}
             onEditPress={handleOpenEditModal}
