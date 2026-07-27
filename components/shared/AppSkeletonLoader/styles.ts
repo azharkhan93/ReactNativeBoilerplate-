@@ -16,22 +16,21 @@ export const appSkeletonStyles = {
   filterButton:
     'w-12 h-12 rounded-2xl bg-blue-100/80 border border-blue-200/50 animate-pulse',
 
-  content: 'flex-1 px-4 pt-4 gap-6',
+  content: 'flex-1 py-4 gap-6',
 
   heroBanner:
-    'w-full h-44 rounded-3xl bg-blue-100/70 border border-blue-200/50 animate-pulse shadow-sm shadow-blue-100/50',
+    'mx-4 h-44 rounded-3xl bg-blue-100/70 border border-blue-200/50 animate-pulse shadow-sm shadow-blue-100/50',
 
-  section: 'w-full gap-3',
+  section: 'w-full',
 
   sectionTitle: 'w-44 h-5 rounded-full bg-blue-200/60 animate-pulse',
 
-  categoriesRow: 'flex-row items-center justify-between gap-3',
+  categoriesRow: 'flex-row items-center justify-between gap-3 px-4',
   categoryPill:
     'flex-1 h-16 rounded-2xl bg-white border border-blue-100/60 shadow-sm shadow-blue-50 animate-pulse',
 
-  cardRow: 'flex-row gap-3',
   cardItem:
-    'flex-1 rounded-2xl bg-white p-3 border border-blue-100/60 shadow-sm shadow-blue-100/30 gap-3 justify-between',
+    'w-56 h-52 rounded-2xl bg-white p-3 border border-blue-100/60 shadow-sm shadow-blue-100/30 gap-2.5 justify-between',
   cardImage: 'w-full h-28 rounded-xl bg-blue-100/70 animate-pulse',
   cardTitle: 'w-3/4 h-4 rounded-full bg-blue-200/60 animate-pulse',
   cardSub: 'w-1/2 h-3 rounded-full bg-blue-100/60 animate-pulse',

@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { AppSkeletonLoaderProps } from './types';
 import { appSkeletonStyles } from './styles';
 
@@ -12,14 +13,20 @@ const SkeletonCardItem: React.FC = React.memo(() => (
 ));
 
 const SkeletonCardSection: React.FC<{ readonly count?: number }> = React.memo(
-  ({ count = 2 }) => (
+  ({ count = 3 }) => (
     <View className={appSkeletonStyles.section}>
-      <View className={appSkeletonStyles.sectionTitle} />
-      <View className={appSkeletonStyles.cardRow}>
+      <View className="px-4 mb-3">
+        <View className={appSkeletonStyles.sectionTitle} />
+      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{ paddingHorizontal: 16, gap: 12 }}
+      >
         {Array.from({ length: count }).map((_, idx) => (
           <SkeletonCardItem key={idx} />
         ))}
-      </View>
+      </ScrollView>
     </View>
   ),
 );
@@ -52,7 +59,9 @@ export const AppSkeletonLoader: React.FC<AppSkeletonLoaderProps> = React.memo(
             <View className={appSkeletonStyles.heroBanner} />
 
             <View className={appSkeletonStyles.section}>
-              <View className={appSkeletonStyles.sectionTitle} />
+              <View className="px-4 mb-3">
+                <View className={appSkeletonStyles.sectionTitle} />
+              </View>
               <View className={appSkeletonStyles.categoriesRow}>
                 {Array.from({ length: 4 }).map((_, idx) => (
                   <View key={idx} className={appSkeletonStyles.categoryPill} />
