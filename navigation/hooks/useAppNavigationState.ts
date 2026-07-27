@@ -55,7 +55,8 @@ export const useAppNavigationState = (userRole: UserRole | null) => {
 
   const tabs = userRole === UserRole.Provider ? VENDOR_TABS : CUSTOMER_TABS;
   const showTopBar = !HIDDEN_TOPBAR_ROUTES.includes(activeTab);
-  const showTabBar = tabs.some(tab => tab.route === activeTab);
+  const showTabBar =
+    tabs.some(tab => tab.route === activeTab) || activeTab === 'support';
 
   return {
     activeTab,

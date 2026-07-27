@@ -26,7 +26,9 @@ import { useAppNavigator } from './useAppNavigator';
 
 const SCREENS: Record<
   string,
-  ComponentType<{ onNavigate?: (route: string, params?: Record<string, unknown>) => void }>
+  ComponentType<{
+    onNavigate?: (route: string, params?: Record<string, unknown>) => void;
+  }>
 > = {
   dashboard: VendorDashboard,
   analytics: VendorAnalyticsScreen,
@@ -174,16 +176,24 @@ export const AppNavigator: React.FC = () => {
               <TouchableOpacity
                 key={v.id}
                 className="py-2.5 border-b border-slate-100 last:border-0"
-                onPress={() => handleNavigate('vendorDetails', { vendorId: v.id })}
+                onPress={() =>
+                  handleNavigate('vendorDetails', { vendorId: v.id })
+                }
               >
-                <Text className="text-slate-900 font-medium">{v.businessName}</Text>
+                <Text className="text-slate-900 font-medium">
+                  {v.businessName}
+                </Text>
               </TouchableOpacity>
             ))}
           </View>
         )}
 
         {showTabBar ? (
-          <BottomTabNavigator tabs={tabs} activeTab={activeTab} onTabPress={handleNavigate} />
+          <BottomTabNavigator
+            tabs={tabs}
+            activeTab={activeTab}
+            onTabPress={handleNavigate}
+          />
         ) : null}
 
         <FilterModal

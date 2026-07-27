@@ -31,11 +31,16 @@ export const ScreenScrollView: React.FC<ScreenScrollViewProps> = ({
   const tabBarHeight = useContext(TabBarHeightContext);
   const resolvedStyle = StyleSheet.flatten(contentContainerStyle);
   const existingPaddingBottom =
-    typeof resolvedStyle?.paddingBottom === 'number' ? resolvedStyle.paddingBottom : 0;
+    typeof resolvedStyle?.paddingBottom === 'number'
+      ? resolvedStyle.paddingBottom
+      : 0;
 
   const mergedContentStyle = StyleSheet.flatten([
     resolvedStyle,
-    { paddingBottom: Math.max(existingPaddingBottom, tabBarHeight) + extraBottomPadding },
+    {
+      paddingBottom:
+        Math.max(existingPaddingBottom, tabBarHeight) + extraBottomPadding,
+    },
   ]);
 
   return (

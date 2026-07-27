@@ -24,7 +24,7 @@ export const useAppLocation = () => {
     setStoredLocation(location);
   }, []);
 
-  // Auto-refresh location on launch if permission is already granted
+  
   useEffect(() => {
     let isMounted = true;
 

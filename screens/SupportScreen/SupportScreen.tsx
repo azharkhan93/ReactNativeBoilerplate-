@@ -5,41 +5,41 @@ import { SupportHome, SupportChatView } from '@/components/theme';
 import { useSupportChat } from '@/hooks/useSupportChat';
 
 export interface SupportScreenProps {
-    onNavigate?: (screen: string, params?: Record<string, unknown>) => void;
+  onNavigate?: (screen: string, params?: Record<string, unknown>) => void;
 }
 
 export const SupportScreen: React.FC<SupportScreenProps> = ({ onNavigate }) => {
-    const insets = useSafeAreaInsets();
-    const { messages, isTyping, sendMessage } = useSupportChat();
+  const insets = useSafeAreaInsets();
+  const { messages, isTyping, sendMessage } = useSupportChat();
 
-    const [showChat, setShowChat] = useState(false);
-    const [search, setSearch] = useState('');
-    const flatListRef = useRef<FlatList>(null!);
+  const [showChat, setShowChat] = useState(false);
+  const [search, setSearch] = useState('');
+  const flatListRef = useRef<FlatList>(null!);
 
-    useEffect(() => {
-        if (showChat) flatListRef.current?.scrollToEnd({ animated: true });
-    }, [messages, showChat]);
+  useEffect(() => {
+    if (showChat) flatListRef.current?.scrollToEnd({ animated: true });
+  }, [messages, showChat]);
 
-    return (
-        <View className="flex-1 bg-[#F1F6FD]" style={{ paddingTop: insets.top }}>
-            {!showChat ? (
-                <SupportHome
-                    search={search}
-                    onSearchChange={setSearch}
-                    onStartChat={() => setShowChat(true)}
-                    onNavigate={onNavigate}
-                    onReportIssue={() => onNavigate?.('serviceDispute')}
-                />
-            ) : (
-                <SupportChatView
-                    messages={messages}
-                    isTyping={isTyping}
-                    onSend={sendMessage}
-                    onBack={() => setShowChat(false)}
-                    flatListRef={flatListRef}
-                    bottomInset={insets.bottom}
-                />
-            )}
-        </View>
-    );
+  return (
+    <View className="flex-1 bg-[#F1F6FD]" style={{ paddingTop: insets.top }}>
+      {!showChat ? (
+        <SupportHome
+          search={search}
+          onSearchChange={setSearch}
+          onStartChat={() => setShowChat(true)}
+          onNavigate={onNavigate}
+          onReportIssue={() => onNavigate?.('serviceDispute')}
+        />
+      ) : (
+        <SupportChatView
+          messages={messages}
+          isTyping={isTyping}
+          onSend={sendMessage}
+          onBack={() => setShowChat(false)}
+          flatListRef={flatListRef}
+          bottomInset={insets.bottom}
+        />
+      )}
+    </View>
+  );
 };

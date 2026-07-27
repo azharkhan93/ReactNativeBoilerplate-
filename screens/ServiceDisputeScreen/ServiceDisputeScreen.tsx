@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View } from 'react-native';
 import { useMutation } from '@apollo/client/react';
 import { ServiceDispute } from '../../components/Customer/ServiceDispute';
 import { CREATE_DISPUTE } from '@/components/Customer/bookingQueries';
@@ -40,13 +40,13 @@ export const ServiceDisputeScreen: React.FC<ServiceDisputeScreenProps> = ({
   );
 
   return (
-    <SafeAreaView className="flex-1 bg-[#F1F6FD]" edges={['top', 'bottom']}>
+    <View className="flex-1 bg-[#F1F6FD]">
       <ServiceDispute
         bookingId={bookingId}
         providerName={providerName}
         onCancel={() => onNavigate?.('support')}
         onSubmit={handleSubmit}
       />
-    </SafeAreaView>
+    </View>
   );
 };
