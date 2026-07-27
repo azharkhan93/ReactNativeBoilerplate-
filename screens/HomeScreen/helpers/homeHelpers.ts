@@ -28,9 +28,7 @@ export const getFeaturedServices = () => {
   }));
 };
 
-/**
- * Maps MOCK_SERVICES to the format expected by the BestSellers (Nearby Providers) component.
- */
+
 export const getNearbyServices = () => {
   return MOCK_SERVICES.map(s => ({
     id: s.id,
@@ -43,9 +41,7 @@ export const getNearbyServices = () => {
   }));
 };
 
-/**
- * Maps a subset of MOCK_SERVICES to the format expected by the NewArrivals (Recommendations) component.
- */
+
 export const getRecommendedServices = () => {
   return MOCK_SERVICES.slice(0, 2).map(s => ({
     id: s.id,
@@ -58,9 +54,7 @@ export const getRecommendedServices = () => {
   }));
 };
 
-/**
- * Helper to filter and sort services based on category, price range, and sorting.
- */
+
 export const filterAndSortServices = <T extends BaseServiceItem>(
   services: readonly T[],
   activeFilters: FilterValues | null | undefined,
@@ -68,7 +62,7 @@ export const filterAndSortServices = <T extends BaseServiceItem>(
   if (!activeFilters) return [...services];
   let list = [...services];
 
-  // Category Filter
+ 
   if (activeFilters.categoryId) {
     const cat = SERVICE_CATEGORIES.find(c => c.id === activeFilters.categoryId);
     if (cat) {
