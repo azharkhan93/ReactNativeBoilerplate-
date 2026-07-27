@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SlidersHorizontal, Navigation } from 'lucide-react-native';
 import {
@@ -9,6 +9,7 @@ import {
   ProviderList,
   ProviderMap,
 } from '@/components/theme';
+import { AppSkeletonLoader } from '@/components/shared';
 import { useNearbyVendors } from './hooks/useNearbyVendors';
 
 export interface NearbyProvidersScreenProps {
@@ -85,9 +86,7 @@ export const NearbyProvidersScreen: React.FC<NearbyProvidersScreenProps> = ({ on
 
         <View className="flex-1">
           {loading ? (
-            <View className="py-10 items-center justify-center">
-              <ActivityIndicator size="large" color="#0284c7" />
-            </View>
+            <AppSkeletonLoader />
           ) : (
             <ProviderList
               providers={providers}

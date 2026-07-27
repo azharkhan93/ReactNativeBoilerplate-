@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { Typography, Button } from '../../theme';
+import { AppSkeletonLoader } from '@/components/shared';
 import { Landmark, Pencil, Trash2, ShieldCheck, Cpu } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBankAccountDetails, BankFormData } from './hooks/useBankAccountDetails';
@@ -80,12 +81,7 @@ export const BankAccountDetails: React.FC = () => {
   } = useBankAccountDetails();
 
   if (loading && !profile) {
-    return (
-      <View className="flex-1 items-center justify-center bg-notchLight p-10 min-h-[300px]">
-        <ActivityIndicator size="large" color="#3b82f6" />
-        <Typography className="text-slate-400 mt-4 font-body">Loading Bank Details...</Typography>
-      </View>
-    );
+    return <AppSkeletonLoader />;
   }
 
   return (

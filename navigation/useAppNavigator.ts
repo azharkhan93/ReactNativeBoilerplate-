@@ -188,6 +188,7 @@ export const useAppNavigator = () => {
   const handleOnboardingFinish = useCallback(
     async (role: UserRole): Promise<void> => {
       await persistCriticalKey(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING, true);
+      await persistCriticalKey(STORAGE_KEYS.HAS_SEEN_SPLASH, true);
       await persistCriticalKey(STORAGE_KEYS.USER_ROLE, role);
       setUserRole(role);
       setShowOnboarding(false);

@@ -3,9 +3,9 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
 } from 'react-native';
 import { Typography, Button } from '../../theme';
+import { AppSkeletonLoader } from '@/components/shared';
 import { Plus, Trash2, Clock, MapPin, IndianRupee } from 'lucide-react-native';
 import { ServiceManagement } from '../ServiceManagement';
 import { useManageServices } from './hooks/useManageServices';
@@ -25,14 +25,7 @@ export const ManageServices: React.FC = () => {
   } = useManageServices();
 
   if (loading && services.length === 0) {
-    return (
-      <View className="flex-1 items-center justify-center bg-notchLight p-10 min-h-[300px]">
-        <ActivityIndicator size="large" color="#3b82f6" />
-        <Typography className="text-slate-400 mt-4 font-body">
-          Loading Services...
-        </Typography>
-      </View>
-    );
+    return <AppSkeletonLoader />;
   }
 
   return (

@@ -16,7 +16,11 @@ export interface UseAppInitResult {
 
 export const useAppInit = (): UseAppInitResult => {
   const [splashFinished, setSplashFinished] = useState<boolean>(() => {
-    return appStorage.getBoolean(STORAGE_KEYS.HAS_SEEN_SPLASH) ?? false;
+    const hasSeenSplash =
+      appStorage.getBoolean(STORAGE_KEYS.HAS_SEEN_SPLASH) ?? false;
+    const hasCompletedOnboarding =
+      appStorage.getBoolean(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING) ?? false;
+    return hasSeenSplash || hasCompletedOnboarding;
   });
   const [isAppReady, setIsAppReady] = useState<boolean>(false);
 
@@ -25,10 +29,20 @@ export const useAppInit = (): UseAppInitResult => {
 
     const prepareApp = async (): Promise<void> => {
       try {
-        await Promise.all([
-          hydrateStorageFromAsyncStorage(),
-          initApolloCachePersistence(),
-        ]);
+        await hydrateStorageFromAsyncStorage();
+
+        // Re-check splash status post-hydration
+        const hasSeenSplash =
+          appStorage.getBoolean(STORAGE_KEYS.HAS_SEEN_SPLASH) ?? false;
+        const hasCompletedOnboarding =
+          appStorage.getBoolean(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING) ?? false;
+
+        if ((hasSeenSplash || hasCompletedOnboarding) && isMounted) {
+          setSplashFinished(true);
+        }
+
+        // Hydrate Apollo Cache persistence from MMKV BEFORE app navigator mounts
+        await initApolloCachePersistence();
       } catch (error) {
         if (__DEV__) {
           console.warn('[useAppInit] App initialization error:', error);

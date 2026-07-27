@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { useCustomerProfile } from './hooks/useCustomerProfile';
 import { CustomerProfileDetails } from '../CustomerProfileDetails';
 import { CustomerProfileForm } from './CustomerProfileForm';
-import { View, ActivityIndicator } from 'react-native';
+import { AppSkeletonLoader } from '@/components/shared';
 
 interface CustomerProfileModalContentProps {
   onClose: () => void;
@@ -35,11 +35,7 @@ export const CustomerProfileModalContent: React.FC<CustomerProfileModalContentPr
 
   // If loading the initial profile fetch, show loading indicator
   if (loading && !profile.name && !isEditing) {
-    return (
-      <View className="flex-1 items-center justify-center p-12 bg-notch">
-        <ActivityIndicator size="large" color="#3b82f6" />
-      </View>
-    );
+    return <AppSkeletonLoader />;
   }
 
   // Determine which screen component to render

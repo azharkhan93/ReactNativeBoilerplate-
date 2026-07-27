@@ -7,6 +7,7 @@ import {
   RecentlyAdded,
   ScreenScrollView,
 } from '@/components';
+import { AppSkeletonLoader } from '@/components/shared';
 import { UserRole } from '../../__generated__/graphql';
 import { useHome } from './hooks/useHome';
 import { FilterValues } from './helpers/homeHelpers';
@@ -28,12 +29,22 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   searchQuery,
 }) => {
   const {
+    loading,
     featuredServices,
     nearbyServices,
     recommendedServices,
     handleViewAllProviders,
     handleVendorPress,
   } = useHome({ searchQuery, activeFilters, onNavigate });
+
+  const hasData =
+    featuredServices.length > 0 ||
+    nearbyServices.length > 0 ||
+    recommendedServices.length > 0;
+
+  if (loading && !hasData) {
+    return <AppSkeletonLoader />;
+  }
 
   return (
     <View className={homeStyles.container}>

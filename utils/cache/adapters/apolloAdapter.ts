@@ -2,11 +2,7 @@ import { apolloStorage } from '../storage';
 import { StorageLogger } from '../logger';
 import { StorageAdapter } from '../types';
 
-/**
- * Apollo Cache Persistence Storage Adapter
- * Designed specifically for compatibility with `apollo3-cache-persist` and MMKV.
- * Synchronous MMKV calls ensure cache writes execute immediately without being deferred or lost.
- */
+
 export const MMKVApolloAdapter: StorageAdapter = {
   getItem: async (key: string): Promise<string | null> => {
     try {

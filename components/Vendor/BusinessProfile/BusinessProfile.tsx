@@ -4,9 +4,9 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  ActivityIndicator,
 } from 'react-native';
 import { Typography, Button } from '../../theme';
+import { AppSkeletonLoader } from '@/components/shared';
 import { Pencil, Trash2, Building2 } from 'lucide-react-native';
 import {
   useBusinessProfile,
@@ -168,14 +168,7 @@ export const BusinessProfile: React.FC = () => {
   );
 
   if (loading && !profile) {
-    return (
-      <View className="flex-1 items-center justify-center bg-notchLight p-10 min-h-[300px]">
-        <ActivityIndicator size="large" color="#3b82f6" />
-        <Typography className="text-slate-400 mt-4 font-body">
-          Loading Business Profile...
-        </Typography>
-      </View>
-    );
+    return <AppSkeletonLoader />;
   }
 
   if (!profile) {

@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react';
-import { View, ScrollView, ActivityIndicator, Dimensions } from 'react-native';
+import { View, ScrollView, Dimensions } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ShieldAlert, Car, Shield } from 'lucide-react-native';
 import { Typography } from '@/components/theme/Typography';
 import { Button } from '@/components/theme/Button';
-import { VENDOR_DETAIL_DEFAULT_IMAGE, VENDOR_DETAIL_STATS } from '@/utils/constants';
+import { AppSkeletonLoader } from '@/components/shared';
 import { useVendorDetail } from './hooks/useVendorDetail';
 import { useCarousel } from './hooks/useCarousel';
 
@@ -16,6 +16,7 @@ import { VendorContact } from './components/VendorContact';
 import { VendorBookingBar } from './components/VendorBookingBar';
 import { getUserId } from '@/utils/store/authStore';
 import { PaymentModal } from '@/components/Customer';
+import { VENDOR_DETAIL_DEFAULT_IMAGE, VENDOR_DETAIL_STATS } from '@/utils/constants';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -86,14 +87,7 @@ export const VendorDetailScreen: React.FC<VendorDetailScreenProps> = ({
   const isSelectionComplete = !!(selectedCategory && selectedWashType && selectedLocation && selectedDate);
 
   if (loading) {
-    return (
-      <View className="flex-1 bg-notchLight items-center justify-center">
-        <ActivityIndicator size="large" color="#3b82f6" />
-        <Typography variant="body" className="text-slate-600 mt-4 font-body-semibold">
-          Fetching expert details...
-        </Typography>
-      </View>
-    );
+    return <AppSkeletonLoader />;
   }
 
   if (error || !vendor) {

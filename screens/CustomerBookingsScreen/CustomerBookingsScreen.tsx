@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Typography, BookingCard, ScreenScrollView } from '@/components/theme';
+import { AppSkeletonLoader } from '@/components/shared';
 import { useCustomerBookings, BookingTab } from './hooks/useCustomerBookings';
 
 export interface CustomerBookingsScreenProps {
@@ -70,9 +71,7 @@ export const CustomerBookingsScreen: React.FC<CustomerBookingsScreenProps> = ({
 
       <ScreenScrollView className="flex-1 px-5">
         {loading ? (
-          <View className="py-10 items-center justify-center">
-            <ActivityIndicator size="large" color="#0284c7" />
-          </View>
+          <AppSkeletonLoader />
         ) : bookings.length > 0 ? (
           bookings.map(b => (
             <BookingCard

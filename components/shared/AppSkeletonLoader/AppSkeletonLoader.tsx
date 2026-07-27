@@ -23,7 +23,7 @@ export const AppSkeletonLoader: React.FC<AppSkeletonLoaderProps> = () => (
       </View>
     </View>
 
-    {/* Body Content Skeleton */}
+   
     <View className={appSkeletonStyles.content}>
       <View className={appSkeletonStyles.heroBanner} />
 

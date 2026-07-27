@@ -5,12 +5,12 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
-  ActivityIndicator,
   ListRenderItemInfo,
 } from 'react-native';
 import { Star, MapPin, Eye } from 'lucide-react-native';
 import { Typography } from '../../theme/Typography';
 import { SectionHeader } from '../../theme/SectionHeader';
+import { AppSkeletonLoader } from '@/components/shared';
 import { useRecentlyAdded } from './hooks/useRecentlyAdded';
 
 export interface RecentlyAddedProps {
@@ -152,12 +152,8 @@ export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
     [onVendorPress],
   );
 
-  if (loading) {
-    return (
-      <View className="px-4 py-8 items-center justify-center">
-        <ActivityIndicator size="small" color="#3b82f6" />
-      </View>
-    );
+  if (loading && vendors.length === 0) {
+    return <AppSkeletonLoader />;
   }
 
   return (

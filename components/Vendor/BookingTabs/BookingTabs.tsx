@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
+import { AppSkeletonLoader } from '@/components/shared';
 import { useQuery } from '@apollo/client/react';
 import { BOOKING_STATUS } from '@/utils/constants';
 import { TABS } from './constants';
@@ -69,9 +70,7 @@ export const BookingTabs: React.FC = () => {
             </View>
 
             {loading ? (
-                <View className="py-10 items-center justify-center">
-                    <ActivityIndicator size="large" color="#0284c7" />
-                </View>
+                <AppSkeletonLoader />
             ) : (
                 <BookingList
                     bookings={bookings}
