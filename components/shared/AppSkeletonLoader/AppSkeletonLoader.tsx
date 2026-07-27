@@ -18,13 +18,13 @@ const SkeletonCardItem: React.FC = React.memo(() => (
 const SkeletonCardSection: React.FC<{ readonly count?: number }> = React.memo(
   ({ count = 3 }) => (
     <View className={appSkeletonStyles.section}>
-      <View className="px-4 mb-3">
+      <View className="px-5 mb-3">
         <View className={appSkeletonStyles.sectionTitle} />
       </View>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 16, gap: 12 }}
+        contentContainerStyle={{ paddingHorizontal: 20, gap: 12 }}
       >
         {Array.from({ length: count }).map((_, idx) => (
           <SkeletonCardItem key={idx} />
@@ -62,7 +62,7 @@ export const AppSkeletonLoader: React.FC<AppSkeletonLoaderProps> = React.memo(
             <View className={appSkeletonStyles.heroBanner} />
 
             <View className={appSkeletonStyles.section}>
-              <View className="px-4 mb-3">
+              <View className="px-5 mb-3">
                 <View className={appSkeletonStyles.sectionTitle} />
               </View>
               <View className={appSkeletonStyles.categoriesRow}>

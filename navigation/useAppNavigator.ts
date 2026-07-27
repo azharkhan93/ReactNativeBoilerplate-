@@ -8,7 +8,13 @@ import { useRegisterDeviceToken } from '@/hooks/useRegisterDeviceToken';
 import { FilterValues } from '@/components/FilterModal';
 import { setAuthData, getUserId } from '@/utils/store/authStore';
 import { GET_USER_AVATAR } from '@/components/Customer/customerQueries';
-import { appStorage, STORAGE_KEYS, persistCriticalKey, removeCriticalKey } from '@/utils/cache';
+import {
+  appStorage,
+  STORAGE_KEYS,
+  persistCriticalKey,
+  removeCriticalKey,
+  hydrateStorageFromAsyncStorage,
+} from '@/utils/cache';
 import {
   getStoredLocation,
   setStoredLocation,
@@ -82,10 +88,32 @@ export const useAppNavigator = () => {
       ? TAB_BAR_TOTAL_HEIGHT + Math.max(bottom, TAB_BAR_IOS_MIN_BOTTOM_OFFSET)
       : TAB_BAR_TOTAL_HEIGHT + TAB_BAR_ANDROID_BOTTOM_OFFSET;
 
-  // Persisting location updates
+  
   const handleSetUserLocation = useCallback((location: LocationData): void => {
     setUserLocationState(location);
     setStoredLocation(location);
+  }, []);
+
+  
+  useEffect(() => {
+    let isMounted = true;
+    hydrateStorageFromAsyncStorage()
+      .then(() => {
+        if (!isMounted) return;
+        const hasCompleted = appStorage.getBoolean(
+          STORAGE_KEYS.HAS_COMPLETED_ONBOARDING,
+        );
+        if (hasCompleted) setShowOnboarding(false);
+        const storedRole = appStorage.getString(
+          STORAGE_KEYS.USER_ROLE,
+        ) as UserRole | undefined;
+        if (storedRole) setUserRole(storedRole);
+      })
+      .catch(() => null);
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   // Auto-refresh location on launch if permission is already granted
