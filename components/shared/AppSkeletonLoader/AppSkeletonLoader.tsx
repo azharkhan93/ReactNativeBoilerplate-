@@ -3,60 +3,72 @@ import { View } from 'react-native';
 import { AppSkeletonLoaderProps } from './types';
 import { appSkeletonStyles } from './styles';
 
-export const AppSkeletonLoader: React.FC<AppSkeletonLoaderProps> = () => (
-  <View className={appSkeletonStyles.root}>
-
-    <View className={appSkeletonStyles.header}>
-      <View className={appSkeletonStyles.topRow}>
-        <View className={appSkeletonStyles.locationBox}>
-          <View className={appSkeletonStyles.locationIcon} />
-          <View className={appSkeletonStyles.locationTextCol}>
-            <View className={appSkeletonStyles.locationLabel} />
-            <View className={appSkeletonStyles.locationTitle} />
-          </View>
-        </View>
-        <View className={appSkeletonStyles.avatarCircle} />
-      </View>
-      <View className={appSkeletonStyles.searchRow}>
-        <View className={appSkeletonStyles.searchBar} />
-        <View className={appSkeletonStyles.filterButton} />
-      </View>
-    </View>
-
-   
-    <View className={appSkeletonStyles.content}>
-
-      
-      <View className={appSkeletonStyles.heroBanner} />
-
-   
-      <View className={appSkeletonStyles.section}>
-        <View className={appSkeletonStyles.sectionTitle} />
-        <View className={appSkeletonStyles.categoriesRow}>
-          <View className={appSkeletonStyles.categoryPill} />
-          <View className={appSkeletonStyles.categoryPill} />
-          <View className={appSkeletonStyles.categoryPill} />
-          <View className={appSkeletonStyles.categoryPill} />
-        </View>
-      </View>
-
-   
-      <View className={appSkeletonStyles.section}>
-        <View className={appSkeletonStyles.sectionTitle} />
-        <View className={appSkeletonStyles.cardRow}>
-          <View className={appSkeletonStyles.cardItem}>
-            <View className={appSkeletonStyles.cardImage} />
-            <View className={appSkeletonStyles.cardTitle} />
-            <View className={appSkeletonStyles.cardSub} />
-          </View>
-          <View className={appSkeletonStyles.cardItem}>
-            <View className={appSkeletonStyles.cardImage} />
-            <View className={appSkeletonStyles.cardTitle} />
-            <View className={appSkeletonStyles.cardSub} />
-          </View>
-        </View>
-      </View>
-
-    </View>
+const SkeletonCardItem: React.FC = React.memo(() => (
+  <View className={appSkeletonStyles.cardItem}>
+    <View className={appSkeletonStyles.cardImage} />
+    <View className={appSkeletonStyles.cardTitle} />
+    <View className={appSkeletonStyles.cardSub} />
   </View>
+));
+
+const SkeletonCardSection: React.FC<{ readonly count?: number }> = React.memo(
+  ({ count = 2 }) => (
+    <View className={appSkeletonStyles.section}>
+      <View className={appSkeletonStyles.sectionTitle} />
+      <View className={appSkeletonStyles.cardRow}>
+        {Array.from({ length: count }).map((_, idx) => (
+          <SkeletonCardItem key={idx} />
+        ))}
+      </View>
+    </View>
+  ),
+);
+
+export const AppSkeletonLoader: React.FC<AppSkeletonLoaderProps> = React.memo(
+  ({ showHeader = true }) => (
+    <View className={appSkeletonStyles.root}>
+      {showHeader && (
+        <View className={appSkeletonStyles.header}>
+          <View className={appSkeletonStyles.topRow}>
+            <View className={appSkeletonStyles.locationBox}>
+              <View className={appSkeletonStyles.locationIcon} />
+              <View className={appSkeletonStyles.locationTextCol}>
+                <View className={appSkeletonStyles.locationLabel} />
+                <View className={appSkeletonStyles.locationTitle} />
+              </View>
+            </View>
+            <View className={appSkeletonStyles.avatarCircle} />
+          </View>
+          <View className={appSkeletonStyles.searchRow}>
+            <View className={appSkeletonStyles.searchBar} />
+            <View className={appSkeletonStyles.filterButton} />
+          </View>
+        </View>
+      )}
+
+      <View className={appSkeletonStyles.content}>
+        {showHeader ? (
+          <>
+            <View className={appSkeletonStyles.heroBanner} />
+
+            <View className={appSkeletonStyles.section}>
+              <View className={appSkeletonStyles.sectionTitle} />
+              <View className={appSkeletonStyles.categoriesRow}>
+                {Array.from({ length: 4 }).map((_, idx) => (
+                  <View key={idx} className={appSkeletonStyles.categoryPill} />
+                ))}
+              </View>
+            </View>
+
+            <SkeletonCardSection />
+          </>
+        ) : (
+          <>
+            <SkeletonCardSection />
+            <SkeletonCardSection />
+          </>
+        )}
+      </View>
+    </View>
+  ),
 );

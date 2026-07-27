@@ -1,39 +1,38 @@
 export const appSkeletonStyles = {
- 
-  root: 'flex-1 bg-[#EEF4FF]',
+  root: 'flex-1 bg-[#F1F6FD]',
 
-  header: 'bg-white border-b border-[#D6E4FF] pt-12 pb-4 px-5',
+  header: 'w-full px-4 pt-12 pb-4 bg-white border-b border-blue-100/50 shadow-sm shadow-blue-50/50',
   topRow: 'flex-row items-center justify-between mb-4',
   locationBox: 'flex-row items-center gap-3',
-  locationIcon: 'w-9 h-9 rounded-2xl bg-[#DBEAFE] animate-pulse',
-  locationTextCol: 'gap-2',
-  locationLabel: 'w-24 h-3 rounded-full bg-[#BFDBFE] animate-pulse',
-  locationTitle: 'w-40 h-4 rounded-full bg-[#93C5FD] animate-pulse',
+  locationIcon: 'w-9 h-9 rounded-2xl bg-blue-100/80 animate-pulse',
+  locationTextCol: 'gap-1.5',
+  locationLabel: 'w-24 h-3 rounded-full bg-blue-100/70 animate-pulse',
+  locationTitle: 'w-36 h-4.5 rounded-full bg-blue-200/60 animate-pulse',
   avatarCircle:
-    'w-10 h-10 rounded-full bg-[#DBEAFE] border border-[#BFDBFE] animate-pulse',
+    'w-10 h-10 rounded-full bg-blue-100/80 border border-blue-200/50 animate-pulse',
   searchRow: 'flex-row items-center gap-3',
   searchBar:
-    'flex-1 h-12 rounded-2xl bg-[#EEF4FF] border border-[#DBEAFE] animate-pulse',
+    'flex-1 h-12 rounded-2xl bg-blue-50/80 border border-blue-100/60 animate-pulse',
   filterButton:
-    'w-12 h-12 rounded-2xl bg-[#DBEAFE] border border-[#BFDBFE] animate-pulse',
+    'w-12 h-12 rounded-2xl bg-blue-100/80 border border-blue-200/50 animate-pulse',
 
-  content: 'flex-1 pt-5 gap-6',
+  content: 'flex-1 px-4 pt-4 gap-6',
 
   heroBanner:
-    'mx-5 h-44 rounded-3xl bg-[#DBEAFE] border border-[#BFDBFE] animate-pulse',
+    'w-full h-44 rounded-3xl bg-blue-100/70 border border-blue-200/50 animate-pulse shadow-sm shadow-blue-100/50',
 
-  section: 'mx-5',
+  section: 'w-full gap-3',
 
-  sectionTitle: 'w-44 h-5 rounded-full bg-[#BFDBFE] animate-pulse mb-3',
+  sectionTitle: 'w-44 h-5 rounded-full bg-blue-200/60 animate-pulse',
 
-  categoriesRow: 'flex-row items-center gap-3',
+  categoriesRow: 'flex-row items-center justify-between gap-3',
   categoryPill:
-    'flex-1 h-16 rounded-2xl bg-white border border-[#DBEAFE] shadow-sm animate-pulse',
+    'flex-1 h-16 rounded-2xl bg-white border border-blue-100/60 shadow-sm shadow-blue-50 animate-pulse',
 
-  cardRow: 'flex-row gap-4',
+  cardRow: 'flex-row gap-3',
   cardItem:
-    'flex-1 rounded-3xl bg-white border border-[#DBEAFE] shadow-sm p-3.5 gap-3',
-  cardImage: 'w-full h-24 rounded-2xl bg-[#DBEAFE] animate-pulse',
-  cardTitle: 'w-3/4 h-4 rounded-full bg-[#BFDBFE] animate-pulse',
-  cardSub: 'w-1/2 h-3 rounded-full bg-[#DBEAFE] animate-pulse',
+    'flex-1 rounded-2xl bg-white p-3 border border-blue-100/60 shadow-sm shadow-blue-100/30 gap-3 justify-between',
+  cardImage: 'w-full h-28 rounded-xl bg-blue-100/70 animate-pulse',
+  cardTitle: 'w-3/4 h-4 rounded-full bg-blue-200/60 animate-pulse',
+  cardSub: 'w-1/2 h-3 rounded-full bg-blue-100/60 animate-pulse',
 };

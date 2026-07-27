@@ -53,7 +53,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         />
 
         {loading && !hasData ? (
-          <AppSkeletonLoader />
+          <AppSkeletonLoader showHeader={false} />
         ) : (
           <>
             <View className={homeStyles.recentlyAddedSection}>
