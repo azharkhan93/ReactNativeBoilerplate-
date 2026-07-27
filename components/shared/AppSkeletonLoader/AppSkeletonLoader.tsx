@@ -26,7 +26,7 @@ export const AppSkeletonLoader: React.FC<AppSkeletonLoaderProps> = () => (
    
     <View className={appSkeletonStyles.content}>
 
-      {/* Hero Banner — mx-5 makes left = right */}
+      
       <View className={appSkeletonStyles.heroBanner} />
 
    
