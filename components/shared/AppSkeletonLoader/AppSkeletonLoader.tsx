@@ -6,7 +6,6 @@ import { appSkeletonStyles } from './styles';
 export const AppSkeletonLoader: React.FC<AppSkeletonLoaderProps> = () => (
   <View className={appSkeletonStyles.root}>
 
-    {/* Header — px-5 applied directly on this block */}
     <View className={appSkeletonStyles.header}>
       <View className={appSkeletonStyles.topRow}>
         <View className={appSkeletonStyles.locationBox}>
@@ -24,13 +23,13 @@ export const AppSkeletonLoader: React.FC<AppSkeletonLoaderProps> = () => (
       </View>
     </View>
 
-    {/* Body — no px on wrapper; mx-5 lives on each child */}
+   
     <View className={appSkeletonStyles.content}>
 
       {/* Hero Banner — mx-5 makes left = right */}
       <View className={appSkeletonStyles.heroBanner} />
 
-      {/* Categories */}
+   
       <View className={appSkeletonStyles.section}>
         <View className={appSkeletonStyles.sectionTitle} />
         <View className={appSkeletonStyles.categoriesRow}>
@@ -41,7 +40,7 @@ export const AppSkeletonLoader: React.FC<AppSkeletonLoaderProps> = () => (
         </View>
       </View>
 
-      {/* Cards */}
+   
       <View className={appSkeletonStyles.section}>
         <View className={appSkeletonStyles.sectionTitle} />
         <View className={appSkeletonStyles.cardRow}>
