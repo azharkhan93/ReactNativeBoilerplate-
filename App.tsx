@@ -1,65 +1,29 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React from 'react';
 import { StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { ApolloProvider } from '@apollo/client/react';
 
-import { apolloClient, initApolloCachePersistence } from '@/utils/apolloClient';
+import { apolloClient } from '@/utils/apolloClient';
 import { AppNavigator } from '@/navigation/AppNavigator';
 import { KeyboardDismissView } from '@/components/theme';
-import { AnimatedSplashScreen } from '@/components/shared/AnimatedSplashScreen';
-import { listenToForegroundNotifications } from '@/utils/notificationService';
+import { AnimatedSplashScreen, AppSkeletonLoader } from '@/components/shared';
 import { NotificationBanner } from '@/components/NotificationBanner';
-import {
-  appStorage,
-  STORAGE_KEYS,
-  hydrateStorageFromAsyncStorage,
-  persistCriticalKey,
-} from '@/utils/cache';
+import { useAppInit } from '@/hooks/useAppInit';
 
 export default function App() {
-  const [splashFinished, setSplashFinished] = useState<boolean>(false);
-  const [isAppReady, setIsAppReady] = useState<boolean>(false);
+  const { splashFinished, isAppReady, handleSplashFinish } = useAppInit();
 
-  useEffect(() => {
-    let isMounted = true;
+  const renderContent = () => {
+    if (!splashFinished) {
+      return <AnimatedSplashScreen onFinish={handleSplashFinish} />;
+    }
 
-    const prepareApp = async (): Promise<void> => {
-      try {
-        await Promise.all([
-          hydrateStorageFromAsyncStorage(),
-          initApolloCachePersistence(),
-        ]);
+    if (!isAppReady) {
+      return <AppSkeletonLoader />;
+    }
 
-        const hasSeenSplash =
-          appStorage.getBoolean(STORAGE_KEYS.HAS_SEEN_SPLASH) ?? false;
-        if (hasSeenSplash && isMounted) {
-          setSplashFinished(true);
-        }
-      } catch (error) {
-        if (__DEV__) {
-          console.warn('[App] App initialization error:', error);
-        }
-      } finally {
-        if (isMounted) {
-          setIsAppReady(true);
-        }
-      }
-    };
-
-    prepareApp();
-
-    const unsubscribe = listenToForegroundNotifications();
-
-    return () => {
-      isMounted = false;
-      if (unsubscribe) unsubscribe();
-    };
-  }, []);
-
-  const handleSplashFinish = useCallback(async () => {
-    await persistCriticalKey(STORAGE_KEYS.HAS_SEEN_SPLASH, true);
-    setSplashFinished(true);
-  }, []);
+    return <AppNavigator />;
+  };
 
   return (
     <ApolloProvider client={apolloClient}>
@@ -69,13 +33,7 @@ export default function App() {
           backgroundColor="transparent"
           barStyle="dark-content"
         />
-        <KeyboardDismissView>
-          {!splashFinished || !isAppReady ? (
-            <AnimatedSplashScreen onFinish={handleSplashFinish} />
-          ) : (
-            <AppNavigator />
-          )}
-        </KeyboardDismissView>
+        <KeyboardDismissView>{renderContent()}</KeyboardDismissView>
         <NotificationBanner />
       </SafeAreaProvider>
     </ApolloProvider>

@@ -55,15 +55,17 @@ const splitLink = split(
   httpLink,
 );
 
-export const cache = new InMemoryCache();
+export const cache = new InMemoryCache({
+  resultCaching: true,
+});
 
 export const initApolloCachePersistence = async (): Promise<void> => {
   try {
     await persistCache({
       cache,
       storage: MMKVApolloAdapter,
-      maxSize: 3 * 1024 * 1024, 
-      debounce: 1000,           
+      maxSize: 5 * 1024 * 1024,
+      debounce: 100,
     });
   } catch (error) {
     if (__DEV__) {
@@ -78,10 +80,10 @@ export const apolloClient = new ApolloClient({
   defaultOptions: {
     watchQuery: {
       fetchPolicy: 'cache-first',
+      nextFetchPolicy: 'cache-first',
     },
     query: {
       fetchPolicy: 'cache-first',
     },
   },
 });
-

@@ -1,18 +1,21 @@
-import { InteractionManager } from 'react-native';
 import { apolloStorage } from '../storage';
 import { StorageLogger } from '../logger';
 import { StorageAdapter } from '../types';
 
 /**
  * Apollo Cache Persistence Storage Adapter
- * Designed specifically for compatibility with `apollo3-cache-persist`.
+ * Designed specifically for compatibility with `apollo3-cache-persist` and MMKV.
+ * Synchronous MMKV calls ensure cache writes execute immediately without being deferred or lost.
  */
 export const MMKVApolloAdapter: StorageAdapter = {
   getItem: async (key: string): Promise<string | null> => {
     try {
       return apolloStorage.getString(key) ?? null;
     } catch (error) {
-      StorageLogger.error(`MMKVApolloAdapter getItem failed for key '${key}'`, error);
+      StorageLogger.error(
+        `MMKVApolloAdapter getItem failed for key '${key}'`,
+        error,
+      );
       return null;
     }
   },
@@ -21,20 +24,21 @@ export const MMKVApolloAdapter: StorageAdapter = {
     try {
       apolloStorage.delete(key);
     } catch (error) {
-      StorageLogger.error(`MMKVApolloAdapter removeItem failed for key '${key}'`, error);
+      StorageLogger.error(
+        `MMKVApolloAdapter removeItem failed for key '${key}'`,
+        error,
+      );
     }
   },
 
-  setItem: (key: string, value: string): Promise<void> =>
-    new Promise(resolve => {
-      InteractionManager.runAfterInteractions(() => {
-        try {
-          apolloStorage.set(key, value);
-        } catch (error) {
-          StorageLogger.error(`MMKVApolloAdapter setItem failed for key '${key}'`, error);
-        } finally {
-          resolve();
-        }
-      });
-    }),
+  setItem: async (key: string, value: string): Promise<void> => {
+    try {
+      apolloStorage.set(key, value);
+    } catch (error) {
+      StorageLogger.error(
+        `MMKVApolloAdapter setItem failed for key '${key}'`,
+        error,
+      );
+    }
+  },
 };
