@@ -6,7 +6,7 @@ import { appSkeletonStyles } from './styles';
 export const AppSkeletonLoader: React.FC<AppSkeletonLoaderProps> = () => (
   <View className={appSkeletonStyles.root}>
 
-    {/* Top Nav / Header Skeleton — mirrors real TopBar */}
+    {/* Header — px-5 applied directly on this block */}
     <View className={appSkeletonStyles.header}>
       <View className={appSkeletonStyles.topRow}>
         <View className={appSkeletonStyles.locationBox}>
@@ -24,14 +24,14 @@ export const AppSkeletonLoader: React.FC<AppSkeletonLoaderProps> = () => (
       </View>
     </View>
 
-    {/* Body Content */}
+    {/* Body — no px on wrapper; mx-5 lives on each child */}
     <View className={appSkeletonStyles.content}>
 
-      {/* Hero Banner */}
+      {/* Hero Banner — mx-5 makes left = right */}
       <View className={appSkeletonStyles.heroBanner} />
 
-      {/* Section: Categories */}
-      <View>
+      {/* Categories */}
+      <View className={appSkeletonStyles.section}>
         <View className={appSkeletonStyles.sectionTitle} />
         <View className={appSkeletonStyles.categoriesRow}>
           <View className={appSkeletonStyles.categoryPill} />
@@ -41,8 +41,8 @@ export const AppSkeletonLoader: React.FC<AppSkeletonLoaderProps> = () => (
         </View>
       </View>
 
-      {/* Section: Cards */}
-      <View>
+      {/* Cards */}
+      <View className={appSkeletonStyles.section}>
         <View className={appSkeletonStyles.sectionTitle} />
         <View className={appSkeletonStyles.cardRow}>
           <View className={appSkeletonStyles.cardItem}>

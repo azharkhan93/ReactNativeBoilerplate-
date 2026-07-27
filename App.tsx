@@ -13,8 +13,7 @@ export default function App() {
   const { showSplash, isAppReady, handleSplashFinish } = useAppInit();
 
   const renderContent = () => {
-    // showSplash is false from Frame 0 for all returning users —
-    // AnimatedSplashScreen is never instantiated for them.
+   
     if (showSplash) {
       return <AnimatedSplashScreen onFinish={handleSplashFinish} />;
     }

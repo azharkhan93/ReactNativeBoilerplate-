@@ -2,7 +2,7 @@ export const appSkeletonStyles = {
   // ─── Root ───────────────────────────────────────────────────────────────────
   root: 'flex-1 bg-[#EEF4FF]',
 
-  // ─── Header — mirrors real TopBar padding exactly ────────────────────────────
+  // ─── Header — mirrors real TopBar, px-5 controls both sides ─────────────────
   header: 'bg-white border-b border-[#D6E4FF] pt-12 pb-4 px-5',
   topRow: 'flex-row items-center justify-between mb-4',
   locationBox: 'flex-row items-center gap-3',
@@ -15,16 +15,18 @@ export const appSkeletonStyles = {
   searchBar: 'flex-1 h-12 rounded-2xl bg-[#EEF4FF] border border-[#DBEAFE] animate-pulse',
   filterButton: 'w-12 h-12 rounded-2xl bg-[#DBEAFE] border border-[#BFDBFE] animate-pulse',
 
-  // ─── Body — same px-5 as header ──────────────────────────────────────────────
-  content: 'flex-1 px-5 pt-5 gap-6',
+  content: 'flex-1 pt-5 gap-6',
 
-  // Hero banner — full width within px-5 container
-  heroBanner: 'w-full h-44 rounded-3xl bg-[#DBEAFE] border border-[#BFDBFE] animate-pulse',
+
+  heroBanner: 'mx-5 h-44 rounded-3xl bg-[#DBEAFE] border border-[#BFDBFE] animate-pulse',
+
+ 
+  section: 'mx-5',
 
   // Section title
   sectionTitle: 'w-44 h-5 rounded-full bg-[#BFDBFE] animate-pulse mb-3',
 
-  // Categories row — same horizontal extent as rest of body
+  // Categories row
   categoriesRow: 'flex-row items-center gap-3',
   categoryPill: 'flex-1 h-16 rounded-2xl bg-white border border-[#DBEAFE] shadow-sm animate-pulse',
 
