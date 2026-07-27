@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { View, ScrollView } from 'react-native';
-import { Typography } from '../theme/Typography';
+import { SectionHeader } from '../theme/SectionHeader';
 import { Category } from '../theme/Category';
 import { SERVICE_CATEGORIES } from '@/utils/constants';
 import { cn } from '@/utils/cn';
@@ -17,9 +17,9 @@ export const ServiceCategories: React.FC<ServiceCategoriesProps> = ({
 }) => {
   return (
     <View className={cn(serviceCategoriesStyles.container, className)}>
-      <Typography variant="body-lg" className={serviceCategoriesStyles.header}>
-        {title}
-      </Typography>
+      <View className="px-4 mb-2">
+        <SectionHeader title={title} />
+      </View>
 
       <ScrollView
         horizontal

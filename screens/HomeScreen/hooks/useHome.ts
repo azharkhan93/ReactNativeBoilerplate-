@@ -4,6 +4,7 @@ import { GET_VENDOR_PROFILES, VENDOR_PROFILE_FIELDS } from '@/components/Vendor/
 import { useFragment } from '@/__generated__/fragment-masking';
 import { filterAndSortServices, FilterValues } from '../helpers/homeHelpers';
 import { NavigationCallback } from '@/navigation/navigation.types';
+import { SERVICE_CATEGORIES } from '@/utils/constants';
 
 export interface UseHomeOptions {
   searchQuery?: string;
@@ -38,13 +39,15 @@ export const useHome = ({ searchQuery, activeFilters, onNavigate }: UseHomeOptio
       };
     }
 
+    const categoryNames = SERVICE_CATEGORIES.map(c => c.name);
+
     const liveNearby: ServiceProductItem[] = vendorProfiles.map((v, idx) => ({
       id: v.id,
       name: v.businessName || 'Car Detailing Provider',
       price: 30 + idx * 10,
       rating: 4.8,
       isFavorite: idx % 2 === 0,
-      category: v.categories?.[0]?.name ?? 'Car Wash',
+      category: v.categories?.[0]?.name ?? categoryNames[idx % categoryNames.length],
       imageUrl: v.imageUri || 'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f',
     }));
 
@@ -55,7 +58,7 @@ export const useHome = ({ searchQuery, activeFilters, onNavigate }: UseHomeOptio
       originalPrice: (25 + idx * 5) * 1.25,
       discount: 20,
       rating: 4.9,
-      category: v.categories?.[0]?.name ?? 'Exterior',
+      category: v.categories?.[0]?.name ?? categoryNames[(idx + 1) % categoryNames.length],
       imageUrl: v.imageUri || 'https://images.unsplash.com/photo-1605610816744-13c4752fea01',
     }));
 
@@ -65,7 +68,7 @@ export const useHome = ({ searchQuery, activeFilters, onNavigate }: UseHomeOptio
       price: 45 + idx * 15,
       rating: 4.9,
       isFavorite: true,
-      category: v.categories?.[0]?.name ?? 'Full Service',
+      category: v.categories?.[0]?.name ?? categoryNames[(idx + 2) % categoryNames.length],
       imageUrl: v.imageUri || 'https://images.unsplash.com/photo-1552930294-6b595f4c2974',
     }));
 

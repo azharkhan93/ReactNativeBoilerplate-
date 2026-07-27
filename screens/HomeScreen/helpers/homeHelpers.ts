@@ -72,7 +72,16 @@ export const filterAndSortServices = <T extends BaseServiceItem>(
   if (activeFilters.categoryId) {
     const cat = SERVICE_CATEGORIES.find(c => c.id === activeFilters.categoryId);
     if (cat) {
-      list = list.filter(s => s.category?.toLowerCase() === cat.name.toLowerCase());
+      const catNameLower = cat.name.toLowerCase();
+      const filtered = list.filter(
+        s =>
+          s.category?.toLowerCase() === catNameLower ||
+          s.category?.toLowerCase().includes(catNameLower) ||
+          catNameLower.includes(s.category?.toLowerCase() || ''),
+      );
+      if (filtered.length > 0) {
+        list = filtered;
+      }
     }
   }
 

@@ -42,10 +42,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     nearbyServices.length > 0 ||
     recommendedServices.length > 0;
 
-  if (loading && !hasData) {
-    return <AppSkeletonLoader />;
-  }
-
   return (
     <View className={homeStyles.container}>
       <ScreenScrollView className={homeStyles.scrollContainer}>
@@ -56,37 +52,43 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           onSelectCategory={onSelectCategory}
         />
 
-        <View className={homeStyles.recentlyAddedSection}>
-          <RecentlyAdded
-            title="Latest Added Providers"
-            onVendorPress={handleVendorPress}
-            activeCategoryId={activeFilters?.categoryId}
-          />
-        </View>
+        {loading && !hasData ? (
+          <AppSkeletonLoader />
+        ) : (
+          <>
+            <View className={homeStyles.recentlyAddedSection}>
+              <RecentlyAdded
+                title="Latest Added Providers"
+                onVendorPress={handleVendorPress}
+                activeCategoryId={activeFilters?.categoryId}
+              />
+            </View>
 
-        <ProductSection
-          title="Recommended for You"
-          subtitle="Top rated packages for your car"
-          data={recommendedServices}
-          onProductPress={handleVendorPress}
-          onViewAllPress={handleViewAllProviders}
-        />
+            <ProductSection
+              title="Recommended for You"
+              subtitle="Top rated packages for your car"
+              data={recommendedServices}
+              onProductPress={handleVendorPress}
+              onViewAllPress={handleViewAllProviders}
+            />
 
-        <ProductSection
-          title="Special Offers"
-          subtitle="Discounted car detailing deals"
-          data={featuredServices}
-          onProductPress={handleVendorPress}
-          onViewAllPress={handleViewAllProviders}
-        />
+            <ProductSection
+              title="Special Offers"
+              subtitle="Discounted car detailing deals"
+              data={featuredServices}
+              onProductPress={handleVendorPress}
+              onViewAllPress={handleViewAllProviders}
+            />
 
-        <ProductSection
-          title="Nearby Car Washers"
-          subtitle="Washers available near your location"
-          data={nearbyServices}
-          onProductPress={handleVendorPress}
-          onViewAllPress={handleViewAllProviders}
-        />
+            <ProductSection
+              title="Nearby Car Washers"
+              subtitle="Washers available near your location"
+              data={nearbyServices}
+              onProductPress={handleVendorPress}
+              onViewAllPress={handleViewAllProviders}
+            />
+          </>
+        )}
       </ScreenScrollView>
     </View>
   );

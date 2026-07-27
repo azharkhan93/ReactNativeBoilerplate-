@@ -14,14 +14,24 @@ export interface UseAppInitResult {
   readonly handleSplashFinish: () => Promise<void>;
 }
 
-export const useAppInit = (): UseAppInitResult => {
-  const [splashFinished, setSplashFinished] = useState<boolean>(() => {
+const checkHasSeenSplashSync = (): boolean => {
+  try {
     const hasSeenSplash =
       appStorage.getBoolean(STORAGE_KEYS.HAS_SEEN_SPLASH) ?? false;
     const hasCompletedOnboarding =
       appStorage.getBoolean(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING) ?? false;
-    return hasSeenSplash || hasCompletedOnboarding;
-  });
+    const hasRole = Boolean(appStorage.getString(STORAGE_KEYS.USER_ROLE));
+    const hasToken = Boolean(appStorage.getString(STORAGE_KEYS.AUTH_TOKEN));
+    return hasSeenSplash || hasCompletedOnboarding || hasRole || hasToken;
+  } catch {
+    return false;
+  }
+};
+
+export const useAppInit = (): UseAppInitResult => {
+  const [splashFinished, setSplashFinished] = useState<boolean>(() =>
+    checkHasSeenSplashSync(),
+  );
   const [isAppReady, setIsAppReady] = useState<boolean>(false);
 
   useEffect(() => {
@@ -31,21 +41,14 @@ export const useAppInit = (): UseAppInitResult => {
       try {
         await hydrateStorageFromAsyncStorage();
 
-        // Re-check splash status post-hydration
-        const hasSeenSplash =
-          appStorage.getBoolean(STORAGE_KEYS.HAS_SEEN_SPLASH) ?? false;
-        const hasCompletedOnboarding =
-          appStorage.getBoolean(STORAGE_KEYS.HAS_COMPLETED_ONBOARDING) ?? false;
-
-        if ((hasSeenSplash || hasCompletedOnboarding) && isMounted) {
+        if (!splashFinished && checkHasSeenSplashSync() && isMounted) {
           setSplashFinished(true);
         }
 
-        // Hydrate Apollo Cache persistence from MMKV BEFORE app navigator mounts
         await initApolloCachePersistence();
       } catch (error) {
         if (__DEV__) {
-          console.warn('[useAppInit] App initialization error:', error);
+          console.warn('[useAppInit] Initialization error:', error);
         }
       } finally {
         if (isMounted) {
@@ -62,7 +65,7 @@ export const useAppInit = (): UseAppInitResult => {
       isMounted = false;
       if (unsubscribe) unsubscribe();
     };
-  }, []);
+  }, [splashFinished]);
 
   const handleSplashFinish = useCallback(async (): Promise<void> => {
     await persistCriticalKey(STORAGE_KEYS.HAS_SEEN_SPLASH, true);
