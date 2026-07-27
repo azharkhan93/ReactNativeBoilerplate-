@@ -7,8 +7,11 @@ import { appSkeletonStyles } from './styles';
 const SkeletonCardItem: React.FC = React.memo(() => (
   <View className={appSkeletonStyles.cardItem}>
     <View className={appSkeletonStyles.cardImage} />
-    <View className={appSkeletonStyles.cardTitle} />
-    <View className={appSkeletonStyles.cardSub} />
+    <View className={appSkeletonStyles.cardContent}>
+      <View className={appSkeletonStyles.cardTitle} />
+      <View className={appSkeletonStyles.cardRating} />
+      <View className={appSkeletonStyles.cardPrice} />
+    </View>
   </View>
 ));
 

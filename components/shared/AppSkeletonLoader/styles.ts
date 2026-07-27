@@ -23,16 +23,18 @@ export const appSkeletonStyles = {
 
   section: 'w-full',
 
-  sectionTitle: 'w-44 h-4.5 rounded-full bg-blue-200/50 animate-pulse',
+  sectionTitle: 'w-44 h-5 rounded-full bg-blue-200/60 animate-pulse',
 
   categoriesRow: 'flex-row items-center justify-between gap-3 px-4',
   categoryPill:
     'flex-1 h-14 rounded-2xl bg-blue-100/40 border border-blue-200/40 animate-pulse',
 
-  // Card Item — Removed stark bg-white background and reduced width from w-56 to w-48 (192px)
+  // Skeleton Card Item — exact w-48 width & overflow-hidden matching real ProductCard
   cardItem:
-    'w-48 h-48 rounded-2xl bg-blue-100/30 p-2.5 border border-blue-200/40 gap-2 justify-between',
-  cardImage: 'w-full h-26 rounded-xl bg-blue-200/50 animate-pulse',
+    'w-48 bg-blue-100/20 rounded-2xl overflow-hidden border border-blue-200/40 shadow-sm shadow-blue-50/30',
+  cardImage: 'w-full h-36 bg-blue-200/40 animate-pulse',
+  cardContent: 'p-3 gap-2',
   cardTitle: 'w-3/4 h-3.5 rounded-full bg-blue-200/60 animate-pulse',
-  cardSub: 'w-1/2 h-3 rounded-full bg-blue-100/50 animate-pulse',
+  cardRating: 'w-1/3 h-3 rounded-full bg-blue-100/60 animate-pulse',
+  cardPrice: 'w-1/2 h-4 rounded-full bg-blue-200/70 animate-pulse',
 };
