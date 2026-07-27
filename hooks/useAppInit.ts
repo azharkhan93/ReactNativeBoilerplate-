@@ -10,6 +10,7 @@ import {
 
 export interface UseAppInitResult {
   readonly splashFinished: boolean;
+  readonly showSplash: boolean;
   readonly isAppReady: boolean;
   readonly handleSplashFinish: () => Promise<void>;
 }
@@ -29,9 +30,10 @@ const checkHasSeenSplashSync = (): boolean => {
 };
 
 export const useAppInit = (): UseAppInitResult => {
-  const [splashFinished, setSplashFinished] = useState<boolean>(() =>
-    checkHasSeenSplashSync(),
-  );
+  const initialSyncSeen = checkHasSeenSplashSync();
+
+  const [splashFinished, setSplashFinished] = useState<boolean>(initialSyncSeen);
+  const [showSplash, setShowSplash] = useState<boolean>(!initialSyncSeen);
   const [isAppReady, setIsAppReady] = useState<boolean>(false);
 
   useEffect(() => {
@@ -41,8 +43,18 @@ export const useAppInit = (): UseAppInitResult => {
       try {
         await hydrateStorageFromAsyncStorage();
 
-        if (!splashFinished && checkHasSeenSplashSync() && isMounted) {
-          setSplashFinished(true);
+        const postHydrateSeen = checkHasSeenSplashSync();
+
+        if (postHydrateSeen) {
+          if (isMounted) {
+            setSplashFinished(true);
+            setShowSplash(false);
+          }
+        } else {
+          if (isMounted) {
+            setShowSplash(true);
+            setSplashFinished(false);
+          }
         }
 
         await initApolloCachePersistence();
@@ -65,15 +77,17 @@ export const useAppInit = (): UseAppInitResult => {
       isMounted = false;
       if (unsubscribe) unsubscribe();
     };
-  }, [splashFinished]);
+  }, []);
 
   const handleSplashFinish = useCallback(async (): Promise<void> => {
     await persistCriticalKey(STORAGE_KEYS.HAS_SEEN_SPLASH, true);
     setSplashFinished(true);
+    setShowSplash(false);
   }, []);
 
   return {
-    splashFinished,
+    splashFinished: splashFinished || !showSplash,
+    showSplash,
     isAppReady,
     handleSplashFinish,
   };

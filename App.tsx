@@ -10,10 +10,10 @@ import { NotificationBanner } from '@/components/NotificationBanner';
 import { useAppInit } from '@/hooks/useAppInit';
 
 export default function App() {
-  const { splashFinished, isAppReady, handleSplashFinish } = useAppInit();
+  const { showSplash, isAppReady, handleSplashFinish } = useAppInit();
 
   const renderContent = () => {
-    if (!splashFinished) {
+    if (showSplash) {
       return <AnimatedSplashScreen onFinish={handleSplashFinish} />;
     }
 
