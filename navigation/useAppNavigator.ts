@@ -9,6 +9,14 @@ import { FilterValues } from '@/components/FilterModal';
 import { setAuthData, getUserId } from '@/utils/store/authStore';
 import { GET_USER_AVATAR } from '@/components/Customer/customerQueries';
 import { appStorage, STORAGE_KEYS, persistCriticalKey, removeCriticalKey } from '@/utils/cache';
+import {
+  getStoredLocation,
+  setStoredLocation,
+  isLocationPermissionGranted,
+  getCurrentLocation,
+  reverseGeocode,
+  LocationData,
+} from '@/utils/locationHelper';
 import { VENDOR_TABS, CUSTOMER_TABS, HIDDEN_TOPBAR_ROUTES } from './tabs';
 import {
   TAB_BAR_TOTAL_HEIGHT,
@@ -16,10 +24,12 @@ import {
   TAB_BAR_IOS_MIN_BOTTOM_OFFSET,
 } from '@/utils/tabBar.constants';
 
-export interface LocationData {
-  address: string;
-  coords: { latitude: number; longitude: number };
-}
+export type { LocationData };
+
+const DEFAULT_FALLBACK_LOCATION: LocationData = {
+  address: 'Location not set',
+  coords: { latitude: 0, longitude: 0 },
+};
 
 export const useAppNavigator = () => {
   const [activeTab, setActiveTab] = useState<string>('home');
@@ -47,9 +57,9 @@ export const useAppNavigator = () => {
   >(null);
   const [userId, setUserId] = useState<string | null>(null);
 
-  const [userLocation, setUserLocation] = useState<LocationData>({
-    address: 'Dubai, UAE',
-    coords: { latitude: 25.2048, longitude: 55.2708 },
+  const [userLocation, setUserLocationState] = useState<LocationData>(() => {
+    const stored = getStoredLocation();
+    return stored ?? DEFAULT_FALLBACK_LOCATION;
   });
 
   const [trackingParams, setTrackingParams] = useState<Record<
@@ -71,6 +81,57 @@ export const useAppNavigator = () => {
     Platform.OS === 'ios'
       ? TAB_BAR_TOTAL_HEIGHT + Math.max(bottom, TAB_BAR_IOS_MIN_BOTTOM_OFFSET)
       : TAB_BAR_TOTAL_HEIGHT + TAB_BAR_ANDROID_BOTTOM_OFFSET;
+
+  // Persisting location updates
+  const handleSetUserLocation = useCallback((location: LocationData): void => {
+    setUserLocationState(location);
+    setStoredLocation(location);
+  }, []);
+
+  // Auto-refresh location on launch if permission is already granted
+  useEffect(() => {
+    let isMounted = true;
+
+    const refreshRealLocation = async (): Promise<void> => {
+      try {
+        const hasGranted = await isLocationPermissionGranted();
+        if (!hasGranted || !isMounted) {
+          return;
+        }
+
+        const coords = await getCurrentLocation();
+        if (!isMounted) {
+          return;
+        }
+
+        const geoResult = await reverseGeocode(
+          coords.latitude,
+          coords.longitude,
+        );
+        if (!isMounted) {
+          return;
+        }
+
+        const freshLocation: LocationData = {
+          address: geoResult.address,
+          coords,
+        };
+
+        setUserLocationState(freshLocation);
+        await setStoredLocation(freshLocation);
+      } catch (error) {
+        if (__DEV__) {
+          console.warn('[useAppNavigator] Location refresh error:', error);
+        }
+      }
+    };
+
+    refreshRealLocation();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -189,7 +250,7 @@ export const useAppNavigator = () => {
     tabs,
     showTopBar,
     showTabBar,
-    setUserLocation,
+    setUserLocation: handleSetUserLocation,
     setIsFilterModalOpen,
     setActiveFilters,
     setShowPhoneModal,

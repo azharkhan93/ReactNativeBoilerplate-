@@ -3,7 +3,6 @@ import { View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MapPin, Filter, User } from 'lucide-react-native';
 import { Typography, IconButton } from '@/components/theme';
-import { MOCK_USER } from '@/utils/constants';
 import { SearchBar } from './components/SearchBar';
 import { TopBarProps } from './types';
 import { topBarStyles } from './styles';
@@ -15,7 +14,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   onFilterPress,
   placeholder = 'Search services...',
   searchValue,
-  location = MOCK_USER.location,
+  location = 'Location not set',
   avatarUrl,
 }) => {
   const insets = useSafeAreaInsets();

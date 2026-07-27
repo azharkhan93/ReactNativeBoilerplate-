@@ -7,6 +7,7 @@ const CRITICAL_KEYS: string[] = [
   STORAGE_KEYS.HAS_SEEN_SPLASH,
   STORAGE_KEYS.USER_ROLE,
   STORAGE_KEYS.AUTH_TOKEN,
+  STORAGE_KEYS.LAST_LOCATION,
 ];
 
 export const hydrateStorageFromAsyncStorage = async (): Promise<void> => {
@@ -30,7 +31,10 @@ export const hydrateStorageFromAsyncStorage = async (): Promise<void> => {
   }
 };
 
-export const persistCriticalKey = async (key: string, value: string | boolean): Promise<void> => {
+export const persistCriticalKey = async (
+  key: string,
+  value: string | boolean,
+): Promise<void> => {
   try {
     appStorage.set(key, value);
     await AsyncStorage.setItem(key, String(value));

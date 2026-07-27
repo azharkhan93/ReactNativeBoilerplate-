@@ -50,7 +50,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = ({
     if (userData.location && userData.location !== 'Location not configured') {
       return userData.location;
     }
-    return userLocation || 'Dubai, UAE';
+    return userLocation || 'Location not set';
   }, [userData.location, userLocation]);
 
   const closeModal = useCallback(() => setModalType(null), []);

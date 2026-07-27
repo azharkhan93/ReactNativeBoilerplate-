@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useMutation } from '@apollo/client/react';
 import Geolocation from 'react-native-geolocation-service';
-
 import { gql } from '@/__generated__';
 import { checkLocationPermission } from '@/utils/locationHelper';
 
