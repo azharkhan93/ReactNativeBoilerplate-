@@ -47,6 +47,7 @@ target 'Tab2wash' do
     if File.exist?(mmkv_aescrypt)
       text = File.read(mmkv_aescrypt)
       new_text = text.gsub('defined(__STDC_LIB_EXT1__) || defined(MMKV_APPLE)', 'defined(__STDC_LIB_EXT1__)')
+      File.chmod(0644, mmkv_aescrypt)
       File.write(mmkv_aescrypt, new_text)
     end
   end

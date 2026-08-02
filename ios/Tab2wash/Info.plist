@@ -28,8 +28,10 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
+		<!-- NSAllowsArbitraryLoads must be false for App Store submission (Guideline 5.1.1) -->
 		<key>NSAllowsArbitraryLoads</key>
-		<true/>
+		<false/>
+		<!-- Allows Metro bundler in development over local network -->
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
