@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { showLocalNotification } from '@/utils/notificationService';
 import { getDistance } from '@/utils/distanceHelper';
 import { Location } from './types';
 import { useSendBookingNotification } from './useSendBookingNotification';
@@ -16,7 +15,6 @@ export const useTrackingNotifications = (
   const didSendHalfway = useRef(false);
 
   useEffect(() => {
-    
     initialDistance.current = null;
     didSendOnTheWay.current = false;
     didSendHalfway.current = false;
@@ -32,28 +30,16 @@ export const useTrackingNotifications = (
       destination.longitude,
     );
 
-    
     if (initialDistance.current === null) {
       initialDistance.current = dist;
       if (!didSendOnTheWay.current && dist > 0.02) {
         sendBookingNotification(bookingId, 'JOURNEY_START');
-
-        showLocalNotification(
-          vendorName,
-          `${vendorName} is on the way to your location (within 5 minutes)`,
-        );
         didSendOnTheWay.current = true;
       }
     } else {
-    
       const halfDist = initialDistance.current * 0.5;
       if (dist <= halfDist && !didSendHalfway.current && dist > 0.01) {
         sendBookingNotification(bookingId, 'JOURNEY_HALFWAY');
-
-        showLocalNotification(
-          vendorName,
-          `${vendorName} is halfway to your location`,
-        );
         didSendHalfway.current = true;
       }
     }
@@ -65,3 +51,4 @@ export const useTrackingNotifications = (
     sendBookingNotification,
   ]);
 };
+
