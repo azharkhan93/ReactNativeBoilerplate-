@@ -4,6 +4,9 @@ require Pod::Executable.execute_command('node', ['-p',
     {paths: [process.argv[1]]},
   )', __dir__]).strip
 
+ENV['RCT_NEW_ARCH_ENABLED'] = '1'
+ENV['RNFB_SUPPRESS_NEW_ARCHITECTURE_WARNING'] = '1'
+
 require_relative '../node_modules/react-native-permissions/scripts/setup.rb'
 setup_permissions([
   'LocationWhenInUse',
@@ -24,8 +27,8 @@ target 'Tab2wash' do
   # Firebase requires these two pods to expose module maps so that
   # FirebaseCoreInternal (a Swift pod) can import them as modules
   # when building as static libraries. Scoped to avoid breaking RN C++ pods.
-  # pod 'GoogleUtilities', :modular_headers => true
-  # pod 'FirebaseCoreInternal', :modular_headers => true
+  pod 'GoogleUtilities', :modular_headers => true
+  pod 'FirebaseCoreInternal', :modular_headers => true
 
   use_react_native!(
     :path => config[:reactNativePath],
@@ -40,5 +43,11 @@ target 'Tab2wash' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+    mmkv_aescrypt = File.join(installer.sandbox.root, 'MMKVCore/Core/aes/AESCrypt.cpp')
+    if File.exist?(mmkv_aescrypt)
+      text = File.read(mmkv_aescrypt)
+      new_text = text.gsub('defined(__STDC_LIB_EXT1__) || defined(MMKV_APPLE)', 'defined(__STDC_LIB_EXT1__)')
+      File.write(mmkv_aescrypt, new_text)
+    end
   end
 end
