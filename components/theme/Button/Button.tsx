@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { TouchableOpacity, TouchableOpacityProps, ActivityIndicator, LayoutChangeEvent } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import {
+  TouchableOpacity,
+  ActivityIndicator,
+  LayoutChangeEvent,
+} from 'react-native';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+
 import { Typography } from '../Typography';
-import { PolygonBackground } from './PolygonBackground';
+
+import { PolygonBackground } from './components/PolygonBackground';
+import { buttonStyles, indicatorColors } from './styles';
+import { ButtonProps } from './types';
 
 const cn = (...inputs: (string | undefined | null | boolean)[]) => {
   return twMerge(clsx(inputs));
 };
-
-export interface ButtonProps extends TouchableOpacityProps {
-  variant?: 'primary' | 'outlined' | 'disabled';
-  size?: 'sm' | 'md' | 'lg';
-  children: React.ReactNode;
-  loading?: boolean;
-  className?: string;
-}
 
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
@@ -28,31 +28,12 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const isDisabled = disabled || variant === 'disabled' || loading;
+  const isDisabled = Boolean(disabled || variant === 'disabled' || loading);
 
-  const onLayout = (event: LayoutChangeEvent) => {
+  const handleLayout = useCallback((event: LayoutChangeEvent) => {
     const { width, height } = event.nativeEvent.layout;
     setDimensions({ width, height });
-  };
-
-  // Size styles
-  const sizeStyles = {
-    sm: 'py-1.5 px-4 min-w-[80px]',
-    md: 'py-2.5 px-6 min-w-[120px]',
-    lg: 'py-4 px-8 min-w-[160px]',
-  };
-
-  const variantTextStyles = {
-    primary: 'text-white',
-    outlined: 'text-primary-400',
-    disabled: 'text-gray-500',
-  };
-
-  const indicatorColors = {
-    primary: '#FFFFFF',
-    outlined: '#3b82f6',
-    disabled: '#4b5563',
-  };
+  }, []);
 
   const cleanClassName = className
     ? className
@@ -61,15 +42,17 @@ export const Button: React.FC<ButtonProps> = ({
         .join(' ')
     : '';
 
+  const typographyVariant = size === 'lg' ? 'body' : 'body-sm';
+
   return (
     <TouchableOpacity
       disabled={isDisabled}
-      onLayout={onLayout}
+      onLayout={handleLayout}
       activeOpacity={isDisabled ? 1 : activeOpacity}
       className={cn(
-        'relative items-center justify-center overflow-hidden',
-        sizeStyles[size],
-        isDisabled && 'opacity-60',
+        buttonStyles.container,
+        buttonStyles.size[size],
+        isDisabled && buttonStyles.disabled,
         cleanClassName
       )}
       {...props}
@@ -89,11 +72,8 @@ export const Button: React.FC<ButtonProps> = ({
         />
       ) : (
         <Typography
-          variant={size === 'lg' ? 'body' : 'body-sm'}
-          className={cn(
-            variantTextStyles[variant],
-            'font-body-semibold uppercase tracking-wider'
-          )}
+          variant={typographyVariant}
+          className={cn(buttonStyles.variantText[variant], buttonStyles.text)}
         >
           {children}
         </Typography>

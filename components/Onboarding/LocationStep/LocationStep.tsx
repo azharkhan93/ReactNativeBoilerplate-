@@ -19,6 +19,7 @@ import {
   checkLocationPermission,
   getCurrentLocation,
   reverseGeocode,
+  setStoredLocation,
   LOC_PERMISSION,
 } from '../../../utils/locationHelper';
 import { RESULTS, check } from 'react-native-permissions';
@@ -78,14 +79,20 @@ export const LocationStep: React.FC<LocationStepProps> = ({
       });
 
       const geoData = await reverseGeocode(latitude, longitude);
-      if (geoData) {
-        setAddress(geoData.address);
-        setQuery(geoData.full);
-        onLocationSelectRef.current?.({
-          address: geoData.address,
-          coords: { latitude, longitude },
-        });
-      }
+      const finalAddress = geoData?.address && !geoData.address.startsWith('25.') && !geoData.address.startsWith('Lat:')
+        ? geoData.address
+        : `Current Location (${latitude.toFixed(3)}, ${longitude.toFixed(3)})`;
+
+      setAddress(finalAddress);
+      setQuery(finalAddress);
+
+      const locPayload = {
+        address: finalAddress,
+        coords: { latitude, longitude },
+      };
+
+      setStoredLocation(locPayload);
+      onLocationSelectRef.current?.(locPayload);
     } catch (e) {
       console.warn('Location detection failed, fallback cleanly:', e);
       setLoading(false);
