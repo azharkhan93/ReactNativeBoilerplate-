@@ -9,10 +9,7 @@ import {
 
 export type { LocationData };
 
-/**
- * Senior Architectural Orchestrator Hook for App Navigator
- * Composes session management, location tracking, and navigation state.
- */
+
 export const useAppNavigator = () => {
   const session = useAppSession();
   const location = useAppLocation();
