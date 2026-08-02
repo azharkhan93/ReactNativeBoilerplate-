@@ -18,6 +18,7 @@
 		AD71B0A39C19AC5FFA554D59 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		761780EE2CA45675006654EE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 761780EF2CA45675006654EE /* GoogleService-Info.plist */; };
 		761780F02CA45676006654EE /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 761780F12CA45676006654EE /* main.jsbundle */; };
+		761780F22CA45677006654EE /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 761780F32CA45677006654EE /* assets */; };
 		E50B4205E2E543CA8C102196 /* Oxanium-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4A5441971144BBEAFEFCCC8 /* Oxanium-Bold.ttf */; };
 		F0679742E96E45E1B174D96E /* Varta-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3EDA2DDA97C3488A8D521B6F /* Varta-Medium.ttf */; };
 /* End PBXBuildFile section */
@@ -29,6 +30,7 @@
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = Tab2wash/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		761780EF2CA45675006654EE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Tab2wash/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		761780F12CA45676006654EE /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = "main.jsbundle"; path = "main.jsbundle"; sourceTree = "<group>"; };
+		761780F32CA45677006654EE /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = assets; sourceTree = "<group>"; };
 		1FA097CC35C1470BA9904CB3 /* Oxanium-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Oxanium-Medium.ttf"; path = "../assets/fonts/Oxanium-Medium.ttf"; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-Tab2wash.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tab2wash.debug.xcconfig"; path = "Target Support Files/Pods-Tab2wash/Pods-Tab2wash.debug.xcconfig"; sourceTree = "<group>"; };
 		3EDA2DDA97C3488A8D521B6F /* Varta-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Varta-Medium.ttf"; path = "../assets/fonts/Varta-Medium.ttf"; sourceTree = "<group>"; };
@@ -65,6 +67,7 @@
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 				761780EF2CA45675006654EE /* GoogleService-Info.plist */,
 				761780F12CA45676006654EE /* main.jsbundle */,
+				761780F32CA45677006654EE /* assets */,
 			);
 			name = Tab2wash;
 			sourceTree = "<group>";
@@ -198,6 +201,7 @@
 				AD71B0A39C19AC5FFA554D59 /* PrivacyInfo.xcprivacy in Resources */,
 				761780EE2CA45675006654EE /* GoogleService-Info.plist in Resources */,
 				761780F02CA45676006654EE /* main.jsbundle in Resources */,
+				761780F22CA45677006654EE /* assets in Resources */,
 				E50B4205E2E543CA8C102196 /* Oxanium-Bold.ttf in Resources */,
 				8239249D7FC6496692FDB76F /* Oxanium-Medium.ttf in Resources */,
 				92383235243E44B1AD1C6FF7 /* Oxanium-SemiBold.ttf in Resources */,
@@ -326,7 +330,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Tab2wash/Tab2wash.entitlements;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = B8KX25672R;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Tab2wash/Info.plist;
@@ -360,7 +364,7 @@
 				CODE_SIGN_ENTITLEMENTS = Tab2wash/Tab2wash.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = B8KX25672R;
 				INFOPLIST_FILE = Tab2wash/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Tab2wash;
