@@ -137,7 +137,7 @@ export const AnalysisResultCard: React.FC<AnalysisResultCardProps> = React.memo(
               <View className="flex-row items-center justify-center gap-1.5">
                 <CheckCircle2 size={18} color="white" />
                 <Typography className="text-white font-heading-semibold text-xs text-center">
-                  Book Package
+                  Book Now
                 </Typography>
               </View>
             </Button>

@@ -28,8 +28,8 @@ export const VehicleScanModal: React.FC<VehicleScanModalProps> = React.memo(
         title="AI Vehicle Inspector"
         onRequestClose={handleClose}
         animationType="slide"
-        height="85%"
-        width="80%"
+        height="90%"
+        width="100%"
         scrollable={false}
       >
         <VehicleScanContent
