@@ -6,8 +6,9 @@ import Animated, {
   withRepeat,
   withTiming,
   Easing,
+  withSequence,
 } from 'react-native-reanimated';
-import { Scan, Camera, Sparkles, Image as ImageIcon } from 'lucide-react-native';
+import { Scan, Camera, Sparkles, Image as ImageIcon, Activity } from 'lucide-react-native';
 
 import { Typography } from '@/components/theme';
 import { CameraOverlayProps } from './types';
@@ -24,20 +25,45 @@ export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
     onGalleryPress,
   }) => {
     const laserY = useSharedValue(0);
+    const cornerScale = useSharedValue(1);
+    const pulseOpacity = useSharedValue(0.7);
 
     useEffect(() => {
+      // Smooth laser vertical sweep
       laserY.value = withRepeat(
-        withTiming(270, {
-          duration: 1800,
-          easing: Easing.inOut(Easing.ease),
+        withTiming(250, {
+          duration: 1700,
+          easing: Easing.inOut(Easing.quad),
         }),
         -1,
         true,
       );
-    }, [laserY]);
+
+      // Pulsing reticle corners
+      cornerScale.value = withRepeat(
+        withSequence(
+          withTiming(1.05, { duration: 1000, easing: Easing.inOut(Easing.ease) }),
+          withTiming(1, { duration: 1000, easing: Easing.inOut(Easing.ease) }),
+        ),
+        -1,
+        true,
+      );
+
+      // HUD crosshair opacity pulse
+      pulseOpacity.value = withRepeat(
+        withTiming(1, { duration: 1200, easing: Easing.inOut(Easing.ease) }),
+        -1,
+        true,
+      );
+    }, [laserY, cornerScale, pulseOpacity]);
 
     const laserAnimatedStyle = useAnimatedStyle(() => ({
-      transform: [{ rotate: '0deg' }, { translateY: laserY.value }],
+      transform: [{ translateY: laserY.value }],
+    }));
+
+    const cornerAnimatedStyle = useAnimatedStyle(() => ({
+      transform: [{ scale: cornerScale.value }],
+      opacity: pulseOpacity.value,
     }));
 
     const guidance = SCAN_STEP_GUIDANCE[currentStep] ?? {
@@ -48,13 +74,21 @@ export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
     return (
       <View className={cameraOverlayStyles.container}>
         {/* Reticle Target Area */}
-        <View className={cameraOverlayStyles.reticleBox}>
+        <Animated.View
+          style={cornerAnimatedStyle}
+          className={cameraOverlayStyles.reticleBox}
+        >
+          {/* 4 Pulsing Corner Brackets */}
           <View className={cameraOverlayStyles.cornerTL} />
           <View className={cameraOverlayStyles.cornerTR} />
           <View className={cameraOverlayStyles.cornerBL} />
           <View className={cameraOverlayStyles.cornerBR} />
 
-          {/* YOLO On-Device Detection Badge */}
+          {/* HUD Target Crosshairs Grid */}
+          <View className={cameraOverlayStyles.hudGridCrosshairH} />
+          <View className={cameraOverlayStyles.hudGridCrosshairV} />
+
+          {/* YOLO On-Device Detection Status Badge */}
           {yoloDetection.isVehicleDetected && (
             <View className={cameraOverlayStyles.yoloBadge}>
               <Scan size={12} color="#047857" />
@@ -64,16 +98,27 @@ export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
             </View>
           )}
 
-          {/* Scanning Laser Beam */}
+          {/* Scanning Laser Beam with Tail Sweep */}
           {isScanning && (
             <Animated.View
               style={laserAnimatedStyle}
-              className={cameraOverlayStyles.laserBeam}
-            />
+              className={cameraOverlayStyles.laserContainer}
+            >
+              <View className={cameraOverlayStyles.laserGlowTail} />
+              <View className={cameraOverlayStyles.laserBeam} />
+            </Animated.View>
           )}
-        </View>
 
-        {/* Guidance Info Box */}
+          {/* HUD Telemetry Bottom Badge */}
+          <View className={cameraOverlayStyles.hudTelemetryBadge}>
+            <Activity size={10} color="#60a5fa" />
+            <Typography className={cameraOverlayStyles.hudTelemetryText}>
+              AI Surface Mapping • 60 FPS
+            </Typography>
+          </View>
+        </Animated.View>
+
+        {/* Guidance Info Card */}
         <View className={cameraOverlayStyles.guidanceBox}>
           <Typography className={cameraOverlayStyles.guidanceTitle}>
             {guidance.title}
@@ -120,8 +165,9 @@ export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
           </View>
         )}
 
+       
         {isScanning && (
-          <View className="mt-6 flex-row items-center gap-2 px-4 py-2 bg-blue-50 rounded-full border border-blue-200 shadow-sm">
+          <View className="mt-5 flex-row items-center gap-2 px-4 py-2 bg-blue-50 rounded-full border border-blue-200 shadow-sm">
             <Sparkles size={16} color="#2563eb" />
             <Typography className="text-blue-700 font-mono text-xs font-medium">
               Gemini Vision LLM Analyzing Surface...
