@@ -20,7 +20,6 @@ export const VehicleScanContent: React.FC<VehicleScanContentProps> = React.memo(
     hasPermissionDenied,
     onToggleTorch,
     onCapturePhoto,
-    onPickFromGallery,
     onResetScan,
     onSelectRecommendedPackage,
   }) => (
@@ -68,7 +67,6 @@ export const VehicleScanContent: React.FC<VehicleScanContentProps> = React.memo(
             yoloDetection={yoloDetection}
             hasPermissionDenied={hasPermissionDenied}
             onCapturePress={onCapturePhoto}
-            onGalleryPress={onPickFromGallery}
           />
         ) : (
           <View className={vehicleScanContentStyles.resultBox}>

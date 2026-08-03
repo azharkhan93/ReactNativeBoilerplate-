@@ -16,7 +16,6 @@ export const VehicleScanModal: React.FC<VehicleScanModalProps> = React.memo(
       hasPermissionDenied,
       toggleTorch,
       handleCapturePhoto,
-      handlePickFromGallery,
       resetScan,
       handleClose,
     } = useVehicleScan(onClose);
@@ -29,7 +28,8 @@ export const VehicleScanModal: React.FC<VehicleScanModalProps> = React.memo(
         title="AI Vehicle Inspector"
         onRequestClose={handleClose}
         animationType="slide"
-        height="100%"
+        height="85%"
+        width="80%"
         scrollable={false}
       >
         <VehicleScanContent
@@ -42,7 +42,6 @@ export const VehicleScanModal: React.FC<VehicleScanModalProps> = React.memo(
           hasPermissionDenied={hasPermissionDenied}
           onToggleTorch={toggleTorch}
           onCapturePhoto={handleCapturePhoto}
-          onPickFromGallery={handlePickFromGallery}
           onResetScan={resetScan}
           onSelectRecommendedPackage={(pkgId, addons) => {
             onSelectRecommendedPackage?.(pkgId, addons);

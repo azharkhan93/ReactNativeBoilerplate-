@@ -6,5 +6,4 @@ export interface CameraOverlayProps {
   readonly yoloDetection: YoloDetection;
   readonly hasPermissionDenied?: boolean;
   readonly onCapturePress: () => void;
-  readonly onGalleryPress?: () => void;
 }

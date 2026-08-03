@@ -12,17 +12,20 @@ export interface ModalProps extends RNModalProps {
   className?: string;
   contentClassName?: string;
   height?: DimensionValue;
+  width?: DimensionValue;
   scrollable?: boolean;
 }
 
 export const Modal: React.FC<ModalProps> = ({
-  visible, title, children, className, contentClassName, height, scrollable = true,
+  visible, title, children, className, contentClassName, height, width, scrollable = true,
   animationType = 'slide', transparent = true, onRequestClose, ...props
 }) => {
   const insets = useSafeAreaInsets();
 
   const contentStyle = {
     height: height || undefined,
+    width: width || '100%',
+    alignSelf: (width ? 'center' : undefined) as 'center' | undefined,
     maxHeight: height === '100%' ? SCREEN_HEIGHT : SCREEN_HEIGHT * 0.9,
     minHeight: height ? undefined : 200,
     paddingBottom: insets.bottom + (height ? 10 : 20),

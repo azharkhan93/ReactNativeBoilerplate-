@@ -10,6 +10,9 @@ ENV['RNFB_SUPPRESS_NEW_ARCHITECTURE_WARNING'] = '1'
 require_relative '../node_modules/react-native-permissions/scripts/setup.rb'
 setup_permissions([
   'LocationWhenInUse',
+  'Camera',
+  'PhotoLibrary',
+  'PhotoLibraryAdd',
 ])
 
 platform :ios, min_ios_version_supported

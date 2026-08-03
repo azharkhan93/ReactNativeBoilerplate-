@@ -10,7 +10,6 @@ export interface VehicleScanContentProps {
   readonly hasPermissionDenied?: boolean;
   readonly onToggleTorch: () => void;
   readonly onCapturePhoto: () => void;
-  readonly onPickFromGallery: () => void;
   readonly onResetScan: () => void;
   readonly onSelectRecommendedPackage: (
     packageId: string,

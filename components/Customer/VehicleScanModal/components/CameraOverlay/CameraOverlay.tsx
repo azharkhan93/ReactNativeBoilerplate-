@@ -8,7 +8,7 @@ import Animated, {
   Easing,
   withSequence,
 } from 'react-native-reanimated';
-import { Scan, Camera, Sparkles, Image as ImageIcon, Activity } from 'lucide-react-native';
+import { Scan, Camera, Sparkles, Activity } from 'lucide-react-native';
 
 import { Typography } from '@/components/theme';
 import { CameraOverlayProps } from './types';
@@ -22,7 +22,6 @@ export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
     yoloDetection,
     hasPermissionDenied,
     onCapturePress,
-    onGalleryPress,
   }) => {
     const laserY = useSharedValue(0);
     const cornerScale = useSharedValue(1);
@@ -135,7 +134,7 @@ export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
               Camera Access Required
             </Typography>
             <Typography className={cameraOverlayStyles.permissionSubtitle}>
-              Please grant camera permission or tap gallery icon below to choose a photo.
+              Please grant camera permission in your device settings to continue.
             </Typography>
           </View>
         )}
@@ -143,16 +142,6 @@ export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
         {/* Action Triggers Row */}
         {currentStep !== 'analyzing' && (
           <View className={cameraOverlayStyles.triggersRow}>
-            {onGalleryPress && (
-              <TouchableOpacity
-                onPress={onGalleryPress}
-                activeOpacity={0.8}
-                className={cameraOverlayStyles.galleryButton}
-              >
-                <ImageIcon size={22} color="#2563eb" />
-              </TouchableOpacity>
-            )}
-
             <TouchableOpacity
               onPress={onCapturePress}
               activeOpacity={0.8}
