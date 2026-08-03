@@ -48,7 +48,7 @@ export const AnalysisResultCard: React.FC<AnalysisResultCardProps> = React.memo(
             return (
               <View key={cond.id} className={analysisResultStyles.conditionItem}>
                 <View className={analysisResultStyles.conditionRow}>
-                  <View className="flex-row items-center gap-2">
+                  <View className="flex-row items-center gap-2 flex-1 pr-1">
                     <ShieldAlert
                       size={16}
                       color={isSevere ? '#e11d48' : '#d97706'}

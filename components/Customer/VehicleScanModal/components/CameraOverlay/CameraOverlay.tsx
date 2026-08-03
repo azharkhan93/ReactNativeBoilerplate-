@@ -28,10 +28,10 @@ export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
     const pulseOpacity = useSharedValue(0.7);
 
     useEffect(() => {
-      // Smooth laser vertical sweep
+      // Smooth laser vertical sweep within reticle bounds (165px)
       laserY.value = withRepeat(
-        withTiming(250, {
-          duration: 1700,
+        withTiming(165, {
+          duration: 1600,
           easing: Easing.inOut(Easing.quad),
         }),
         -1,
@@ -41,7 +41,7 @@ export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
       // Pulsing reticle corners
       cornerScale.value = withRepeat(
         withSequence(
-          withTiming(1.05, { duration: 1000, easing: Easing.inOut(Easing.ease) }),
+          withTiming(1.04, { duration: 1000, easing: Easing.inOut(Easing.ease) }),
           withTiming(1, { duration: 1000, easing: Easing.inOut(Easing.ease) }),
         ),
         -1,
@@ -72,7 +72,7 @@ export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
 
     return (
       <View className={cameraOverlayStyles.container}>
-        {/* Reticle Target Area */}
+        {/* 1st Div: Reticle Target Area */}
         <Animated.View
           style={cornerAnimatedStyle}
           className={cameraOverlayStyles.reticleBox}
@@ -117,7 +117,7 @@ export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
           </View>
         </Animated.View>
 
-        {/* Guidance Info Card */}
+        {/* 2nd Div: Guidance Info Card */}
         <View className={cameraOverlayStyles.guidanceBox}>
           <Typography className={cameraOverlayStyles.guidanceTitle}>
             {guidance.title}
@@ -139,7 +139,7 @@ export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
           </View>
         )}
 
-        {/* Action Triggers Row */}
+        {/* 3rd Div: Camera Action Trigger Row */}
         {currentStep !== 'analyzing' && (
           <View className={cameraOverlayStyles.triggersRow}>
             <TouchableOpacity
@@ -148,16 +148,16 @@ export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
               className={cameraOverlayStyles.captureButtonOuter}
             >
               <View className={cameraOverlayStyles.captureButtonInner}>
-                <Camera size={26} color="white" />
+                <Camera size={24} color="white" />
               </View>
             </TouchableOpacity>
           </View>
         )}
 
-       
+        {/* Scanning Spinner Badge */}
         {isScanning && (
-          <View className="mt-5 flex-row items-center gap-2 px-4 py-2 bg-blue-50 rounded-full border border-blue-200 shadow-sm">
-            <Sparkles size={16} color="#2563eb" />
+          <View className="flex-row items-center gap-2 px-4 py-2 bg-blue-50/90 rounded-full border border-blue-200 shadow-sm">
+            <Sparkles size={15} color="#2563eb" />
             <Typography className="text-blue-700 font-mono text-xs font-medium">
               Gemini Vision LLM Analyzing Surface...
             </Typography>
