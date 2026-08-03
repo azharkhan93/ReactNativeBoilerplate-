@@ -58,7 +58,7 @@ export const VendorDetailScreen: React.FC<VendorDetailScreenProps> = ({
   const [selectedWashType, setSelectedWashType] = useState<string | null>(null);
   const [selectedLocation, setSelectedLocation] = useState<'doorstep' | 'workshop' | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState<boolean>(false);
 
   const imageList = useMemo(() => {
     if (!vendor) return [];
@@ -214,3 +214,4 @@ export const VendorDetailScreen: React.FC<VendorDetailScreenProps> = ({
     </View>
   );
 };
+

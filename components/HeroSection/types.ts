@@ -1,3 +1,7 @@
 export interface HeroSectionProps {
-  className?: string;
+  readonly className?: string;
+  readonly onSelectRecommendedPackage?: (
+    packageId: string,
+    addons: readonly string[],
+  ) => void;
 }

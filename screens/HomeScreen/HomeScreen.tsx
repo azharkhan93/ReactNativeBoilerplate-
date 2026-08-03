@@ -45,7 +45,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   return (
     <View className={homeStyles.container}>
       <ScreenScrollView className={homeStyles.scrollContainer}>
-        <HeroSection />
+        <HeroSection onSelectRecommendedPackage={handleViewAllProviders} />
 
         <ServiceCategories
           selectedCategoryId={activeFilters?.categoryId}
@@ -93,3 +93,5 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     </View>
   );
 };
+
+

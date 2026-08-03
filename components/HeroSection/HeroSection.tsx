@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, FlatList, Dimensions } from 'react-native';
 import { cn } from '@/utils/cn';
 import { HERO_SLIDES } from './constants';
@@ -7,15 +7,29 @@ import { PaginationDots } from './components/PaginationDots';
 import { useHeroCarousel } from './hooks/useHeroCarousel';
 import { HeroSectionProps } from './types';
 import { heroSectionStyles } from './styles';
+import { AiScanBanner, VehicleScanModal } from '@/components/Customer';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const CAROUSEL_WIDTH = SCREEN_WIDTH - 40;
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ className }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({
+  className,
+  onSelectRecommendedPackage,
+}) => {
+  const [isScanModalVisible, setIsScanModalVisible] = useState<boolean>(false);
+
   const { activeIndex, flatListRef, onScroll } = useHeroCarousel(
     HERO_SLIDES.length,
     CAROUSEL_WIDTH,
   );
+
+  const handleOpenScanModal = useCallback((): void => {
+    setIsScanModalVisible(true);
+  }, []);
+
+  const handleCloseScanModal = useCallback((): void => {
+    setIsScanModalVisible(false);
+  }, []);
 
   return (
     <View className={cn(heroSectionStyles.container, className)}>
@@ -43,6 +57,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ className }) => {
         activeIndex={activeIndex}
         className={heroSectionStyles.dotsMargin}
       />
+
+      {/* Embedded AI Vehicle Scanner Banner */}
+      <AiScanBanner onPress={handleOpenScanModal} />
+
+      {/* Embedded AI Vehicle Scanner Modal */}
+      <VehicleScanModal
+        visible={isScanModalVisible}
+        onClose={handleCloseScanModal}
+        onSelectRecommendedPackage={onSelectRecommendedPackage}
+      />
     </View>
   );
 };
+
