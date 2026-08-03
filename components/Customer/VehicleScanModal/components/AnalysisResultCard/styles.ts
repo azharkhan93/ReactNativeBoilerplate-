@@ -1,30 +1,32 @@
 export const analysisResultStyles = {
   container: 'w-full gap-4 px-1',
 
-  // Header Title Row
-  headerRow: 'flex-row items-center justify-between pb-3 border-b border-slate-200/80',
+  headerRow:
+    'flex-row items-center justify-between pb-3 border-b border-slate-200/80',
   titleCol: 'gap-0.5 flex-1 pr-2',
   titleText: 'text-slate-900 font-heading-bold text-lg',
   vehicleSubtext: 'text-slate-500 font-body-medium text-xs',
 
-  // Overall Condition Score Badge
   scoreBox: 'items-end gap-0.5 shrink-0',
   scoreValue: 'text-2xl font-heading-bold text-blue-600',
   scoreLabel: 'text-slate-400 text-[10px] uppercase font-mono tracking-wider',
 
-  // Conditions Section
-  sectionLabel: 'text-slate-700 font-heading-semibold text-xs uppercase tracking-wider mt-1 mb-2',
+  sectionLabel:
+    'text-slate-700 font-heading-semibold text-xs uppercase tracking-wider mt-1 mb-2',
   conditionsList: 'gap-2 mb-2',
-  conditionItem: 'p-3.5 rounded-2xl bg-white border border-blue-100/80 gap-1.5 shadow-sm',
+  conditionItem:
+    'p-3.5 rounded-2xl bg-white border border-blue-100/80 gap-1.5 shadow-sm',
   conditionRow: 'flex-row items-center justify-between gap-2 w-full',
   conditionName: 'text-slate-900 font-heading-semibold text-sm flex-1',
-  conditionBadgeSevere: 'px-2 py-0.5 rounded-md bg-rose-100 border border-rose-200 shrink-0',
-  conditionBadgeModerate: 'px-2 py-0.5 rounded-md bg-amber-100 border border-amber-200 shrink-0',
+  conditionBadgeSevere:
+    'px-2 py-0.5 rounded-md bg-rose-100 border border-rose-200 shrink-0',
+  conditionBadgeModerate:
+    'px-2 py-0.5 rounded-md bg-amber-100 border border-amber-200 shrink-0',
   badgeTextSevere: 'text-rose-800 text-[10px] font-mono font-medium uppercase',
-  badgeTextModerate: 'text-amber-800 text-[10px] font-mono font-medium uppercase',
+  badgeTextModerate:
+    'text-amber-800 text-[10px] font-mono font-medium uppercase',
   conditionSummary: 'text-slate-600 font-body-regular text-xs leading-relaxed',
 
-  // Recommendation Card Box
   recommendationBox:
     'p-4 rounded-2xl bg-blue-50/80 border border-blue-200/80 gap-2.5 my-1 shadow-sm w-full',
   recHeaderRow: 'flex-row items-start gap-2.5 w-full',
