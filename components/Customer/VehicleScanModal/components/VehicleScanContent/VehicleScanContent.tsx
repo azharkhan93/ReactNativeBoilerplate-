@@ -43,7 +43,7 @@ export const VehicleScanContent: React.FC<VehicleScanContentProps> = React.memo(
         </TouchableOpacity>
       </View>
 
-      {/* Low Light Warning Alert */}
+    
       {isLowLightDetected && (
         <View className={vehicleScanStyles.warningToast}>
           <AlertTriangle size={20} color="#d97706" />
