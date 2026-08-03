@@ -46,7 +46,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>We need permission to save booking receipts and vehicle inspection photos to your photo library.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>We need camera access to capture vehicle photos for AI paint & dirt inspection.</string>
+	<string>We need camera access to capture vehicle photos for AI paint &amp; dirt inspection.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>We need microphone access if recording video inspections.</string>
 	<key>RCTNewArchEnabled</key>
