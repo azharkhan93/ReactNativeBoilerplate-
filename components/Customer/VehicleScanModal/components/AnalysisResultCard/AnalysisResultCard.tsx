@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import { View, TouchableOpacity, ScrollView } from 'react-native';
 import { Sparkles, ShieldAlert, CheckCircle2, RotateCcw } from 'lucide-react-native';
@@ -52,7 +51,7 @@ export const AnalysisResultCard: React.FC<AnalysisResultCardProps> = React.memo(
                   <View className="flex-row items-center gap-2">
                     <ShieldAlert
                       size={16}
-                      color={isSevere ? '#f43f5e' : '#f59e0b'}
+                      color={isSevere ? '#e11d48' : '#d97706'}
                     />
                     <Typography className={analysisResultStyles.conditionName}>
                       {cond.name}
@@ -88,7 +87,7 @@ export const AnalysisResultCard: React.FC<AnalysisResultCardProps> = React.memo(
         {/* AI Recommended Wash Package Box */}
         <View className={analysisResultStyles.recommendationBox}>
           <View className={analysisResultStyles.recHeaderRow}>
-            <Sparkles size={20} color="#60a5fa" />
+            <Sparkles size={20} color="#2563eb" />
             <Typography className={analysisResultStyles.recTitle}>
               Recommended: {recommendedPackage.title}
             </Typography>
@@ -108,22 +107,22 @@ export const AnalysisResultCard: React.FC<AnalysisResultCardProps> = React.memo(
           </View>
         </View>
 
-        {/* Action Buttons */}
+        {/* Perfectly Aligned 50/50 Action Buttons */}
         <View className={analysisResultStyles.actionsRow}>
           <TouchableOpacity
             onPress={onRescanPress}
             activeOpacity={0.7}
             className={analysisResultStyles.rescanButton}
           >
-            <View className="flex-row items-center gap-1.5">
-              <RotateCcw size={16} color="#cbd5e1" />
+            <View className="flex-row items-center justify-center gap-1.5">
+              <RotateCcw size={16} color="#475569" />
               <Typography className={analysisResultStyles.rescanText}>
                 Re-scan
               </Typography>
             </View>
           </TouchableOpacity>
 
-          <View className="flex-1">
+          <View className={analysisResultStyles.bookButtonWrapper}>
             <Button
               onPress={() =>
                 onBookPackagePress(
@@ -133,12 +132,12 @@ export const AnalysisResultCard: React.FC<AnalysisResultCardProps> = React.memo(
               }
               variant="primary"
               size="md"
-              className="w-full shadow-lg shadow-blue-500/20"
+              className="w-full shadow-md shadow-blue-500/20"
             >
-              <View className="flex-row items-center justify-center gap-2">
+              <View className="flex-row items-center justify-center gap-1.5">
                 <CheckCircle2 size={18} color="white" />
-                <Typography className="text-white font-heading-semibold text-sm">
-                  Book This Package
+                <Typography className="text-white font-heading-semibold text-xs text-center">
+                  Book Package
                 </Typography>
               </View>
             </Button>

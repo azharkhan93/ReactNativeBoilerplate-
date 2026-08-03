@@ -19,8 +19,10 @@ export const VehicleScanModal: React.FC<VehicleScanModalProps> = React.memo(
       isLowLightDetected,
       scanResult,
       yoloDetection,
+      hasPermissionDenied,
       toggleTorch,
-      simulateStepAdvance,
+      handleCapturePhoto,
+      handlePickFromGallery,
       resetScan,
       handleClose,
     } = useVehicleScan(onClose);
@@ -43,11 +45,11 @@ export const VehicleScanModal: React.FC<VehicleScanModalProps> = React.memo(
                 activeOpacity={0.8}
                 className={vehicleScanStyles.closeButton}
               >
-                <X size={20} color="white" />
+                <X size={20} color="#1e293b" />
               </TouchableOpacity>
 
               <View className="flex-row items-center gap-2">
-                <Typography className="text-white font-heading-semibold text-base">
+                <Typography className="text-slate-900 font-heading-semibold text-base">
                   AI Vehicle Inspector
                 </Typography>
               </View>
@@ -64,7 +66,7 @@ export const VehicleScanModal: React.FC<VehicleScanModalProps> = React.memo(
                 {hasTorchEnabled ? (
                   <Zap size={20} color="white" />
                 ) : (
-                  <ZapOff size={20} color="#cbd5e1" />
+                  <ZapOff size={20} color="#64748b" />
                 )}
               </TouchableOpacity>
             </View>
@@ -72,7 +74,7 @@ export const VehicleScanModal: React.FC<VehicleScanModalProps> = React.memo(
             {/* Low Light Alert Toast */}
             {isLowLightDetected && (
               <View className={vehicleScanStyles.warningToast}>
-                <AlertTriangle size={20} color="#f59e0b" />
+                <AlertTriangle size={20} color="#d97706" />
                 <View className={vehicleScanStyles.warningTextCol}>
                   <Typography className={vehicleScanStyles.warningTitle}>
                     Low Light Detected
@@ -91,7 +93,9 @@ export const VehicleScanModal: React.FC<VehicleScanModalProps> = React.memo(
                   currentStep={currentStep}
                   isScanning={isScanning}
                   yoloDetection={yoloDetection}
-                  onCapturePress={simulateStepAdvance}
+                  hasPermissionDenied={hasPermissionDenied}
+                  onCapturePress={handleCapturePhoto}
+                  onGalleryPress={handlePickFromGallery}
                 />
               ) : (
                 <View className={vehicleScanStyles.resultsSheetContainer}>

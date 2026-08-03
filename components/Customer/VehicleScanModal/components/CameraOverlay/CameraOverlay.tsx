@@ -7,7 +7,7 @@ import Animated, {
   withTiming,
   Easing,
 } from 'react-native-reanimated';
-import { Scan, Camera, Sparkles } from 'lucide-react-native';
+import { Scan, Camera, Sparkles, Image as ImageIcon } from 'lucide-react-native';
 
 import { Typography } from '@/components/theme';
 import { CameraOverlayProps } from './types';
@@ -15,7 +15,14 @@ import { cameraOverlayStyles } from './styles';
 import { SCAN_STEP_GUIDANCE } from '../../constants';
 
 export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
-  ({ currentStep, isScanning, yoloDetection, onCapturePress }) => {
+  ({
+    currentStep,
+    isScanning,
+    yoloDetection,
+    hasPermissionDenied,
+    onCapturePress,
+    onGalleryPress,
+  }) => {
     const laserY = useSharedValue(0);
 
     useEffect(() => {
@@ -30,7 +37,7 @@ export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
     }, [laserY]);
 
     const laserAnimatedStyle = useAnimatedStyle(() => ({
-      transform: [{ translateY: laserY.value }],
+      transform: [{ rotate: '0deg' }, { translateY: laserY.value }],
     }));
 
     const guidance = SCAN_STEP_GUIDANCE[currentStep] ?? {
@@ -50,7 +57,7 @@ export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
           {/* YOLO On-Device Detection Badge */}
           {yoloDetection.isVehicleDetected && (
             <View className={cameraOverlayStyles.yoloBadge}>
-              <Scan size={12} color="#10b981" />
+              <Scan size={12} color="#047857" />
               <Typography className={cameraOverlayStyles.yoloText}>
                 YOLOv8: Car ({Math.round(yoloDetection.confidence * 100)}%)
               </Typography>
@@ -76,23 +83,47 @@ export const CameraOverlay: React.FC<CameraOverlayProps> = React.memo(
           </Typography>
         </View>
 
-        {/* Shutter Capture Button */}
+        {/* Permission Warning Toast */}
+        {hasPermissionDenied && (
+          <View className={cameraOverlayStyles.permissionBox}>
+            <Typography className={cameraOverlayStyles.permissionTitle}>
+              Camera Access Required
+            </Typography>
+            <Typography className={cameraOverlayStyles.permissionSubtitle}>
+              Please grant camera permission or tap gallery icon below to choose a photo.
+            </Typography>
+          </View>
+        )}
+
+        {/* Action Triggers Row */}
         {currentStep !== 'analyzing' && (
-          <TouchableOpacity
-            onPress={onCapturePress}
-            activeOpacity={0.8}
-            className={cameraOverlayStyles.captureButtonOuter}
-          >
-            <View className={cameraOverlayStyles.captureButtonInner}>
-              <Camera size={26} color="white" />
-            </View>
-          </TouchableOpacity>
+          <View className={cameraOverlayStyles.triggersRow}>
+            {onGalleryPress && (
+              <TouchableOpacity
+                onPress={onGalleryPress}
+                activeOpacity={0.8}
+                className={cameraOverlayStyles.galleryButton}
+              >
+                <ImageIcon size={22} color="#2563eb" />
+              </TouchableOpacity>
+            )}
+
+            <TouchableOpacity
+              onPress={onCapturePress}
+              activeOpacity={0.8}
+              className={cameraOverlayStyles.captureButtonOuter}
+            >
+              <View className={cameraOverlayStyles.captureButtonInner}>
+                <Camera size={26} color="white" />
+              </View>
+            </TouchableOpacity>
+          </View>
         )}
 
         {isScanning && (
-          <View className="mt-6 flex-row items-center gap-2 px-4 py-2 bg-blue-950/80 rounded-full border border-blue-500/40">
-            <Sparkles size={16} color="#60a5fa" />
-            <Typography className="text-blue-300 font-mono text-xs">
+          <View className="mt-6 flex-row items-center gap-2 px-4 py-2 bg-blue-50 rounded-full border border-blue-200 shadow-sm">
+            <Sparkles size={16} color="#2563eb" />
+            <Typography className="text-blue-700 font-mono text-xs font-medium">
               Gemini Vision LLM Analyzing Surface...
             </Typography>
           </View>

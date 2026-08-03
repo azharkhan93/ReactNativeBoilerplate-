@@ -15,12 +15,12 @@ export const AiScanBanner: React.FC<AiScanBannerProps> = React.memo(
       >
         <View className="flex-row items-center gap-3.5 flex-1 pr-2">
           <View className={aiScanBannerStyles.iconBox}>
-            <Scan size={22} color="#60a5fa" />
+            <Scan size={22} color="#2563eb" />
           </View>
 
           <View className={aiScanBannerStyles.textCol}>
             <View className={aiScanBannerStyles.tagRow}>
-              <Sparkles size={14} color="#38bdf8" />
+              <Sparkles size={14} color="#2563eb" />
               <Typography className={aiScanBannerStyles.tagText}>
                 AI Paint & Dirt Inspector
               </Typography>
@@ -35,7 +35,7 @@ export const AiScanBanner: React.FC<AiScanBannerProps> = React.memo(
         </View>
 
         <View className={aiScanBannerStyles.arrowBox}>
-          <ChevronRight size={18} color="#93c5fd" />
+          <ChevronRight size={18} color="#2563eb" />
         </View>
       </TouchableOpacity>
     </View>

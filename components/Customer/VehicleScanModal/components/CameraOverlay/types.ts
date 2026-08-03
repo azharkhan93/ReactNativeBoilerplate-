@@ -4,5 +4,7 @@ export interface CameraOverlayProps {
   readonly currentStep: ScanStep;
   readonly isScanning: boolean;
   readonly yoloDetection: YoloDetection;
+  readonly hasPermissionDenied?: boolean;
   readonly onCapturePress: () => void;
+  readonly onGalleryPress?: () => void;
 }

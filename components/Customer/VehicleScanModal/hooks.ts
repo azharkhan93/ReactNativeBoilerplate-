@@ -1,6 +1,11 @@
 import { useState, useCallback } from 'react';
 import { ScanStep, VehicleScanResult, YoloDetection } from './types';
 import { MOCK_SCAN_RESULT } from './constants';
+import {
+  checkCameraPermission,
+  capturePhotoWithCamera,
+  selectPhotoFromLibrary,
+} from '@/utils/cameraHelper';
 
 export const useVehicleScan = (onClose: () => void) => {
   const [currentStep, setCurrentStep] = useState<ScanStep>('hood');
@@ -8,6 +13,8 @@ export const useVehicleScan = (onClose: () => void) => {
   const [hasTorchEnabled, setHasTorchEnabled] = useState<boolean>(false);
   const [isLowLightDetected, setIsLowLightDetected] = useState<boolean>(false);
   const [scanResult, setScanResult] = useState<VehicleScanResult | null>(null);
+  const [capturedPhotos, setCapturedPhotos] = useState<readonly string[]>([]);
+  const [hasPermissionDenied, setHasPermissionDenied] = useState<boolean>(false);
 
   const [yoloDetection] = useState<YoloDetection>({
     isVehicleDetected: true,
@@ -21,21 +28,64 @@ export const useVehicleScan = (onClose: () => void) => {
     setHasTorchEnabled(prev => !prev);
   }, []);
 
-  const simulateStepAdvance = useCallback((): void => {
-    if (currentStep === 'hood') {
-      setCurrentStep('side');
-    } else if (currentStep === 'side') {
-      setCurrentStep('wheels');
-    } else if (currentStep === 'wheels') {
-      setCurrentStep('analyzing');
-      setIsScanning(true);
+  const handleCapturePhoto = useCallback(async (): Promise<void> => {
+    try {
+      const hasPermission = await checkCameraPermission();
+      if (!hasPermission) {
+        setHasPermissionDenied(true);
+        return;
+      }
 
-      // Simulate AI analysis delay
-      setTimeout(() => {
-        setIsScanning(false);
-        setScanResult(MOCK_SCAN_RESULT);
-        setCurrentStep('complete');
-      }, 2500);
+      setHasPermissionDenied(false);
+      const imageUri = await capturePhotoWithCamera();
+
+      if (imageUri) {
+        setCapturedPhotos(prev => [...prev, imageUri]);
+      }
+
+      if (currentStep === 'hood') {
+        setCurrentStep('side');
+      } else if (currentStep === 'side') {
+        setCurrentStep('wheels');
+      } else if (currentStep === 'wheels') {
+        setCurrentStep('analyzing');
+        setIsScanning(true);
+
+        setTimeout(() => {
+          setIsScanning(false);
+          setScanResult(MOCK_SCAN_RESULT);
+          setCurrentStep('complete');
+        }, 2200);
+      }
+    } catch (error) {
+      if (__DEV__) console.warn('[useVehicleScan] Capture error:', error);
+    }
+  }, [currentStep]);
+
+  const handlePickFromGallery = useCallback(async (): Promise<void> => {
+    try {
+      const imageUri = await selectPhotoFromLibrary();
+      if (imageUri) {
+        setHasPermissionDenied(false);
+        setCapturedPhotos(prev => [...prev, imageUri]);
+
+        if (currentStep === 'hood') {
+          setCurrentStep('side');
+        } else if (currentStep === 'side') {
+          setCurrentStep('wheels');
+        } else if (currentStep === 'wheels') {
+          setCurrentStep('analyzing');
+          setIsScanning(true);
+
+          setTimeout(() => {
+            setIsScanning(false);
+            setScanResult(MOCK_SCAN_RESULT);
+            setCurrentStep('complete');
+          }, 2200);
+        }
+      }
+    } catch (error) {
+      if (__DEV__) console.warn('[useVehicleScan] Gallery pick error:', error);
     }
   }, [currentStep]);
 
@@ -44,6 +94,8 @@ export const useVehicleScan = (onClose: () => void) => {
     setIsScanning(false);
     setScanResult(null);
     setIsLowLightDetected(false);
+    setCapturedPhotos([]);
+    setHasPermissionDenied(false);
   }, []);
 
   const handleClose = useCallback((): void => {
@@ -58,8 +110,11 @@ export const useVehicleScan = (onClose: () => void) => {
     isLowLightDetected,
     scanResult,
     yoloDetection,
+    capturedPhotos,
+    hasPermissionDenied,
     toggleTorch,
-    simulateStepAdvance,
+    handleCapturePhoto,
+    handlePickFromGallery,
     resetScan,
     handleClose,
     setIsLowLightDetected,
