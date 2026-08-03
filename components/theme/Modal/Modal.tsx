@@ -23,7 +23,7 @@ export const Modal: React.FC<ModalProps> = ({
 
   const contentStyle = {
     height: height || undefined,
-    maxHeight: SCREEN_HEIGHT * 0.9,
+    maxHeight: height === '100%' ? SCREEN_HEIGHT : SCREEN_HEIGHT * 0.9,
     minHeight: height ? undefined : 200,
     paddingBottom: insets.bottom + (height ? 10 : 20),
     ...Platform.select({

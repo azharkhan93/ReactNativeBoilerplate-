@@ -1,13 +1,7 @@
 import React from 'react';
-import { View, Modal, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { X, Zap, ZapOff, AlertTriangle } from 'lucide-react-native';
-
-import { Typography } from '@/components/theme';
-import { CameraOverlay } from './components/CameraOverlay';
-import { AnalysisResultCard } from './components/AnalysisResultCard';
+import { Modal } from '@/components/theme';
+import { VehicleScanContent } from './components/VehicleScanContent';
 import { useVehicleScan } from './hooks';
-import { vehicleScanStyles } from './styles';
 import { VehicleScanModalProps } from './types';
 
 export const VehicleScanModal: React.FC<VehicleScanModalProps> = React.memo(
@@ -32,115 +26,29 @@ export const VehicleScanModal: React.FC<VehicleScanModalProps> = React.memo(
     return (
       <Modal
         visible={visible}
-        animationType="slide"
-        transparent={false}
+        title="AI Vehicle Inspector"
         onRequestClose={handleClose}
+        animationType="slide"
+        height="100%"
+        scrollable={false}
       >
-        <View className={vehicleScanStyles.modalContainer}>
-          <SafeAreaView className={vehicleScanStyles.safeArea}>
-            {/* Top Bar Header Controls */}
-            <View className={vehicleScanStyles.headerRow}>
-              <TouchableOpacity
-                onPress={handleClose}
-                activeOpacity={0.8}
-                className={vehicleScanStyles.closeButton}
-              >
-                <X size={20} color="#1e293b" />
-              </TouchableOpacity>
-
-              <View className="flex-row items-center gap-2">
-                <Typography className="text-slate-900 font-heading-semibold text-base">
-                  AI Vehicle Inspector
-                </Typography>
-              </View>
-
-              <TouchableOpacity
-                onPress={toggleTorch}
-                activeOpacity={0.8}
-                className={
-                  hasTorchEnabled
-                    ? vehicleScanStyles.torchButtonActive
-                    : vehicleScanStyles.torchButton
-                }
-              >
-                {hasTorchEnabled ? (
-                  <Zap size={20} color="white" />
-                ) : (
-                  <ZapOff size={20} color="#64748b" />
-                )}
-              </TouchableOpacity>
-            </View>
-
-            {/* Low Light Alert Toast */}
-            {isLowLightDetected && (
-              <View className={vehicleScanStyles.warningToast}>
-                <AlertTriangle size={20} color="#d97706" />
-                <View className={vehicleScanStyles.warningTextCol}>
-                  <Typography className={vehicleScanStyles.warningTitle}>
-                    Low Light Detected
-                  </Typography>
-                  <Typography className={vehicleScanStyles.warningSubtitle}>
-                    Please turn on your flashlight for best paint analysis.
-                  </Typography>
-                </View>
-              </View>
-            )}
-
-            {/* Camera Reticle & Guidance Layer */}
-            <View className={vehicleScanStyles.scannerBody}>
-              {!scanResult ? (
-                <CameraOverlay
-                  currentStep={currentStep}
-                  isScanning={isScanning}
-                  yoloDetection={yoloDetection}
-                  hasPermissionDenied={hasPermissionDenied}
-                  onCapturePress={handleCapturePhoto}
-                  onGalleryPress={handlePickFromGallery}
-                />
-              ) : (
-                <View className={vehicleScanStyles.resultsSheetContainer}>
-                  <AnalysisResultCard
-                    result={scanResult}
-                    onRescanPress={resetScan}
-                    onBookPackagePress={(pkgId, addons) => {
-                      onSelectRecommendedPackage?.(pkgId, addons);
-                      handleClose();
-                    }}
-                  />
-                </View>
-              )}
-            </View>
-
-            {/* Step Pills Bar */}
-            {!scanResult && (
-              <View className={vehicleScanStyles.stepBar}>
-                <View
-                  className={
-                    currentStep === 'hood'
-                      ? vehicleScanStyles.stepPillActive
-                      : vehicleScanStyles.stepPillCompleted
-                  }
-                />
-                <View
-                  className={
-                    currentStep === 'side'
-                      ? vehicleScanStyles.stepPillActive
-                      : currentStep === 'wheels' || currentStep === 'analyzing'
-                      ? vehicleScanStyles.stepPillCompleted
-                      : vehicleScanStyles.stepPill
-                  }
-                />
-                <View
-                  className={
-                    currentStep === 'wheels' || currentStep === 'analyzing'
-                      ? vehicleScanStyles.stepPillActive
-                      : vehicleScanStyles.stepPill
-                  }
-                />
-              </View>
-            )}
-          </SafeAreaView>
-        </View>
+        <VehicleScanContent
+          currentStep={currentStep}
+          isScanning={isScanning}
+          hasTorchEnabled={hasTorchEnabled}
+          isLowLightDetected={isLowLightDetected}
+          scanResult={scanResult}
+          yoloDetection={yoloDetection}
+          hasPermissionDenied={hasPermissionDenied}
+          onToggleTorch={toggleTorch}
+          onCapturePhoto={handleCapturePhoto}
+          onPickFromGallery={handlePickFromGallery}
+          onResetScan={resetScan}
+          onSelectRecommendedPackage={(pkgId, addons) => {
+            onSelectRecommendedPackage?.(pkgId, addons);
+            handleClose();
+          }}
+        />
       </Modal>
     );
   },
