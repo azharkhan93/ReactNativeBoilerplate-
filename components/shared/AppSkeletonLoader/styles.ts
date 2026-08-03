@@ -1,6 +1,10 @@
 export const appSkeletonStyles = {
   root: 'flex-1 bg-[#F1F6FD]',
 
+  spinnerContainer: 'flex-1 items-center justify-center p-8 bg-[#F1F6FD]',
+  spinnerContent: 'items-center justify-center gap-3',
+  spinnerText: 'text-slate-500 font-medium text-center text-sm',
+
   header: 'w-full px-5 pt-12 pb-4 bg-white/80 border-b border-blue-100/40 shadow-sm shadow-blue-50/30',
   topRow: 'flex-row items-center justify-between mb-4',
   locationBox: 'flex-row items-center gap-3',

@@ -6,8 +6,11 @@ import { apolloClient } from '@/utils/apolloClient';
 import { AppNavigator } from '@/navigation/AppNavigator';
 import { KeyboardDismissView } from '@/components/theme';
 import { NotificationBanner } from '@/components/NotificationBanner';
+import { useAppInit } from '@/hooks/useAppInit';
 
 export default function App() {
+  useAppInit();
+
   return (
     <ApolloProvider client={apolloClient}>
       <SafeAreaProvider>
@@ -24,3 +27,5 @@ export default function App() {
     </ApolloProvider>
   );
 }
+
+
