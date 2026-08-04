@@ -5,7 +5,7 @@ const { width: SW } = Dimensions.get('window');
 export const animatedSplashScreenStyles = StyleSheet.create({
   root: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#EEF4FC',
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 9999,
