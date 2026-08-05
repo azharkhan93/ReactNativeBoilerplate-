@@ -101,11 +101,14 @@ export const registerBackgroundNotificationHandler = () => {
   try {
     const app = getApp();
     const messaging = getMessaging(app);
-    setBackgroundMessageHandler(messaging, async (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
-      if (__DEV__) {
-        console.log('[FCM] Background message received:', remoteMessage);
-      }
-    });
+    setBackgroundMessageHandler(
+      messaging,
+      async (remoteMessage: FirebaseMessagingTypes.RemoteMessage) => {
+        if (__DEV__) {
+          console.log('[FCM] Background message received:', remoteMessage);
+        }
+      },
+    );
   } catch (error) {
     if (__DEV__) {
       console.warn('[FCM] Background handler registration skipped:', error);
