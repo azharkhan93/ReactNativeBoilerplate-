@@ -42,7 +42,7 @@ const WASH_TYPES = [
 
 export interface VendorDetailScreenProps {
   vendorId: string | null;
-  onNavigate: (route: string, params?: any) => void;
+  onNavigate: (route: string, params?: Record<string, unknown>) => void;
   onRequestAuth?: (onSuccessCallback?: () => void) => void;
 }
 

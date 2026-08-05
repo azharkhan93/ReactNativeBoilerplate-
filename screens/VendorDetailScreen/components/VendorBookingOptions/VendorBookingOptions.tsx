@@ -9,7 +9,7 @@ import { VendorCalendar } from '@/components/Vendor/Calendar';
 export interface BookingOptionItem {
   id: string;
   name: string;
-  icon: any;
+  icon: React.ComponentType<{ size?: number; color?: string }>;
 }
 
 export interface WashTypeItem {

@@ -3,8 +3,15 @@ import { View, TouchableOpacity } from 'react-native';
 import { Clock, Check, X } from 'lucide-react-native';
 import { Typography } from '@/components/theme';
 
+export interface PendingBookingItem {
+  id: string;
+  customerName: string;
+  serviceName: string;
+  price: number | string;
+}
+
 export interface BookingRequestProps {
-    pendingRequests: any[];
+    pendingRequests: readonly PendingBookingItem[];
     onAccept?: (bookingId: string) => void;
 }
 

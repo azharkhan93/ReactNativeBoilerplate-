@@ -3,6 +3,7 @@ import { useQuery, useMutation } from '@apollo/client/react';
 import { GET_VENDOR_PROFILE, GET_VENDOR_SERVICES, CREATE_VENDOR_SERVICE, UPDATE_VENDOR_SERVICE, DELETE_VENDOR_SERVICE, VENDOR_PROFILE_FIELDS } from '../../vendorQueries';
 import { getUserId } from '@/utils/store/authStore';
 import { useFragment } from '@/__generated__/fragment-masking';
+import { ServiceData } from '../../ServiceManagement/hooks';
 
 export interface ServiceItem {
   id?: string;
@@ -80,25 +81,18 @@ export const useManageServices = () => {
     setEditingService(null);
   }, []);
 
-  const handleSaveService = useCallback(async (data: {
-    name: string;
-    price: string;
-    duration: string;
-    location: string;
-    description: string;
-    images?: string[];
-    categoryId?: string;
-  }) => {
+  const handleSaveService = useCallback(async (data: ServiceData) => {
     if (!vendorProfileId) return;
 
     // Parse duration into a number of minutes (e.g. "45 mins" -> 45)
     const durationMinutes = parseInt(data.duration.replace(/[^0-9]/g, ''), 10) || 30;
+    const numericPrice = typeof data.price === 'number' ? data.price : parseFloat(data.price) || 0;
 
     const payload = {
       vendorProfileId,
       name: data.name,
       description: data.description,
-      price: parseFloat(data.price) || 0,
+      price: numericPrice,
       duration: durationMinutes,
       location: data.location,
       features: [],

@@ -6,6 +6,8 @@ import {
   Platform,
   StyleSheet,
   Keyboard,
+  NativeSyntheticEvent,
+  TextInputSubmitEditingEventData,
 } from 'react-native';
 import { Typography } from '../Typography';
 
@@ -18,7 +20,7 @@ interface FormInputProps extends Omit<TextInputProps, 'onChangeText'> {
   prefix?: string;
   error?: string;
   onChangeText?: (text: string, name?: string) => void;
-  nextInputRef?: React.RefObject<any>; // Support for next-input chaining
+  nextInputRef?: React.RefObject<TextInput | null>; // Support for next-input chaining
 }
 
 const SINGLE_LINE_HEIGHT = 52;
@@ -67,7 +69,7 @@ export const FormInput = React.forwardRef<TextInput, FormInputProps>(
     const finalReturnKeyType = returnKeyType || defaultReturnKeyType;
 
     const handleSubmitEditing = React.useCallback(
-      (e: any) => {
+      (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => {
         if (onSubmitEditing) {
           onSubmitEditing(e);
         } else if (nextInputRef) {

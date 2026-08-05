@@ -3,9 +3,10 @@ import { View } from 'react-native';
 import { Typography } from '@/components/theme';
 import { BookingCard } from './BookingCard';
 import { PendingCard } from './PendingCard';
+import { FormattedBooking } from '../types';
 
 interface BookingListProps {
-    bookings: any[];
+    bookings: readonly FormattedBooking[];
     isPending: boolean;
 }
 

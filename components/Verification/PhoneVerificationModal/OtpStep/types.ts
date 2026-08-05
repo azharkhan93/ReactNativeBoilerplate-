@@ -5,5 +5,5 @@ export interface OtpStepProps {
     onResend: () => void;
     requestingSms: boolean;
     verifyingOtp: boolean;
-    otpError: any;
+    otpError?: string | Error | null;
 }

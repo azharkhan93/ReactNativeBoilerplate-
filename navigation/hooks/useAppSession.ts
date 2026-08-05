@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { UserRole } from '../../__generated__/graphql';
 import { useRegisterDeviceToken } from '@/hooks/useRegisterDeviceToken';
-import { setAuthData, getUserId } from '@/utils/store/authStore';
+import { apolloClient } from '@/utils/apolloClient';
+import { setAuthData, getUserId, clearAuthData } from '@/utils/store/authStore';
 import { GET_USER_AVATAR } from '@/components/Customer/customerQueries';
 import {
   appStorage,
@@ -103,22 +104,43 @@ export const useAppSession = () => {
   );
 
   const handleLogout = useCallback(async (): Promise<void> => {
-    setUserRole(null);
-    setUserId(null);
-    await removeCriticalKey(STORAGE_KEYS.USER_ROLE);
-    setShowPhoneModal(true);
+    try {
+      setUserRole(null);
+      setUserId(null);
+      await clearAuthData();
+      await removeCriticalKey(STORAGE_KEYS.USER_ROLE);
+      await apolloClient.clearStore();
+    } catch (error) {
+      if (__DEV__) {
+        console.warn('[useAppSession] Logout error:', error);
+      }
+    } finally {
+      setShowPhoneModal(true);
+    }
   }, []);
 
   const handlePhoneSuccess = useCallback(
-    (_status: string, token?: string, uid?: string, phone?: string): void => {
-      if (token && uid) {
-        setAuthData(token, uid, phone);
-        setUserId(uid);
-      }
-      setShowPhoneModal(false);
-      if (pendingAuthCallback) {
-        pendingAuthCallback();
-        setPendingAuthCallback(null);
+    async (
+      _status: string,
+      token?: string,
+      uid?: string,
+      phone?: string,
+    ): Promise<void> => {
+      try {
+        if (token && uid) {
+          await setAuthData(token, uid, phone);
+          setUserId(uid);
+        }
+      } catch (error) {
+        if (__DEV__) {
+          console.warn('[useAppSession] Auth data save error:', error);
+        }
+      } finally {
+        setShowPhoneModal(false);
+        if (pendingAuthCallback) {
+          pendingAuthCallback();
+          setPendingAuthCallback(null);
+        }
       }
     },
     [pendingAuthCallback],

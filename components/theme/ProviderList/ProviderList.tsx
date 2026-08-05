@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, View, StyleProp, ViewStyle } from 'react-native';
 import { ProviderCard } from '../ProviderCard';
 import { Provider } from '@/data/mockProviders';
 import { Typography } from '../Typography';
@@ -7,7 +7,7 @@ import { Typography } from '../Typography';
 export interface ProviderListProps {
   providers: Provider[];
   onProviderPress?: (id: string) => void;
-  contentContainerStyle?: any;
+  contentContainerStyle?: StyleProp<ViewStyle>;
   horizontal?: boolean;
 }
 

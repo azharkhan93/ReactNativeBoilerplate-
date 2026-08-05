@@ -4,7 +4,7 @@ export interface Location {
 }
 
 export interface LiveTrackingScreenProps {
-  onNavigate?: (route: string, params?: any) => void;
+  onNavigate?: (route: string, params?: Record<string, unknown>) => void;
   bookingId?: string;
   initialLocation?: Location;
   initialEta?: number;

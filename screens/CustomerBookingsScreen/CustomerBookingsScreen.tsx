@@ -6,7 +6,7 @@ import { AppSkeletonLoader } from '@/components/shared';
 import { useCustomerBookings, BookingTab } from './hooks/useCustomerBookings';
 
 export interface CustomerBookingsScreenProps {
-  onNavigate?: (route: string, params?: any) => void;
+  onNavigate?: (route: string, params?: Record<string, unknown>) => void;
 }
 
 const TABS: { id: BookingTab; label: string; activeBg: string }[] = [

@@ -1,5 +1,9 @@
-import { MOCK_BOOKINGS } from '@/utils/constants';
+import { FormattedBooking } from '../types';
 
-export const filterBookingsByStatus = (bookings: typeof MOCK_BOOKINGS, status: string) => {
-    return bookings.filter(b => b.status === status);
+export const filterBookingsByStatus = (
+  bookings: readonly FormattedBooking[],
+  status: string,
+): FormattedBooking[] => {
+  return bookings.filter(b => b.status === status);
 };
+

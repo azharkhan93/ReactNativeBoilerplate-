@@ -1,4 +1,10 @@
 import * as Keychain from 'react-native-keychain';
+import {
+  appStorage,
+  STORAGE_KEYS,
+  persistCriticalKey,
+  removeCriticalKey,
+} from '@/utils/cache';
 
 let cachedUserPhone: string | null = null;
 
@@ -10,9 +16,14 @@ export const setAuthData = async (
   try {
     if (phone) {
       cachedUserPhone = phone;
+      await persistCriticalKey(STORAGE_KEYS.USER_PHONE, phone);
     }
     await Keychain.setGenericPassword(userId, token);
-  } catch {}
+  } catch (error) {
+    if (__DEV__) {
+      console.warn('[authStore] Failed to store auth credentials:', error);
+    }
+  }
 };
 
 export const getAuthToken = async (): Promise<string | null> => {
@@ -40,14 +51,29 @@ export const getUserId = async (): Promise<string | null> => {
 };
 
 export const getAuthPhone = async (): Promise<string | null> => {
-  return cachedUserPhone;
+  if (cachedUserPhone) {
+    return cachedUserPhone;
+  }
+  try {
+    const storedPhone = appStorage.getString(STORAGE_KEYS.USER_PHONE);
+    if (storedPhone) {
+      cachedUserPhone = storedPhone;
+      return storedPhone;
+    }
+    return null;
+  } catch {
+    return null;
+  }
 };
 
 export const clearAuthData = async (): Promise<void> => {
   try {
     cachedUserPhone = null;
+    await removeCriticalKey(STORAGE_KEYS.USER_PHONE);
     await Keychain.resetGenericPassword();
-  } catch {
-    // Fail silently in production per senior engineering guidelines
+  } catch (error) {
+    if (__DEV__) {
+      console.warn('[authStore] Failed to clear auth data:', error);
+    }
   }
 };

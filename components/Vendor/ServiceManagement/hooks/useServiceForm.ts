@@ -4,7 +4,7 @@ import { useImageUpload } from '@/hooks/useImageUpload';
 export interface ServiceData {
   id?: string;
   name: string;
-  price: number;
+  price: number | string;
   duration: string;
   location: string;
   description: string;
@@ -18,7 +18,7 @@ export interface ServiceData {
 interface UseServiceFormProps {
   initialService: ServiceData | null | undefined;
   visible: boolean;
-  onSave: (service: any) => void;
+  onSave: (service: ServiceData) => void;
 }
 
 export const useServiceForm = ({

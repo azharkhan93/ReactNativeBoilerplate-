@@ -8,7 +8,11 @@ import { hmacSha256 } from '@/utils/cryptoHelper';
 import { MOCK_PAYMENT_SECRET, RAZORPAY_CONFIG, DEFAULT_PROFILE_DEFAULTS } from './constants';
 import { CheckoutStep, UsePaymentResult } from './types';
 
-let RazorpayCheckout: any = null;
+interface RazorpayModule {
+  open: (options: Record<string, unknown>) => Promise<RazorpaySdkResponse>;
+}
+
+let RazorpayCheckout: RazorpayModule | null = null;
 try {
   RazorpayCheckout = require('react-native-razorpay').default;
 } catch {}

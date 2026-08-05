@@ -42,7 +42,7 @@ export const uploadAssetToCloudinary = async (
     uri,
     name: fileName,
     type: mimeType,
-  } as any);
+  } as unknown as Blob);
 
   const response = await fetch(GRAPHQL_API_URL, {
     method: 'POST',
@@ -51,7 +51,7 @@ export const uploadAssetToCloudinary = async (
       'Accept': 'application/json',
       'apollo-require-preflight': 'true',
       'x-apollo-operation-name': 'UploadImage',
-      // DO NOT set Content-Type — fetch sets it automatically with correct multipart boundary
+     
     },
   });
 

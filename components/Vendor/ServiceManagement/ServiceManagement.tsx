@@ -9,7 +9,7 @@ export interface ServiceManagementProps {
   visible: boolean;
   initialService?: ServiceData | null;
   onClose: () => void;
-  onSave: (service: any) => void;
+  onSave: (service: ServiceData) => void;
 }
 
 export const ServiceManagement: React.FC<ServiceManagementProps> = ({

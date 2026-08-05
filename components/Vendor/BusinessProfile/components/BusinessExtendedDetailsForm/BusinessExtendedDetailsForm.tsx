@@ -29,12 +29,18 @@ export const BusinessExtendedDetailsForm: React.FC<BusinessExtendedDetailsFormPr
     }
   }, [initialData, visible]);
 
-  const handleChange = useCallback((field: keyof BusinessProfileFormData, value: any) => {
-    setFormData(prev => {
-      if (!prev) return null;
-      return { ...prev, [field]: value };
-    });
-  }, []);
+  const handleChange = useCallback(
+    <K extends keyof BusinessProfileFormData>(
+      field: K,
+      value: BusinessProfileFormData[K],
+    ) => {
+      setFormData(prev => {
+        if (!prev) return null;
+        return { ...prev, [field]: value };
+      });
+    },
+    [],
+  );
 
   const { triggerUpload: handleUploadImage, uploading } = useImageUpload({
     fileName: 'business_gallery.jpg',

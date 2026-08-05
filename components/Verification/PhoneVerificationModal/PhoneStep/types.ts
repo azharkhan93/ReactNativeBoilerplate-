@@ -3,7 +3,7 @@ export interface PhoneStepProps {
   setPhoneNumber: (text: string) => void;
   handleRequestOtp: () => void;
   requestingSms: boolean;
-  phoneError: any;
+  phoneError?: string | Error | null;
   isValid: boolean;
   isInputLengthValid: boolean;
 }

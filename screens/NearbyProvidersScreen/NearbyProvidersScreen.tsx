@@ -13,7 +13,7 @@ import { AppSkeletonLoader } from '@/components/shared';
 import { useNearbyVendors } from './hooks/useNearbyVendors';
 
 export interface NearbyProvidersScreenProps {
-  onNavigate?: (route: string, params?: any) => void;
+  onNavigate?: (route: string, params?: Record<string, unknown>) => void;
 }
 
 export const NearbyProvidersScreen: React.FC<NearbyProvidersScreenProps> = ({ onNavigate }) => {

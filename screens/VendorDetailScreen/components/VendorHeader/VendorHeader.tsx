@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Image, TouchableOpacity, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { ChevronLeft } from 'lucide-react-native';
 import { Typography } from '@/components/theme/Typography';
 
@@ -10,7 +10,7 @@ export interface VendorHeaderProps {
   scrollViewRef: React.RefObject<ScrollView | null>;
   insets: { top: number };
   onBack: () => void;
-  handleScroll: (event: any) => void;
+  handleScroll: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
   handleScrollBeginDrag: () => void;
   handleScrollEndDrag: () => void;
 }

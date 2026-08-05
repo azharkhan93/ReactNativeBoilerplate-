@@ -1,5 +1,5 @@
 import { RefObject } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
 import { UserRole } from '../../__generated__/graphql';
 
 export interface OnboardingScreenProps {
@@ -25,7 +25,7 @@ export interface UseOnboardingSwipeResult {
   readonly handleNext: () => void;
   readonly handleBack: () => void;
   readonly handleSkip: () => void;
-  readonly handleScrollEnd: (event: any) => void;
+  readonly handleScrollEnd: (event: NativeSyntheticEvent<NativeScrollEvent>) => void;
 }
 
 export interface SwipeIndicatorProps {
