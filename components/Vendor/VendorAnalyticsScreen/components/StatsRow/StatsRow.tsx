@@ -7,7 +7,7 @@ import { T } from '../../analytics.theme';
 export const StatsRow: React.FC = () => (
   <View className="flex-row gap-3 mb-4">
     <View style={[s.card, s.flex1]}>
-      <View style={[s.badge, { backgroundColor: '#dbeafe' }]}><Target size={20} color="#3b82f6" /></View>
+      <View className="w-10 h-10 rounded-xl items-center justify-center mb-3 bg-blue-100"><Target size={20} color="#3b82f6" /></View>
       <Typography style={s.label}>Booking Conversion</Typography>
       <Typography className="text-slate-900 text-2xl font-heading-bold mb-1">84.2%</Typography>
       <View className="flex-row items-center">
@@ -17,7 +17,7 @@ export const StatsRow: React.FC = () => (
     </View>
 
     <View style={[s.card, s.flex1]}>
-      <View style={[s.badge, { backgroundColor: '#fef3c7' }]}>
+      <View className="w-10 h-10 rounded-xl items-center justify-center mb-3 bg-amber-100">
         <Typography className="text-orange-500 text-lg">😊</Typography>
       </View>
       <Typography style={s.label}>Avg Response</Typography>

@@ -21,7 +21,7 @@ export const VendorAnalyticsScreen: React.FC = () => {
         onRangeChange={setRange}
         paddingTop={Math.max(top, 20) + 10}
       />
-      <ScreenScrollView contentContainerStyle={{ padding: 20 }}>
+      <ScreenScrollView className="px-5 py-5">
         <PerformanceCard />
         <EarningsCard />
         <StatsRow />

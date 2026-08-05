@@ -58,10 +58,14 @@ export const getFCMToken = async (): Promise<string | null> => {
 
     const messaging = getMessagingInstance();
     const token = await getToken(messaging);
-    console.log('[FCM] Device Token:', token);
+    if (__DEV__) {
+      console.log('[FCM] Device Token:', token);
+    }
     return token;
   } catch (error) {
-    console.error('[FCM] Failed to get token:', error);
+    if (__DEV__) {
+      console.error('[FCM] Failed to get token:', error);
+    }
     return null;
   }
 };
@@ -70,10 +74,12 @@ export const listenToForegroundNotifications = () => {
   try {
     const messaging = getMessagingInstance();
     return onMessage(messaging, async remoteMessage => {
-      console.log(
-        '[FCM] Foreground message received:',
-        JSON.stringify(remoteMessage, null, 2),
-      );
+      if (__DEV__) {
+        console.log(
+          '[FCM] Foreground message received:',
+          JSON.stringify(remoteMessage, null, 2),
+        );
+      }
       if (remoteMessage.notification) {
         showLocalNotification(
           remoteMessage.notification.title ?? 'Notification',

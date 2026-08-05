@@ -13,8 +13,7 @@ export const AnalysisResultCard: React.FC<AnalysisResultCardProps> = React.memo(
     return (
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 16 }}
-        className={analysisResultStyles.container}
+        className={`${analysisResultStyles.container} pb-4`}
       >
         {/* Header Row */}
         <View className={analysisResultStyles.headerRow}>

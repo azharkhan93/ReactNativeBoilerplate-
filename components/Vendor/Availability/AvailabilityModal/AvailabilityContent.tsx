@@ -89,8 +89,7 @@ export const AvailabilityContent: React.FC<{ onClose: () => void }> = ({ onClose
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ padding: 20, paddingBottom: 40 }}
-      className="bg-notchLight"
+      className="bg-notchLight p-5 pb-10"
     >
       <WeekStrip />
       <Typography className="text-slate-900 text-base font-heading-semibold mb-1">

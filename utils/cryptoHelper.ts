@@ -1,3 +1,4 @@
+/* eslint-disable no-bitwise */
 // Pure JS SHA-256 and HMAC-SHA-256 implementation for React Native
 // Ref: FIPS PUB 180-4 (Secure Hash Standard)
 

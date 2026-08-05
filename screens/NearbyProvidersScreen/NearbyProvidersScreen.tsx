@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,10 +10,8 @@ import {
 } from '@/components/theme';
 import { AppSkeletonLoader } from '@/components/shared';
 import { useNearbyVendors } from './hooks/useNearbyVendors';
-
-export interface NearbyProvidersScreenProps {
-  onNavigate?: (route: string, params?: Record<string, unknown>) => void;
-}
+import { NearbyProvidersScreenProps } from './types';
+import { nearbyProvidersStyles } from './styles';
 
 export const NearbyProvidersScreen: React.FC<NearbyProvidersScreenProps> = ({ onNavigate }) => {
   const insets = useSafeAreaInsets();
@@ -26,7 +23,7 @@ export const NearbyProvidersScreen: React.FC<NearbyProvidersScreenProps> = ({ on
   };
 
   return (
-    <View className="flex-1">
+    <View className={nearbyProvidersStyles.container}>
       {/* Background Map */}
       <View style={StyleSheet.absoluteFillObject}>
         <ProviderMap
@@ -38,30 +35,30 @@ export const NearbyProvidersScreen: React.FC<NearbyProvidersScreenProps> = ({ on
 
       {/* Top Overlay Area (Header + Search) */}
       <View
-        className="px-5 absolute top-0 left-0 right-0 z-10"
+        className={nearbyProvidersStyles.topOverlayContainer}
         style={{ paddingTop: Math.max(insets.top, 20) }}
       >
         {/* Search and Filters Overlay */}
-        <View className="flex-row items-center">
-          <View className="flex-1">
+        <View className={nearbyProvidersStyles.searchRow}>
+          <View className={nearbyProvidersStyles.searchBarWrapper}>
             <SearchBar
               value={searchQuery}
               onChangeText={setSearchQuery}
               onClear={() => setSearchQuery('')}
               placeholder="Find a provider by name or..."
-              className="bg-white border-none shadow-xl h-14"
+              className={nearbyProvidersStyles.searchBar}
             />
           </View>
 
           <TouchableOpacity
-            className="bg-white p-4 rounded-full shadow-xl ml-3"
+            className={nearbyProvidersStyles.iconButton}
             activeOpacity={0.7}
           >
             <SlidersHorizontal size={22} color="black" />
           </TouchableOpacity>
 
           <TouchableOpacity
-            className="bg-white p-4 rounded-full shadow-xl ml-3"
+            className={nearbyProvidersStyles.iconButton}
             activeOpacity={0.7}
           >
             <Navigation size={22} color="black" />
@@ -69,32 +66,28 @@ export const NearbyProvidersScreen: React.FC<NearbyProvidersScreenProps> = ({ on
         </View>
       </View>
 
-      <View className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[40px] pt-7 pb-2 shadow-2xl h-[45%]">
-        <View className="px-6 flex-row items-center justify-between mb-4">
-          <Typography variant="h3" className="text-gray-900 font-bold text-xl">
+      <View className={nearbyProvidersStyles.bottomSheet}>
+        <View className={nearbyProvidersStyles.headerRow}>
+          <Typography variant="h3" className={nearbyProvidersStyles.title}>
             Nearby Providers
           </Typography>
           <TouchableOpacity activeOpacity={0.7}>
             <Typography
               variant="body-sm"
-              className="text-primary-600 font-semibold"
+              className={nearbyProvidersStyles.seeAllText}
             >
               See all
             </Typography>
           </TouchableOpacity>
         </View>
 
-        <View className="flex-1">
+        <View className={nearbyProvidersStyles.listContainer}>
           {loading ? (
             <AppSkeletonLoader />
           ) : (
             <ProviderList
               providers={providers}
               onProviderPress={handleProviderPress}
-              contentContainerStyle={{
-                paddingHorizontal: 20,
-                paddingBottom: 40,
-              }}
             />
           )}
         </View>

@@ -19,7 +19,7 @@ export const TipSelector: React.FC<TipSelectorProps> = ({ selectedAmount, onSele
             <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ gap: 12 }}
+                className="flex-row gap-3"
             >
                 {TIP_AMOUNTS.map((amount) => {
                     const isSelected = selectedAmount === amount;

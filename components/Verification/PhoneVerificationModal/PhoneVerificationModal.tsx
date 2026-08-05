@@ -20,7 +20,9 @@ export const PhoneVerificationModal: React.FC<PhoneVerificationModalProps> = ({ 
     const [step, setStep] = useState<'phone' | 'otp'>('phone');
     const { phoneNumber, setPhoneNumber, loading: requestingSms, handleRequestOtp, error: phoneError } = usePhoneVerification({
         onSuccess: (sid) => {
-            console.log('OTP Sent. SID:', sid);
+            if (__DEV__) {
+                console.log('OTP Sent. SID:', sid);
+            }
             setStep('otp');
         }
     });

@@ -8,7 +8,7 @@ import { KeyboardDismissView } from '@/components/theme';
 import { NotificationBanner } from '@/components/NotificationBanner';
 import { useAppInit } from '@/hooks/useAppInit';
 
-export const App: React.FC = () => {
+export default function App() {
   useAppInit();
 
   return (
@@ -26,8 +26,4 @@ export const App: React.FC = () => {
       </SafeAreaProvider>
     </ApolloProvider>
   );
-};
-
-export default App;
-
-
+}

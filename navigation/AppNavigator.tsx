@@ -40,6 +40,23 @@ const SCREENS: Record<
   reviewSuccess: ReviewSuccessScreen,
 };
 
+interface VendorSearchResultItemProps {
+  id: string;
+  businessName: string;
+  onPress: (id: string) => void;
+}
+
+const VendorSearchResultItem: React.FC<VendorSearchResultItemProps> = React.memo(
+  ({ id, businessName, onPress }) => (
+    <TouchableOpacity
+      className="py-2.5 border-b border-slate-100 last:border-0"
+      onPress={() => onPress(id)}
+    >
+      <Text className="text-slate-900 font-medium">{businessName}</Text>
+    </TouchableOpacity>
+  ),
+);
+
 export const AppNavigator: React.FC = () => {
   const {
     activeTab,
@@ -173,17 +190,12 @@ export const AppNavigator: React.FC = () => {
         {(searchData?.searchVendors ?? []).length > 0 && (
           <View className="absolute top-36 left-4 right-4 bg-white border border-slate-200/80 shadow-xl z-50 p-4 rounded-2xl">
             {(searchData?.searchVendors ?? []).map(v => (
-              <TouchableOpacity
+              <VendorSearchResultItem
                 key={v.id}
-                className="py-2.5 border-b border-slate-100 last:border-0"
-                onPress={() =>
-                  handleNavigate('vendorDetails', { vendorId: v.id })
-                }
-              >
-                <Text className="text-slate-900 font-medium">
-                  {v.businessName}
-                </Text>
-              </TouchableOpacity>
+                id={v.id}
+                businessName={v.businessName}
+                onPress={id => handleNavigate('vendorDetails', { vendorId: id })}
+              />
             ))}
           </View>
         )}

@@ -19,10 +19,7 @@ export const PerformanceCard: React.FC = () => (
       </Typography>
     </View>
     <View style={s.track}>
-      <View
-        className="bg-primary-500 h-2 rounded-full"
-        style={{ width: '96%' }}
-      />
+      <View className="bg-primary-500 h-2 rounded-full w-[96%]" />
     </View>
   </View>
 );

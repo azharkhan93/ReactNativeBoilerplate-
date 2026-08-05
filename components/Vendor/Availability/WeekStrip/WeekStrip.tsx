@@ -51,7 +51,7 @@ export const WeekStrip: React.FC<WeekStripProps> = ({
             <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{ gap: 6 }}>
+                className="flex-row gap-1.5">
                 {days.map((d, i) => {
                     const isSelected =
                         d.toDateString() === selected.toDateString();

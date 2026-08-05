@@ -3,7 +3,6 @@ import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { Typography, Button } from '../../theme';
 import { AppSkeletonLoader } from '@/components/shared';
 import { Landmark, Pencil, Trash2, ShieldCheck, Cpu } from 'lucide-react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useBankAccountDetails, BankFormData } from './hooks/useBankAccountDetails';
 import { BankDetailsForm } from './BankDetailsForm';
 
@@ -67,7 +66,6 @@ const BankDetailsCard: React.FC<{ profile: BankFormData }> = ({ profile }) => {
 };
 
 export const BankAccountDetails: React.FC = () => {
-  const insets = useSafeAreaInsets();
   const {
     profile,
     loading,
@@ -87,12 +85,8 @@ export const BankAccountDetails: React.FC = () => {
   return (
     <>
       <ScrollView
-        className="flex-1 bg-notchLight"
+        className="flex-1 bg-notchLight px-5 pb-10"
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingBottom: insets.bottom + 40,
-          paddingHorizontal: 20,
-        }}
       >
         <View className="bg-blue-500/10 border border-blue-500/20 rounded-2xl px-4 py-4 mt-4 mb-6 flex-row items-center">
           <ShieldCheck size={20} color="#3b82f6" />
