@@ -1,4 +1,4 @@
-import { MOCK_SERVICES, SERVICE_CATEGORIES } from '@/utils/constants';
+import { SERVICE_CATEGORIES } from '@/utils/constants';
 
 export interface FilterValues {
   categoryId: string | null;
@@ -21,42 +21,15 @@ export interface ServiceProductItem {
 export type BaseServiceItem = ServiceProductItem;
 
 export const getFeaturedServices = (): ServiceProductItem[] => {
-  return MOCK_SERVICES.map(s => ({
-    id: s.id,
-    name: s.name,
-    price: s.price,
-    originalPrice: s.price * 1.2,
-    discount: 20,
-    rating: 4.8,
-    category: s.category,
-    imageUrl: s.image,
-  }));
+  return [];
 };
-
 
 export const getNearbyServices = (): ServiceProductItem[] => {
-  return MOCK_SERVICES.map(s => ({
-    id: s.id,
-    name: s.name,
-    price: s.price,
-    rating: 4.9,
-    isFavorite: false,
-    category: s.category,
-    imageUrl: s.image,
-  }));
+  return [];
 };
 
-
 export const getRecommendedServices = (): ServiceProductItem[] => {
-  return MOCK_SERVICES.slice(0, 2).map(s => ({
-    id: s.id,
-    name: s.name,
-    price: s.price,
-    rating: 4.7,
-    isFavorite: true,
-    category: s.category,
-    imageUrl: s.image,
-  }));
+  return [];
 };
 
 

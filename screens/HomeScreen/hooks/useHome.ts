@@ -38,9 +38,9 @@ export const useHome = ({
     useMemo(() => {
       if (!vendorProfiles || vendorProfiles.length === 0) {
         return {
-          featuredServices: getFeaturedServices(),
-          nearbyServices: getNearbyServices(),
-          recommendedServices: getRecommendedServices(),
+          featuredServices: [],
+          nearbyServices: [],
+          recommendedServices: [],
         };
       }
 

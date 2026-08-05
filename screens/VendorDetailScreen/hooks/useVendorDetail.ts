@@ -54,7 +54,7 @@ export const useVendorDetail = (vendorId: string | null) => {
   const isTest =
     !vendorId ||
     vendorId.startsWith('test-vendor-') ||
-    !vendorId.startsWith('gid://');
+    vendorId.startsWith('v-mock-');
 
   const { data, loading, error, refetch } = useQuery<GetVendorProfileByIdQuery>(
     GET_VENDOR_PROFILE_BY_ID,
@@ -71,29 +71,7 @@ export const useVendorDetail = (vendorId: string | null) => {
 
   const fallbackVendor = useMemo(() => {
     if (!vendorId) return null;
-    const match = TEST_FALLBACK_VENDORS.find(v => v.id === vendorId);
-    if (match) return match;
-    return {
-      id: vendorId,
-      userId: 'u-demo',
-      businessName: 'Sparkle Auto Care & Detailing',
-      imageUri:
-        'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&q=80',
-      gstNumber: 'GST998877',
-      contactNumber: '+971 50 987 6543',
-      address: 'Main City Center, Service Area',
-      serviceRadius: '10km',
-      operatingHours: 'Mon - Sun, 08:00 AM - 09:00 PM',
-      whyChooseMe:
-        'Eco-friendly steam wash, scratch-free microfiber polishing, and 100% satisfaction guarantee.',
-      description:
-        'Sparkle Auto Care is your premier auto spa provider offering high-end exterior washing, interior shampooing, and ceramic paint protection.',
-      images: [
-        'https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?w=800&q=80',
-        'https://images.unsplash.com/photo-1605610816744-13c4752fea01?w=800&q=80',
-        'https://images.unsplash.com/photo-1552930294-6b595f4c2974?w=800&q=80',
-      ],
-    };
+    return TEST_FALLBACK_VENDORS.find(v => v.id === vendorId) ?? null;
   }, [vendorId]);
 
   const activeVendor = unmaskedVendor || fallbackVendor;

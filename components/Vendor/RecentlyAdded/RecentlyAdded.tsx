@@ -168,6 +168,10 @@ export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
     return <AppSkeletonLoader />;
   }
 
+  if (!loading && vendors.length === 0) {
+    return null;
+  }
+
   return (
     <View className="px-4 py-4">
       <SectionHeader

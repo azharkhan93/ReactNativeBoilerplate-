@@ -7,6 +7,7 @@ import {
   RecentlyAdded,
   ScreenScrollView,
 } from '@/components';
+import { Typography } from '@/components/theme';
 import { AppSkeletonLoader } from '@/components/shared';
 import { UserRole } from '../../__generated__/graphql';
 import { useHome } from './hooks/useHome';
@@ -64,29 +65,43 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               />
             </View>
 
-            <ProductSection
-              title="Recommended for You"
-              subtitle="Top rated packages for your car"
-              data={recommendedServices}
-              onProductPress={handleVendorPress}
-              onViewAllPress={handleViewAllProviders}
-            />
+            {recommendedServices.length > 0 && (
+              <ProductSection
+                title="Recommended for You"
+                subtitle="Top rated packages for your car"
+                data={recommendedServices}
+                onProductPress={handleVendorPress}
+                onViewAllPress={handleViewAllProviders}
+              />
+            )}
 
-            <ProductSection
-              title="Special Offers"
-              subtitle="Discounted car detailing deals"
-              data={featuredServices}
-              onProductPress={handleVendorPress}
-              onViewAllPress={handleViewAllProviders}
-            />
+            {featuredServices.length > 0 && (
+              <ProductSection
+                title="Special Offers"
+                subtitle="Discounted car detailing deals"
+                data={featuredServices}
+                onProductPress={handleVendorPress}
+                onViewAllPress={handleViewAllProviders}
+              />
+            )}
 
-            <ProductSection
-              title="Nearby Car Washers"
-              subtitle="Washers available near your location"
-              data={nearbyServices}
-              onProductPress={handleVendorPress}
-              onViewAllPress={handleViewAllProviders}
-            />
+            {nearbyServices.length > 0 && (
+              <ProductSection
+                title="Nearby Car Washers"
+                subtitle="Washers available near your location"
+                data={nearbyServices}
+                onProductPress={handleVendorPress}
+                onViewAllPress={handleViewAllProviders}
+              />
+            )}
+
+            {!loading && !hasData && (
+              <View className="py-12 px-6 items-center justify-center">
+                <Typography variant="body" className="text-slate-400 text-center font-body-medium">
+                  No active providers or services found.
+                </Typography>
+              </View>
+            )}
           </>
         )}
       </ScreenScrollView>
