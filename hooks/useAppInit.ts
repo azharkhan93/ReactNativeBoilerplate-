@@ -6,6 +6,7 @@ import {
   STORAGE_KEYS,
   hydrateStorageFromAsyncStorage,
   persistCriticalKey,
+  ensureStorageEncrypted,
 } from '@/utils/cache';
 
 export interface UseAppInitResult {
@@ -41,6 +42,7 @@ export const useAppInit = (): UseAppInitResult => {
     const prepareApp = async (): Promise<void> => {
       try {
        
+        await ensureStorageEncrypted();
         await hydrateStorageFromAsyncStorage();
 
         if (!returning.current && isReturningUser() && isMounted) {

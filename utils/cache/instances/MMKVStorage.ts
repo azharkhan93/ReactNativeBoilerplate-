@@ -16,6 +16,14 @@ export class MMKVStorage extends BaseStorage {
     this.mmkv = mmkv;
   }
 
+  recrypt(key: string): void {
+    try {
+      this.mmkv.recrypt(key);
+    } catch (error) {
+      StorageLogger.error(`MMKV recrypt failed for instance '${this.id}'`, error);
+    }
+  }
+
   set(key: string, value: StoragePrimitive): void {
     try {
       this.mmkv.set(key, value);

@@ -5,6 +5,7 @@
 export * from './types';
 export * from './logger';
 export * from './storageKeys';
+export * from './secureKey';
 export * from './createStorage';
 export * from './storage';
 export * from './adapters/apolloAdapter';

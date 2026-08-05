@@ -31,13 +31,23 @@ export const Storage = {
 
   get: <T>(key: string): T | null => {
     const rawString = appStorage.getString(key);
-    if (rawString === undefined) return null;
+    if (rawString === undefined || rawString === null) return null;
 
-    try {
-      return JSON.parse(rawString) as T;
-    } catch {
-      return rawString as unknown as T;
+    const trimmed = rawString.trim();
+
+    // Strictly parse as JSON only if the value is formatted as a JSON Object or Array
+    if (
+      (trimmed.startsWith('{') && trimmed.endsWith('}')) ||
+      (trimmed.startsWith('[') && trimmed.endsWith(']'))
+    ) {
+      try {
+        return JSON.parse(rawString) as T;
+      } catch {
+        return rawString as unknown as T;
+      }
     }
+
+    return rawString as unknown as T;
   },
 
   delete: (key: string): void => {
