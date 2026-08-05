@@ -6,16 +6,21 @@ export interface FilterValues {
   sortBy: string | null;
 }
 
-export interface BaseServiceItem {
+export interface ServiceProductItem {
   id: string;
   name: string;
   price: number;
+  originalPrice?: number;
+  discount?: number;
   rating?: number;
+  isFavorite?: boolean;
   category?: string;
   imageUrl?: string;
 }
 
-export const getFeaturedServices = () => {
+export type BaseServiceItem = ServiceProductItem;
+
+export const getFeaturedServices = (): ServiceProductItem[] => {
   return MOCK_SERVICES.map(s => ({
     id: s.id,
     name: s.name,
@@ -29,7 +34,7 @@ export const getFeaturedServices = () => {
 };
 
 
-export const getNearbyServices = () => {
+export const getNearbyServices = (): ServiceProductItem[] => {
   return MOCK_SERVICES.map(s => ({
     id: s.id,
     name: s.name,
@@ -42,7 +47,7 @@ export const getNearbyServices = () => {
 };
 
 
-export const getRecommendedServices = () => {
+export const getRecommendedServices = (): ServiceProductItem[] => {
   return MOCK_SERVICES.slice(0, 2).map(s => ({
     id: s.id,
     name: s.name,

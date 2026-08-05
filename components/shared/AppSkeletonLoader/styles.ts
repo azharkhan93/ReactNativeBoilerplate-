@@ -1,11 +1,11 @@
 export const appSkeletonStyles = {
-  root: 'flex-1 bg-white',
+  root: 'flex-1 bg-[#F1F6FD]',
 
-  spinnerContainer: 'flex-1 items-center justify-center p-8 bg-white',
+  spinnerContainer: 'flex-1 items-center justify-center p-8 bg-transparent',
   spinnerContent: 'items-center justify-center gap-3',
   spinnerText: 'text-slate-500 font-medium text-center text-sm',
 
-  header: 'w-full px-5 pt-12 pb-4 bg-white/80 border-b border-blue-100/40 shadow-sm shadow-blue-50/30',
+  header: 'w-full px-5 pt-12 pb-4 bg-transparent border-b border-blue-100/40 shadow-sm shadow-blue-50/30',
   topRow: 'flex-row items-center justify-between mb-4',
   locationBox: 'flex-row items-center gap-3',
   locationIcon: 'w-8 h-8 rounded-2xl bg-blue-100/70 animate-pulse',
