@@ -11,6 +11,7 @@ import { Star, MapPin, Eye } from 'lucide-react-native';
 import { Typography } from '../../theme/Typography';
 import { SectionHeader } from '../../theme/SectionHeader';
 import { AppSkeletonLoader } from '@/components/shared';
+import { SERVICE_CATEGORIES } from '@/utils/constants';
 import { useRecentlyAdded } from './hooks/useRecentlyAdded';
 
 export interface RecentlyAddedProps {
@@ -31,9 +32,20 @@ export const RecentlyAdded: React.FC<RecentlyAddedProps> = ({
     if (!activeCategoryId) {
       return rawList;
     }
-    return rawList.filter(vendor =>
-      vendor.categories?.some(cat => cat.id === activeCategoryId),
+    const cat = SERVICE_CATEGORIES.find(c => c.id === activeCategoryId);
+    const catNameLower = cat ? cat.name.toLowerCase() : activeCategoryId.toLowerCase();
+
+    const filtered = rawList.filter(vendor =>
+      vendor.categories?.some(
+        c =>
+          c.id === activeCategoryId ||
+          c.name?.toLowerCase() === catNameLower ||
+          c.name?.toLowerCase().includes(catNameLower) ||
+          catNameLower.includes(c.name?.toLowerCase() || ''),
+      ),
     );
+
+    return filtered.length > 0 ? filtered : rawList;
   }, [gqlVendors, activeCategoryId]);
 
   const keyExtractor = useCallback(
