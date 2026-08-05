@@ -43,7 +43,9 @@ export const requestNotificationPermission = async (): Promise<boolean> => {
       authStatus === AuthorizationStatus.PROVISIONAL
     );
   } catch (error) {
-    console.error('[FCM] Permission request failed:', error);
+    if (__DEV__) {
+      console.error('[FCM] Permission request failed:', error);
+    }
     return false;
   }
 };
@@ -88,7 +90,9 @@ export const listenToForegroundNotifications = () => {
       }
     });
   } catch (error) {
-    console.error('[FCM] Failed to register foreground listener:', error);
+    if (__DEV__) {
+      console.error('[FCM] Failed to register foreground listener:', error);
+    }
     return () => {};
   }
 };

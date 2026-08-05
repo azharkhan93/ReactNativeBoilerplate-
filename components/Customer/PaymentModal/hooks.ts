@@ -257,8 +257,13 @@ export const usePayment = ({
     handlePaymentVerification,
   ]);
 
-  // Mock verify signature helper (Calculates test HMAC signature using SHA256)
+  // Mock verify signature helper (Only enabled in __DEV__ mode)
   const handleSimulatePaymentSuccess = useCallback(async () => {
+    if (!__DEV__) {
+      setErrorMessage('Mock payment simulation is disabled in production.');
+      setStep('error');
+      return;
+    }
     const mockPaymentId = `pay_mock_${Math.random()
       .toString(36)
       .substring(2, 11)}`;
