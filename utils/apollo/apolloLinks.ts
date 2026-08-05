@@ -2,7 +2,7 @@ import { HttpLink, split } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { createClient } from 'graphql-ws';
+import { createClient, Client } from 'graphql-ws';
 
 import { GRAPHQL_API_URL } from '../api';
 import { getAuthToken } from '../store/authStore';
@@ -27,15 +27,37 @@ export const authLink = setContext(async (_, { headers }) => ({
 
 export const httpLink = authLink.concat(new HttpLink({ uri: GRAPHQL_API_URL }));
 
-export const wsLink = new GraphQLWsLink(
-  createClient({
-    url: GRAPHQL_WS_URL,
-    webSocketImpl: typeof WebSocket !== 'undefined' ? WebSocket : undefined,
-    connectionParams: async () => ({
-      headers: { authorization: await getAuthHeader() },
-    }),
+let wsClient: Client | null = null;
+
+wsClient = createClient({
+  url: GRAPHQL_WS_URL,
+  webSocketImpl: typeof WebSocket !== 'undefined' ? WebSocket : undefined,
+  connectionParams: async () => ({
+    headers: { authorization: await getAuthHeader() },
   }),
-);
+});
+
+export const wsLink = new GraphQLWsLink(wsClient);
+
+export const resetWebSocketSession = async (): Promise<void> => {
+  try {
+    if (wsClient) {
+      await wsClient.dispose();
+      
+      wsClient = createClient({
+        url: GRAPHQL_WS_URL,
+        webSocketImpl: typeof WebSocket !== 'undefined' ? WebSocket : undefined,
+        connectionParams: async () => ({
+          headers: { authorization: await getAuthHeader() },
+        }),
+      });
+    }
+  } catch (error) {
+    if (__DEV__) {
+      console.warn('[WebSocketSession] Error resetting socket connection:', error);
+    }
+  }
+};
 
 export const splitLink = split(
   ({ query }) => {

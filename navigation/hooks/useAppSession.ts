@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { UserRole } from '../../__generated__/graphql';
 import { useRegisterDeviceToken } from '@/hooks/useRegisterDeviceToken';
-import { apolloClient } from '@/utils/apolloClient';
+import { apolloClient, resetWebSocketSession } from '@/utils/apolloClient';
 import { setAuthData, getUserId, clearAuthData } from '@/utils/store/authStore';
 import { GET_USER_AVATAR } from '@/components/Customer/customerQueries';
 import {
@@ -12,7 +12,6 @@ import {
   removeCriticalKey,
   hydrateStorageFromAsyncStorage,
 } from '@/utils/cache';
-
 export const useAppSession = () => {
   const [userRole, setUserRole] = useState<UserRole | null>(() => {
     const storedRole = appStorage.getString(STORAGE_KEYS.USER_ROLE);
@@ -107,6 +106,7 @@ export const useAppSession = () => {
     try {
       setUserRole(null);
       setUserId(null);
+      await resetWebSocketSession();
       await clearAuthData();
       await removeCriticalKey(STORAGE_KEYS.USER_ROLE);
       await apolloClient.clearStore();
