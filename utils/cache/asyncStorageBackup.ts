@@ -11,6 +11,10 @@ const CRITICAL_KEYS: string[] = [
   STORAGE_KEYS.LAST_LOCATION,
 ];
 
+/**
+ * Migrates legacy data from unencrypted AsyncStorage to AES-256 encrypted MMKV,
+ * then purges AsyncStorage so no unencrypted data remains on disk.
+ */
 export const hydrateStorageFromAsyncStorage = async (): Promise<void> => {
   try {
     for (const key of CRITICAL_KEYS) {
@@ -25,20 +29,25 @@ export const hydrateStorageFromAsyncStorage = async (): Promise<void> => {
         }
       }
     }
+    // Purge unencrypted legacy AsyncStorage
+    await AsyncStorage.clear();
   } catch (error) {
     if (__DEV__) {
-      console.warn('[StorageBackup] AsyncStorage hydration warning:', error);
+      console.warn('[StorageBackup] One-time AsyncStorage migration warning:', error);
     }
   }
 };
 
-export const persistCriticalKey = async (
+/**
+ * Persists critical application state strictly into AES-256 encrypted MMKV storage.
+ * Does NOT write to unencrypted AsyncStorage.
+ */
+export const persistCriticalKey = (
   key: string,
   value: string | boolean,
-): Promise<void> => {
+): void => {
   try {
     appStorage.set(key, value);
-    await AsyncStorage.setItem(key, String(value));
   } catch (error) {
     if (__DEV__) {
       console.warn(`[StorageBackup] Failed to persist key '${key}':`, error);
@@ -46,10 +55,12 @@ export const persistCriticalKey = async (
   }
 };
 
-export const removeCriticalKey = async (key: string): Promise<void> => {
+/**
+ * Removes key strictly from encrypted MMKV storage.
+ */
+export const removeCriticalKey = (key: string): void => {
   try {
     appStorage.delete(key);
-    await AsyncStorage.removeItem(key);
   } catch (error) {
     if (__DEV__) {
       console.warn(`[StorageBackup] Failed to remove key '${key}':`, error);

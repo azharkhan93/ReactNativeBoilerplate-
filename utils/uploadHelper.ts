@@ -1,4 +1,5 @@
 import { GRAPHQL_API_URL } from './api';
+import { getAuthToken } from './store/authStore';
 
 export interface UploadResponse {
   url: string;
@@ -7,11 +8,10 @@ export interface UploadResponse {
   bytes: number;
 }
 
-
 export const uploadAssetToCloudinary = async (
   uri: string,
   fileName: string = 'upload.jpg',
-  mimeType: string = 'image/jpeg'
+  mimeType: string = 'image/jpeg',
 ): Promise<UploadResponse> => {
   const operations = JSON.stringify({
     query: `
@@ -36,23 +36,28 @@ export const uploadAssetToCloudinary = async (
   const formData = new FormData();
   formData.append('operations', operations);
   formData.append('map', map);
-  
-  // Format the file object for React Native Form Data
+
   formData.append('0', {
     uri,
     name: fileName,
     type: mimeType,
   } as unknown as Blob);
 
+  const token = await getAuthToken().catch(() => null);
+  const headers: Record<string, string> = {
+    Accept: 'application/json',
+    'apollo-require-preflight': 'true',
+    'x-apollo-operation-name': 'UploadImage',
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
   const response = await fetch(GRAPHQL_API_URL, {
     method: 'POST',
     body: formData,
-    headers: {
-      'Accept': 'application/json',
-      'apollo-require-preflight': 'true',
-      'x-apollo-operation-name': 'UploadImage',
-     
-    },
+    headers,
   });
 
   if (!response.ok) {
