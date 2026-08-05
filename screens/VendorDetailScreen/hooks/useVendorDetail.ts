@@ -64,7 +64,6 @@ export const useVendorDetail = (vendorId: string | null) => {
     },
   );
 
- 
   const unmaskedVendor = useFragment(
     VENDOR_PROFILE_FIELDS,
     data?.getVendorProfileById,
