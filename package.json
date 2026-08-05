@@ -10,7 +10,7 @@
     "test": "jest",
     "codegen": "graphql-codegen --config codegen.ts",
     "codegen:watch": "graphql-codegen --config codegen.ts --watch",
-    "build:ios": "cd ios && xcrun agvtool next-version -all && cd .. && npx react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios/assets && xcodebuild -workspace ios/Tab2wash.xcworkspace -scheme Tab2wash -configuration Release -destination 'generic/platform=iOS' archive -archivePath build/Tab2wash.xcarchive SKIP_BUNDLING=1 && open build/Tab2wash.xcarchive"
+    "build:ios": "cd ios && xcrun agvtool next-version -all && cd .. && npx react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios/assets && xcodebuild -workspace ios/Tab2wash.xcworkspace -scheme Tab2wash -configuration Release -destination 'generic/platform=iOS' archive -archivePath build/Tab2wash.xcarchive SKIP_BUNDLING=1 && dsymutil build/Tab2wash.xcarchive/Products/Applications/Tab2wash.app/Frameworks/hermesvm.framework/hermesvm -o build/Tab2wash.xcarchive/dSYMs/hermesvm.framework.dSYM && open build/Tab2wash.xcarchive"
   },
   "dependencies": {
     "@apollo/client": "^4.0.11",
