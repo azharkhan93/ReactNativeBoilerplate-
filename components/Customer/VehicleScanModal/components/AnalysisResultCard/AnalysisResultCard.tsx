@@ -49,7 +49,7 @@ export const AnalysisResultCard: React.FC<AnalysisResultCardProps> = React.memo(
               AI Inspection Results
             </Typography>
             <Typography className={analysisResultStyles.vehicleSubtext}>
-              Detected: {result.vehicleType}
+              Detected: {result.vehicleType ?? 'Vehicle'}
             </Typography>
           </View>
 
@@ -65,11 +65,11 @@ export const AnalysisResultCard: React.FC<AnalysisResultCardProps> = React.memo(
 
         {/* Detected Conditions List */}
         <Typography className={analysisResultStyles.sectionLabel}>
-          Detected Flaws & Dirt Level ({detectedConditions.length})
+          Detected Flaws & Dirt Level ({detectedConditions?.length ?? 0})
         </Typography>
 
         <View className={analysisResultStyles.conditionsList}>
-          {detectedConditions.map(cond => {
+          {(detectedConditions ?? []).map(cond => {
             const isSevere = cond.severity === 'severe';
             return (
               <View
@@ -127,14 +127,22 @@ export const AnalysisResultCard: React.FC<AnalysisResultCardProps> = React.memo(
             {recommendedPackage.reason}
           </Typography>
 
-          <View className={analysisResultStyles.priceRow}>
-            <Typography className={analysisResultStyles.discountPrice}>
-              ${(recommendedPackage.discountedPrice ?? 49.99).toFixed(2)}
-            </Typography>
-            <Typography className={analysisResultStyles.originalPrice}>
-              ${(recommendedPackage.originalPrice ?? 69.99).toFixed(2)}
-            </Typography>
-          </View>
+          {(recommendedPackage.discountedPrice !== undefined ||
+            recommendedPackage.originalPrice !== undefined) && (
+            <View className={analysisResultStyles.priceRow}>
+              {recommendedPackage.discountedPrice !== undefined && (
+                <Typography className={analysisResultStyles.discountPrice}>
+                  ${recommendedPackage.discountedPrice.toFixed(2)}
+                </Typography>
+              )}
+              {recommendedPackage.originalPrice !== undefined &&
+                recommendedPackage.originalPrice !== recommendedPackage.discountedPrice && (
+                  <Typography className={analysisResultStyles.originalPrice}>
+                    ${recommendedPackage.originalPrice.toFixed(2)}
+                  </Typography>
+                )}
+            </View>
+          )}
         </View>
 
         {/* Perfectly Aligned 50/50 Action Buttons */}

@@ -16,6 +16,8 @@ export const SCAN_VEHICLE_MUTATION: TypedDocumentNode<
   mutation ScanVehicleCondition($base64Images: [String!]!) {
     scanVehicleCondition(base64Images: $base64Images) {
       isVehicleDetected
+      vehicleType
+      estimatedColor
       overallConditionScore
       retakeGuidance
       detectedConditions {
@@ -30,6 +32,8 @@ export const SCAN_VEHICLE_MUTATION: TypedDocumentNode<
         packageId
         title
         reason
+        originalPrice
+        discountedPrice
         suggestedAddons
       }
     }

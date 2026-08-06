@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useMutation } from '@apollo/client/react';
 import { ScanStep, VehicleScanResult, YoloDetection } from './types';
-import { MOCK_SCAN_RESULT } from './constants';
 import { SCAN_VEHICLE_MUTATION } from './graphql';
 
 import {
@@ -57,14 +56,38 @@ export const useVehicleScan = (onClose: () => void) => {
         if (data?.scanVehicleCondition) {
           setScanResult(data.scanVehicleCondition);
         } else {
-          setScanResult(MOCK_SCAN_RESULT);
+          setScanResult({
+            isVehicleDetected: false,
+            overallConditionScore: 0,
+            detectedConditions: [],
+            recommendedPackage: {
+              packageId: '',
+              title: 'Basic Wash',
+              reason: 'Analysis could not detect vehicle profile.',
+              suggestedAddons: [],
+            },
+            retakeGuidance:
+              'No inspection result returned. Please capture photos in clear lighting.',
+          });
         }
       } catch (error: unknown) {
+        const errorMessage =
+          error instanceof Error ? error.message : 'AI Inspection server error.';
         if (__DEV__) {
-          const msg = error instanceof Error ? error.message : String(error);
-          console.warn('[useVehicleScan] GraphQL AI Scan error:', msg);
+          console.warn('[useVehicleScan] GraphQL AI Scan error:', errorMessage);
         }
-        setScanResult(MOCK_SCAN_RESULT);
+        setScanResult({
+          isVehicleDetected: false,
+          overallConditionScore: 0,
+          detectedConditions: [],
+          recommendedPackage: {
+            packageId: '',
+            title: 'Basic Wash',
+            reason: 'Unable to complete AI analysis.',
+            suggestedAddons: [],
+          },
+          retakeGuidance: `${errorMessage} Please try scanning again.`,
+        });
       } finally {
         setIsScanning(false);
         setCurrentStep('complete');

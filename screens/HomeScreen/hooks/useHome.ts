@@ -8,9 +8,7 @@ import { useFragment } from '@/__generated__/fragment-masking';
 import {
   filterAndSortServices,
   FilterValues,
-  getFeaturedServices,
-  getNearbyServices,
-  getRecommendedServices,
+ 
   ServiceProductItem,
 } from '../helpers/homeHelpers';
 import { NavigationCallback } from '@/navigation/navigation.types';
