@@ -31,16 +31,16 @@ export const capturePhotoWithCamera = async (): Promise<string | null> => {
       {
         mediaType: 'photo',
         cameraType: 'back',
-        quality: 0.8,
+        quality: 0.7,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        includeBase64: true,
         saveToPhotos: false,
       },
       (response: ImagePickerResponse) => {
-        if (
-          !response.didCancel &&
-          !response.errorCode &&
-          response.assets?.[0]?.uri
-        ) {
-          resolve(response.assets[0].uri);
+        const asset = response.assets?.[0];
+        if (!response.didCancel && !response.errorCode && asset) {
+          resolve(asset.base64 ? `data:image/jpeg;base64,${asset.base64}` : asset.uri || null);
         } else {
           resolve(null);
         }
@@ -54,16 +54,16 @@ export const selectPhotoFromLibrary = async (): Promise<string | null> => {
     launchImageLibrary(
       {
         mediaType: 'photo',
-        quality: 0.8,
+        quality: 0.7,
+        maxWidth: 1024,
+        maxHeight: 1024,
+        includeBase64: true,
         selectionLimit: 1,
       },
       (response: ImagePickerResponse) => {
-        if (
-          !response.didCancel &&
-          !response.errorCode &&
-          response.assets?.[0]?.uri
-        ) {
-          resolve(response.assets[0].uri);
+        const asset = response.assets?.[0];
+        if (!response.didCancel && !response.errorCode && asset) {
+          resolve(asset.base64 ? `data:image/jpeg;base64,${asset.base64}` : asset.uri || null);
         } else {
           resolve(null);
         }

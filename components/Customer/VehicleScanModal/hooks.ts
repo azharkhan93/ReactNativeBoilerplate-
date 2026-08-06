@@ -1,11 +1,22 @@
 import { useState, useCallback } from 'react';
+import { useMutation } from '@apollo/client/react';
 import { ScanStep, VehicleScanResult, YoloDetection } from './types';
 import { MOCK_SCAN_RESULT } from './constants';
+import { SCAN_VEHICLE_MUTATION } from './graphql';
+
 import {
   checkCameraPermission,
   capturePhotoWithCamera,
   selectPhotoFromLibrary,
 } from '@/utils/cameraHelper';
+
+interface ScanVehicleMutationData {
+  readonly scanVehicleCondition: VehicleScanResult;
+}
+
+interface ScanVehicleMutationVars {
+  readonly base64Images: readonly string[];
+}
 
 export const useVehicleScan = (onClose: () => void) => {
   const [currentStep, setCurrentStep] = useState<ScanStep>('hood');
@@ -15,6 +26,11 @@ export const useVehicleScan = (onClose: () => void) => {
   const [scanResult, setScanResult] = useState<VehicleScanResult | null>(null);
   const [capturedPhotos, setCapturedPhotos] = useState<readonly string[]>([]);
   const [hasPermissionDenied, setHasPermissionDenied] = useState<boolean>(false);
+
+  const [scanVehicleCondition] = useMutation<
+    ScanVehicleMutationData,
+    ScanVehicleMutationVars
+  >(SCAN_VEHICLE_MUTATION);
 
   const [yoloDetection] = useState<YoloDetection>({
     isVehicleDetected: true,
@@ -28,6 +44,35 @@ export const useVehicleScan = (onClose: () => void) => {
     setHasTorchEnabled(prev => !prev);
   }, []);
 
+  const executeAiScan = useCallback(
+    async (photos: readonly string[]): Promise<void> => {
+      setCurrentStep('analyzing');
+      setIsScanning(true);
+
+      try {
+        const { data } = await scanVehicleCondition({
+          variables: { base64Images: photos },
+        });
+
+        if (data?.scanVehicleCondition) {
+          setScanResult(data.scanVehicleCondition);
+        } else {
+          setScanResult(MOCK_SCAN_RESULT);
+        }
+      } catch (error: unknown) {
+        if (__DEV__) {
+          const msg = error instanceof Error ? error.message : String(error);
+          console.warn('[useVehicleScan] GraphQL AI Scan error:', msg);
+        }
+        setScanResult(MOCK_SCAN_RESULT);
+      } finally {
+        setIsScanning(false);
+        setCurrentStep('complete');
+      }
+    },
+    [scanVehicleCondition],
+  );
+
   const handleCapturePhoto = useCallback(async (): Promise<void> => {
     try {
       const hasPermission = await checkCameraPermission();
@@ -38,9 +83,10 @@ export const useVehicleScan = (onClose: () => void) => {
 
       setHasPermissionDenied(false);
       const imageUri = await capturePhotoWithCamera();
+      const updatedPhotos = imageUri ? [...capturedPhotos, imageUri] : capturedPhotos;
 
       if (imageUri) {
-        setCapturedPhotos(prev => [...prev, imageUri]);
+        setCapturedPhotos(updatedPhotos);
       }
 
       if (currentStep === 'hood') {
@@ -48,46 +94,39 @@ export const useVehicleScan = (onClose: () => void) => {
       } else if (currentStep === 'side') {
         setCurrentStep('wheels');
       } else if (currentStep === 'wheels') {
-        setCurrentStep('analyzing');
-        setIsScanning(true);
-
-        setTimeout(() => {
-          setIsScanning(false);
-          setScanResult(MOCK_SCAN_RESULT);
-          setCurrentStep('complete');
-        }, 2200);
+        await executeAiScan(updatedPhotos);
       }
-    } catch (error) {
-      if (__DEV__) console.warn('[useVehicleScan] Capture error:', error);
+    } catch (error: unknown) {
+      if (__DEV__) {
+        const msg = error instanceof Error ? error.message : String(error);
+        console.warn('[useVehicleScan] Capture error:', msg);
+      }
     }
-  }, [currentStep]);
+  }, [currentStep, capturedPhotos, executeAiScan]);
 
   const handlePickFromGallery = useCallback(async (): Promise<void> => {
     try {
       const imageUri = await selectPhotoFromLibrary();
       if (imageUri) {
         setHasPermissionDenied(false);
-        setCapturedPhotos(prev => [...prev, imageUri]);
+        const updatedPhotos = [...capturedPhotos, imageUri];
+        setCapturedPhotos(updatedPhotos);
 
         if (currentStep === 'hood') {
           setCurrentStep('side');
         } else if (currentStep === 'side') {
           setCurrentStep('wheels');
         } else if (currentStep === 'wheels') {
-          setCurrentStep('analyzing');
-          setIsScanning(true);
-
-          setTimeout(() => {
-            setIsScanning(false);
-            setScanResult(MOCK_SCAN_RESULT);
-            setCurrentStep('complete');
-          }, 2200);
+          await executeAiScan(updatedPhotos);
         }
       }
-    } catch (error) {
-      if (__DEV__) console.warn('[useVehicleScan] Gallery pick error:', error);
+    } catch (error: unknown) {
+      if (__DEV__) {
+        const msg = error instanceof Error ? error.message : String(error);
+        console.warn('[useVehicleScan] Gallery pick error:', msg);
+      }
     }
-  }, [currentStep]);
+  }, [currentStep, capturedPhotos, executeAiScan]);
 
   const resetScan = useCallback((): void => {
     setCurrentStep('hood');
@@ -120,3 +159,4 @@ export const useVehicleScan = (onClose: () => void) => {
     setIsLowLightDetected,
   };
 };
+

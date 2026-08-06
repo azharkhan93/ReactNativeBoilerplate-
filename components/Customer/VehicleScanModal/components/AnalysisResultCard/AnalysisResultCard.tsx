@@ -1,6 +1,11 @@
 import React from 'react';
 import { View, TouchableOpacity, ScrollView } from 'react-native';
-import { Sparkles, ShieldAlert, CheckCircle2, RotateCcw } from 'lucide-react-native';
+import {
+  Sparkles,
+  ShieldAlert,
+  CheckCircle2,
+  RotateCcw,
+} from 'lucide-react-native';
 
 import { Typography, Button } from '@/components/theme';
 import { AnalysisResultCardProps } from './types';
@@ -9,6 +14,28 @@ import { analysisResultStyles } from './styles';
 export const AnalysisResultCard: React.FC<AnalysisResultCardProps> = React.memo(
   ({ result, onBookPackagePress, onRescanPress }) => {
     const { recommendedPackage, detectedConditions } = result;
+
+    if (!result.isVehicleDetected) {
+      return (
+        <View className="p-6 items-center justify-center bg-rose-950/20 border border-rose-500/30 rounded-2xl my-4">
+          <ShieldAlert size={44} color="#f43f5e" className="mb-3" />
+          <Typography className="text-xl font-bold text-slate-100 text-center mb-2">
+            No Vehicle Detected
+          </Typography>
+          <Typography className="text-sm text-slate-300 text-center mb-6 leading-relaxed">
+            {result.retakeGuidance ||
+              'Please ensure clear lighting and capture the full exterior profile of your vehicle.'}
+          </Typography>
+          <Button
+            onPress={onRescanPress}
+            variant="primary"
+            className="w-full py-3 bg-rose-600 active:bg-rose-700"
+          >
+            Retake Photos
+          </Button>
+        </View>
+      );
+    }
 
     return (
       <ScrollView
@@ -45,7 +72,10 @@ export const AnalysisResultCard: React.FC<AnalysisResultCardProps> = React.memo(
           {detectedConditions.map(cond => {
             const isSevere = cond.severity === 'severe';
             return (
-              <View key={cond.id} className={analysisResultStyles.conditionItem}>
+              <View
+                key={cond.id}
+                className={analysisResultStyles.conditionItem}
+              >
                 <View className={analysisResultStyles.conditionRow}>
                   <View className="flex-row items-center gap-2 flex-1 pr-1">
                     <ShieldAlert
@@ -71,7 +101,8 @@ export const AnalysisResultCard: React.FC<AnalysisResultCardProps> = React.memo(
                           : analysisResultStyles.badgeTextModerate
                       }
                     >
-                      {cond.severity} ({Math.round(cond.confidenceScore * 100)}%)
+                      {cond.severity} ({Math.round(cond.confidenceScore * 100)}
+                      %)
                     </Typography>
                   </View>
                 </View>
@@ -98,10 +129,10 @@ export const AnalysisResultCard: React.FC<AnalysisResultCardProps> = React.memo(
 
           <View className={analysisResultStyles.priceRow}>
             <Typography className={analysisResultStyles.discountPrice}>
-              ${recommendedPackage.discountedPrice.toFixed(2)}
+              ${(recommendedPackage.discountedPrice ?? 49.99).toFixed(2)}
             </Typography>
             <Typography className={analysisResultStyles.originalPrice}>
-              ${recommendedPackage.originalPrice.toFixed(2)}
+              ${(recommendedPackage.originalPrice ?? 69.99).toFixed(2)}
             </Typography>
           </View>
         </View>

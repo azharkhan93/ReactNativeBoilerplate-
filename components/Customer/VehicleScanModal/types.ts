@@ -16,19 +16,21 @@ export interface RecommendedPackage {
   readonly packageId: string;
   readonly title: string;
   readonly reason: string;
-  readonly originalPrice: number;
-  readonly discountedPrice: number;
+  readonly originalPrice?: number;
+  readonly discountedPrice?: number;
   readonly suggestedAddons: readonly string[];
 }
 
 export interface VehicleScanResult {
   readonly isVehicleDetected: boolean;
-  readonly vehicleType: string;
-  readonly estimatedColor: string;
+  readonly vehicleType?: string;
+  readonly estimatedColor?: string;
   readonly overallConditionScore: number; // 1 (worst) to 10 (pristine)
   readonly detectedConditions: readonly DetectedCondition[];
   readonly recommendedPackage: RecommendedPackage;
+  readonly retakeGuidance?: string;
 }
+
 
 export interface YoloDetection {
   readonly isVehicleDetected: boolean;
