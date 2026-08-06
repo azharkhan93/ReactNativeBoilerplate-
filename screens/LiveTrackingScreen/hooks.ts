@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { BookingNotificationType } from '@/__generated__/graphql';
 import { getDistance } from '@/utils/distanceHelper';
 import { Location } from './types';
 import { useSendBookingNotification } from './useSendBookingNotification';
@@ -33,13 +34,13 @@ export const useTrackingNotifications = (
     if (initialDistance.current === null) {
       initialDistance.current = dist;
       if (!didSendOnTheWay.current && dist > 0.02) {
-        sendBookingNotification(bookingId, 'JOURNEY_START');
+        sendBookingNotification(bookingId, BookingNotificationType.JourneyStart);
         didSendOnTheWay.current = true;
       }
     } else {
       const halfDist = initialDistance.current * 0.5;
       if (dist <= halfDist && !didSendHalfway.current && dist > 0.01) {
-        sendBookingNotification(bookingId, 'JOURNEY_HALFWAY');
+        sendBookingNotification(bookingId, BookingNotificationType.JourneyHalfway);
         didSendHalfway.current = true;
       }
     }

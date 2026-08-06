@@ -136,8 +136,8 @@ export const UPSERT_VENDOR_BANK_DETAILS = gql(`
 `);
 
 export const DELETE_VENDOR_BANK_DETAILS = gql(`
-  mutation DeleteVendorBankDetails($id: ID!) {
-    deleteVendorBankDetails(id: $id)
+  mutation DeleteVendorBankDetails($id: ID!, $vendorProfileId: ID!) {
+    deleteVendorBankDetails(id: $id, vendorProfileId: $vendorProfileId)
   }
 `);
 

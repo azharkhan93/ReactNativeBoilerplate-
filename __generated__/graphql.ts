@@ -58,6 +58,12 @@ export type Booking = {
   vendorProfile?: Maybe<VendorProfileType>;
 };
 
+/** Valid push notification triggers for a booking journey */
+export enum BookingNotificationType {
+  JourneyHalfway = 'JOURNEY_HALFWAY',
+  JourneyStart = 'JOURNEY_START'
+}
+
 /** Status of the booking */
 export enum BookingStatus {
   Cancelled = 'CANCELLED',
@@ -65,6 +71,21 @@ export enum BookingStatus {
   Confirmed = 'CONFIRMED',
   InProgress = 'IN_PROGRESS',
   Pending = 'PENDING'
+}
+
+/** Categories of detected vehicle surface conditions */
+export enum ConditionCategory {
+  Dirt = 'DIRT',
+  Interior = 'INTERIOR',
+  Paint = 'PAINT',
+  Wheels = 'WHEELS'
+}
+
+/** Severity levels of vehicle surface flaws */
+export enum ConditionSeverity {
+  Light = 'LIGHT',
+  Moderate = 'MODERATE',
+  Severe = 'SEVERE'
 }
 
 export type CreateBookingInput = {
@@ -162,11 +183,23 @@ export type CustomerProfileType = {
   name: Scalars['String']['output'];
   phone: Scalars['String']['output'];
   updatedAt: Scalars['DateTime']['output'];
+  user?: Maybe<UserType>;
   userId: Scalars['String']['output'];
+};
+
+export type DetectedConditionType = {
+  __typename?: 'DetectedConditionType';
+  category: ConditionCategory;
+  confidenceScore: Scalars['Float']['output'];
+  id: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  severity: ConditionSeverity;
+  summary: Scalars['String']['output'];
 };
 
 export type Dispute = {
   __typename?: 'Dispute';
+  booking?: Maybe<Booking>;
   bookingId: Scalars['ID']['output'];
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['ID']['output'];
@@ -231,6 +264,7 @@ export type Mutation = {
   removeVendorException: Scalars['Boolean']['output'];
   requestOtp: SmsResponse;
   saveFullAvailability: VendorAvailabilityResponse;
+  scanVehicleCondition: VehicleScanResultType;
   sendBookingNotification: Scalars['Boolean']['output'];
   syncServiceCategories: Array<ServiceCategory>;
   updateBookingStatus: Booking;
@@ -344,6 +378,7 @@ export type MutationDeleteUserArgs = {
 
 export type MutationDeleteVendorBankDetailsArgs = {
   id: Scalars['ID']['input'];
+  vendorProfileId: Scalars['ID']['input'];
 };
 
 
@@ -395,9 +430,14 @@ export type MutationSaveFullAvailabilityArgs = {
 };
 
 
+export type MutationScanVehicleConditionArgs = {
+  base64Images: Array<Scalars['String']['input']>;
+};
+
+
 export type MutationSendBookingNotificationArgs = {
   bookingId: Scalars['ID']['input'];
-  type: Scalars['String']['input'];
+  type: BookingNotificationType;
 };
 
 
@@ -663,6 +703,16 @@ export type QueryVendorReviewsArgs = {
   vendorProfileId: Scalars['ID']['input'];
 };
 
+export type RecommendedPackageType = {
+  __typename?: 'RecommendedPackageType';
+  discountedPrice?: Maybe<Scalars['Float']['output']>;
+  originalPrice?: Maybe<Scalars['Float']['output']>;
+  packageId: Scalars['String']['output'];
+  reason: Scalars['String']['output'];
+  suggestedAddons: Array<Scalars['String']['output']>;
+  title: Scalars['String']['output'];
+};
+
 export type RegisterDeviceTokenInput = {
   deviceType: Scalars['String']['input'];
   fcmToken: Scalars['String']['input'];
@@ -670,6 +720,7 @@ export type RegisterDeviceTokenInput = {
 
 export type Review = {
   __typename?: 'Review';
+  booking?: Maybe<Booking>;
   bookingId: Scalars['ID']['output'];
   comment?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['DateTime']['output'];
@@ -857,6 +908,17 @@ export type UserType = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+export type VehicleScanResultType = {
+  __typename?: 'VehicleScanResultType';
+  detectedConditions: Array<DetectedConditionType>;
+  estimatedColor?: Maybe<Scalars['String']['output']>;
+  isVehicleDetected: Scalars['Boolean']['output'];
+  overallConditionScore: Scalars['Int']['output'];
+  recommendedPackage: RecommendedPackageType;
+  retakeGuidance?: Maybe<Scalars['String']['output']>;
+  vehicleType?: Maybe<Scalars['String']['output']>;
+};
+
 export type VendorAvailabilityResponse = {
   __typename?: 'VendorAvailabilityResponse';
   breaks: Array<VendorBreak>;
@@ -897,6 +959,7 @@ export type VendorProfileType = {
   operatingHours?: Maybe<Scalars['String']['output']>;
   serviceRadius?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['DateTime']['output'];
+  user?: Maybe<UserType>;
   userId: Scalars['String']['output'];
   whyChooseMe?: Maybe<Scalars['String']['output']>;
 };
@@ -926,6 +989,7 @@ export type VendorService = {
   price: Scalars['Float']['output'];
   pricings?: Maybe<Array<ServicePricing>>;
   updatedAt: Scalars['DateTime']['output'];
+  vendorProfile?: Maybe<VendorProfileType>;
   vendorProfileId: Scalars['ID']['output'];
 };
 
@@ -940,6 +1004,13 @@ export type VerifyPaymentInput = {
   razorpayPaymentId: Scalars['String']['input'];
   razorpaySignature: Scalars['String']['input'];
 };
+
+export type ScanVehicleConditionMutationVariables = Exact<{
+  base64Images: Array<Scalars['String']['input']> | Scalars['String']['input'];
+}>;
+
+
+export type ScanVehicleConditionMutation = { __typename?: 'Mutation', scanVehicleCondition: { __typename?: 'VehicleScanResultType', isVehicleDetected: boolean, vehicleType?: string | null, estimatedColor?: string | null, overallConditionScore: number, retakeGuidance?: string | null, detectedConditions: Array<{ __typename?: 'DetectedConditionType', id: string, category: ConditionCategory, name: string, severity: ConditionSeverity, confidenceScore: number, summary: string }>, recommendedPackage: { __typename?: 'RecommendedPackageType', packageId: string, title: string, reason: string, originalPrice?: number | null, discountedPrice?: number | null, suggestedAddons: Array<string> } } };
 
 export type GetCustomerBookingsQueryVariables = Exact<{
   userId: Scalars['ID']['input'];
@@ -1157,6 +1228,7 @@ export type UpsertVendorBankDetailsMutation = { __typename?: 'Mutation', upsertV
 
 export type DeleteVendorBankDetailsMutationVariables = Exact<{
   id: Scalars['ID']['input'];
+  vendorProfileId: Scalars['ID']['input'];
 }>;
 
 
@@ -1279,13 +1351,14 @@ export type OnDriverLocationUpdatedSubscription = { __typename?: 'Subscription',
 
 export type SendBookingNotificationMutationVariables = Exact<{
   bookingId: Scalars['ID']['input'];
-  type: Scalars['String']['input'];
+  type: BookingNotificationType;
 }>;
 
 
 export type SendBookingNotificationMutation = { __typename?: 'Mutation', sendBookingNotification: boolean };
 
 export const VendorProfileFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"VendorProfileFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"VendorProfileType"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"businessName"}},{"kind":"Field","name":{"kind":"Name","value":"imageUri"}},{"kind":"Field","name":{"kind":"Name","value":"gstNumber"}},{"kind":"Field","name":{"kind":"Name","value":"contactNumber"}},{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"serviceRadius"}},{"kind":"Field","name":{"kind":"Name","value":"operatingHours"}},{"kind":"Field","name":{"kind":"Name","value":"whyChooseMe"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"images"}},{"kind":"Field","name":{"kind":"Name","value":"categories"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"icon"}}]}}]}}]} as unknown as DocumentNode<VendorProfileFieldsFragment, unknown>;
+export const ScanVehicleConditionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ScanVehicleCondition"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"base64Images"}},"type":{"kind":"NonNullType","type":{"kind":"ListType","type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"scanVehicleCondition"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"base64Images"},"value":{"kind":"Variable","name":{"kind":"Name","value":"base64Images"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isVehicleDetected"}},{"kind":"Field","name":{"kind":"Name","value":"vehicleType"}},{"kind":"Field","name":{"kind":"Name","value":"estimatedColor"}},{"kind":"Field","name":{"kind":"Name","value":"overallConditionScore"}},{"kind":"Field","name":{"kind":"Name","value":"retakeGuidance"}},{"kind":"Field","name":{"kind":"Name","value":"detectedConditions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"category"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"severity"}},{"kind":"Field","name":{"kind":"Name","value":"confidenceScore"}},{"kind":"Field","name":{"kind":"Name","value":"summary"}}]}},{"kind":"Field","name":{"kind":"Name","value":"recommendedPackage"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"packageId"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}},{"kind":"Field","name":{"kind":"Name","value":"originalPrice"}},{"kind":"Field","name":{"kind":"Name","value":"discountedPrice"}},{"kind":"Field","name":{"kind":"Name","value":"suggestedAddons"}}]}}]}}]}}]} as unknown as DocumentNode<ScanVehicleConditionMutation, ScanVehicleConditionMutationVariables>;
 export const GetCustomerBookingsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetCustomerBookings"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"status"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"BookingStatus"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"customerBookings"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}},{"kind":"Argument","name":{"kind":"Name","value":"status"},"value":{"kind":"Variable","name":{"kind":"Name","value":"status"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"serviceId"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"scheduledAt"}},{"kind":"Field","name":{"kind":"Name","value":"totalPrice"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"service"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"price"}}]}},{"kind":"Field","name":{"kind":"Name","value":"vendorProfile"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"businessName"}},{"kind":"Field","name":{"kind":"Name","value":"imageUri"}}]}}]}}]}}]} as unknown as DocumentNode<GetCustomerBookingsQuery, GetCustomerBookingsQueryVariables>;
 export const GetVendorBookingsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetVendorBookings"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"vendorProfileId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"status"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"BookingStatus"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"vendorBookings"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"vendorProfileId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"vendorProfileId"}}},{"kind":"Argument","name":{"kind":"Name","value":"status"},"value":{"kind":"Variable","name":{"kind":"Name","value":"status"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"serviceId"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"scheduledAt"}},{"kind":"Field","name":{"kind":"Name","value":"totalPrice"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"phoneNumber"}},{"kind":"Field","name":{"kind":"Name","value":"avatarUrl"}}]}},{"kind":"Field","name":{"kind":"Name","value":"service"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"price"}}]}}]}}]}}]} as unknown as DocumentNode<GetVendorBookingsQuery, GetVendorBookingsQueryVariables>;
 export const CreateBookingDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateBooking"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateBookingInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createBooking"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"userId"}},{"kind":"Field","name":{"kind":"Name","value":"serviceId"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"scheduledAt"}},{"kind":"Field","name":{"kind":"Name","value":"totalPrice"}}]}}]}}]} as unknown as DocumentNode<CreateBookingMutation, CreateBookingMutationVariables>;
@@ -1314,7 +1387,7 @@ export const GetVendorAvailabilityDocument = {"kind":"Document","definitions":[{
 export const SaveFullAvailabilityDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SaveFullAvailability"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"vendorProfileId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SaveAvailabilityInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"saveFullAvailability"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"vendorProfileId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"vendorProfileId"}}},{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"schedule"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"dayOfWeek"}},{"kind":"Field","name":{"kind":"Name","value":"startTime"}},{"kind":"Field","name":{"kind":"Name","value":"endTime"}},{"kind":"Field","name":{"kind":"Name","value":"isActive"}}]}},{"kind":"Field","name":{"kind":"Name","value":"breaks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"startTime"}},{"kind":"Field","name":{"kind":"Name","value":"endTime"}}]}},{"kind":"Field","name":{"kind":"Name","value":"exceptions"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"startTime"}},{"kind":"Field","name":{"kind":"Name","value":"endTime"}}]}}]}}]}}]} as unknown as DocumentNode<SaveFullAvailabilityMutation, SaveFullAvailabilityMutationVariables>;
 export const GetVendorBankDetailsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetVendorBankDetails"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"vendorProfileId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getVendorBankDetails"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"vendorProfileId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"vendorProfileId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"vendorProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"accountHolder"}},{"kind":"Field","name":{"kind":"Name","value":"bankName"}},{"kind":"Field","name":{"kind":"Name","value":"ifscCode"}},{"kind":"Field","name":{"kind":"Name","value":"accountNumber"}}]}}]}}]} as unknown as DocumentNode<GetVendorBankDetailsQuery, GetVendorBankDetailsQueryVariables>;
 export const UpsertVendorBankDetailsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpsertVendorBankDetails"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"vendorProfileId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpsertBankDetailsInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"upsertVendorBankDetails"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"vendorProfileId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"vendorProfileId"}}},{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"vendorProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"accountHolder"}},{"kind":"Field","name":{"kind":"Name","value":"bankName"}},{"kind":"Field","name":{"kind":"Name","value":"ifscCode"}},{"kind":"Field","name":{"kind":"Name","value":"accountNumber"}}]}}]}}]} as unknown as DocumentNode<UpsertVendorBankDetailsMutation, UpsertVendorBankDetailsMutationVariables>;
-export const DeleteVendorBankDetailsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteVendorBankDetails"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteVendorBankDetails"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}]}}]} as unknown as DocumentNode<DeleteVendorBankDetailsMutation, DeleteVendorBankDetailsMutationVariables>;
+export const DeleteVendorBankDetailsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteVendorBankDetails"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"vendorProfileId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"deleteVendorBankDetails"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"vendorProfileId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"vendorProfileId"}}}]}]}}]} as unknown as DocumentNode<DeleteVendorBankDetailsMutation, DeleteVendorBankDetailsMutationVariables>;
 export const GetVendorServicesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetVendorServices"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"vendorProfileId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getVendorServices"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"vendorProfileId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"vendorProfileId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"vendorProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"features"}},{"kind":"Field","name":{"kind":"Name","value":"images"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}}]}}]}}]} as unknown as DocumentNode<GetVendorServicesQuery, GetVendorServicesQueryVariables>;
 export const CreateVendorServiceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateVendorService"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateVendorServiceInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createVendorService"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"vendorProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"features"}},{"kind":"Field","name":{"kind":"Name","value":"images"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}}]}}]}}]} as unknown as DocumentNode<CreateVendorServiceMutation, CreateVendorServiceMutationVariables>;
 export const UpdateVendorServiceDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateVendorService"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UpdateVendorServiceInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"updateVendorService"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"vendorProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"features"}},{"kind":"Field","name":{"kind":"Name","value":"images"}},{"kind":"Field","name":{"kind":"Name","value":"categoryId"}}]}}]}}]} as unknown as DocumentNode<UpdateVendorServiceMutation, UpdateVendorServiceMutationVariables>;
@@ -1330,4 +1403,4 @@ export const RegisterDeviceTokenDocument = {"kind":"Document","definitions":[{"k
 export const SearchVendorsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SearchVendors"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"query"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"searchVendors"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"query"},"value":{"kind":"Variable","name":{"kind":"Name","value":"query"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"businessName"}},{"kind":"Field","name":{"kind":"Name","value":"description"}}]}}]}}]} as unknown as DocumentNode<SearchVendorsQuery, SearchVendorsQueryVariables>;
 export const GetDriverLocationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetDriverLocation"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"bookingId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"driverLocation"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"bookingId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"bookingId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bookingId"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"eta"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<GetDriverLocationQuery, GetDriverLocationQueryVariables>;
 export const OnDriverLocationUpdatedDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"subscription","name":{"kind":"Name","value":"OnDriverLocationUpdated"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"bookingId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"driverLocationUpdated"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"bookingId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"bookingId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bookingId"}},{"kind":"Field","name":{"kind":"Name","value":"latitude"}},{"kind":"Field","name":{"kind":"Name","value":"longitude"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"eta"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<OnDriverLocationUpdatedSubscription, OnDriverLocationUpdatedSubscriptionVariables>;
-export const SendBookingNotificationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SendBookingNotification"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"bookingId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sendBookingNotification"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"bookingId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"bookingId"}}},{"kind":"Argument","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}]}}]} as unknown as DocumentNode<SendBookingNotificationMutation, SendBookingNotificationMutationVariables>;
+export const SendBookingNotificationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SendBookingNotification"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"bookingId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"type"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BookingNotificationType"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sendBookingNotification"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"bookingId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"bookingId"}}},{"kind":"Argument","name":{"kind":"Name","value":"type"},"value":{"kind":"Variable","name":{"kind":"Name","value":"type"}}}]}]}}]} as unknown as DocumentNode<SendBookingNotificationMutation, SendBookingNotificationMutationVariables>;

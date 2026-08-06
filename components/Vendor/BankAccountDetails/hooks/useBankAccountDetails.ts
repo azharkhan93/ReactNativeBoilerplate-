@@ -29,7 +29,9 @@ export const useBankAccountDetails = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [profile, setProfile] = useState<BankFormData | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingProfile, setEditingProfile] = useState<BankFormData | null>(null);
+  const [editingProfile, setEditingProfile] = useState<BankFormData | null>(
+    null,
+  );
 
   useEffect(() => {
     getUserId().then(id => {
@@ -38,24 +40,37 @@ export const useBankAccountDetails = () => {
   }, []);
 
   // 1. Fetch Vendor Profile to get vendorProfileId
-  const { data: profileData, loading: loadingProfile } = useQuery(GET_VENDOR_PROFILE, {
-    variables: { userId: userId || '' },
-    skip: !userId,
-  });
+  const { data: profileData, loading: loadingProfile } = useQuery(
+    GET_VENDOR_PROFILE,
+    {
+      variables: { userId: userId || '' },
+      skip: !userId,
+    },
+  );
 
-  const profileFragment = useFragment(VENDOR_PROFILE_FIELDS, profileData?.getVendorProfile);
+  const profileFragment = useFragment(
+    VENDOR_PROFILE_FIELDS,
+    profileData?.getVendorProfile,
+  );
   const vendorProfileId = profileFragment?.id;
 
   // 2. Fetch Bank Details once vendorProfileId is available
-  const { data: bankData, loading: loadingBank, refetch: refetchBank } = useQuery(GET_VENDOR_BANK_DETAILS, {
+  const {
+    data: bankData,
+    loading: loadingBank,
+    refetch: refetchBank,
+  } = useQuery(GET_VENDOR_BANK_DETAILS, {
     variables: { vendorProfileId: vendorProfileId || '' },
     skip: !vendorProfileId,
     errorPolicy: 'all',
   });
 
-  const [upsertBankDetails, { loading: saving }] = useMutation(UPSERT_VENDOR_BANK_DETAILS);
-  const [deleteBankDetails, { loading: deleting }] = useMutation(DELETE_VENDOR_BANK_DETAILS);
-
+  const [upsertBankDetails, { loading: saving }] = useMutation(
+    UPSERT_VENDOR_BANK_DETAILS,
+  );
+  const [deleteBankDetails, { loading: deleting }] = useMutation(
+    DELETE_VENDOR_BANK_DETAILS,
+  );
 
   useEffect(() => {
     const b = bankData?.getVendorBankDetails;
@@ -111,7 +126,7 @@ export const useBankAccountDetails = () => {
         console.error('Failed to save bank details:', err);
       }
     },
-    [vendorProfileId, upsertBankDetails, refetchBank, handleCloseModal]
+    [vendorProfileId, upsertBankDetails, refetchBank, handleCloseModal],
   );
 
   const handleDeleteProfile = useCallback(async () => {
@@ -120,7 +135,7 @@ export const useBankAccountDetails = () => {
 
     try {
       await deleteBankDetails({
-        variables: { id },
+        variables: { id, vendorProfileId: vendorProfileId || '' },
       });
       setProfile(null);
       await refetchBank();

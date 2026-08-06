@@ -14,6 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
+    "\n  mutation ScanVehicleCondition($base64Images: [String!]!) {\n    scanVehicleCondition(base64Images: $base64Images) {\n      isVehicleDetected\n      vehicleType\n      estimatedColor\n      overallConditionScore\n      retakeGuidance\n      detectedConditions {\n        id\n        category\n        name\n        severity\n        confidenceScore\n        summary\n      }\n      recommendedPackage {\n        packageId\n        title\n        reason\n        originalPrice\n        discountedPrice\n        suggestedAddons\n      }\n    }\n  }\n": typeof types.ScanVehicleConditionDocument,
     "\n  query GetCustomerBookings($userId: ID!, $status: BookingStatus) {\n    customerBookings(userId: $userId, status: $status) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n      createdAt\n      service {\n        id\n        name\n        price\n      }\n      vendorProfile {\n        id\n        businessName\n        imageUri\n      }\n    }\n  }\n": typeof types.GetCustomerBookingsDocument,
     "\n  query GetVendorBookings($vendorProfileId: ID!, $status: BookingStatus) {\n    vendorBookings(vendorProfileId: $vendorProfileId, status: $status) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n      createdAt\n      user {\n        id\n        name\n        phoneNumber\n        avatarUrl\n      }\n      service {\n        id\n        name\n        price\n      }\n    }\n  }\n": typeof types.GetVendorBookingsDocument,
     "\n  mutation CreateBooking($input: CreateBookingInput!) {\n    createBooking(input: $input) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n    }\n  }\n": typeof types.CreateBookingDocument,
@@ -43,7 +44,7 @@ type Documents = {
     "\n  mutation SaveFullAvailability($vendorProfileId: ID!, $input: SaveAvailabilityInput!) {\n    saveFullAvailability(vendorProfileId: $vendorProfileId, input: $input) {\n      schedule {\n        id\n        dayOfWeek\n        startTime\n        endTime\n        isActive\n      }\n      breaks {\n        id\n        name\n        startTime\n        endTime\n      }\n      exceptions {\n        id\n        date\n        description\n        type\n        startTime\n        endTime\n      }\n    }\n  }\n": typeof types.SaveFullAvailabilityDocument,
     "\n  query GetVendorBankDetails($vendorProfileId: ID!) {\n    getVendorBankDetails(vendorProfileId: $vendorProfileId) {\n      id\n      vendorProfileId\n      accountHolder\n      bankName\n      ifscCode\n      accountNumber\n    }\n  }\n": typeof types.GetVendorBankDetailsDocument,
     "\n  mutation UpsertVendorBankDetails($vendorProfileId: ID!, $input: UpsertBankDetailsInput!) {\n    upsertVendorBankDetails(vendorProfileId: $vendorProfileId, input: $input) {\n      id\n      vendorProfileId\n      accountHolder\n      bankName\n      ifscCode\n      accountNumber\n    }\n  }\n": typeof types.UpsertVendorBankDetailsDocument,
-    "\n  mutation DeleteVendorBankDetails($id: ID!) {\n    deleteVendorBankDetails(id: $id)\n  }\n": typeof types.DeleteVendorBankDetailsDocument,
+    "\n  mutation DeleteVendorBankDetails($id: ID!, $vendorProfileId: ID!) {\n    deleteVendorBankDetails(id: $id, vendorProfileId: $vendorProfileId)\n  }\n": typeof types.DeleteVendorBankDetailsDocument,
     "\n  query GetVendorServices($vendorProfileId: ID!) {\n    getVendorServices(vendorProfileId: $vendorProfileId) {\n      id\n      vendorProfileId\n      name\n      description\n      price\n      duration\n      location\n      features\n      images\n      categoryId\n    }\n  }\n": typeof types.GetVendorServicesDocument,
     "\n  mutation CreateVendorService($input: CreateVendorServiceInput!) {\n    createVendorService(input: $input) {\n      id\n      vendorProfileId\n      name\n      description\n      price\n      duration\n      location\n      features\n      images\n      categoryId\n    }\n  }\n": typeof types.CreateVendorServiceDocument,
     "\n  mutation UpdateVendorService($id: ID!, $input: UpdateVendorServiceInput!) {\n    updateVendorService(id: $id, input: $input) {\n      id\n      vendorProfileId\n      name\n      description\n      price\n      duration\n      location\n      features\n      images\n      categoryId\n    }\n  }\n": typeof types.UpdateVendorServiceDocument,
@@ -59,9 +60,10 @@ type Documents = {
     "\n  query SearchVendors($query: String!) {\n    searchVendors(query: $query) {\n      id\n      businessName\n      description\n    }\n  }\n": typeof types.SearchVendorsDocument,
     "\n  query GetDriverLocation($bookingId: ID!) {\n    driverLocation(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": typeof types.GetDriverLocationDocument,
     "\n  subscription OnDriverLocationUpdated($bookingId: ID!) {\n    driverLocationUpdated(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": typeof types.OnDriverLocationUpdatedDocument,
-    "\n  mutation SendBookingNotification($bookingId: ID!, $type: String!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n": typeof types.SendBookingNotificationDocument,
+    "\n  mutation SendBookingNotification($bookingId: ID!, $type: BookingNotificationType!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n": typeof types.SendBookingNotificationDocument,
 };
 const documents: Documents = {
+    "\n  mutation ScanVehicleCondition($base64Images: [String!]!) {\n    scanVehicleCondition(base64Images: $base64Images) {\n      isVehicleDetected\n      vehicleType\n      estimatedColor\n      overallConditionScore\n      retakeGuidance\n      detectedConditions {\n        id\n        category\n        name\n        severity\n        confidenceScore\n        summary\n      }\n      recommendedPackage {\n        packageId\n        title\n        reason\n        originalPrice\n        discountedPrice\n        suggestedAddons\n      }\n    }\n  }\n": types.ScanVehicleConditionDocument,
     "\n  query GetCustomerBookings($userId: ID!, $status: BookingStatus) {\n    customerBookings(userId: $userId, status: $status) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n      createdAt\n      service {\n        id\n        name\n        price\n      }\n      vendorProfile {\n        id\n        businessName\n        imageUri\n      }\n    }\n  }\n": types.GetCustomerBookingsDocument,
     "\n  query GetVendorBookings($vendorProfileId: ID!, $status: BookingStatus) {\n    vendorBookings(vendorProfileId: $vendorProfileId, status: $status) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n      createdAt\n      user {\n        id\n        name\n        phoneNumber\n        avatarUrl\n      }\n      service {\n        id\n        name\n        price\n      }\n    }\n  }\n": types.GetVendorBookingsDocument,
     "\n  mutation CreateBooking($input: CreateBookingInput!) {\n    createBooking(input: $input) {\n      id\n      userId\n      serviceId\n      status\n      scheduledAt\n      totalPrice\n    }\n  }\n": types.CreateBookingDocument,
@@ -91,7 +93,7 @@ const documents: Documents = {
     "\n  mutation SaveFullAvailability($vendorProfileId: ID!, $input: SaveAvailabilityInput!) {\n    saveFullAvailability(vendorProfileId: $vendorProfileId, input: $input) {\n      schedule {\n        id\n        dayOfWeek\n        startTime\n        endTime\n        isActive\n      }\n      breaks {\n        id\n        name\n        startTime\n        endTime\n      }\n      exceptions {\n        id\n        date\n        description\n        type\n        startTime\n        endTime\n      }\n    }\n  }\n": types.SaveFullAvailabilityDocument,
     "\n  query GetVendorBankDetails($vendorProfileId: ID!) {\n    getVendorBankDetails(vendorProfileId: $vendorProfileId) {\n      id\n      vendorProfileId\n      accountHolder\n      bankName\n      ifscCode\n      accountNumber\n    }\n  }\n": types.GetVendorBankDetailsDocument,
     "\n  mutation UpsertVendorBankDetails($vendorProfileId: ID!, $input: UpsertBankDetailsInput!) {\n    upsertVendorBankDetails(vendorProfileId: $vendorProfileId, input: $input) {\n      id\n      vendorProfileId\n      accountHolder\n      bankName\n      ifscCode\n      accountNumber\n    }\n  }\n": types.UpsertVendorBankDetailsDocument,
-    "\n  mutation DeleteVendorBankDetails($id: ID!) {\n    deleteVendorBankDetails(id: $id)\n  }\n": types.DeleteVendorBankDetailsDocument,
+    "\n  mutation DeleteVendorBankDetails($id: ID!, $vendorProfileId: ID!) {\n    deleteVendorBankDetails(id: $id, vendorProfileId: $vendorProfileId)\n  }\n": types.DeleteVendorBankDetailsDocument,
     "\n  query GetVendorServices($vendorProfileId: ID!) {\n    getVendorServices(vendorProfileId: $vendorProfileId) {\n      id\n      vendorProfileId\n      name\n      description\n      price\n      duration\n      location\n      features\n      images\n      categoryId\n    }\n  }\n": types.GetVendorServicesDocument,
     "\n  mutation CreateVendorService($input: CreateVendorServiceInput!) {\n    createVendorService(input: $input) {\n      id\n      vendorProfileId\n      name\n      description\n      price\n      duration\n      location\n      features\n      images\n      categoryId\n    }\n  }\n": types.CreateVendorServiceDocument,
     "\n  mutation UpdateVendorService($id: ID!, $input: UpdateVendorServiceInput!) {\n    updateVendorService(id: $id, input: $input) {\n      id\n      vendorProfileId\n      name\n      description\n      price\n      duration\n      location\n      features\n      images\n      categoryId\n    }\n  }\n": types.UpdateVendorServiceDocument,
@@ -107,7 +109,7 @@ const documents: Documents = {
     "\n  query SearchVendors($query: String!) {\n    searchVendors(query: $query) {\n      id\n      businessName\n      description\n    }\n  }\n": types.SearchVendorsDocument,
     "\n  query GetDriverLocation($bookingId: ID!) {\n    driverLocation(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": types.GetDriverLocationDocument,
     "\n  subscription OnDriverLocationUpdated($bookingId: ID!) {\n    driverLocationUpdated(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": types.OnDriverLocationUpdatedDocument,
-    "\n  mutation SendBookingNotification($bookingId: ID!, $type: String!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n": types.SendBookingNotificationDocument,
+    "\n  mutation SendBookingNotification($bookingId: ID!, $type: BookingNotificationType!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n": types.SendBookingNotificationDocument,
 };
 
 /**
@@ -124,6 +126,10 @@ const documents: Documents = {
  */
 export function gql(source: string): unknown;
 
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation ScanVehicleCondition($base64Images: [String!]!) {\n    scanVehicleCondition(base64Images: $base64Images) {\n      isVehicleDetected\n      vehicleType\n      estimatedColor\n      overallConditionScore\n      retakeGuidance\n      detectedConditions {\n        id\n        category\n        name\n        severity\n        confidenceScore\n        summary\n      }\n      recommendedPackage {\n        packageId\n        title\n        reason\n        originalPrice\n        discountedPrice\n        suggestedAddons\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation ScanVehicleCondition($base64Images: [String!]!) {\n    scanVehicleCondition(base64Images: $base64Images) {\n      isVehicleDetected\n      vehicleType\n      estimatedColor\n      overallConditionScore\n      retakeGuidance\n      detectedConditions {\n        id\n        category\n        name\n        severity\n        confidenceScore\n        summary\n      }\n      recommendedPackage {\n        packageId\n        title\n        reason\n        originalPrice\n        discountedPrice\n        suggestedAddons\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -243,7 +249,7 @@ export function gql(source: "\n  mutation UpsertVendorBankDetails($vendorProfile
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation DeleteVendorBankDetails($id: ID!) {\n    deleteVendorBankDetails(id: $id)\n  }\n"): (typeof documents)["\n  mutation DeleteVendorBankDetails($id: ID!) {\n    deleteVendorBankDetails(id: $id)\n  }\n"];
+export function gql(source: "\n  mutation DeleteVendorBankDetails($id: ID!, $vendorProfileId: ID!) {\n    deleteVendorBankDetails(id: $id, vendorProfileId: $vendorProfileId)\n  }\n"): (typeof documents)["\n  mutation DeleteVendorBankDetails($id: ID!, $vendorProfileId: ID!) {\n    deleteVendorBankDetails(id: $id, vendorProfileId: $vendorProfileId)\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -307,7 +313,7 @@ export function gql(source: "\n  subscription OnDriverLocationUpdated($bookingId
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation SendBookingNotification($bookingId: ID!, $type: String!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n"): (typeof documents)["\n  mutation SendBookingNotification($bookingId: ID!, $type: String!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n"];
+export function gql(source: "\n  mutation SendBookingNotification($bookingId: ID!, $type: BookingNotificationType!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n"): (typeof documents)["\n  mutation SendBookingNotification($bookingId: ID!, $type: BookingNotificationType!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};
