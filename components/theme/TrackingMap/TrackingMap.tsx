@@ -1,13 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Platform } from 'react-native';
 import MapView, { Marker, Polyline, PROVIDER_GOOGLE } from 'react-native-maps';
-import { Location } from '@/data/mockTracking';
-
-export interface TrackingMapProps {
-    driverLocation: Location;
-    destination: Location;
-    driverPhotoUrl: string;
-}
+import { TrackingMapProps } from './types';
 
 export const TrackingMap: React.FC<TrackingMapProps> = ({
     driverLocation,

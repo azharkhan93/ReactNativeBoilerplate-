@@ -3,6 +3,23 @@ import { useQuery, useSubscription } from '@apollo/client/react';
 import { gql } from '@/__generated__';
 import { Location } from './types';
 
+const GET_BOOKING_DETAILS_TRACKING = gql(`
+  query GetBookingDetailsTracking($id: ID!) {
+    bookingById(id: $id) {
+      id
+      status
+      service {
+        id
+        name
+      }
+      vendorProfile {
+        id
+        businessName
+      }
+    }
+  }
+`);
+
 const GET_DRIVER_LOCATION = gql(`
   query GetDriverLocation($bookingId: ID!) {
     driverLocation(bookingId: $bookingId) {
@@ -29,18 +46,29 @@ const DRIVER_LOCATION_UPDATED = gql(`
   }
 `);
 
-export const useLiveTracking = (bookingId: string, initialLocation: Location, initialEta: number) => {
-  const [currentLocation, setCurrentLocation] = useState<Location>(initialLocation);
+export const useLiveTracking = (
+  bookingId: string,
+  initialLocation: Location,
+  initialEta: number,
+) => {
+  const [currentLocation, setCurrentLocation] =
+    useState<Location>(initialLocation);
   const [eta, setEta] = useState<number>(initialEta);
   const [status, setStatus] = useState<string>('on_the_way');
 
-  // 1. Query initial location
+  // 1. Query booking metadata (vendor profile, status)
+  const { data: bookingData } = useQuery(GET_BOOKING_DETAILS_TRACKING, {
+    variables: { id: bookingId },
+    skip: !bookingId,
+  });
+
+  // 2. Query initial driver location
   const { data: queryData, loading } = useQuery(GET_DRIVER_LOCATION, {
     variables: { bookingId },
     skip: !bookingId,
   });
 
-  // Update state when initial query loads
+  // Update state when initial location query loads
   useEffect(() => {
     if (queryData?.driverLocation) {
       setCurrentLocation({
@@ -52,7 +80,7 @@ export const useLiveTracking = (bookingId: string, initialLocation: Location, in
     }
   }, [queryData]);
 
-  // 2. Subscribe to live updates
+  // 3. Subscribe to live location updates
   const { data: subscriptionData } = useSubscription(DRIVER_LOCATION_UPDATED, {
     variables: { bookingId },
     skip: !bookingId,
@@ -71,10 +99,13 @@ export const useLiveTracking = (bookingId: string, initialLocation: Location, in
     }
   }, [subscriptionData]);
 
+  const vendorName = bookingData?.bookingById?.vendorProfile?.businessName;
+
   return {
     currentLocation,
     eta,
     status,
+    vendorName,
     loading,
   };
 };

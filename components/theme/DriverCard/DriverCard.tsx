@@ -2,11 +2,7 @@ import React from 'react';
 import { View, Image, TouchableOpacity, Linking } from 'react-native';
 import { Phone, MessageCircle, Star, ShieldCheck } from 'lucide-react-native';
 import { Typography } from '../Typography';
-import { Driver } from '@/data/mockTracking';
-
-export interface DriverCardProps {
-    driver: Driver;
-}
+import { DriverCardProps } from './types';
 
 export const DriverCard: React.FC<DriverCardProps> = ({ driver }) => {
     return (

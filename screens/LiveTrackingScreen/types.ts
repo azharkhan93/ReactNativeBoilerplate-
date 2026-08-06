@@ -1,3 +1,5 @@
+import { Driver } from '@/components/theme/DriverCard/types';
+
 export interface Location {
   latitude: number;
   longitude: number;
@@ -10,4 +12,5 @@ export interface LiveTrackingScreenProps {
   initialEta?: number;
   destination?: Location;
   vendorName?: string;
+  driver?: Driver;
 }

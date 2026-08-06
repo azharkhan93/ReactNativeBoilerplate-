@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import { ChevronLeft, Info, MoreVertical } from 'lucide-react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -8,20 +8,44 @@ import {
   DriverCard,
   Button,
 } from '@/components/theme';
-import { MOCK_TRACKING_SESSION } from '@/data/mockTracking';
+import { Driver } from '@/components/theme/DriverCard/types';
 import { useLiveTracking } from './useLiveTracking';
 import { useTrackingSimulation } from './useTrackingSimulation';
 import { useTrackingNotifications } from './hooks';
-import { LiveTrackingScreenProps } from './types';
+import { LiveTrackingScreenProps, Location } from './types';
 import { liveTrackingStyles } from './styles';
+
+const DEFAULT_START_LOCATION: Location = {
+  latitude: 25.280000,
+  longitude: 55.300000,
+};
+
+const DEFAULT_DESTINATION_LOCATION: Location = {
+  latitude: 25.276987,
+  longitude: 55.296249,
+};
+
+const DEFAULT_DRIVER_INFO: Driver = {
+  id: 'driver_1',
+  name: 'Ahmed Hassan',
+  photoUrl: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200&h=200&auto=format&fit=crop',
+  rating: 4.8,
+  phone: '+971 50 123 4567',
+  vehicle: {
+    model: 'Toyota Prius',
+    plateNumber: 'DXB 12345',
+    color: 'White',
+  },
+};
 
 export const LiveTrackingScreen: React.FC<LiveTrackingScreenProps> = ({
   onNavigate,
   bookingId = 'bk_1',
-  initialLocation = MOCK_TRACKING_SESSION.currentLocation,
-  initialEta = MOCK_TRACKING_SESSION.estimatedArrivalMinutes,
-  destination = MOCK_TRACKING_SESSION.destination,
-  vendorName = 'Elite Car Wash',
+  initialLocation = DEFAULT_START_LOCATION,
+  initialEta = 8,
+  destination = DEFAULT_DESTINATION_LOCATION,
+  vendorName: initialVendorName,
+  driver,
 }) => {
   const insets = useSafeAreaInsets();
 
@@ -34,29 +58,32 @@ export const LiveTrackingScreen: React.FC<LiveTrackingScreenProps> = ({
     __DEV__,
   );
 
-  // 2. Fetch driver location and subscribe to real-time updates from backend
-  const { currentLocation, eta, status } = useLiveTracking(
+  // 2. Fetch driver location, vendor info, and subscribe to real-time updates from backend
+  const { currentLocation, eta, status, vendorName: backendVendorName } = useLiveTracking(
     bookingId,
     initialLocation,
     initialEta,
   );
 
+  const activeVendorName = backendVendorName ?? initialVendorName ?? 'Elite Car Wash';
+
   // 3. Monitor driver progress and trigger in-app notifications
   useTrackingNotifications(
     bookingId,
-    vendorName,
+    activeVendorName,
     currentLocation,
     destination,
   );
 
   const displayEta = typeof eta === 'number' ? eta : 0;
+  const activeDriver = useMemo(() => driver ?? DEFAULT_DRIVER_INFO, [driver]);
 
   return (
     <View className={liveTrackingStyles.container}>
       <TrackingMap
         driverLocation={currentLocation}
         destination={destination}
-        driverPhotoUrl={MOCK_TRACKING_SESSION.driver.photoUrl}
+        driverPhotoUrl={activeDriver.photoUrl}
       />
 
       <View
@@ -104,7 +131,7 @@ export const LiveTrackingScreen: React.FC<LiveTrackingScreenProps> = ({
           </View>
         </View>
 
-        <DriverCard driver={MOCK_TRACKING_SESSION.driver} />
+        <DriverCard driver={activeDriver} />
 
         <Button
           variant="primary"

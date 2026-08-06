@@ -58,6 +58,7 @@ type Documents = {
     "\n  mutation LogoutUser {\n    logout\n  }\n": typeof types.LogoutUserDocument,
     "\n  mutation RegisterDeviceToken($input: RegisterDeviceTokenInput!) {\n    registerDeviceToken(input: $input) {\n      id\n      fcmToken\n    }\n  }\n": typeof types.RegisterDeviceTokenDocument,
     "\n  query SearchVendors($query: String!) {\n    searchVendors(query: $query) {\n      id\n      businessName\n      description\n    }\n  }\n": typeof types.SearchVendorsDocument,
+    "\n  query GetBookingDetailsTracking($id: ID!) {\n    bookingById(id: $id) {\n      id\n      status\n      service {\n        id\n        name\n      }\n      vendorProfile {\n        id\n        businessName\n      }\n    }\n  }\n": typeof types.GetBookingDetailsTrackingDocument,
     "\n  query GetDriverLocation($bookingId: ID!) {\n    driverLocation(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": typeof types.GetDriverLocationDocument,
     "\n  subscription OnDriverLocationUpdated($bookingId: ID!) {\n    driverLocationUpdated(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": typeof types.OnDriverLocationUpdatedDocument,
     "\n  mutation SendBookingNotification($bookingId: ID!, $type: BookingNotificationType!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n": typeof types.SendBookingNotificationDocument,
@@ -107,6 +108,7 @@ const documents: Documents = {
     "\n  mutation LogoutUser {\n    logout\n  }\n": types.LogoutUserDocument,
     "\n  mutation RegisterDeviceToken($input: RegisterDeviceTokenInput!) {\n    registerDeviceToken(input: $input) {\n      id\n      fcmToken\n    }\n  }\n": types.RegisterDeviceTokenDocument,
     "\n  query SearchVendors($query: String!) {\n    searchVendors(query: $query) {\n      id\n      businessName\n      description\n    }\n  }\n": types.SearchVendorsDocument,
+    "\n  query GetBookingDetailsTracking($id: ID!) {\n    bookingById(id: $id) {\n      id\n      status\n      service {\n        id\n        name\n      }\n      vendorProfile {\n        id\n        businessName\n      }\n    }\n  }\n": types.GetBookingDetailsTrackingDocument,
     "\n  query GetDriverLocation($bookingId: ID!) {\n    driverLocation(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": types.GetDriverLocationDocument,
     "\n  subscription OnDriverLocationUpdated($bookingId: ID!) {\n    driverLocationUpdated(bookingId: $bookingId) {\n      bookingId\n      latitude\n      longitude\n      status\n      eta\n      updatedAt\n    }\n  }\n": types.OnDriverLocationUpdatedDocument,
     "\n  mutation SendBookingNotification($bookingId: ID!, $type: BookingNotificationType!) {\n    sendBookingNotification(bookingId: $bookingId, type: $type)\n  }\n": types.SendBookingNotificationDocument,
@@ -302,6 +304,10 @@ export function gql(source: "\n  mutation RegisterDeviceToken($input: RegisterDe
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query SearchVendors($query: String!) {\n    searchVendors(query: $query) {\n      id\n      businessName\n      description\n    }\n  }\n"): (typeof documents)["\n  query SearchVendors($query: String!) {\n    searchVendors(query: $query) {\n      id\n      businessName\n      description\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query GetBookingDetailsTracking($id: ID!) {\n    bookingById(id: $id) {\n      id\n      status\n      service {\n        id\n        name\n      }\n      vendorProfile {\n        id\n        businessName\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetBookingDetailsTracking($id: ID!) {\n    bookingById(id: $id) {\n      id\n      status\n      service {\n        id\n        name\n      }\n      vendorProfile {\n        id\n        businessName\n      }\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
